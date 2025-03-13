@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -108,7 +108,7 @@ namespace RevEng.Core.Routines.Functions
 
             if ((function as Function)!.IsScalar)
             {
-                var returnType = paramStrings.First();
+                var returnType = paramStrings.First().TrimEnd();
                 var parameters = string.Empty;
 
                 if (function.Parameters.Count > 1)
@@ -116,7 +116,7 @@ namespace RevEng.Core.Routines.Functions
                     parameters = string.Join(", ", paramStrings.Skip(1));
                 }
 
-                Sb.AppendLine($"public static {returnType}{identifier}({parameters})");
+                Sb.AppendLine($"public static {returnType} {identifier}({parameters})");
 
                 Sb.AppendLine("{");
                 using (Sb.Indent())
@@ -125,6 +125,16 @@ namespace RevEng.Core.Routines.Functions
                 }
 
                 Sb.AppendLine("}");
+
+                if (function.Parameters.Count == 1)
+                {
+                    Sb.AppendLine();
+                    Sb.AppendLine($"public async Task<{returnType}> {identifier}Async()");
+                    using (Sb.Indent())
+                    {
+                        Sb.AppendLine($"=> await Database.SqlQueryRaw<{returnType}>(\"select Value = {function.Schema}.{function.Name}()\").SingleAsync();");
+                    }
+                }
             }
             else
             {
