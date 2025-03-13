@@ -132,7 +132,7 @@ namespace RevEng.Core.Routines.Functions
                     Sb.AppendLine($"public async Task<{returnType}> {identifier}Async()");
                     using (Sb.Indent())
                     {
-                        Sb.AppendLine($"=> await Database.SqlQueryRaw<{returnType}>(\"select Value = {function.Schema}.{function.Name}()\").SingleAsync();");
+                        Sb.AppendLine($"=> await Database.SqlQueryRaw<{returnType}>(\"select Value = [{function.Schema}].[{function.Name}]()\").SingleAsync();");
                     }
                 }
             }

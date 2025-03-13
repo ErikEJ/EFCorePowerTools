@@ -180,7 +180,7 @@
          "ObjectType": 2
       },
       {
-         "Name": "[dbo].[LatestOrderDate]",
+         "Name": "[dbo].[Latest Order Date]",
          "ObjectType": 2
       },
       {
