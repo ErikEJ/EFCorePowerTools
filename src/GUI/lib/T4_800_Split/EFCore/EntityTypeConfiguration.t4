@@ -23,6 +23,12 @@
         Warning("Your templates were created using an older version of Entity Framework. Additional features and bug fixes may be available. See https://aka.ms/efcore-docs-updating-templates for more information.");
     }
 
+    if (EntityType.IsSimpleManyToManyJoinEntityType())
+    {
+        // Don't scaffold these
+        return "";
+    }
+
     var services = (IServiceProvider)Host;
     var providerCode = services.GetRequiredService<IProviderConfigurationCodeGenerator>();
     var annotationCodeGenerator = services.GetRequiredService<IAnnotationCodeGenerator>();
