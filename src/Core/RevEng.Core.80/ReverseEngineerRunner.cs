@@ -68,7 +68,7 @@ namespace RevEng.Core
             else
             {
                 var code = serviceProvider.GetRequiredService<ICSharpHelper>();
-                options.ProjectRootNamespace = code.Identifier(options.ProjectRootNamespace, capitalize: true);
+                options.ProjectRootNamespace = GenerateNameSpace(options.ProjectRootNamespace, code);
 
                 modelNamespace = !string.IsNullOrEmpty(options.ModelNamespace)
                     ? options.ProjectRootNamespace + "." + options.ModelNamespace
@@ -213,6 +213,18 @@ namespace RevEng.Core
                 return result;
             }
 #pragma warning restore CA1031
+        }
+
+        private static string GenerateNameSpace(string projectNamespace, ICSharpHelper code)
+        {
+            var parts = projectNamespace.Split('.');
+
+            foreach (var part in parts)
+            {
+                parts[Array.IndexOf(parts, part)] = code.Identifier(part, capitalize: true);
+            }
+
+            return string.Join(".", parts);
         }
 
         public static void RetryFileWrite(string path, List<string> finalLines)
