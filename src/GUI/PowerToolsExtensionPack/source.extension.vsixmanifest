@@ -3,13 +3,16 @@
     <Metadata>
         <Identity Id="EFCorePowerToolsExtensionPack.b2aaf4e1-5424-4a30-9228-7fe89f03f816" Version="2.6.0" Language="en-US" Publisher="ErikEJ" />
         <DisplayName>EF Core Power Pack</DisplayName>
-        <Description xml:space="preserve">A package that contains EF Core Power Tools and some DDEX providers and DGML tools that improve your experience when using EF Core Power Tools.</Description>
+        <Description xml:space="preserve">A package that contains EF Core Power Tools, PostgreSQL and SQLite DDEX providers and other tools that improve your experience when using EF Core Power Tools.</Description>
         <License>license.txt</License>
         <Icon>db.png</Icon>
     </Metadata>
     <Installation>
         <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0, 18.0)">
             <ProductArchitecture>amd64</ProductArchitecture>
+        </InstallationTarget>
+        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0, 18.0)">
+            <ProductArchitecture>arm64</ProductArchitecture>
         </InstallationTarget>
     </Installation>
     <Dependencies>
