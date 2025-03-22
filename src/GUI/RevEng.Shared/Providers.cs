@@ -136,10 +136,10 @@ namespace RevEng.Common
                         pkgVersion = "6.0.36";
                         break;
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.0.13";
+                        pkgVersion = "8.0.14";
                         break;
                     case CodeGenerationMode.EFCore9:
-                        pkgVersion = "9.0.2";
+                        pkgVersion = "9.0.3";
                         break;
                     default:
                         throw new NotImplementedException();
@@ -179,7 +179,7 @@ namespace RevEng.Common
                             break;
 
                         case CodeGenerationMode.EFCore9:
-                            pkgVersion = "9.0.0";
+                            pkgVersion = "9.1.0";
                             break;
 
                         default: throw new NotImplementedException();
@@ -264,7 +264,7 @@ namespace RevEng.Common
                     packages.Add(new NuGetPackage
                     {
                         PackageId = "Dapper",
-                        Version = "2.1.35",
+                        Version = "2.1.66",
                         DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
                         IsMainProviderPackage = false,
                         UseMethodName = null,
@@ -281,10 +281,10 @@ namespace RevEng.Common
                         pkgVersion = "6.0.36";
                         break;
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.0.13";
+                        pkgVersion = "8.0.14";
                         break;
                     case CodeGenerationMode.EFCore9:
-                        pkgVersion = "9.0.2";
+                        pkgVersion = "9.0.3";
                         break;
 
                     default: throw new NotImplementedException();
