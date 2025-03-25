@@ -221,7 +221,14 @@ namespace RevEng.Core
 
             foreach (var part in parts)
             {
-                parts[Array.IndexOf(parts, part)] = code.Identifier(part, capitalize: true);
+                if (char.IsUpper(part[0]))
+                {
+                    parts[Array.IndexOf(parts, part)] = code.Identifier(part, capitalize: true);
+                }
+                else
+                {
+                    parts[Array.IndexOf(parts, part)] = code.Identifier(part, capitalize: false);
+                }
             }
 
             return string.Join(".", parts);
