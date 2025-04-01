@@ -110,7 +110,7 @@ jobs:
       if: github.ref == 'refs/heads/master' && github.repository_owner == 'erikej' && (github.event_name == 'push' ||  github.event_name == 'workflow_dispatch')
       run: sign code trusted-signing *.vsix `
         --trusted-signing-account ErikEJ `
-        --trusted-signing-certificate-profile ErikEJ `
+        --trusted-signing-certificate-profile ErikEJCert `
         --trusted-signing-endpoint https://weu.codesigning.azure.net `
         -fl fileslist.txt `
         --verbosity information 
