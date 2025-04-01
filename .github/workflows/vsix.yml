@@ -14,6 +14,9 @@ on:
     branches:
       - '*'
 
+permissions:
+  id-token: write # This is required for the federated credential to work
+
 env:
   VERSION: 2.6.${{ github.run_number }}
 
@@ -28,6 +31,7 @@ jobs:
     - uses: actions/setup-dotnet@v4
       with:
         dotnet-version: '9.0.100'
+
 
     - name: Update Version
       run: |
@@ -89,6 +93,27 @@ jobs:
       run: |
         mv src/GUI/EFCorePowerTools/bin/Release/EFCorePowerTools.vsix EFCorePowerTools-${{ env.VERSION }}.vsix
         mv src/GUI/PowerToolsExtensionPack/bin/Release/PowerToolsExtensionPack.vsix PowerToolsExtensionPack-${{ env.VERSION }}.vsix
+
+    - name: Azure CLI login with federated credential
+      if: github.event_name != 'pull_request'
+      uses: azure/login@v2
+      with:
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    - name: Install dotnet sign
+      if: github.event_name != 'pull_request'
+      run: dotnet tool install --global sign --prerelease
+
+    - name: Sign NuGet package
+      if: github.ref == 'refs/heads/master' && github.repository_owner == 'erikej' && (github.event_name == 'push' ||  github.event_name == 'workflow_dispatch')
+      run: sign code trusted-signing *.vsix `
+        --trusted-signing-account ErikEJ `
+        --trusted-signing-certificate-profile ErikEJ `
+        --trusted-signing-endpoint https://weu.codesigning.azure.net `
+        -fl fileslist.txt `
+        --verbosity information 
 
     - name: Publish artifacts
       if: github.ref == 'refs/heads/master' && github.repository_owner == 'erikej' && (github.event_name == 'push' ||  github.event_name == 'workflow_dispatch')
