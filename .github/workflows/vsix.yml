@@ -106,7 +106,7 @@ jobs:
       if: github.event_name != 'pull_request'
       run: dotnet tool install --global sign --prerelease
 
-    - name: Sign NuGet package
+    - name: Sign VSIX packages # Causes 4 signing requests - max is 5000 per month
       if: github.ref == 'refs/heads/master' && github.repository_owner == 'erikej' && (github.event_name == 'push' ||  github.event_name == 'workflow_dispatch')
       run: sign code trusted-signing *.vsix `
         --trusted-signing-account ErikEJ `
