@@ -36,6 +36,7 @@ namespace RevEng.Core.Routines.Functions
             Sb.AppendLine("using System;");
             Sb.AppendLine("using System.Data;");
             Sb.AppendLine("using System.Linq;");
+            Sb.AppendLine("using System.Threading.Tasks;");
             Sb.AppendLine($"using {scaffolderOptions.ModelNamespace};");
 
             if (scaffolderOptions.UseSchemaNamespaces)
