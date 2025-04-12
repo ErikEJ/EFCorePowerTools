@@ -1,10 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using Npgsql;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Abstractions.Model;
+using RevEng.Core.Routines.Extensions;
 
 namespace RevEng.Core.Routines.Procedures
 {
@@ -32,6 +33,9 @@ order by schema_name,
 
         public RoutineModel Create(string connectionString, ModuleModelFactoryOptions options)
         {
+            ArgumentNullException.ThrowIfNull(options);
+
+            PostgresNpgsqlTypeExtensions.UseDateOnlyTimeOnly = options.UseDateOnlyTimeOnly;
             return GetRoutines(connectionString, options);
         }
 
