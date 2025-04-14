@@ -30,8 +30,7 @@ RevEng.Common.dll
 
 ## Certificate renewal notes
 
-- 365 day cert must be bought again every year
-https://certmanager.certum.pl/dashboard 
+- 365 day cert must be bought again every year https://certmanager.certum.pl/dashboard 
 - select automatic identity validation, using face recognition
 - required documents: 
   - utility bill with my name and address on it
@@ -42,3 +41,15 @@ https://certmanager.certum.pl/dashboard
 dotnet nuget sign "ErikEJ.EntityFramework.SqlServer.6.6.7.nupkg" --certificate-fingerprint xxxx --timestamper http://time.certum.pl
 
 --certificate-fingerprint = certificate thumbprint vist i Certmgr/SimplySign
+
+## Update
+
+Now using Azure Trusted Signing, so I can sign in my pipeline.
+
+See:
+
+https://dlemstra.github.io/github-stories/2024/signing-nuget-packages-with-trusted-signing/
+
+https://textslashplain.com/2025/03/12/authenticode-in-2025-azure-trusted-signing/
+
+https://techcommunity.microsoft.com/blog/microsoft-security-blog/trusted-signing-is-now-open-for-individual-developers-to-sign-up-in-public-previ/4273554 

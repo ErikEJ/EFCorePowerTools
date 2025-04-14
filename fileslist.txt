@@ -1,3 +1,4 @@
 EFCorePowerTools.dll
 RevEng.Common.dll
+PowerToolsExtensionPack.dll
 
