@@ -166,12 +166,12 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
         private static List<List<ModuleResultElement>> GetStoredProcedureResultElements(TSqlProcedure proc)
         {
-            var result = new List<List<ModuleResultElement>>();
+            var list = new List<ModuleResultElement>();
             var metaProc = new SqlSharpener.Model.Procedure(proc.Element);
 
             if (metaProc.Selects == null || !metaProc.Selects.Any())
             {
-                return result;
+                return new List<List<ModuleResultElement>>();
             }
 
             int ordinal = 0;
@@ -179,18 +179,20 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             {
                 if (column.DataTypes != null)
                 {
-                    result.Add(new List<ModuleResultElement>
+                    list.Add(new ModuleResultElement
                     {
-                        new ModuleResultElement
-                        {
-                            Name = column.Name,
-                            Nullable = column.IsNullable,
-                            StoreType = column.DataTypes[SqlSharpener.TypeFormat.SqlServerDbType],
-                            Ordinal = ordinal++,
-                        },
+                        Name = column.Name,
+                        Nullable = column.IsNullable,
+                        StoreType = column.DataTypes[SqlSharpener.TypeFormat.SqlServerDbType],
+                        Ordinal = ordinal++,
                     });
                 }
             }
+
+            var result = new List<List<ModuleResultElement>>
+            {
+                list,
+            };
 
             return result;
         }
