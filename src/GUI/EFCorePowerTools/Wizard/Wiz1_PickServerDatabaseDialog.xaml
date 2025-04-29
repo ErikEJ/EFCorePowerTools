@@ -183,21 +183,47 @@
                         <RowDefinition Height="10" />
                     </Grid.RowDefinitions>
 
-                    <Label Grid.Column="1" Grid.Row="1">Config File:</Label>
+                    <Label Grid.Column="1"
+                           FontWeight="bold"
+                           Grid.Row="1">Selected Configuration File:</Label>
 
-                    <ComboBox Grid.Column="2" Grid.Row="1"
+                    <!--<ComboBox Grid.Column="2" Grid.Row="1"
                       TabIndex="1"
                       ItemsSource="{Binding Configurations, Mode=OneWay}"
                       SelectedItem="{Binding SelectedConfiguration, Mode=TwoWay}"
-                      DisplayMemberPath="DisplayName"/>
+                      ToolTip="{Binding SelectedConfiguration.DisplayName}"
+                      IsEnabled="False"
+                      DisplayMemberPath="DisplayName"/>-->
+
+                    <TextBlock Grid.Row="2"
+                               Grid.Column="1"
+                               Grid.ColumnSpan="3"
+                               TextWrapping="Wrap"
+                               Margin="5,0,0,0"
+                               Text="{Binding SelectedConfiguration.DisplayName}"
+                               FontStyle="Italic"
+                     />
+
                 </Grid>
             </TabItem>
         </TabControl>
         <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.NavigationPrevious}" IsEnabled="False" />
-            <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.NavigationNext}" x:Name="NextButton" IsEnabled="{Binding SelectedDatabaseConnection, Converter={StaticResource BoolNullConverter}}"  Click="NextButton_Click" />
-            <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.Add}" ToolTip="{x:Static locale:ReverseEngineerLocale.AddSchemasToFilter}" Command="{Binding FilterSchemasCommand}"/>
-            <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.NavigationCancel}" Click="CancelButton_Click" IsCancel="True"/>
+            <Button Style="{StaticResource NavButton}"
+                    Content="{x:Static locale:ReverseEngineerLocale.NavigationPrevious}"
+                    IsEnabled="False" />
+            <Button Style="{StaticResource NavButton}"
+                    Content="{x:Static locale:ReverseEngineerLocale.NavigationNext}"
+                    x:Name="NextButton"
+                    IsEnabled="{Binding SelectedDatabaseConnection, Converter={StaticResource BoolNullConverter}}"
+                    Click="NextButton_Click" />
+            <Button Style="{StaticResource NavButton}"
+                    Content="{x:Static locale:ReverseEngineerLocale.Add}"
+                    ToolTip="{x:Static locale:ReverseEngineerLocale.AddSchemasToFilter}"
+                    Command="{Binding FilterSchemasCommand}"/>
+            <Button Style="{StaticResource NavButton}"
+                    Content="{x:Static locale:ReverseEngineerLocale.NavigationCancel}"
+                    Click="CancelButton_Click"
+                    IsCancel="True"/>
         </StackPanel>
         <statusbar:StatusbarControl Grid.Row="2" x:Name="Statusbar"/>
     </Grid>

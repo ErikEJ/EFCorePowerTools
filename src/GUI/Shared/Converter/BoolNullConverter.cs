@@ -12,7 +12,7 @@ namespace EFCorePowerTools.Converter
             object parameter,
             CultureInfo culture)
         {
-            return value == null || string.IsNullOrEmpty($"{value}");
+            return value != null;
         }
 
         object IValueConverter.ConvertBack(
@@ -21,7 +21,7 @@ namespace EFCorePowerTools.Converter
             object parameter,
             CultureInfo culture)
         {
-            return value == null || string.IsNullOrEmpty($"{value}");
+            return value != null;
         }
     }
 }
