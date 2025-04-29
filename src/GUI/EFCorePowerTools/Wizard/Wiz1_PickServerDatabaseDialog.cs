@@ -171,7 +171,6 @@ namespace EFCorePowerTools.Wizard
             Statusbar.Status.ShowStatus();
             wizardViewModel.SelectedConfiguration = config;
             wizardViewModel.OptionsPath = config.ConfigPath;
-            NextButton.IsEnabled = true;
 
             wizardViewModel.RemoveDatabaseConnectionCommand.RaiseCanExecuteChanged();
         }
