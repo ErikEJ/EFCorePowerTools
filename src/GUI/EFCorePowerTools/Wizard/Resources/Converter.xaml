@@ -1,8 +1,9 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:converter="clr-namespace:EFCorePowerTools.Converter"
                     xmlns:locale="clr-namespace:EFCorePowerTools.Locales">
 
+    <converter:BoolNullConverter x:Key="BoolNullConverter"/>
     <converter:BoolInvertConverter x:Key="BoolInvertConverter" />
     <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     <converter:CollectionCountToVisibilityConverter x:Key="CollectionCountToVisibilityConverter" />

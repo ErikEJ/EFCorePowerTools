@@ -55,6 +55,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Views\PickTablesDialogResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Wizard\IWizardView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Contracts\Wizard\IWizardViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Converter\BoolNullConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converter\BoolInvertConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converter\BoolToVisibilityConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Converter\CollectionCountToEnabledConverter.cs" />
