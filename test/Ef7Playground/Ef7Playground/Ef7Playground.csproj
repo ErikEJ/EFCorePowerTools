@@ -8,14 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="EfCore.SchemaCompare" Version="8.0.4" />
-	<PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
-	<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
+	<PackageReference Include="EfCore.SchemaCompare" Version="8.2.0" />
+	<PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.2" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.15">
 	  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  <PrivateAssets>all</PrivateAssets>
 	</PackageReference>
-	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="8.0.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.HierarchyId" Version="8.0.8" /> 
+	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="8.0.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.HierarchyId" Version="8.0.15" /> 
   </ItemGroup>
 
 	<ItemGroup Condition=" '$(Configuration)' == 'Debug' ">
