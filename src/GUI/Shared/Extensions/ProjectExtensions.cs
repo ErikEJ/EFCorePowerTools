@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -211,6 +211,11 @@ namespace EFCorePowerTools.Extensions
             if (await project.IsNet90Async())
             {
                 version = new Version(9, 0);
+            }
+
+            if (await project.IsNet100Async())
+            {
+                version = new Version(10, 0);
             }
 
             return version;
@@ -471,6 +476,13 @@ namespace EFCorePowerTools.Extensions
             return IsNet90(targetFrameworkMonikers);
         }
 
+        private static async Task<bool> IsNet100Async(this Project project)
+        {
+            var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
+
+            return IsNet100(targetFrameworkMonikers);
+        }
+
         private static bool IsNet60(string targetFrameworkMonikers)
         {
             return FrameworkCheck(targetFrameworkMonikers, "6");
@@ -489,6 +501,11 @@ namespace EFCorePowerTools.Extensions
         private static bool IsNet90(string targetFrameworkMonikers)
         {
             return FrameworkCheck(targetFrameworkMonikers, "9");
+        }
+
+        private static bool IsNet100(string targetFrameworkMonikers)
+        {
+            return FrameworkCheck(targetFrameworkMonikers, "10");
         }
 
         private static bool FrameworkCheck(string targetFrameworkMonikers, string version)
