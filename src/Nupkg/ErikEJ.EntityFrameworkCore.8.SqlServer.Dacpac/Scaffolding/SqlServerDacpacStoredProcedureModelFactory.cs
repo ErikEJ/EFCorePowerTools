@@ -189,10 +189,6 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                         MaxLength = column.MaxLength,
                         Precision = column.Precision,
                         Scale = column.Scale,
-                        //int maxLength = col.IsMax ? -1 : col.Length;
-                        // Precision = (short?)row["NumericPrecision"],
-                        //Scale = (short?)row["NumericScale"],
-                        //MaxLength = (int)row["ColumnSize"],
                     });
                 }
             }
