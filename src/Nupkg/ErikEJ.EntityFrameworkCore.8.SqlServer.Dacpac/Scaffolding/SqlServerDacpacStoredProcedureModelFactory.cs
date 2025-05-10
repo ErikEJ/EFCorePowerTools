@@ -167,6 +167,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
         private static List<List<ModuleResultElement>> GetStoredProcedureResultElements(TSqlProcedure proc)
         {
             var list = new List<ModuleResultElement>();
+
             var metaProc = new SqlSharpener.Model.Procedure(proc.Element);
 
             if (metaProc.Selects == null || !metaProc.Selects.Any())
@@ -185,6 +186,9 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                         Nullable = column.IsNullable,
                         StoreType = column.DataTypes[SqlSharpener.TypeFormat.SqlServerDbType],
                         Ordinal = ordinal++,
+                        MaxLength = column.MaxLength,
+                        Precision = column.Precision,
+                        Scale = column.Scale,
                     });
                 }
             }
