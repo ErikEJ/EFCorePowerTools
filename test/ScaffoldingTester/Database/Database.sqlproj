@@ -72,6 +72,7 @@
     <Build Include="dbo\Functions\DatabaseScalarFunction1.sql" />
     <Build Include="dbo\Procedures\StoGetStatusMetricCounts.sql" />
     <Build Include="dbo\Tables\TriggerTest.sql" />
+    <Build Include="dbo\Tables\UqTableTest.sql" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Condition="'$(NetCoreBuild)' == 'true'">
