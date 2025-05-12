@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <PackageId>ErikEJ.EntityFrameworkCore.DgmlBuilder</PackageId>
         <NoWarn>$(NoWarn);EF1001</NoWarn>
-        <PackageVersion>6.0.1</PackageVersion>
+        <PackageVersion>8.0.0</PackageVersion>
         <Authors>ErikEJ</Authors>
         <Description>Generate DGML (Graph) content that visualizes your DbContext. Adds the AsDgml() extension method to the DbContext class. Also has AsSqlScript() extension method to generate a SQL script for your current model.</Description>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -13,7 +13,7 @@
         <RootNamespace>DgmlBuilder</RootNamespace>
         <MinClientVersion>5.0</MinClientVersion>
         <Dependencies>
-          <Dependency id="Microsoft.EntityFrameworkCore.Relational" version="6.0.0" />
+          <Dependency id="Microsoft.EntityFrameworkCore.Relational" version="8.0.0" />
         </Dependencies>
         <PackageReadmeFile>readme.md</PackageReadmeFile>
         <SignAssembly>true</SignAssembly>
@@ -35,7 +35,7 @@
        <None Include="readme.md" Link="readme.md" Pack="true" PackagePath="\" />
 
        <EmbeddedResource Include="template.dgml" Link="template.dgml" />
-       <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.0" />
+       <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.0" />
        <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />  
     </ItemGroup>
 
