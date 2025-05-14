@@ -136,10 +136,10 @@ namespace RevEng.Common
                         pkgVersion = "6.0.36";
                         break;
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.0.14";
+                        pkgVersion = "8.0.16";
                         break;
                     case CodeGenerationMode.EFCore9:
-                        pkgVersion = "9.0.3";
+                        pkgVersion = "9.0.5";
                         break;
                     default:
                         throw new NotImplementedException();
@@ -281,10 +281,10 @@ namespace RevEng.Common
                         pkgVersion = "6.0.36";
                         break;
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.0.14";
+                        pkgVersion = "8.0.16";
                         break;
                     case CodeGenerationMode.EFCore9:
-                        pkgVersion = "9.0.3";
+                        pkgVersion = "9.0.5";
                         break;
 
                     default: throw new NotImplementedException();
@@ -391,7 +391,7 @@ namespace RevEng.Common
                         break;
 
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.0.1";
+                        pkgVersion = "8.0.3";
                         break;
 
                     case CodeGenerationMode.EFCore9:
