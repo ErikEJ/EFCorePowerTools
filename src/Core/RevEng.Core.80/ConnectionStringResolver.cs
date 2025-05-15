@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.IO;
 using FirebirdSql.Data.FirebirdClient;
 using Microsoft.Data.SqlClient;
@@ -103,17 +102,6 @@ namespace RevEng.Core
             }
 
             return aliases;
-        }
-
-        public string Redact()
-        {
-            var builder = new DbConnectionStringBuilder();
-            builder.ConnectionString = connectionString;
-            builder.Remove("Password");
-            builder.Remove("User ID");
-            builder.Remove("Username");
-
-            return builder.ToString();
         }
 #pragma warning restore CA1031
     }

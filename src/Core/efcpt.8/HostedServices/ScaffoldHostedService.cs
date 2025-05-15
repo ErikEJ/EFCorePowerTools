@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -116,7 +116,7 @@ internal sealed class ScaffoldHostedService : HostedService
         ShowErrors(result);
         ShowWarnings(result);
 
-        var redactedConnectionString = new ConnectionStringResolver(commandOptions.ConnectionString).Redact();
+        var redactedConnectionString = "The_Connection_String_You_Supplied_With_The_Reverse_Engineering_Command";
 
         var readmePath = Providers.CreateReadme(commandOptions, Constants.CodeGeneration, redactedConnectionString);
         var fileUri = new Uri(new Uri("file://"), readmePath);
