@@ -41,7 +41,7 @@ internal static class PackageService
             var latestVersion = packages.Where(v => v.Identity.Version.Major == Constants.Version).Select(v => v.Identity.Version).MaxBy(v => v);
             if (latestVersion > CurrentPackageVersion())
             {
-                DisplayService.MarkupLine("Your are not using the latest version of the tool, please update to get the latest bug fixes, features and support", Color.Yellow);
+                DisplayService.MarkupLine("You are not using the latest version of the tool, please update to get the latest bug fixes, features and support", Color.Yellow);
                 DisplayService.MarkupLine($"Latest version is '{latestVersion}'", Color.Yellow);
                 DisplayService.MarkupLine($"Run 'dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version {Constants.Version}.*' to get the latest version.", Color.Yellow);
             }
