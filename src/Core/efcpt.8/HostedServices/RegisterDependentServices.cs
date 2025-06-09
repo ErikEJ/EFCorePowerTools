@@ -1,10 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
+using System.Text;
+using System.Text.Json;
 using ErikEJ.EFCorePowerTools.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RevEng.Common;
+using RevEng.Common.Cli.Configuration;
 using RevEng.Core;
 
 namespace ErikEJ.EFCorePowerTools.HostedServices;
@@ -14,10 +17,13 @@ internal static class RegisterDependentServices
     public static IHostBuilder RegisterServices(this IHostBuilder builder, IFileSystem fileSystem, ScaffoldOptions scaffoldOptions)
     {
         var databaseType = scaffoldOptions.Provider.ToDatabaseType(scaffoldOptions.IsDacpac);
+        var file = fileSystem.File.ReadAllText(scaffoldOptions.ConfigFile.FullName, Encoding.UTF8);
+        var cliConfig = JsonSerializer.Deserialize<CliConfig>(file);
         var reverseOptions = new ReverseEngineerCommandOptions
         {
             DatabaseType = databaseType,
             ConnectionString = scaffoldOptions.ConnectionString.ApplyDatabaseType(databaseType),
+            MergeDacpacs = cliConfig.CodeGeneration.MergeDacpacs,
         };
         scaffoldOptions.ConnectionString = reverseOptions.ConnectionString;
         var hostBuilder = builder.ConfigureServices(
