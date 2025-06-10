@@ -97,19 +97,19 @@ namespace RevEng.Common.Cli
                 UsePrefixNavigationNaming = config.CodeGeneration.UsePrefixNavigationNaming,
                 UseDatabaseNamesForRoutines = config.CodeGeneration.UseDatabaseNamesForRoutines,
                 UseInternalAccessModifiersForSprocsAndFunctions = config.CodeGeneration.UseInternalAccessModifiersForSprocsAndFunctions,
+                UseNoObjectFilter = false, // There are multiple options in the CLI to support this
 
-                // Not supported:
+                // Handlebars will not be supported in CLI
                 UseHandleBars = false,
                 SelectedHandlebarsLanguage = 0, // handlebars support, will not support it
                 OptionsPath = null, // handlebars support, will not support it (looks like it is not used!)
 
                 // Not implemented:
-                UseNoDefaultConstructor = false, // not implemented, will consider if asked for
+                UseNoDefaultConstructor = false, // not implemented, will consider if asked for (this is the DbContext constructor)
                 DefaultDacpacSchema = null, // not implemented, will consider if asked for
-                UseNoObjectFilter = false, // will always add all objects and use exclusions to filter list (for now)
-                UseAsyncCalls = true, // not implemented
-                FilterSchemas = false, // not implemented
-                Schemas = null, // not implemented
+                UseAsyncCalls = true, // not implemented, and do not plan to
+                FilterSchemas = false, // not implemented, Oracle specific
+                Schemas = null, // not implemented, Oracle specific
             };
 
             if (config.FileLayout is null)
