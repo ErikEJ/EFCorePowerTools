@@ -30,7 +30,7 @@ jobs:
 
     - uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '9.0.203'
+        dotnet-version: '9.0.301'
 
     - name: Update Version
       run: |
