@@ -22,7 +22,7 @@ Aims to lower the bar for getting started with EF Core, by providing GUI based a
 
 The tool and GitHub based support is free, but I would be very grateful for a [rating or review here](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools&ssr=false#review-details), and I also appreciate [sponsorships](https://github.com/sponsors/ErikEJ)
 
-# Documentation
+## Documentation
 
 [Reverse Engineering Quick Start](https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering-Quick-Start)
 
@@ -30,13 +30,13 @@ The tool and GitHub based support is free, but I would be very grateful for a [r
 
 [Release notes](https://github.com/ErikEJ/EFCorePowerTools/wiki/Release-notes)
 
-# Downloads/builds
+## Downloads/builds
 
-## Requirements 
+### Requirements 
 
 .NET Framework 4.8 or later is required. For EF Core reverse engineering, the .NET 6.0 or .NET 8.0 x64 runtime must be installed.
 
-## Release
+### Release
 
 Download the latest version of the Visual Studio extension from [Visual Studio MarketPlace](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools)
 
@@ -44,13 +44,13 @@ Or simply install from the Extensions dialog in Visual Studio.
 
 I have also published [EF Core Power Pack](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerPack) which includes some helpful DDEX providers as well as EF Core Power Tools.
 
-## Daily build
+### Daily build
 
 You can download the daily build from [Open VSIX Gallery](https://www.vsixgallery.com/extension/f4c4712c-ceae-4803-8e52-0e2049d5de9f)
 
 Ensure you always have the latest daily build (if you are brave) by installing [this extension](https://marketplace.visualstudio.com/items?itemName=MadsKristensen.VSIXGallery-nightlybuilds)
 
-## EF Core Power Tools CLI - efcpt
+### EF Core Power Tools CLI - efcpt
 
 If you do not use Visual Studio, but for example Visual Studio Code, a cross platform dotnet tool for reverse engineering is available, more information [here](https://github.com/ErikEJ/EFCorePowerTools/blob/master/src/Core/efcpt.8/readme.md)
 
@@ -60,19 +60,15 @@ If you do not use Visual Studio, but for example Visual Studio Code, a cross pla
 
 Adds the AsDgml() extension method to any derived DbContext. The method will create a DGML graph of your DbContext Model, that you can then view in the Visual Studio DGML viewer
 
-[ErikEJ.EntityFrameworkCore.SqlServer.Dacpac](https://github.com/ErikEJ/EFCorePowerTools/blob/master/src/Nupkg/ErikEJ.EntityFrameworkCore.SqlServer.Dacpac/readme.md)
+[ErikEJ.EntityFrameworkCore.SqlServer.Dacpac](https://github.com/ErikEJ/EFCorePowerTools/blob/master/src/Nupkg/ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac/readme.md)
 
 Reverse engineer a SQL Server .dacpac with the EF Core tooling
 
-[ErikEJ.EntityFrameworkCore.SqlServer.SqlQuery](https://github.com/ErikEJ/EFCorePowerTools/blob/master/src/Nupkg/ErikEJ.EntityFrameworkCore.6.SqlServer.SqlQuery/readme.md)
-
-Materialize arbitrary classes and scalar values from EF Core using raw SQL
-
-# How do I contribute
+## How do I contribute
 
 If you encounter a bug or have a feature request, please use the [Issue Tracker](https://github.com/ErikEJ/EFCorePowerTools/issues/new). The project is also open for pull requests following [standard pull request guidelines](https://github.com/dotnet/aspnetcore/blob/master/CONTRIBUTING.md)
 
-# Building and debugging
+## Building and debugging
 
 To build and debug, run latest version of Visual Studio as Administrator with the "Visual Studio extension development workload" installed. Make EFCorePowerTools the startup project, and ensure your build configuration is Debug, AnyCPU.
 
@@ -80,7 +76,7 @@ You can smoke test changes to reverse engineering. Launch one of the efreveng co
 
 In the ScaffoldingTester solution there are scripts to populate Northwind and Chinook databases with the required objects.
 
-# Sponsors
+## Sponsors
 
 A massive thanks to [AWS](https://github.com/aws), who sponsors EFCorePowerTools from January 2024 via the [.NET on AWS Open Source Software Fund](https://github.com/aws/dotnet-foss).
 
