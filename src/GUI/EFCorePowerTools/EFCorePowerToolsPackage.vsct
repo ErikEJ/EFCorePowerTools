@@ -84,7 +84,7 @@
     </Menus>
 
     <Buttons>
-      <Button guid="guidDbContextPackageCmdSet" id="cmdidWizardPoc" priority="0x0101" type="Button">
+      <Button guid="guidDbContextPackageCmdSet" id="cmdidWizardPoc" priority="0x0100" type="Button">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmProjectMenuItemsGroup" />
         <Icon guid="ImageCatalogGuid" id="DatabaseConfigurationFile" />
         <CommandFlag>IconIsMoniker</CommandFlag>
@@ -95,7 +95,7 @@
         </Strings>
       </Button>
 
-      <Button guid="guidDbContextPackageCmdSet" id="cmdidReverseEngineerCodeFirst" priority="0x0100" type="Button">
+      <Button guid="guidDbContextPackageCmdSet" id="cmdidReverseEngineerCodeFirst" priority="0x0101" type="Button">
         <Parent guid="guidDbContextPackageCmdSet" id="cmdidEdmProjectMenuItemsGroup" />
         <Icon guid="ImageCatalogGuid" id="DatabaseConfigurationFile" />
         <CommandFlag>IconIsMoniker</CommandFlag>
