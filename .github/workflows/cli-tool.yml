@@ -25,7 +25,7 @@ jobs:
 
     - uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '9.0.205'
+        dotnet-version: '9.0.300'
 
     - name: Build CLI 8
       run: dotnet build src/Core/efcpt.8/efcpt.8.csproj
