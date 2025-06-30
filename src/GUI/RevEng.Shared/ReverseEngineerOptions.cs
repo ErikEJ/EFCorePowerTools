@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace RevEng.Common
@@ -114,5 +114,7 @@ namespace RevEng.Common
         public bool UseDatabaseNamesForRoutines { get; set; } = true;
 
         public bool UseInternalAccessModifiersForSprocsAndFunctions { get; set; }
+
+        public string MinimumProductVersion { get; set; }
     }
 }

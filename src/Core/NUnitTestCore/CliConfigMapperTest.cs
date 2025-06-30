@@ -1,4 +1,4 @@
-﻿using AutoFixture.NUnit3;
+using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
 using RevEng.Common;
@@ -59,7 +59,7 @@ namespace UnitTests
             options.UseT4.Should().Be(config.CodeGeneration.UseT4);
             options.UseT4Split.Should().Be(config.CodeGeneration.UseT4Split);
 
-            options.GetType().GetProperties().Length.Should().Be(50);
+            options.GetType().GetProperties().Length.Should().Be(51);
 
             config.GetType().GetProperties().Length.Should().Be(10);
             config.Names.GetType().GetProperties().Length.Should().Be(4);

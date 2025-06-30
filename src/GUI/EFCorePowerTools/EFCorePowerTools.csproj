@@ -428,7 +428,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.cs.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.de.resx" />
-    <EmbeddedResource Include="Locales\ReverseEngineerLocale.en.resx" />
+    <EmbeddedResource Include="Locales\ReverseEngineerLocale.en.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.es.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.fr.resx" />
     <EmbeddedResource Include="Locales\ReverseEngineerLocale.ja.resx" />
