@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -88,7 +88,7 @@ namespace EFCorePowerTools.Helpers
                 .ToArray();
         }
 
-        public static async Task<string> BuildSqlProjectAsync(string sqlprojPath)
+        public static async Task<string> BuildSqlProjectAsync(string sqlprojPath, bool mustBuild = true)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -103,7 +103,7 @@ namespace EFCorePowerTools.Helpers
                 return null;
             }
 
-            if (!await VS.Build.ProjectIsUpToDateAsync(project))
+            if (mustBuild && !await VS.Build.ProjectIsUpToDateAsync(project))
             {
                 var ok = await VS.Build.BuildProjectAsync(project, BuildAction.Build);
 

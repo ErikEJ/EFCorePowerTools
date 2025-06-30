@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -776,6 +776,17 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     if (mappedTypes.ContainsKey(table.Name))
                     {
                         table.MappedType = mappedTypes[table.Name];
+                    }
+                }
+
+                var versionString = Assembly.GetAssembly(typeof(ReverseEngineerHandler))?.GetName().Version.ToString(3);
+                if (versionString != null)
+                {
+                    var productVersion = new Version(versionString);
+
+                    if (options.MinimumProductVersion == null || new Version(options.MinimumProductVersion) < productVersion)
+                    {
+                        options.MinimumProductVersion = productVersion.ToString(3);
                     }
                 }
 

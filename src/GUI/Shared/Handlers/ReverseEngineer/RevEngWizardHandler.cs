@@ -634,7 +634,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 options.ConnectionString = dbInfo.ConnectionString;
                 options.DatabaseType = dbInfo.DatabaseType;
 
-                options.Dacpac = await SqlProjHelper.BuildSqlProjectAsync(options.Dacpac);
+                options.Dacpac = await SqlProjHelper.BuildSqlProjectAsync(options.Dacpac, mustBuild: false);
                 if (string.IsNullOrEmpty(options.Dacpac))
                 {
                     VSHelper.ShowMessage(ReverseEngineerLocale.UnableToBuildSelectedDatabaseProject);
@@ -1010,6 +1010,17 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     if (mappedTypes.ContainsKey(table.Name))
                     {
                         table.MappedType = mappedTypes[table.Name];
+                    }
+                }
+
+                var versionString = Assembly.GetAssembly(typeof(ReverseEngineerHandler))?.GetName().Version.ToString(3);
+                if (versionString != null)
+                {
+                    var productVersion = new Version(versionString);
+
+                    if (options.MinimumProductVersion == null || new Version(options.MinimumProductVersion) < productVersion)
+                    {
+                        options.MinimumProductVersion = productVersion.ToString(3);
                     }
                 }
 
