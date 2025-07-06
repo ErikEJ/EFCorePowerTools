@@ -45,36 +45,24 @@ namespace EFCorePowerTools.Wizard
             };
             addConnections = models =>
             {
-                foreach (var model in models)
+                foreach (var model in models.Where(model => !viewModel.DatabaseConnections.Any(db => db.DisplayName == model.DisplayName)))
                 {
-                    if (!viewModel.DatabaseConnections.Any(db => db.DisplayName == model.DisplayName))
-                    {
-                        viewModel.DatabaseConnections.Add(model);
-                    }
+                    viewModel.DatabaseConnections.Add(model);
                 }
 
                 wizardViewModel.RemoveDatabaseConnectionCommand.RaiseCanExecuteChanged();
             };
             addDefinitions = models =>
             {
-                foreach (var model in models)
+                foreach (var model in models.Where(model => !viewModel.DatabaseConnections.Any(db => db.DisplayName == model.DisplayName)))
                 {
-                    if (!viewModel.DatabaseConnections.Any(db => db.DisplayName == model.DisplayName))
-                    {
-                        viewModel.DatabaseConnections.Add(model);
-                    }
+                    viewModel.DatabaseConnections.Add(model);
                 }
             };
             addSchemas = models =>
             {
                 viewModel.FilterSchemas = models.Any();
-                foreach (var model in models)
-                {
-                    if (!viewModel.Schemas.Exists(m => m.Name == model.Name))
-                    {
-                        viewModel.Schemas.Add(model);
-                    }
-                }
+                viewModel.Schemas.AddRange(models.Where(model => !viewModel.Schemas.Exists(m => m.Name == model.Name)));
             };
             codeGeneration = (codeGeneration, allowedVersions) =>
             {
@@ -87,12 +75,9 @@ namespace EFCorePowerTools.Wizard
                     return;
                 }
 
-                foreach (var item in allowedVersions)
+                foreach (var item in allowedVersions.Where(item => !viewModel.CodeGenerationModeList.Any(a => a.Value == item.Value)))
                 {
-                    if (!viewModel.CodeGenerationModeList.Any(a => a.Value == item.Value))
-                    {
-                        viewModel.CodeGenerationModeList.Add(item);
-                    }
+                    viewModel.CodeGenerationModeList.Add(item);
                 }
 
                 if (!allowedVersions.Any())
@@ -134,13 +119,9 @@ namespace EFCorePowerTools.Wizard
                         return true;
                     });
                 });
-
-                foreach (var option in viewModel.WizardEventArgs.Configurations)
+                foreach (var option in viewModel.WizardEventArgs.Configurations.Where(option => !wizardViewModel.Configurations.Any(o => o.DisplayName == option.DisplayName)))
                 {
-                    if (!wizardViewModel.Configurations.Any(o => o.DisplayName == option.DisplayName))
-                    {
-                        wizardViewModel.Configurations.Add(option);
-                    }
+                    wizardViewModel.Configurations.Add(option);
                 }
 
                 OnConfigurationChange(wizardViewModel.WizardEventArgs.Configurations.FirstOrDefault());

@@ -318,18 +318,15 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             var dirs = Directory.GetDirectories(Path.GetTempPath(), revengRoot + "*");
 
-            foreach (var dir in dirs)
+            foreach (var dir in dirs.Where(dir => !dir.Equals(toDir)))
             {
-                if (!dir.Equals(toDir))
+                try
                 {
-                    try
-                    {
-                        Directory.Delete(dir, true);
-                    }
-                    catch
-                    {
-                        // Ignore
-                    }
+                    Directory.Delete(dir, true);
+                }
+                catch
+                {
+                    // Ignore
                 }
             }
 
