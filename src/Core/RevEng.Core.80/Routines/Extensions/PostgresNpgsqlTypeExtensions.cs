@@ -79,7 +79,7 @@ namespace RevEng.Core.Routines.Extensions
         {
             ArgumentNullException.ThrowIfNull(storedProcedureParameter);
 
-            return GetClrType(storedProcedureParameter.StoreType, storedProcedureParameter.Nullable, asMethodParameter);
+            return GetClrType(storedProcedureParameter.StoreType, storedProcedureParameter.Nullable, storedProcedureParameter.Name, asMethodParameter);
         }
 
         public static NpgsqlDbType GetNpgsqlDbType(this ModuleParameter storedProcedureParameter)
@@ -93,10 +93,10 @@ namespace RevEng.Core.Routines.Extensions
         {
             ArgumentNullException.ThrowIfNull(moduleResultElement);
 
-            return GetClrType(moduleResultElement.StoreType, moduleResultElement.Nullable);
+            return GetClrType(moduleResultElement.StoreType, moduleResultElement.Nullable, moduleResultElement.Name);
         }
 
-        public static Type GetClrType(string storeType, bool isNullable, bool asParameter = false)
+        public static Type GetClrType(string storeType, bool isNullable, string objectName, bool asParameter = false)
         {
             var sqlType = GetNpgsqlDbType(storeType);
 
@@ -119,6 +119,7 @@ namespace RevEng.Core.Routines.Extensions
                 case NpgsqlDbType.Json:
                 case NpgsqlDbType.Jsonb:
                 case NpgsqlDbType.Xml:
+                case NpgsqlDbType.TsQuery:
                     return typeof(string);
 
                 case NpgsqlDbType.Date:
@@ -161,7 +162,7 @@ namespace RevEng.Core.Routines.Extensions
                     return isNullable ? typeof(Guid?) : typeof(Guid);
 
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(storeType), $"storetype: {storeType}");
+                    throw new ArgumentOutOfRangeException(nameof(storeType), $"storetype: {storeType}, objectName: {objectName}");
             }
         }
 
