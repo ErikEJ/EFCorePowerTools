@@ -17,14 +17,30 @@ internal static class RegisterDependentServices
     public static IHostBuilder RegisterServices(this IHostBuilder builder, IFileSystem fileSystem, ScaffoldOptions scaffoldOptions)
     {
         var databaseType = scaffoldOptions.Provider.ToDatabaseType(scaffoldOptions.IsDacpac);
-        var file = fileSystem.File.ReadAllText(scaffoldOptions.ConfigFile.FullName, Encoding.UTF8);
-        var cliConfig = JsonSerializer.Deserialize<CliConfig>(file);
         var reverseOptions = new ReverseEngineerCommandOptions
         {
             DatabaseType = databaseType,
             ConnectionString = scaffoldOptions.ConnectionString.ApplyDatabaseType(databaseType),
-            MergeDacpacs = cliConfig.CodeGeneration.MergeDacpacs,
         };
+
+        if (scaffoldOptions.ConfigFile != null && scaffoldOptions.ConfigFile.Exists)
+        {
+#pragma warning disable CA1031 // Do not catch general exception types
+            try
+            {
+                var file = fileSystem.File.ReadAllText(scaffoldOptions.ConfigFile.FullName, Encoding.UTF8);
+                var cliConfig = JsonSerializer.Deserialize<CliConfig>(file);
+                reverseOptions.MergeDacpacs = cliConfig.CodeGeneration.MergeDacpacs;
+            }
+            catch (Exception ex)
+            {
+                DisplayService.Error($"Error reading {scaffoldOptions.ConfigFile.FullName}: {ex.Message}");
+                Environment.ExitCode = 1;
+                return builder;
+            }
+#pragma warning restore CA1031 // Do not catch general exception types
+        }
+
         scaffoldOptions.ConnectionString = reverseOptions.ConnectionString;
         var hostBuilder = builder.ConfigureServices(
             (context, serviceCollection) =>
