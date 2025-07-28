@@ -53,9 +53,8 @@ namespace EFCorePowerTools.Wizard
             var viewModel = wizardViewModel;
             IsPageLoaded = viewModel.IsPage2Initialized;
             var wea = viewModel.WizardEventArgs;
-            if (wea.Options.UiHint != viewModel.UiHint)
+            if (!IsPageLoaded)
             {
-                IsPageLoaded = false;
                 wea.Options.UiHint = viewModel.UiHint;
                 wea.UserOptions.UiHint = viewModel.UiHint;
                 wea.Options.ConnectionString = viewModel.SelectedDatabaseConnection.ConnectionString;

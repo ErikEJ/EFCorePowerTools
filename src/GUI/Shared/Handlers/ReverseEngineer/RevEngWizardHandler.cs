@@ -640,6 +640,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     VSHelper.ShowMessage(ReverseEngineerLocale.UnableToBuildSelectedDatabaseProject);
                     return null;
                 }
+
+                dbInfo.FilePath = options.Dacpac;
             }
 
             if (dbInfo.DatabaseType == DatabaseType.Undefined)
