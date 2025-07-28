@@ -32,9 +32,9 @@ The tool and GitHub based support is free, but I would be very grateful for a [r
 
 ## Downloads/builds
 
-### Requirements 
+### Requirements
 
-.NET Framework 4.8 or later is required. For EF Core reverse engineering, the .NET 6.0 or .NET 8.0 x64 runtime must be installed.
+For EF Core reverse engineering with Visual Studio, the .NET 8.0 x64 runtime must be installed.
 
 ### Release
 
@@ -42,7 +42,7 @@ Download the latest version of the Visual Studio extension from [Visual Studio M
 
 Or simply install from the Extensions dialog in Visual Studio.
 
-I have also published [EF Core Power Pack](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerPack) which includes some helpful DDEX providers as well as EF Core Power Tools.
+I have also published [EF Core Power Pack](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerPack) which includes some helpful DDEX providers and other useful tools as well as EF Core Power Tools.
 
 ### Daily build
 
@@ -52,7 +52,7 @@ Ensure you always have the latest daily build (if you are brave) by installing [
 
 ### EF Core Power Tools CLI - efcpt
 
-If you do not use Visual Studio, but for example Visual Studio Code, a cross platform dotnet tool for reverse engineering is available, more information [here](https://github.com/ErikEJ/EFCorePowerTools/blob/master/src/Core/efcpt.8/readme.md)
+If you do not use Visual Studio, but for example Visual Studio Code, a cross platform dotnet tool for reverse engineering is available, more information [in the readme file](https://github.com/ErikEJ/EFCorePowerTools/blob/master/src/Core/efcpt.8/readme.md)
 
 ## Related NuGet packages
 
@@ -78,7 +78,7 @@ In the ScaffoldingTester solution there are scripts to populate Northwind and Ch
 
 ## Sponsors
 
-A massive thanks to [AWS](https://github.com/aws), who sponsors EFCorePowerTools from January 2024 via the [.NET on AWS Open Source Software Fund](https://github.com/aws/dotnet-foss).
+A massive thanks to [AWS](https://github.com/aws), who sponsored EF Core Power Tools from January 2024 via the [.NET on AWS Open Source Software Fund](https://github.com/aws/dotnet-foss).
 
 <div style="display:inline">
 <img src="https://raw.githubusercontent.com/ErikEJ/EFCorePowerTools/master/img/aws-logo-small.png" width="200" height="200"/>
