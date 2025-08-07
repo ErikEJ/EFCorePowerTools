@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
@@ -166,6 +166,9 @@
     <Compile Include="Wizard\WizardReturnEventHandler.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Templates.pkgdef">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="Westwind.WPF.Statusbar\Assets\Icons\circle-check.svg" />
     <Content Include="Westwind.WPF.Statusbar\Assets\Icons\circle-exclamation.svg" />
     <Content Include="Westwind.WPF.Statusbar\Assets\Icons\circle-green.svg" />
@@ -174,6 +177,9 @@
     <Content Include="Westwind.WPF.Statusbar\Assets\Icons\triangle-exclamation.svg" />
     <Content Include="Westwind.WPF.Statusbar\Icon-512.png" />
     <Content Include="Westwind.WPF.Statusbar\icon.png" />
+    <Content Include="msbuild.sdk.sqlproj.templates.3.2.0.nupkg">
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <None Include="Westwind.WPF.Statusbar\LICENSE.md" />
     <None Include="Westwind.WPF.Statusbar\README.md" />
     <Resource Include="Resources\TableWarning.png" />
@@ -683,4 +689,17 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="PreCreateVsixContainer" BeforeTargets="GetVsixSourceItems">
+    <ItemGroup>
+      <_TemplatePackage Include="*.nupkg" />
+    </ItemGroup>
+    <Error Text="No template files found." Condition="@(_TemplatePackage-&gt;Count()) == 0" />
+    <Message Text="Template nuget packages found: @(_TemplatePackage)" Importance="low" />
+    <!-- don't modify the following, the pkgdef file uses the path below -->
+    <ItemGroup>
+      <VSIXSourceItem Include="@(_TemplatePackage)">
+        <VSIXSubPath>ProjectTemplates\</VSIXSubPath>
+      </VSIXSourceItem>
+    </ItemGroup>
+  </Target>
 </Project>
