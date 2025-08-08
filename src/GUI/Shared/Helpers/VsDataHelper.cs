@@ -1,4 +1,4 @@
-﻿// ReSharper disable once CheckNamespace
+// ReSharper disable once CheckNamespace
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -37,7 +37,9 @@ namespace EFCorePowerTools.Helpers
 
         public static string GetSavedConnectionName(string connectionString, DatabaseType dbType)
         {
-            if (dbType == DatabaseType.SQLServer && (connectionString.IndexOf(";Authentication=", StringComparison.OrdinalIgnoreCase) < 0))
+            if (dbType == DatabaseType.SQLServer
+                && connectionString.IndexOf(";Authentication=", StringComparison.OrdinalIgnoreCase) < 0
+                && connectionString.IndexOf("Command Timeout=", StringComparison.OrdinalIgnoreCase) < 0)
             {
                 return PathFromConnectionString(connectionString);
             }
