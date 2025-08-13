@@ -1086,7 +1086,8 @@ AND CAST([i].[object_id] AS nvarchar(12)) + '#' + CAST([i].[index_id] AS nvarcha
         }
 
         commandText += @"
-ORDER BY [table_schema], [table_name], [index_name], [ic].[key_ordinal];";
+ORDER BY [table_schema], [table_name], [index_name], [ic].[key_ordinal] 
+OPTION (MERGE JOIN);";
 
         command.CommandText = commandText;
 
