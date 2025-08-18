@@ -790,7 +790,8 @@ LEFT JOIN [sys].[default_constraints] AS [dc] ON [c].[object_id] = [dc].[parent_
             builder.AppendLine().Append("WHERE [c].[generated_always_type] <> 1 AND [c].[generated_always_type] <> 2");
         }
 
-        builder.AppendLine().Append("ORDER BY [table_schema], [table_name], [c].[column_id];");
+        builder.AppendLine().Append("ORDER BY [table_schema], [table_name], [c].[column_id]");
+        builder.AppendLine().Append("OPTION (MERGE JOIN);");
 
         command.CommandText = builder.ToString();
 
@@ -1325,7 +1326,8 @@ JOIN [sys].[columns] AS [col1] ON [col1].[column_id] = [fc].[parent_column_id] A
 JOIN [sys].[tables] AS [tab2] ON [tab2].[object_id] = [fc].[referenced_object_id]
 JOIN [sys].[columns] AS [col2] ON [col2].[column_id] = [fc].[referenced_column_id] AND [col2].[object_id] = [tab2].[object_id]
 WHERE {tableFilter}
-ORDER BY [table_schema], [table_name], [f].[name], [fc].[constraint_column_id];
+ORDER BY [table_schema], [table_name], [f].[name], [fc].[constraint_column_id] 
+OPTION (MERGE JOIN);
 """;
 
         using var reader = command.ExecuteReader();
