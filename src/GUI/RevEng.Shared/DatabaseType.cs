@@ -1,4 +1,4 @@
-﻿// ReSharper disable InconsistentNaming
+// ReSharper disable InconsistentNaming
 namespace RevEng.Common
 {
     public enum DatabaseType
@@ -12,5 +12,6 @@ namespace RevEng.Common
         SQLServerDacpac = 8,
         Firebird = 10,
         Snowflake = 11,
+        Db2,
     }
 }

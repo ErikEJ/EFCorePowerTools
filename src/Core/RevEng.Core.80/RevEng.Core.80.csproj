@@ -15,6 +15,7 @@
   <ItemGroup>
     <PackageReference Include="Bricelam.EntityFrameworkCore.Pluralizer" Version="1.0.0" />
     <PackageReference Include="EFCore.Snowflake" Version="8.0.8" />
+    <PackageReference Include="IBM.EntityFrameworkCore" Version="8.0.0.400" />
     <PackageReference Include="EntityFrameworkCore.Scaffolding.Handlebars" Version="8.0.0" />
     <PackageReference Include="EntityFrameworkCore.Sqlite.NodaTime" Version="8.0.1" />
     <PackageReference Include="FirebirdSql.EntityFrameworkCore.Firebird" Version="11.0.0" />

@@ -43,6 +43,8 @@ namespace RevEng.Common
 
                 case "EFCore.Snowflake":
                     return DatabaseType.Snowflake;
+                case "IBM.EntityFrameworkCore":
+                    return DatabaseType.Db2;
 
                 default:
                     return DatabaseType.Undefined;
@@ -71,6 +73,8 @@ namespace RevEng.Common
                     return "firebird";
                 case DatabaseType.Snowflake:
                     return "snowflake";
+                case DatabaseType.Db2:
+                    return "Db2";
                 default:
                     return "Undefined";
             }

@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using EFCore.Snowflake.Design.Internal;
+using IBM.EntityFrameworkCore.Internal;
 using EntityFrameworkCore.Scaffolding.Handlebars;
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
 using FirebirdSql.EntityFrameworkCore.Firebird.Design.Internal;
@@ -23,6 +24,7 @@ using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
 using RevEng.Common;
 using RevEng.Core.Routines.Extensions;
 using SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime.Design;
+using IBM.EntityFrameworkCore.Design.Internal;
 
 namespace RevEng.Core
 {
@@ -132,6 +134,10 @@ namespace RevEng.Core
                 case DatabaseType.Snowflake:
                     var snowflakeProvider = new SnowflakeDesignTimeServices();
                     snowflakeProvider.ConfigureDesignTimeServices(serviceCollection);
+                    break;
+                case DatabaseType.Db2:
+                    var db2Provider = new Db2DesignTimeServices();
+                    db2Provider.ConfigureDesignTimeServices(serviceCollection);
                     break;
 
                 case DatabaseType.SQLite:
