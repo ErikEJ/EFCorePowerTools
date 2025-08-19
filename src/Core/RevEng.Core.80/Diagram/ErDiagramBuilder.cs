@@ -31,13 +31,13 @@ namespace RevEng.Core.Diagram
             serviceProvider = new ServiceCollection().AddEfpt(options, [], [], []).BuildServiceProvider();
         }
 
-        public string GetErDiagramFileName()
+        public string GetErDiagramFileName(bool createMarkdown)
         {
             var model = GetModelInternal();
 
             var creator = new DatabaseModelToMermaid(model);
 
-            var diagram = creator.CreateMermaid(createMarkdown: false);
+            var diagram = creator.CreateMermaid(createMarkdown);
 
             var fileName = Path.Join(Path.GetTempPath(), Path.GetRandomFileName() + ".mmd");
             File.WriteAllText(fileName, diagram, Encoding.UTF8);
