@@ -48,6 +48,13 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 options.ProjectPath = Path.GetDirectoryName(project.FullPath);
 
+                var version = await VS.Shell.GetVsVersionAsync();
+
+                if (version >= new Version(18, 0))
+                {
+                    options.Optional = true;
+                }
+
                 if (!await ChooseDataBaseConnectionAsync(options, uiHint))
                 {
                     await VS.StatusBar.ClearAsync();
