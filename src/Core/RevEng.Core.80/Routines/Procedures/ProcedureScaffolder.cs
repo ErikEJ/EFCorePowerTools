@@ -125,7 +125,7 @@ namespace RevEng.Core.Routines.Procedures
             return result;
         }
 
-        protected abstract void GenerateProcedure(Routine procedure, RoutineModel model, bool signatureOnly, bool useAsyncCalls, bool usePascalCase);
+        protected abstract void GenerateProcedure(Routine procedure, RoutineModel model, bool signatureOnly, bool useAsyncCalls, bool usePascalCase, bool useNullableReferences);
 
         private List<string> CreateUsings(ModuleScaffolderOptions scaffolderOptions, RoutineModel model, List<string> schemas)
         {
@@ -179,7 +179,7 @@ namespace RevEng.Core.Routines.Procedures
             Sb = new IndentedStringBuilder();
 
             Sb.AppendLine(PathHelper.Header);
-            Sb.AppendLine("#nullable disable"); // procedure parameters are always nullable
+            Sb.AppendLine(scaffolderOptions.NullableReferences ? "#nullable enable" : "#nullable disable");
 
             var usings = CreateUsings(scaffolderOptions, model, schemas);
 
@@ -200,7 +200,7 @@ namespace RevEng.Core.Routines.Procedures
                 {
                     foreach (var procedure in model.Routines)
                     {
-                        GenerateProcedure(procedure, model, true, scaffolderOptions.UseAsyncCalls, scaffolderOptions.UsePascalIdentifiers);
+                        GenerateProcedure(procedure, model, true, scaffolderOptions.UseAsyncCalls, scaffolderOptions.UsePascalIdentifiers, scaffolderOptions.NullableReferences);
                         Sb.AppendLine(";");
                     }
                 }
@@ -224,7 +224,8 @@ namespace RevEng.Core.Routines.Procedures
             Sb = new IndentedStringBuilder();
 
             Sb.AppendLine(PathHelper.Header);
-            Sb.AppendLine("#nullable disable"); // procedure parameters are always nullable
+            var nullable = scaffolderOptions.NullableReferences ? "?" : string.Empty;
+            Sb.AppendLine(scaffolderOptions.NullableReferences ? "#nullable enable" : "#nullable disable");
 
             var usings = CreateUsings(scaffolderOptions, model, schemas);
 
@@ -243,7 +244,7 @@ namespace RevEng.Core.Routines.Procedures
                 Sb.AppendLine("{");
                 using (Sb.Indent())
                 {
-                    Sb.AppendLine($"private I{scaffolderOptions.ContextName}{FileNameSuffix} _procedures;");
+                    Sb.AppendLine($"private I{scaffolderOptions.ContextName}{FileNameSuffix}{nullable} _procedures;");
                     Sb.AppendLine();
                     Sb.AppendLine($"public virtual I{scaffolderOptions.ContextName}{FileNameSuffix} {FileNameSuffix}");
                     Sb.AppendLine("{");
@@ -303,7 +304,7 @@ namespace RevEng.Core.Routines.Procedures
 
                 foreach (var procedure in model.Routines)
                 {
-                    GenerateProcedure(procedure, model, false, scaffolderOptions.UseAsyncCalls, scaffolderOptions.UsePascalIdentifiers);
+                    GenerateProcedure(procedure, model, false, scaffolderOptions.UseAsyncCalls, scaffolderOptions.UsePascalIdentifiers, scaffolderOptions.NullableReferences);
                 }
 
                 if (model.Routines.Exists(r => r.SupportsMultipleResultSet))

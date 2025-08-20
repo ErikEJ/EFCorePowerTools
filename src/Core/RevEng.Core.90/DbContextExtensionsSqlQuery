@@ -13,7 +13,7 @@ namespace #NAMESPACE#
 {
     public static class DbContextExtensions
     {
-        public static async Task<List<T>> SqlQueryAsync<T>(this DbContext db, string sql, object[] parameters = null, CancellationToken cancellationToken = default)
+        public static async Task<List<T>> SqlQueryAsync<T>(this DbContext db, string sql, object[] parameters = null, CancellationToken? cancellationToken = default)
            where T : class
         {
             if (parameters is null)
@@ -25,7 +25,7 @@ namespace #NAMESPACE#
             {
                 return await db.Database
                     .SqlQueryRaw<T>(sql, parameters)
-                    .ToListAsync(cancellationToken);
+                    .ToListAsync(cancellationToken ?? CancellationToken.None);
             }
             else
             {

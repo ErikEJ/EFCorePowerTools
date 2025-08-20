@@ -40,12 +40,21 @@ namespace RevEng.Core.Routines.Procedures
             return files;
         }
 
-        protected override void GenerateProcedure(Routine procedure, RoutineModel model, bool signatureOnly, bool useAsyncCalls, bool usePascalCase)
+        protected override void GenerateProcedure(Routine procedure, RoutineModel model, bool signatureOnly, bool useAsyncCalls, bool usePascalCase, bool useNullableReferences)
         {
             ArgumentNullException.ThrowIfNull(procedure);
 
             var paramStrings = procedure.Parameters.Where(p => !p.Output)
-                .Select(p => $"{Code.Reference(p.ClrTypeFromSqlParameter(asMethodParameter: true))} {Code.Identifier(p.Name, capitalize: false)}")
+                .Select(p =>
+                {
+                    var type = Code.Reference(p.ClrTypeFromSqlParameter(asMethodParameter: true));
+                    if (useNullableReferences && !type.EndsWith('?'))
+                    {
+                        type += '?';
+                    }
+
+                    return $"{type} {Code.Identifier(p.Name, capitalize: false)}";
+                })
                 .ToList();
 
             var allOutParams = procedure.Parameters.Where(p => p.Output).ToList();
@@ -71,7 +80,7 @@ namespace RevEng.Core.Routines.Procedures
                 returnClass = procedure.MappedType;
             }
 
-            var line = GenerateMethodSignature(procedure, outParams, paramStrings, retValueName, outParamStrings, identifier, multiResultId, signatureOnly, useAsyncCalls, returnClass);
+            var line = GenerateMethodSignature(procedure, outParams, paramStrings, retValueName, outParamStrings, identifier, multiResultId, signatureOnly, useAsyncCalls, returnClass, useNullableReferences);
 
             if (signatureOnly)
             {
@@ -185,7 +194,18 @@ namespace RevEng.Core.Routines.Procedures
             return fullExec;
         }
 
-        private static string GenerateMethodSignature(Routine procedure, List<ModuleParameter> outParams, IList<string> paramStrings, string retValueName, List<string> outParamStrings, string identifier, string multiResultId, bool signatureOnly, bool useAsyncCalls, string returnClass)
+        private static string GenerateMethodSignature(
+            Routine procedure,
+            List<ModuleParameter> outParams,
+            IList<string> paramStrings,
+            string retValueName,
+            List<string> outParamStrings,
+            string identifier,
+            string multiResultId,
+            bool signatureOnly,
+            bool useAsyncCalls,
+            string returnClass,
+            bool useNullableReferences)
         {
             string returnType;
             if (procedure.HasValidResultSet && (procedure.Results.Count == 0 || procedure.Results[0].Count == 0))
@@ -224,9 +244,11 @@ namespace RevEng.Core.Routines.Procedures
                 line += ", ";
             }
 
-            line += $"OutputParameter<int> {retValueName} = null";
+            var nullable = useNullableReferences ? "?" : string.Empty;
 
-            line += useAsyncCalls ? ", CancellationToken cancellationToken = default)" : ")";
+            line += $"OutputParameter<int>{nullable} {retValueName} = null";
+
+            line += useAsyncCalls ? $", CancellationToken{nullable} cancellationToken = default)" : ")";
 
             return line;
         }
