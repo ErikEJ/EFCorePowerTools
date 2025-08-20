@@ -36,7 +36,6 @@ namespace #NAMESPACE#
          public static List<T> SqlQueryToList<T>(this DbContext db, string sql, object[]#NULLABLE# parameters = null)
             where T : class
          {
-         
             return db.Database
                 .SqlQueryRaw<T>(sql, parameters ?? Array.Empty<object>())
                 .ToList();
