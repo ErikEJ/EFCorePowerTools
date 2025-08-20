@@ -14,6 +14,7 @@ namespace #NAMESPACE#
 {
     public static class DbContextExtensions
     {
+        [Obsolete("This method is obsolete and will be removed in the future.  Use SqlQueryToListAsync<T> instead when returning results.  Use dbContext.Database.ExecuteSqlRawAsync for calls with no results.")]
         public static async Task<List<T>#NULLABLE#> SqlQueryAsync<T>(this DbContext db, string sql, object[]#NULLABLE# parameters = null, CancellationToken? cancellationToken = default)
            where T : class
         {
