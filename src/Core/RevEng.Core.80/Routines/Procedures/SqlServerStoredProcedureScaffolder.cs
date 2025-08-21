@@ -23,29 +23,42 @@ namespace RevEng.Core.Routines.Procedures
             ProviderUsing = "using Microsoft.Data.SqlClient";
         }
 
-        public new SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue, bool useAsyncCalls, bool useInternalAccessModifier)
+        public new SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue, bool useAsyncCalls, bool useInternalAccessModifier, bool useNullableReferences)
         {
             ArgumentNullException.ThrowIfNull(scaffoldedModel);
 
-            var files = base.Save(scaffoldedModel, outputDir, nameSpaceValue, useAsyncCalls, useInternalAccessModifier);
+            var files = base.Save(scaffoldedModel, outputDir, nameSpaceValue, useAsyncCalls, useInternalAccessModifier, useNullableReferences);
             var accessModifier = useInternalAccessModifier ? "internal" : "public";
 
             var contextDir = Path.GetDirectoryName(Path.Combine(outputDir, scaffoldedModel.ContextFile.Path));
             var dbContextExtensionsText = ScaffoldHelper.GetDbContextExtensionsText(useAsyncCalls);
             var dbContextExtensionsName = useAsyncCalls ? "DbContextExtensions.cs" : "DbContextExtensions.Sync.cs";
             var dbContextExtensionsPath = Path.Combine(contextDir ?? string.Empty, dbContextExtensionsName);
-            File.WriteAllText(dbContextExtensionsPath, dbContextExtensionsText.Replace("#NAMESPACE#", nameSpaceValue, StringComparison.OrdinalIgnoreCase).Replace("#ACCESSMODIFIER#", accessModifier, StringComparison.OrdinalIgnoreCase), Encoding.UTF8);
+            File.WriteAllText(dbContextExtensionsPath, dbContextExtensionsText
+                .Replace("#NAMESPACE#", nameSpaceValue, StringComparison.OrdinalIgnoreCase)
+                .Replace("#ACCESSMODIFIER#", accessModifier, StringComparison.OrdinalIgnoreCase)
+                .Replace("#NULLABLE#", useNullableReferences ? "?" : string.Empty, StringComparison.OrdinalIgnoreCase)
+                .Replace("#NULLABLEENABLE#", useNullableReferences ? "enable" : "disable", StringComparison.OrdinalIgnoreCase), Encoding.UTF8);
             files.AdditionalFiles.Add(dbContextExtensionsPath);
 
             return files;
         }
 
-        protected override void GenerateProcedure(Routine procedure, RoutineModel model, bool signatureOnly, bool useAsyncCalls, bool usePascalCase)
+        protected override void GenerateProcedure(Routine procedure, RoutineModel model, bool signatureOnly, bool useAsyncCalls, bool usePascalCase, bool useNullableReferences)
         {
             ArgumentNullException.ThrowIfNull(procedure);
 
             var paramStrings = procedure.Parameters.Where(p => !p.Output)
-                .Select(p => $"{Code.Reference(p.ClrTypeFromSqlParameter(asMethodParameter: true))} {Code.Identifier(p.Name, capitalize: false)}")
+                .Select(p =>
+                {
+                    var type = Code.Reference(p.ClrTypeFromSqlParameter(asMethodParameter: true));
+                    if (useNullableReferences && !type.EndsWith('?'))
+                    {
+                        type += '?';
+                    }
+
+                    return $"{type} {Code.Identifier(p.Name, capitalize: false)}";
+                })
                 .ToList();
 
             var allOutParams = procedure.Parameters.Where(p => p.Output).ToList();
@@ -71,7 +84,7 @@ namespace RevEng.Core.Routines.Procedures
                 returnClass = procedure.MappedType;
             }
 
-            var line = GenerateMethodSignature(procedure, outParams, paramStrings, retValueName, outParamStrings, identifier, multiResultId, signatureOnly, useAsyncCalls, returnClass);
+            var line = GenerateMethodSignature(procedure, outParams, paramStrings, retValueName, outParamStrings, identifier, multiResultId, signatureOnly, useAsyncCalls, returnClass, useNullableReferences);
 
             if (signatureOnly)
             {
@@ -144,8 +157,8 @@ namespace RevEng.Core.Routines.Procedures
                         else
                         {
                             Sb.AppendLine(useAsyncCalls
-                                ? $"var _ = await _context.SqlQueryAsync<{returnClass}>({fullExec});"
-                                : $"var _ = _context.SqlQuery<{returnClass}>({fullExec});");
+                                ? $"var _ = await _context.SqlQueryToListAsync<{returnClass}>({fullExec});"
+                                : $"var _ = _context.SqlQueryToList<{returnClass}>({fullExec});");
                         }
                     }
 
@@ -185,7 +198,18 @@ namespace RevEng.Core.Routines.Procedures
             return fullExec;
         }
 
-        private static string GenerateMethodSignature(Routine procedure, List<ModuleParameter> outParams, IList<string> paramStrings, string retValueName, List<string> outParamStrings, string identifier, string multiResultId, bool signatureOnly, bool useAsyncCalls, string returnClass)
+        private static string GenerateMethodSignature(
+            Routine procedure,
+            List<ModuleParameter> outParams,
+            IList<string> paramStrings,
+            string retValueName,
+            List<string> outParamStrings,
+            string identifier,
+            string multiResultId,
+            bool signatureOnly,
+            bool useAsyncCalls,
+            string returnClass,
+            bool useNullableReferences)
         {
             string returnType;
             if (procedure.HasValidResultSet && (procedure.Results.Count == 0 || procedure.Results[0].Count == 0))
@@ -224,9 +248,11 @@ namespace RevEng.Core.Routines.Procedures
                 line += ", ";
             }
 
-            line += $"OutputParameter<int> {retValueName} = null";
+            var nullable = useNullableReferences ? "?" : string.Empty;
 
-            line += useAsyncCalls ? ", CancellationToken cancellationToken = default)" : ")";
+            line += $"OutputParameter<int>{nullable} {retValueName} = null";
+
+            line += useAsyncCalls ? $", CancellationToken{nullable} cancellationToken = default)" : ")";
 
             return line;
         }
