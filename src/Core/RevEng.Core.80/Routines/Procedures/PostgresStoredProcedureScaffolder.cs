@@ -33,11 +33,14 @@ namespace RevEng.Core.Routines.Procedures
             var dbContextExtensionsText = ScaffoldHelper.GetDbContextExtensionsText(useAsyncCalls);
             var dbContextExtensionsName = useAsyncCalls ? "DbContextExtensions.cs" : "DbContextExtensions.Sync.cs";
             var dbContextExtensionsPath = Path.Combine(contextDir ?? string.Empty, dbContextExtensionsName);
-            File.WriteAllText(dbContextExtensionsPath, dbContextExtensionsText
-                .Replace("#NAMESPACE#", nameSpaceValue, StringComparison.OrdinalIgnoreCase)
-                .Replace("#ACCESSMODIFIER#", accessModifier, StringComparison.OrdinalIgnoreCase)
-                .Replace("#NULLABLE#", useNullableReferences ? "?" : string.Empty, StringComparison.OrdinalIgnoreCase)
-                .Replace("#NULLABLEENABLE#", useNullableReferences ? "enable" : "disable", StringComparison.OrdinalIgnoreCase), Encoding.UTF8);
+            File.WriteAllText(
+                dbContextExtensionsPath,
+                dbContextExtensionsText
+                    .Replace("#NAMESPACE#", nameSpaceValue, StringComparison.OrdinalIgnoreCase)
+                    .Replace("#ACCESSMODIFIER#", accessModifier, StringComparison.OrdinalIgnoreCase)
+                    .Replace("#NULLABLE#", useNullableReferences ? "?" : string.Empty, StringComparison.OrdinalIgnoreCase)
+                    .Replace("#NULLABLEENABLE#", useNullableReferences ? "enable" : "disable", StringComparison.OrdinalIgnoreCase),
+                Encoding.UTF8);
             files.AdditionalFiles.Add(dbContextExtensionsPath);
 
             return files;
