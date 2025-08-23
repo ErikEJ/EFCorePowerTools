@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Threading;
 using EFCorePowerTools.Contracts.Wizard;
 using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Handlers.ReverseEngineer;
@@ -110,6 +112,25 @@ namespace EFCorePowerTools.Wizard
                 {
                     wizardViewModel.GenerateStatus = $"❌ {errorMessage}";
                 }
+
+                // Return focus to the wizard and the Finish button
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    var win = Window.GetWindow(this);
+                    if (win != null)
+                    {
+                        win.Activate();
+                        win.Focus();
+                    }
+
+                    if (FinishButton != null && FinishButton.IsEnabled)
+                    {
+                        // Ensure Enter triggers Finish
+                        FinishButton.IsDefault = true; // already set in XAML, but safe to enforce
+                        FinishButton.Focus();
+                        Keyboard.Focus(FinishButton);
+                    }
+                }), DispatcherPriority.ApplicationIdle);
             }
         }
 

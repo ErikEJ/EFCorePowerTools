@@ -19,8 +19,10 @@ using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
 using EFCorePowerTools.Wizard;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 using NuGet.Versioning;
 using RevEng.Common;
 
@@ -523,18 +525,58 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 {
                     if (!string.IsNullOrEmpty(revEngResult.ContextFilePath))
                     {
-                        await VS.Documents.OpenAsync(revEngResult.ContextFilePath);
+                        if (isCalledByWizard)
+                        {
+                            using (new NewDocumentStateScope(__VSNEWDOCUMENTSTATE.NDS_NoActivate | __VSNEWDOCUMENTSTATE.NDS_Provisional, VSConstants.NewDocumentStateReason.Navigation))
+                            {
+                                await VS.Documents.OpenAsync(revEngResult.ContextFilePath);
+                            }
+                        }
+                        else
+                        {
+                            await VS.Documents.OpenAsync(revEngResult.ContextFilePath);
+                        }
                     }
 
-                    await VS.Documents.OpenInPreviewTabAsync(readmePath);
+                    if (isCalledByWizard)
+                    {
+                        using (new NewDocumentStateScope(__VSNEWDOCUMENTSTATE.NDS_NoActivate | __VSNEWDOCUMENTSTATE.NDS_Provisional, VSConstants.NewDocumentStateReason.Navigation))
+                        {
+                            await VS.Documents.OpenInPreviewTabAsync(readmePath);
+                        }
+                    }
+                    else
+                    {
+                        await VS.Documents.OpenInPreviewTabAsync(readmePath);
+                    }
                 }
                 else
                 {
-                    await VS.Documents.OpenInPreviewTabAsync(readmePath);
+                    if (isCalledByWizard)
+                    {
+                        using (new NewDocumentStateScope(__VSNEWDOCUMENTSTATE.NDS_NoActivate | __VSNEWDOCUMENTSTATE.NDS_Provisional, VSConstants.NewDocumentStateReason.Navigation))
+                        {
+                            await VS.Documents.OpenInPreviewTabAsync(readmePath);
+                        }
+                    }
+                    else
+                    {
+                        await VS.Documents.OpenInPreviewTabAsync(readmePath);
+                    }
 
                     if (!string.IsNullOrEmpty(revEngResult.ContextFilePath))
                     {
-                        await VS.Documents.OpenAsync(revEngResult.ContextFilePath);
+                        if (isCalledByWizard)
+                        {
+                            using (new NewDocumentStateScope(__VSNEWDOCUMENTSTATE.NDS_NoActivate | __VSNEWDOCUMENTSTATE.NDS_Provisional, VSConstants.NewDocumentStateReason.Navigation))
+                            {
+                                await VS.Documents.OpenAsync(revEngResult.ContextFilePath);
+                            }
+                        }
+                        else
+                        {
+                            await VS.Documents.OpenAsync(revEngResult.ContextFilePath);
+                        }
                     }
                 }
             }
@@ -723,7 +765,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (!allowedVersions.Any())
             {
-                wizardArgs.StatusbarMessage = $".NET 5 and earlier is not supported.";
+                wizardArgs.StatusbarMessage = ".NET 5 and earlier is not supported.";
                 if (!wizardArgs.IsInvokedByWizard)
                 {
                     VSHelper.ShowError(wizardArgs.StatusbarMessage);
@@ -981,7 +1023,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
         public async System.Threading.Tasks.Task SaveOptionsAsync(Project project, string optionsPath, ReverseEngineerOptions options, ReverseEngineerUserOptions userOptions, Tuple<List<Schema>, string> renamingOptions)
         {
-            if (optionsPath.EndsWith(Constants.ConfigFileName, StringComparison.OrdinalIgnoreCase))
+            if (optionsPath.EndsWith(RevEng.Common.Constants.ConfigFileName, StringComparison.OrdinalIgnoreCase))
             {
                 return;
             }
