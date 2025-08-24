@@ -7,11 +7,15 @@ using EFCorePowerTools.Contracts.EventArgs;
 using EFCorePowerTools.Contracts.Wizard;
 using EFCorePowerTools.Handlers.ReverseEngineer;
 using EFCorePowerTools.ViewModels;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 
 namespace EFCorePowerTools.Wizard
 {
     public class WizardDialogBox : NavigationWindow, IWizardView
     {
+        private WizardCommandFilter commandFilter;
+
         public WizardDialogBox(IReverseEngineerBll bll, EventArgs e, IWizardViewModel viewModel)
         {
             var wizardViewModel = (WizardDataViewModel)viewModel;
@@ -30,6 +34,14 @@ namespace EFCorePowerTools.Wizard
             // Assign the Business logic layer used for processing
             wizardViewModel.Bll = bll;
 
+            // Register priority command filter to handle Delete key properly in text fields
+            ThreadHelper.JoinableTaskFactory.Run(async () =>
+            {
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+                commandFilter = new WizardCommandFilter(ServiceProvider.GlobalProvider);
+                commandFilter.RegisterCommandFilter();
+            });
+
             // Launch the wizard
             var wizardLauncher = new WizardLauncher(wizardViewModel, this);
             WizardReturn += WizardLauncher_WizardReturn;
@@ -37,8 +49,19 @@ namespace EFCorePowerTools.Wizard
             Navigate(wizardLauncher);
         }
 
-        private void WizardDialogBox_Closed(object sender, EventArgs e) =>
+        private void WizardDialogBox_Closed(object sender, EventArgs e)
+        {
+            // Clean up command filter
+            ThreadHelper.JoinableTaskFactory.Run(async () =>
+            {
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+                commandFilter?.UnregisterCommandFilter();
+                commandFilter?.Dispose();
+                commandFilter = null;
+            });
+
             RevEngWizardHandler.WizardIsRunning = false;
+        }
 
         public event WizardReturnEventHandler WizardReturn;
 
