@@ -63,6 +63,9 @@
     <Compile Include="Westwind.WPF.Statusbar\StatusBarHelper.cs" />
     <Compile Include="Westwind.WPF.Statusbar\StatusIcons.cs" />
     <Compile Include="Westwind.WPF.Statusbar\Utilities\DebounceDispatcher.cs" />
+    <Compile Include="Wizard\BusyOverlay.xaml.cs">
+      <DependentUpon>BusyOverlay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Wizard\Wiz4_StatusDialog.xaml.cs">
       <DependentUpon>Wiz4_StatusDialog.xaml</DependentUpon>
     </Compile>
@@ -75,6 +78,7 @@
     <Compile Include="Wizard\Wiz3_EfCoreModelDialog.cs">
       <DependentUpon>Wiz3_EfCoreModelDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Wizard\WizardCommandFilter.cs" />
     <Compile Include="Wizard\WizardDialogBox.cs">
       <DependentUpon>WizardDialogBox.xaml</DependentUpon>
     </Compile>
@@ -601,6 +605,9 @@
     <Page Include="Westwind.WPF.Statusbar\StatusBarControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizard\BusyOverlay.xaml">
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Wizard\Resources\Converter.xaml">
       <Generator>MSBuild:Compile</Generator>

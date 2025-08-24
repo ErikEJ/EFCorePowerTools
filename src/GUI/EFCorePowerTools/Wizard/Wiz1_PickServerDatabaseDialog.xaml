@@ -214,6 +214,7 @@
             <Button Style="{StaticResource NavButton}"
                     Content="{x:Static locale:ReverseEngineerLocale.NavigationNext}"
                     x:Name="NextButton"
+                    IsDefault="True"
                     IsEnabled="{Binding SelectedDatabaseConnection, Converter={StaticResource BoolNullConverter}}"
                     Click="NextButton_Click" />
             <Button Style="{StaticResource NavButton}"

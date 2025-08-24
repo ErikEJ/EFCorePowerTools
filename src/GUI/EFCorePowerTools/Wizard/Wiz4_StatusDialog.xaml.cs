@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using EFCorePowerTools.Contracts.Wizard;
 using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Handlers.ReverseEngineer;
@@ -18,6 +19,7 @@ namespace EFCorePowerTools.Wizard
     public partial class Wiz4_StatusDialog : WizardResultPageFunction
     {
         private readonly WizardDataViewModel wizardViewModel;
+        private BusyOverlay busyOverlay;
 
         public Wiz4_StatusDialog(WizardDataViewModel viewModel, IWizardView wizardView)
             : base(viewModel, wizardView)
@@ -27,6 +29,12 @@ namespace EFCorePowerTools.Wizard
             Loaded += WizardPage4_Loaded;
 
             InitializeComponent();
+
+            // Add busy overlay
+            busyOverlay = new BusyOverlay();
+            Grid.SetColumnSpan(busyOverlay, int.MaxValue);
+            Grid.SetRowSpan(busyOverlay, int.MaxValue);
+            ((Grid)Content).Children.Add(busyOverlay);
 
             FinishButton.IsEnabled = false;
             wizardViewModel.GenerateStatus = string.Empty;
@@ -73,43 +81,74 @@ namespace EFCorePowerTools.Wizard
                 wizardViewModel.Bll.GetModelOptionsPostDialog(options, project.Name, wea, wizardViewModel.Model);
                 var errorMessage = string.Empty;
 
-                var isSuccessful = false;
+                // Use async operation with proper UI feedback
                 ThreadHelper.JoinableTaskFactory.Run(async () =>
                 {
-                    isSuccessful = await InvokeWithErrorHandlingAsync(async () =>
+                    await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+                    // Show busy overlay
+                    busyOverlay.BusyMessage = "Generating files...";
+                    busyOverlay.IsBusy = true;
+
+                    try
                     {
-                        await wizardViewModel.Bll.SaveOptionsAsync(project, optionsPath, options, userOptions, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
-
-                        await RevEngWizardHandler.InstallNuGetPackagesAsync(project, onlyGenerate, options, forceEdit, wea);
-
-                        var neededPackages = await wea.Project.GetNeededPackagesAsync(wea.Options);
-                        var missingProviderPackage = neededPackages.Find(p => p.DatabaseTypes.Contains(options.DatabaseType) && p.IsMainProviderPackage && !p.Installed)?.PackageId;
-                        if (options.InstallNuGetPackage || options.SelectedToBeGenerated == 2)
+                        await InvokeWithErrorHandlingAsync(async () =>
                         {
-                            missingProviderPackage = null;
+                            await wizardViewModel.Bll.SaveOptionsAsync(project, optionsPath, options, userOptions, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
+
+                            await RevEngWizardHandler.InstallNuGetPackagesAsync(project, onlyGenerate, options, forceEdit, wea);
+
+                            var neededPackages = await wea.Project.GetNeededPackagesAsync(wea.Options);
+                            var missingProviderPackage = neededPackages.Find(p => p.DatabaseTypes.Contains(options.DatabaseType) && p.IsMainProviderPackage && !p.Installed)?.PackageId;
+                            if (options.InstallNuGetPackage || options.SelectedToBeGenerated == 2)
+                            {
+                                missingProviderPackage = null;
+                            }
+
+                            wea.ReverseEngineerStatus = await wizardViewModel.Bll.GenerateFilesAsync(project, options, missingProviderPackage, onlyGenerate, neededPackages, true);
+
+                            var postRunFile = Path.Combine(Path.GetDirectoryName(optionsPath), "efpt.postrun.cmd");
+                            if (File.Exists(postRunFile))
+                            {
+                                Process.Start($"\"{postRunFile}\"");
+                            }
+
+                            return true;
+                        });
+
+                        if (string.IsNullOrEmpty(errorMessage))
+                        {
+                            Statusbar.Status.ShowStatus();
+                            wizardViewModel.GenerateStatus = wea.ReverseEngineerStatus;
+                        }
+                        else
+                        {
+                            wizardViewModel.GenerateStatus = $"❌ {errorMessage}";
                         }
 
-                        wea.ReverseEngineerStatus = await wizardViewModel.Bll.GenerateFilesAsync(project, options, missingProviderPackage, onlyGenerate, neededPackages, true);
-
-                        var postRunFile = Path.Combine(Path.GetDirectoryName(optionsPath), "efpt.postrun.cmd");
-                        if (File.Exists(postRunFile))
+                        // Return focus to the wizard and the Finish button
+                        await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+                        var win = Window.GetWindow(this);
+                        if (win != null)
                         {
-                            Process.Start($"\"{postRunFile}\"");
+                            win.Activate();
+                            win.Focus();
                         }
 
-                        return true;
-                    });
+                        if (FinishButton != null && FinishButton.IsEnabled)
+                        {
+                            // Ensure Enter triggers Finish
+                            FinishButton.IsDefault = true; // already set in XAML, but safe to enforce
+                            FinishButton.Focus();
+                            Keyboard.Focus(FinishButton);
+                        }
+                    }
+                    finally
+                    {
+                        // Hide busy overlay
+                        busyOverlay.IsBusy = false;
+                    }
                 });
-
-                if (string.IsNullOrEmpty(errorMessage))
-                {
-                    Statusbar.Status.ShowStatus();
-                    wizardViewModel.GenerateStatus = wea.ReverseEngineerStatus;
-                }
-                else
-                {
-                    wizardViewModel.GenerateStatus = $"❌ {errorMessage}";
-                }
             }
         }
 

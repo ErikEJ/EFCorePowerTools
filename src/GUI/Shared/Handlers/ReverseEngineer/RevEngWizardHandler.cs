@@ -19,8 +19,10 @@ using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
 using EFCorePowerTools.Wizard;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 using NuGet.Versioning;
 using RevEng.Common;
 
@@ -403,7 +405,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     missingProviderPackage = null;
                 }
 
-                await GenerateFilesAsync(project, options, missingProviderPackage, onlyGenerate, neededPackages);
+                await GenerateFilesAsync(project, options, missingProviderPackage, onlyGenerate, neededPackages, true);
 
                 var postRunFile = Path.Combine(Path.GetDirectoryName(optionsPath), "efpt.postrun.cmd");
                 if (File.Exists(postRunFile))
@@ -457,7 +459,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
         }
 
-        // Note: invoked by page 3 of wizard (Wiz3_EfCoreModelDialog)
+        // Note: invoked by page 3 of the wizard (Wiz3_EfCoreModelDialog)
         public async System.Threading.Tasks.Task<string> GenerateFilesAsync(Project project, ReverseEngineerOptions options, string missingProviderPackage, bool onlyGenerate, List<NuGetPackage> packages, bool isCalledByWizard = false)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
@@ -523,18 +525,18 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 {
                     if (!string.IsNullOrEmpty(revEngResult.ContextFilePath))
                     {
-                        await VS.Documents.OpenAsync(revEngResult.ContextFilePath);
+                        await OpenDocumentAsync(revEngResult.ContextFilePath, preview: false, isCalledByWizard);
                     }
 
-                    await VS.Documents.OpenInPreviewTabAsync(readmePath);
+                    await OpenDocumentAsync(readmePath, preview: true, isCalledByWizard);
                 }
                 else
                 {
-                    await VS.Documents.OpenInPreviewTabAsync(readmePath);
+                    await OpenDocumentAsync(readmePath, preview: true, isCalledByWizard);
 
                     if (!string.IsNullOrEmpty(revEngResult.ContextFilePath))
                     {
-                        await VS.Documents.OpenAsync(revEngResult.ContextFilePath);
+                        await OpenDocumentAsync(revEngResult.ContextFilePath, preview: false, isCalledByWizard);
                     }
                 }
             }
@@ -723,7 +725,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (!allowedVersions.Any())
             {
-                wizardArgs.StatusbarMessage = $".NET 5 and earlier is not supported.";
+                wizardArgs.StatusbarMessage = ".NET 5 and earlier is not supported.";
                 if (!wizardArgs.IsInvokedByWizard)
                 {
                     VSHelper.ShowError(wizardArgs.StatusbarMessage);
@@ -761,9 +763,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         }
 
         // Note: invoked by page 2 of the wizard (Wiz2_PickTablesDialog)
-#pragma warning disable SA1202 // Elements should be ordered by access
         public async Task<bool> LoadDataBaseObjectsAsync(ReverseEngineerOptions options, DatabaseConnectionModel dbInfo, Tuple<List<Schema>, string> namingOptionsAndPath, WizardEventArgs wizardArgs = null)
-#pragma warning restore SA1202 // Elements should be ordered by access
         {
             IEnumerable<TableModel> predefinedTables = null;
 
@@ -981,7 +981,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
         public async System.Threading.Tasks.Task SaveOptionsAsync(Project project, string optionsPath, ReverseEngineerOptions options, ReverseEngineerUserOptions userOptions, Tuple<List<Schema>, string> renamingOptions)
         {
-            if (optionsPath.EndsWith(Constants.ConfigFileName, StringComparison.OrdinalIgnoreCase))
+            if (optionsPath.EndsWith(RevEng.Common.Constants.ConfigFileName, StringComparison.OrdinalIgnoreCase))
             {
                 return;
             }
@@ -1041,6 +1041,43 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 File.WriteAllText(renamingOptions.Item2, CustomNameOptionsExtensions.Write(renamingOptions.Item1), Encoding.UTF8);
                 await project.AddExistingFilesAsync(new List<string> { renamingOptions.Item2 }.ToArray());
+            }
+        }
+
+        // Helper to open documents with consistent provisional/no-activate behavior when wizard is driving
+        private static async Task OpenDocumentAsync(string path, bool preview, bool isCalledByWizard)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                return;
+            }
+
+            if (isCalledByWizard)
+            {
+                using (new NewDocumentStateScope(
+                    __VSNEWDOCUMENTSTATE.NDS_NoActivate | __VSNEWDOCUMENTSTATE.NDS_Provisional,
+                    VSConstants.NewDocumentStateReason.Navigation))
+                {
+                    if (preview)
+                    {
+                        await VS.Documents.OpenInPreviewTabAsync(path);
+                    }
+                    else
+                    {
+                        await VS.Documents.OpenAsync(path);
+                    }
+                }
+            }
+            else
+            {
+                if (preview)
+                {
+                    await VS.Documents.OpenInPreviewTabAsync(path);
+                }
+                else
+                {
+                    await VS.Documents.OpenAsync(path);
+                }
             }
         }
     }

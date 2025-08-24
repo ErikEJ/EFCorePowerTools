@@ -45,18 +45,30 @@ namespace EFCorePowerTools.Wizard
             };
             addConnections = models =>
             {
+                bool anyAdded = false;
                 foreach (var model in models.Where(model => !viewModel.DatabaseConnections.Any(db => db.DisplayName == model.DisplayName)))
                 {
                     viewModel.DatabaseConnections.Add(model);
+                    anyAdded = true;
                 }
 
-                wizardViewModel.RemoveDatabaseConnectionCommand.RaiseCanExecuteChanged();
+                if (anyAdded)
+                {
+                    wizardViewModel.RemoveDatabaseConnectionCommand.RaiseCanExecuteChanged();
+                }
             };
             addDefinitions = models =>
             {
+                bool anyAdded = false;
                 foreach (var model in models.Where(model => !viewModel.DatabaseConnections.Any(db => db.DisplayName == model.DisplayName)))
                 {
                     viewModel.DatabaseConnections.Add(model);
+                    anyAdded = true;
+                }
+
+                if (anyAdded)
+                {
+                    wizardViewModel.RemoveDatabaseConnectionCommand.RaiseCanExecuteChanged();
                 }
             };
             addSchemas = models =>
@@ -96,6 +108,15 @@ namespace EFCorePowerTools.Wizard
             this.wizardView = wizardView;
             this.wizardViewModel = viewModel;
 
+            // Subscribe to property changes to update command state
+            viewModel.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(viewModel.SelectedDatabaseConnection))
+                {
+                    wizardViewModel.RemoveDatabaseConnectionCommand.RaiseCanExecuteChanged();
+                }
+            };
+
             InitializeComponent();
 
             Loaded += (s, e) => OnPageVisible(s, null);
@@ -126,6 +147,9 @@ namespace EFCorePowerTools.Wizard
 
                 OnConfigurationChange(wizardViewModel.WizardEventArgs.Configurations.FirstOrDefault());
             }
+
+            // Ensure command state is updated when page becomes visible
+            wizardViewModel.RemoveDatabaseConnectionCommand.RaiseCanExecuteChanged();
         }
 
 #pragma warning disable SA1202 // Elements should be ordered by access
