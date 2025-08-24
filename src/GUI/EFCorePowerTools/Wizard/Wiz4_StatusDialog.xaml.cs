@@ -40,9 +40,7 @@ namespace EFCorePowerTools.Wizard
             WindowTitle = "Status";
         }
 
-#pragma warning disable SA1202 // Elements should be ordered by access
         protected override void OnPageVisible(object sender, StatusbarEventArgs e)
-#pragma warning restore SA1202 // Elements should be ordered by access
         {
             var wea = wizardViewModel.WizardEventArgs;
 
@@ -101,21 +99,21 @@ namespace EFCorePowerTools.Wizard
 
                         return true;
                     });
-                });
 
-                if (string.IsNullOrEmpty(errorMessage))
-                {
-                    Statusbar.Status.ShowStatus();
-                    wizardViewModel.GenerateStatus = wea.ReverseEngineerStatus;
-                }
-                else
-                {
-                    wizardViewModel.GenerateStatus = $"❌ {errorMessage}";
-                }
+                    // Switch to main thread before interacting with UI
+                    await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-                // Return focus to the wizard and the Finish button
-                Dispatcher.BeginInvoke(new Action(() =>
-                {
+                    if (string.IsNullOrEmpty(errorMessage))
+                    {
+                        Statusbar.Status.ShowStatus();
+                        wizardViewModel.GenerateStatus = wea.ReverseEngineerStatus;
+                    }
+                    else
+                    {
+                        wizardViewModel.GenerateStatus = $"❌ {errorMessage}";
+                    }
+
+                    // Return focus to the wizard and the Finish button
                     var win = Window.GetWindow(this);
                     if (win != null)
                     {
@@ -130,7 +128,7 @@ namespace EFCorePowerTools.Wizard
                         FinishButton.Focus();
                         Keyboard.Focus(FinishButton);
                     }
-                }), DispatcherPriority.ApplicationIdle);
+                });
             }
         }
 

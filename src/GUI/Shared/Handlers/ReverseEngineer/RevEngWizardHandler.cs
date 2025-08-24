@@ -405,7 +405,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     missingProviderPackage = null;
                 }
 
-                await GenerateFilesAsync(project, options, missingProviderPackage, onlyGenerate, neededPackages);
+                await GenerateFilesAsync(project, options, missingProviderPackage, onlyGenerate, neededPackages, true);
 
                 var postRunFile = Path.Combine(Path.GetDirectoryName(optionsPath), "efpt.postrun.cmd");
                 if (File.Exists(postRunFile))
@@ -459,7 +459,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
         }
 
-        // Note: invoked by page 3 of wizard (Wiz3_EfCoreModelDialog)
+        // Note: invoked by page 3 of the wizard (Wiz3_EfCoreModelDialog)
         public async System.Threading.Tasks.Task<string> GenerateFilesAsync(Project project, ReverseEngineerOptions options, string missingProviderPackage, bool onlyGenerate, List<NuGetPackage> packages, bool isCalledByWizard = false)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
@@ -525,58 +525,18 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 {
                     if (!string.IsNullOrEmpty(revEngResult.ContextFilePath))
                     {
-                        if (isCalledByWizard)
-                        {
-                            using (new NewDocumentStateScope(__VSNEWDOCUMENTSTATE.NDS_NoActivate | __VSNEWDOCUMENTSTATE.NDS_Provisional, VSConstants.NewDocumentStateReason.Navigation))
-                            {
-                                await VS.Documents.OpenAsync(revEngResult.ContextFilePath);
-                            }
-                        }
-                        else
-                        {
-                            await VS.Documents.OpenAsync(revEngResult.ContextFilePath);
-                        }
+                        await OpenDocumentAsync(revEngResult.ContextFilePath, preview: false, isCalledByWizard);
                     }
 
-                    if (isCalledByWizard)
-                    {
-                        using (new NewDocumentStateScope(__VSNEWDOCUMENTSTATE.NDS_NoActivate | __VSNEWDOCUMENTSTATE.NDS_Provisional, VSConstants.NewDocumentStateReason.Navigation))
-                        {
-                            await VS.Documents.OpenInPreviewTabAsync(readmePath);
-                        }
-                    }
-                    else
-                    {
-                        await VS.Documents.OpenInPreviewTabAsync(readmePath);
-                    }
+                    await OpenDocumentAsync(readmePath, preview: true, isCalledByWizard);
                 }
                 else
                 {
-                    if (isCalledByWizard)
-                    {
-                        using (new NewDocumentStateScope(__VSNEWDOCUMENTSTATE.NDS_NoActivate | __VSNEWDOCUMENTSTATE.NDS_Provisional, VSConstants.NewDocumentStateReason.Navigation))
-                        {
-                            await VS.Documents.OpenInPreviewTabAsync(readmePath);
-                        }
-                    }
-                    else
-                    {
-                        await VS.Documents.OpenInPreviewTabAsync(readmePath);
-                    }
+                    await OpenDocumentAsync(readmePath, preview: true, isCalledByWizard);
 
                     if (!string.IsNullOrEmpty(revEngResult.ContextFilePath))
                     {
-                        if (isCalledByWizard)
-                        {
-                            using (new NewDocumentStateScope(__VSNEWDOCUMENTSTATE.NDS_NoActivate | __VSNEWDOCUMENTSTATE.NDS_Provisional, VSConstants.NewDocumentStateReason.Navigation))
-                            {
-                                await VS.Documents.OpenAsync(revEngResult.ContextFilePath);
-                            }
-                        }
-                        else
-                        {
-                            await VS.Documents.OpenAsync(revEngResult.ContextFilePath);
-                        }
+                        await OpenDocumentAsync(revEngResult.ContextFilePath, preview: false, isCalledByWizard);
                     }
                 }
             }
@@ -803,9 +763,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         }
 
         // Note: invoked by page 2 of the wizard (Wiz2_PickTablesDialog)
-#pragma warning disable SA1202 // Elements should be ordered by access
         public async Task<bool> LoadDataBaseObjectsAsync(ReverseEngineerOptions options, DatabaseConnectionModel dbInfo, Tuple<List<Schema>, string> namingOptionsAndPath, WizardEventArgs wizardArgs = null)
-#pragma warning restore SA1202 // Elements should be ordered by access
         {
             IEnumerable<TableModel> predefinedTables = null;
 
@@ -1083,6 +1041,43 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 File.WriteAllText(renamingOptions.Item2, CustomNameOptionsExtensions.Write(renamingOptions.Item1), Encoding.UTF8);
                 await project.AddExistingFilesAsync(new List<string> { renamingOptions.Item2 }.ToArray());
+            }
+        }
+
+        // Helper to open documents with consistent provisional/no-activate behavior when wizard is driving
+        private static async Task OpenDocumentAsync(string path, bool preview, bool isCalledByWizard)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                return;
+            }
+
+            if (isCalledByWizard)
+            {
+                using (new NewDocumentStateScope(
+                    __VSNEWDOCUMENTSTATE.NDS_NoActivate | __VSNEWDOCUMENTSTATE.NDS_Provisional,
+                    VSConstants.NewDocumentStateReason.Navigation))
+                {
+                    if (preview)
+                    {
+                        await VS.Documents.OpenInPreviewTabAsync(path);
+                    }
+                    else
+                    {
+                        await VS.Documents.OpenAsync(path);
+                    }
+                }
+            }
+            else
+            {
+                if (preview)
+                {
+                    await VS.Documents.OpenInPreviewTabAsync(path);
+                }
+                else
+                {
+                    await VS.Documents.OpenAsync(path);
+                }
             }
         }
     }
