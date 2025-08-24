@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.InteropServices;
 using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -94,8 +93,9 @@ namespace EFCorePowerTools.Wizard
 
         public void Dispose()
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
+#pragma warning disable VSTHRD010 // Invoke single-threaded types on Main thread
             Dispose(true);
+#pragma warning restore VSTHRD010 // Invoke single-threaded types on Main thread
             GC.SuppressFinalize(this);
         }
 
@@ -105,15 +105,31 @@ namespace EFCorePowerTools.Wizard
             {
                 if (disposing)
                 {
-                    ThreadHelper.JoinableTaskFactory.Run(async () =>
+                    // Only unregister if we're on the UI thread or can switch to it
+                    if (ThreadHelper.CheckAccess())
                     {
-                        await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
                         UnregisterCommandFilter();
-                    });
+                    }
+                    else
+                    {
+                        // Schedule unregistration on the UI thread
+                        ThreadHelper.JoinableTaskFactory.Run(async () =>
+                        {
+                            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+                            UnregisterCommandFilter();
+                        });
+                    }
                 }
 
                 disposed = true;
             }
+        }
+
+        ~WizardCommandFilter()
+        {
+#pragma warning disable VSTHRD010 // Invoke single-threaded types on Main thread
+            Dispose(false);
+#pragma warning restore VSTHRD010 // Invoke single-threaded types on Main thread
         }
     }
 }

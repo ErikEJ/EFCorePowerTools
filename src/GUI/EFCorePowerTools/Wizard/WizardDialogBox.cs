@@ -8,7 +8,6 @@ using EFCorePowerTools.Contracts.Wizard;
 using EFCorePowerTools.Handlers.ReverseEngineer;
 using EFCorePowerTools.ViewModels;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
 
 namespace EFCorePowerTools.Wizard
 {
