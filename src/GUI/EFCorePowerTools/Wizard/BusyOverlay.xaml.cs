@@ -13,11 +13,17 @@ namespace EFCorePowerTools.Wizard
     public partial class BusyOverlay : UserControl, INotifyPropertyChanged
     {
         public static readonly DependencyProperty IsBusyProperty =
-            DependencyProperty.Register(nameof(IsBusy), typeof(bool), typeof(BusyOverlay),
+            DependencyProperty.Register(
+                nameof(IsBusy),
+                typeof(bool),
+                typeof(BusyOverlay),
                 new PropertyMetadata(false, OnIsBusyChanged));
 
         public static readonly DependencyProperty BusyMessageProperty =
-            DependencyProperty.Register(nameof(BusyMessage), typeof(string), typeof(BusyOverlay),
+            DependencyProperty.Register(
+                nameof(BusyMessage),
+                typeof(string),
+                typeof(BusyOverlay),
                 new PropertyMetadata("Processing..."));
 
         public bool IsBusy

@@ -17,13 +17,14 @@ namespace EFCorePowerTools.Wizard
     /// </summary>
     internal class WizardCommandFilter : IOleCommandTarget, IDisposable
     {
+        // VS command constants
+        private const uint CmdIdDelete = 17; // VSConstants.VSStd97CmdID.Delete
+        private static readonly Guid VSStandardCommandSet97 = new Guid("{5efc7975-14bc-11cf-9b2b-00aa00573819}");
+
         private readonly IVsRegisterPriorityCommandTarget registerPriorityCommandTarget;
         private uint commandTargetCookie;
         private bool isRegistered;
-
-        // VS command constants
-        private static readonly Guid VSStandardCommandSet97 = new Guid("{5efc7975-14bc-11cf-9b2b-00aa00573819}");
-        private const uint CmdIdDelete = 17; // VSConstants.VSStd97CmdID.Delete
+        private bool disposed = false;
 
         public WizardCommandFilter(System.IServiceProvider serviceProvider)
         {
@@ -69,7 +70,7 @@ namespace EFCorePowerTools.Wizard
             if (pguidCmdGroup == VSStandardCommandSet97 && nCmdID == CmdIdDelete)
             {
                 var focused = Keyboard.FocusedElement;
-                
+
                 // Check if focus is on a TextBoxBase within the wizard window
                 if (focused is TextBoxBase textBox)
                 {
@@ -81,6 +82,7 @@ namespace EFCorePowerTools.Wizard
                         {
                             EditingCommands.Delete.Execute(null, textBox);
                         }
+
                         return VSConstants.S_OK; // Handled
                     }
                 }
@@ -92,11 +94,26 @@ namespace EFCorePowerTools.Wizard
 
         public void Dispose()
         {
-            ThreadHelper.JoinableTaskFactory.Run(async () =>
+            ThreadHelper.ThrowIfNotOnUIThread();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
             {
-                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-                UnregisterCommandFilter();
-            });
+                if (disposing)
+                {
+                    ThreadHelper.JoinableTaskFactory.Run(async () =>
+                    {
+                        await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+                        UnregisterCommandFilter();
+                    });
+                }
+
+                disposed = true;
+            }
         }
     }
 }

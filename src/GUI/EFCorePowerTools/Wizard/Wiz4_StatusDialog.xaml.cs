@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -83,7 +84,7 @@ namespace EFCorePowerTools.Wizard
                 var errorMessage = string.Empty;
 
                 // Use async operation with proper UI feedback
-                _ = ThreadHelper.JoinableTaskFactory.RunAsync(async () =>
+                ThreadHelper.JoinableTaskFactory.Run(async () =>
                 {
                     await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -93,7 +94,7 @@ namespace EFCorePowerTools.Wizard
 
                     try
                     {
-                        var isSuccessful = await InvokeWithErrorHandlingAsync(async () =>
+                        await InvokeWithErrorHandlingAsync(async () =>
                         {
                             await wizardViewModel.Bll.SaveOptionsAsync(project, optionsPath, options, userOptions, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
 
@@ -128,25 +129,21 @@ namespace EFCorePowerTools.Wizard
                         }
 
                         // Return focus to the wizard and the Finish button
-                        _ = Dispatcher.BeginInvoke(
-                            new Action(() =>
-                            {
-                                var win = Window.GetWindow(this);
-                                if (win != null)
-                                {
-                                    win.Activate();
-                                    win.Focus();
-                                }
+                        await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+                        var win = Window.GetWindow(this);
+                        if (win != null)
+                        {
+                            win.Activate();
+                            win.Focus();
+                        }
 
-                                if (FinishButton != null && FinishButton.IsEnabled)
-                                {
-                                    // Ensure Enter triggers Finish
-                                    FinishButton.IsDefault = true; // already set in XAML, but safe to enforce
-                                    FinishButton.Focus();
-                                    Keyboard.Focus(FinishButton);
-                                }
-                            }),
-                            DispatcherPriority.ApplicationIdle);
+                        if (FinishButton != null && FinishButton.IsEnabled)
+                        {
+                            // Ensure Enter triggers Finish
+                            FinishButton.IsDefault = true; // already set in XAML, but safe to enforce
+                            FinishButton.Focus();
+                            Keyboard.Focus(FinishButton);
+                        }
                     }
                     finally
                     {
