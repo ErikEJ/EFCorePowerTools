@@ -26,5 +26,5 @@ jobs:
 
     - name: Publish NuGet
       if: startsWith(github.ref, 'refs/heads/master')
-      run: dotnet nuget push **\*.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key ${{ secrets.NUGET }} --skip-duplicate
+      run: dotnet nuget push **\ErikEJ.*.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key ${{ secrets.NUGET }} --skip-duplicate
       
