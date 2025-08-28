@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build">
+  <Sdk Name="Microsoft.Build.Sql" Version="0.2.3-preview" />
+  <PropertyGroup>
+    <Name>DatabaseSdk</Name>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
+    <ModelCollation>1033, CI</ModelCollation>
+    <RootNamespace>DatabaseSdk</RootNamespace>
+    <AssemblyName>DatabaseSdk</AssemblyName>
+    <RunSqlCodeAnalysis>True</RunSqlCodeAnalysis>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="..\Database\dbo\Functions\Function1.sql" Link="Function1.sql" />
+    <Content Include="..\Database\dbo\Procedures\Procedure1.sql" Link="Procedure1.sql" />
+  </ItemGroup>
+</Project>

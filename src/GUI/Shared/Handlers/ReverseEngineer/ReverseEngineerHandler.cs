@@ -10,6 +10,7 @@ using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Contracts.Models;
 using EFCorePowerTools.Contracts.Views;
+using EFCorePowerTools.DAL;
 using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
@@ -779,7 +780,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     }
                 }
 
-                var versionString = Assembly.GetAssembly(typeof(ReverseEngineerHandler))?.GetName().Version.ToString(3);
+                var versionString = FileVersionInfo.GetVersionInfo(typeof(EFCorePowerToolsPackage).Assembly.Location).FileVersion ?? null;
                 if (versionString != null)
                 {
                     var productVersion = new Version(versionString);
