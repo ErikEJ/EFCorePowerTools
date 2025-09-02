@@ -272,9 +272,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                         // HACK Work around for issue with web app project system on initial run
                         userOptions = null;
                     }
-
-                    await SaveOptionsAsync(project, optionsPath, options, userOptions, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
                 }
+
+                await SaveOptionsAsync(project, optionsPath, options, userOptions, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
 
                 await InstallNuGetPackagesAsync(project, onlyGenerate, options, forceEdit);
 
