@@ -31,14 +31,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             switch (codeGenerationMode)
             {
-                case CodeGenerationMode.EFCore6:
-                    revengVersion = "6";
-                    break;
-
                 case CodeGenerationMode.EFCore8:
                     revengVersion = "8";
                     break;
 
+                // TODO: Use EF Core 10 when providers are available.
                 case CodeGenerationMode.EFCore9:
                     revengVersion = "9";
                     break;

@@ -33,15 +33,12 @@ namespace EFCorePowerTools.Helpers
         public static string DropTemplates(string optionsPath, string projectPath, CodeGenerationMode codeGenerationMode, bool useHandlebars, int selectedOption = 0)
         {
             string zipName;
-            string t4Version = "703";
+            string t4Version = "900";
 
             if (useHandlebars)
             {
                 switch (codeGenerationMode)
                 {
-                    case CodeGenerationMode.EFCore6:
-                        zipName = "CodeTemplates600.zip";
-                        break;
                     case CodeGenerationMode.EFCore8:
                         zipName = "CodeTemplates800.zip";
                         break;
@@ -220,12 +217,7 @@ namespace EFCorePowerTools.Helpers
         {
             var list = new List<CodeGenerationItem>();
 
-            if (minimumVersion.Major == 6 || minimumVersion.Major == 2)
-            {
-                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore6, Value = "EF Core 6 (unsupported)" });
-            }
-
-            if (minimumVersion.Major >= 8)
+            if (minimumVersion.Major >= 8 || minimumVersion.Major == 2)
             {
                 list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore8, Value = "EF Core 8" });
                 list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore9, Value = "EF Core 9" });
@@ -258,11 +250,6 @@ namespace EFCorePowerTools.Helpers
                 list.Add(new TemplateTypeItem { Key = 0, Value = "C# - Handlebars" });
                 list.Add(new TemplateTypeItem { Key = 1, Value = "TypeScript - Handlebars" });
                 list.Add(new TemplateTypeItem { Key = 3, Value = "C# - T4 (POCO)" });
-            }
-            else if (codeGenerationMode == CodeGenerationMode.EFCore6)
-            {
-                list.Add(new TemplateTypeItem { Key = 0, Value = "C# - Handlebars" });
-                list.Add(new TemplateTypeItem { Key = 1, Value = "TypeScript - Handlebars" });
             }
 
             return list;

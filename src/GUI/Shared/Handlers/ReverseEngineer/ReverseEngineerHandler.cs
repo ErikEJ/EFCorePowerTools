@@ -10,7 +10,6 @@ using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Contracts.Models;
 using EFCorePowerTools.Contracts.Views;
-using EFCorePowerTools.DAL;
 using EFCorePowerTools.Extensions;
 using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;

@@ -132,9 +132,6 @@ namespace RevEng.Common
                 var pkgVersion = string.Empty;
                 switch (codeGenerationMode)
                 {
-                    case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.0.36";
-                        break;
                     case CodeGenerationMode.EFCore8:
                         pkgVersion = "8.0.18";
                         break;
@@ -170,10 +167,6 @@ namespace RevEng.Common
                 {
                     switch (codeGenerationMode)
                     {
-                        case CodeGenerationMode.EFCore6:
-                            pkgVersion = "6.0.1";
-                            break;
-
                         case CodeGenerationMode.EFCore8:
                             pkgVersion = "8.0.1";
                             break;
@@ -199,9 +192,6 @@ namespace RevEng.Common
                 {
                     switch (codeGenerationMode)
                     {
-                        case CodeGenerationMode.EFCore6:
-                            pkgVersion = "3.0.1";
-                            break;
                         case CodeGenerationMode.EFCore8:
                             pkgVersion = "8.0.0";
                             break;
@@ -237,28 +227,6 @@ namespace RevEng.Common
                     }
                 }
 
-                if (useDateOnlyTimeOnly)
-                {
-                    switch (codeGenerationMode)
-                    {
-                        case CodeGenerationMode.EFCore6:
-                            pkgVersion = "6.0.11";
-                            break;
-                    }
-
-                    if (codeGenerationMode == CodeGenerationMode.EFCore6)
-                    {
-                        packages.Add(new NuGetPackage
-                        {
-                            PackageId = "ErikEJ.EntityFrameworkCore.SqlServer.DateOnlyTimeOnly",
-                            Version = pkgVersion,
-                            DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
-                            IsMainProviderPackage = false,
-                            UseMethodName = "DateOnlyTimeOnly",
-                        });
-                    }
-                }
-
                 if (hasProcedures && discoverMultipleResultSets)
                 {
                     packages.Add(new NuGetPackage
@@ -277,9 +245,6 @@ namespace RevEng.Common
                 var pkgVersion = string.Empty;
                 switch (codeGenerationMode)
                 {
-                    case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.0.36";
-                        break;
                     case CodeGenerationMode.EFCore8:
                         pkgVersion = "8.0.18";
                         break;
@@ -303,10 +268,6 @@ namespace RevEng.Common
                 {
                     switch (codeGenerationMode)
                     {
-                        case CodeGenerationMode.EFCore6:
-                            pkgVersion = "6.0.0";
-                            break;
-
                         case CodeGenerationMode.EFCore8:
                             pkgVersion = "8.0.0";
                             break;
@@ -334,9 +295,6 @@ namespace RevEng.Common
                 var pkgVersion = string.Empty;
                 switch (codeGenerationMode)
                 {
-                    case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.0.29";
-                        break;
                     case CodeGenerationMode.EFCore8:
                         pkgVersion = "8.0.11";
                         break;
@@ -386,10 +344,6 @@ namespace RevEng.Common
                 var pkgVersion = string.Empty;
                 switch (codeGenerationMode)
                 {
-                    case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.0.3";
-                        break;
-
                     case CodeGenerationMode.EFCore8:
                         pkgVersion = "8.0.3";
                         break;
@@ -428,9 +382,6 @@ namespace RevEng.Common
                 var pkgVersion = string.Empty;
                 switch (codeGenerationMode)
                 {
-                    case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.21.160";
-                        break;
                     case CodeGenerationMode.EFCore8:
                         pkgVersion = "8.23.90";
                         break;
@@ -456,10 +407,6 @@ namespace RevEng.Common
                 var pkgVersion = string.Empty;
                 switch (codeGenerationMode)
                 {
-                    case CodeGenerationMode.EFCore6:
-                        pkgVersion = "9.1.1";
-                        break;
-
                     case CodeGenerationMode.EFCore8:
                         pkgVersion = "11.0.0";
                         break;

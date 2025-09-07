@@ -197,14 +197,6 @@
     <EmbeddedResource Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.DgmlBuilder\template.dgml">
       <Link>DgmlBuilder\template.dgml</Link>
     </EmbeddedResource>
-    <Content Include="..\lib\efpt60.exe.zip">
-      <Link>efpt60.exe.zip</Link>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="..\lib\efreveng60.exe.zip">
-      <Link>efreveng60.exe.zip</Link>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <Content Include="..\lib\DacFX161.zip">
       <Link>DacFX161.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
@@ -242,9 +234,6 @@
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <None Include="app.config" />
-    <Content Include="CodeTemplates600.zip">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <Content Include="CodeTemplates800.zip">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>

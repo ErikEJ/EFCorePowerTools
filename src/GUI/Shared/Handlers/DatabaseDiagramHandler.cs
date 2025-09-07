@@ -209,7 +209,7 @@ namespace EFCorePowerTools.Handlers
                 }));
             }
 
-            psd.PublishCodeGenerationMode(CodeGenerationMode.EFCore6, new List<CodeGenerationItem>());
+            psd.PublishCodeGenerationMode(CodeGenerationMode.EFCore8, new List<CodeGenerationItem>());
 
             if (!string.IsNullOrEmpty(connectionName))
             {
