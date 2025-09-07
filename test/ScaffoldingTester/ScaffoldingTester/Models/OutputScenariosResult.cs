@@ -8,11 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ScaffoldingTester.Models
 {
-    public partial class SalesByCategoryResult
+    public partial class OutputScenariosResult
     {
-        [StringLength(40)]
-        public string ProductName { get; set; } = default!;
-        [Column("TotalPurchase", TypeName = "decimal(38,2)")]
-        public decimal? TotalPurchase { get; set; }
     }
 }

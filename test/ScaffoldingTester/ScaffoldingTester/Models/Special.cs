@@ -2,14 +2,15 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
+using NetTopologySuite.Geometries;
 
 namespace ScaffoldingTester.Models;
 
-public partial class ProductSalesFor1997
+public partial class Special
 {
-    public string CategoryName { get; set; } = null!;
+    public int Id { get; set; }
 
-    public string ProductName { get; set; } = null!;
+    public Geometry Test2 { get; set; } = null!;
 
-    public decimal? ProductSales { get; set; }
+    public Geometry Test3 { get; set; } = null!;
 }
