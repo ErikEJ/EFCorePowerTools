@@ -126,8 +126,15 @@ namespace RevEng.Core.Routines.Procedures
 
                     if (procedure.HasValidResultSet && (procedure.Results.Count == 0 || procedure.Results[0].Count == 0))
                     {
+                        var asyncExec = fullExec;
+
+                        if (useNullableReferences)
+                        {
+                            asyncExec = asyncExec.Replace(" cancellationToken", " cancellationToken ?? CancellationToken.None", StringComparison.OrdinalIgnoreCase);
+                        }
+
                         Sb.AppendLine(useAsyncCalls
-                            ? $"var _ = await _context.Database.ExecuteSqlRawAsync({fullExec.Replace(" cancellationToken", " cancellationToken ?? CancellationToken.None", StringComparison.OrdinalIgnoreCase)});"
+                            ? $"var _ = await _context.Database.ExecuteSqlRawAsync({asyncExec});"
                             : $"var _ = _context.Database.ExecuteSqlRaw({fullExec});");
                     }
                     else
