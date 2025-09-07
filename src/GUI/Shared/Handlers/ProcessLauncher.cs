@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -237,11 +237,7 @@ namespace EFCorePowerTools.Handlers
 
             var versionInfo = await project.ContainsEfCoreDesignReferenceAsync();
 
-            if (versionInfo.Item2.StartsWith("6.", StringComparison.OrdinalIgnoreCase))
-            {
-                ExtractTool(toDir, fromDir, "efpt60.exe.zip", RevEng.Common.CodeGenerationMode.EFCore6);
-            }
-            else if (versionInfo.Item2.StartsWith("8.", StringComparison.OrdinalIgnoreCase))
+            if (versionInfo.Item2.StartsWith("8.", StringComparison.OrdinalIgnoreCase))
             {
                 ExtractTool(toDir, fromDir, "efpt80.exe.zip", RevEng.Common.CodeGenerationMode.EFCore8);
             }
