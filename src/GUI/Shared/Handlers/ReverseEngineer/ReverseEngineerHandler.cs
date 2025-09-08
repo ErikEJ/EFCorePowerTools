@@ -231,11 +231,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                             return;
                         }
 
-                        if (newOptions)
-                        {
-                            options.UseDateOnlyTimeOnly = options.CodeGenerationMode == CodeGenerationMode.EFCore8;
-                        }
-
                         await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.GettingReadyToConnect);
 
                         dbInfo = await GetDatabaseInfoAsync(options);
