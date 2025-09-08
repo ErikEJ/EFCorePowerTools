@@ -152,7 +152,6 @@ Global
 		{DC3CE572-E302-5FD4-9718-60F0F4D66DA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DC3CE572-E302-5FD4-9718-60F0F4D66DA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC3CE572-E302-5FD4-9718-60F0F4D66DA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DC3CE572-E302-5FD4-9718-60F0F4D66DA4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
