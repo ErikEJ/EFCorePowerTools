@@ -30,7 +30,7 @@ jobs:
 
     - uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '9.0.300'
+        dotnet-version: '10.0.x'
 
     - name: Update Version
       run: |
@@ -53,6 +53,8 @@ jobs:
         cd ${{ github.workspace}}\src\Core\efreveng90
         call ${{ github.workspace}}\src\Core\efreveng90\BuildCmdlineTool.cmd
         cd ${{ github.workspace}}
+        call ${{ github.workspace}}\src\Core\efreveng100\BuildCmdlineTool.cmd
+        cd ${{ github.workspace}}
 
     - name: Extract and verify efreveng80.exe.zip file count
       if: github.event_name != 'pull_request'
@@ -71,6 +73,15 @@ jobs:
           7z x src/GUI/lib/efreveng90.exe.zip -oefreveng90 -y
           dir /a:-d /s /b "efreveng90" | find /c ":\" > filecount.txt
           findstr "170" filecount.txt
+
+    - name: Extract and verify efreveng100.exe.zip file count
+      if: github.event_name != 'pull_request'
+      shell: cmd
+      run: |
+          mkdir vsix
+          7z x src/GUI/lib/efreveng100.exe.zip -oefreveng100 -y
+          dir /a:-d /s /b "efreveng100" | find /c ":\" > filecount.txt
+          findstr "150" filecount.txt
 
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v2
