@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.IO.Compression;
 using System.Reflection;
@@ -10,16 +10,11 @@ namespace RevEng.Common.Cli
     {
         public static string DropT4Templates(string projectPath, CodeGenerationMode codeGenerationMode, bool useEntityTypeSplitting = false)
         {
-            string t4Version = "703";
+            string t4Version = "900";
 
             if (codeGenerationMode == CodeGenerationMode.EFCore8)
             {
                 t4Version = "800";
-            }
-
-            if (codeGenerationMode == CodeGenerationMode.EFCore9)
-            {
-                t4Version = "900";
             }
 
             if (useEntityTypeSplitting)
