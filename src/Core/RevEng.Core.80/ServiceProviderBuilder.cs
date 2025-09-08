@@ -76,7 +76,6 @@ namespace RevEng.Core
 #if !CORE100
             if (options.UseHandleBars)
             {
-
                 serviceCollection.AddHandlebarsScaffolding(hbOptions =>
                 {
                     hbOptions.ReverseEngineerOptions = Microsoft.EntityFrameworkCore.Design.ReverseEngineerOptions.DbContextAndEntities;
