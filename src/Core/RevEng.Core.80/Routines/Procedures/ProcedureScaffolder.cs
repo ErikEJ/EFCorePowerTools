@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -82,7 +82,7 @@ namespace RevEng.Core.Routines.Procedures
                     path = scaffolderOptions.UseSchemaFolders
                                 ? Path.Combine(routine.Schema, $"{typeName}.cs")
                                 : $"{typeName}.cs";
-#if CORE90
+#if CORE90 || CORE100
                     result.AdditionalFiles.Add(new ScaffoldedFile(path, classContent));
 #else
                     result.AdditionalFiles.Add(new ScaffoldedFile
@@ -99,7 +99,7 @@ namespace RevEng.Core.Routines.Procedures
             if (!string.IsNullOrEmpty(dbContextInterface))
             {
                 path = Path.GetFullPath(Path.Combine(scaffolderOptions.ContextDir, $"I{scaffolderOptions.ContextName}{FileNameSuffix}.cs"));
-#if CORE90
+#if CORE90 || CORE100
                 result.AdditionalFiles.Add(new ScaffoldedFile(path, dbContextInterface));
 #else
                 result.AdditionalFiles.Add(new ScaffoldedFile
@@ -113,7 +113,7 @@ namespace RevEng.Core.Routines.Procedures
             var dbContext = WriteDbContext(scaffolderOptions, model, schemas.Distinct().ToList());
 
             path = Path.GetFullPath(Path.Combine(scaffolderOptions.ContextDir, scaffolderOptions.ContextName + $"{FileNameSuffix}.cs"));
-#if CORE90
+#if CORE90 || CORE100
             result.ContextFile = new ScaffoldedFile(path, dbContext);
 #else
             result.ContextFile = new ScaffoldedFile

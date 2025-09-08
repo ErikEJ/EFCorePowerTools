@@ -1,10 +1,14 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+#if !CORE100
 using EFCore.Snowflake.Design.Internal;
 using EntityFrameworkCore.Scaffolding.Handlebars;
+#endif
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
+#if !CORE100
 using FirebirdSql.EntityFrameworkCore.Firebird.Design.Internal;
+#endif
 using Humanizer.Inflections;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
@@ -18,11 +22,15 @@ using Microsoft.EntityFrameworkCore.SqlServer.Scaffolding.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
+#if !CORE100
 using Oracle.EntityFrameworkCore.Design.Internal;
 using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
+#endif
 using RevEng.Common;
 using RevEng.Core.Routines.Extensions;
+#if !CORE100
 using SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime.Design;
+#endif
 
 namespace RevEng.Core
 {
@@ -65,8 +73,10 @@ namespace RevEng.Core
                 serviceCollection.AddSingleton<ICandidateNamingService>(provider => new ReplacingCandidateNamingService(options.UsePrefixNavigationNaming, options.CustomReplacers, options.PreserveCasingWithRegex));
             }
 
+#if !CORE100
             if (options.UseHandleBars)
             {
+
                 serviceCollection.AddHandlebarsScaffolding(hbOptions =>
                 {
                     hbOptions.ReverseEngineerOptions = Microsoft.EntityFrameworkCore.Design.ReverseEngineerOptions.DbContextAndEntities;
@@ -75,6 +85,7 @@ namespace RevEng.Core
                 serviceCollection.AddSingleton<ITemplateFileService>(provider
                     => new CustomTemplateFileService(options.OptionsPath));
             }
+#endif
 
             if (options.UseInflector || options.UseLegacyPluralizer)
             {
@@ -106,7 +117,7 @@ namespace RevEng.Core
                     AddPostgresProviderServices(serviceCollection, options);
 
                     break;
-
+#if !CORE100
                 case DatabaseType.Mysql:
                     var mysqlProvider = new MySqlDesignTimeServices();
                     mysqlProvider.ConfigureDesignTimeServices(serviceCollection);
@@ -118,7 +129,6 @@ namespace RevEng.Core
                     }
 
                     break;
-
                 case DatabaseType.Oracle:
                     var oracleProvider = new OracleDesignTimeServices();
                     oracleProvider.ConfigureDesignTimeServices(serviceCollection);
@@ -133,17 +143,19 @@ namespace RevEng.Core
                     var snowflakeProvider = new SnowflakeDesignTimeServices();
                     snowflakeProvider.ConfigureDesignTimeServices(serviceCollection);
                     break;
+#endif
 
                 case DatabaseType.SQLite:
                     var sqliteProvider = new SqliteDesignTimeServices();
                     sqliteProvider.ConfigureDesignTimeServices(serviceCollection);
 
+#if !CORE100
                     if (options.UseNodaTime)
                     {
                         var nodaTime = new SqliteNodaTimeDesignTimeServices();
                         nodaTime.ConfigureDesignTimeServices(serviceCollection);
                     }
-
+#endif
                     break;
 
                 default:
@@ -224,12 +236,13 @@ namespace RevEng.Core
                 hierachyId.ConfigureDesignTimeServices(serviceCollection);
             }
 
+#if !CORE100
             if (options.UseNodaTime)
             {
                 var nodaTime = new SqlServerNodaTimeDesignTimeServices();
                 nodaTime.ConfigureDesignTimeServices(serviceCollection);
             }
-
+#endif
             serviceCollection.AddSingleton<IRelationalTypeMappingSource, SqlServerTypeMappingSource>(
                 provider => new SqlServerTypeMappingSource(
                     provider.GetService<TypeMappingSourceDependencies>(),
