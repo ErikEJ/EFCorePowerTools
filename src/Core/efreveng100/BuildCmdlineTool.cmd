@@ -26,6 +26,9 @@ rd bin\Release\net10.0\x64\publish\runtimes\linux-mips64 /Q /S
 rd bin\Release\net10.0\x64\publish\runtimes\linux-musl-arm /Q /S
 rd bin\Release\net10.0\x64\publish\runtimes\linux-musl-arm64 /Q /S
 rd bin\Release\net10.0\x64\publish\runtimes\linux-musl-s390x /Q /S
+rd bin\Release\net10.0\x64\publish\runtimes\linux-musl-s390x /Q /S
+rd bin\Release\net10.0\x64\publish\runtimes\linux-musl-riscv64 /Q /S
+rd bin\Release\net10.0\x64\publish\runtimes\linux-riscv64 /Q /S
 rd bin\Release\net10.0\x64\publish\runtimes\linux-musl-x64 /Q /S
 rd bin\Release\net10.0\x64\publish\runtimes\linux-ppc64le /Q /S
 rd bin\Release\net10.0\x64\publish\runtimes\linux-s390x /Q /S
