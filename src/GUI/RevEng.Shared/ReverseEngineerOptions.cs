@@ -101,7 +101,7 @@ namespace RevEng.Common
 
         public bool PreserveCasingWithRegex { get; set; } = true;
 
-        public bool UseDateOnlyTimeOnly { get; set; }
+        public bool UseDateOnlyTimeOnly { get; set; } = true;
 
         public string T4TemplatePath { get; set; }
 
