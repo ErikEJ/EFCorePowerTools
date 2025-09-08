@@ -241,13 +241,10 @@ namespace RevEng.Common.Cli
                     },
                 };
 
-                if (codeGenerationMode == CodeGenerationMode.EFCore8)
+                config.TypeMappings = new TypeMappings
                 {
-                    config.TypeMappings = new TypeMappings
-                    {
-                        UseDateOnlyTimeOnly = true,
-                    };
-                }
+                    UseDateOnlyTimeOnly = true,
+                };
             }
 
             if (config.CodeGeneration.RefreshObjectLists)
