@@ -197,11 +197,6 @@ namespace EFCorePowerTools.Extensions
                 version = new Version(2, 0);
             }
 
-            if (await project.IsNet60OrHigherAsync())
-            {
-                version = new Version(6, 0);
-            }
-
             if (await project.IsNet80Async())
             {
                 version = new Version(8, 0);
@@ -223,7 +218,7 @@ namespace EFCorePowerTools.Extensions
         public static async Task<bool> CanUseReverseEngineerAsync(this Project project)
         {
             return project.IsCSharpProject()
-                && (await project.IsNet60OrHigherAsync() || await project.IsNetStandardAsync());
+                && (await project.IsNet80OrHigherAsync() || await project.IsNetStandardAsync());
         }
 
         public static bool IsCSharpProject(this Project project)
@@ -274,14 +269,13 @@ namespace EFCorePowerTools.Extensions
                 || (project.IsCSharpProjectPlain() && !string.IsNullOrEmpty(await project.GetAttributeAsync("SqlServerVersion")));
         }
 
-        public static async Task<bool> IsNet60OrHigherAsync(this Project project)
+        public static async Task<bool> IsNet80OrHigherAsync(this Project project)
         {
             var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
 
-            return IsNet60(targetFrameworkMonikers)
-                || IsNet70(targetFrameworkMonikers)
-                || IsNet80(targetFrameworkMonikers)
-                || IsNet90(targetFrameworkMonikers);
+            return IsNet80(targetFrameworkMonikers)
+                || IsNet90(targetFrameworkMonikers)
+                || IsNet100(targetFrameworkMonikers);
         }
 
         public static async Task<bool> IsNetStandardAsync(this Project project)
@@ -480,16 +474,6 @@ namespace EFCorePowerTools.Extensions
             var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
 
             return IsNet100(targetFrameworkMonikers);
-        }
-
-        private static bool IsNet60(string targetFrameworkMonikers)
-        {
-            return FrameworkCheck(targetFrameworkMonikers, "6");
-        }
-
-        private static bool IsNet70(string targetFrameworkMonikers)
-        {
-            return FrameworkCheck(targetFrameworkMonikers, "7");
         }
 
         private static bool IsNet80(string targetFrameworkMonikers)

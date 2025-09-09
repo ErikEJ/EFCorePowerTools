@@ -605,7 +605,7 @@ namespace EFCorePowerTools
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidSqlBuild ||
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbCompare)
             {
-                menuCommand.Visible = await project.IsNet60OrHigherAsync()
+                menuCommand.Visible = await project.IsNet80OrHigherAsync()
                     && await project.IsInstalledAsync(new NuGetPackage { PackageId = "Microsoft.EntityFrameworkCore" });
             }
         }
