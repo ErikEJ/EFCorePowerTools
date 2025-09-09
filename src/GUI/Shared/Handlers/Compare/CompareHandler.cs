@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -50,7 +50,7 @@ namespace EFCorePowerTools.Handlers.Compare
                     return;
                 }
 
-                if (!await project.IsNet60OrHigherAsync())
+                if (!await project.IsNet80OrHigherAsync())
                 {
                     VSHelper.ShowError($"{SharedLocale.SupportedFramework}: {await project.GetAttributeAsync("TargetFrameworkMoniker")}");
                     return;
