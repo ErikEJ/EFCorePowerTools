@@ -1,10 +1,10 @@
 ﻿{
-   "CodeGenerationMode": 4,
+   "CodeGenerationMode": 6,
    "ContextClassName": "ChinookContext",
    "ContextNamespace": null,
    "FilterSchemas": false,
-   "IncludeConnectionString": true,
-   "MinimumProductVersion": "2.6.0",
+   "IncludeConnectionString": false,
+   "MinimumProductVersion": "2.6.1130",
    "ModelNamespace": null,
    "OutputContextPath": null,
    "OutputPath": "Models",
