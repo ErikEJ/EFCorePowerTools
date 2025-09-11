@@ -17,6 +17,11 @@ namespace RevEng.Common.Cli
                 t4Version = "800";
             }
 
+            if (codeGenerationMode == CodeGenerationMode.EFCore10)
+            {
+                t4Version = "1000";
+            }
+
             if (useEntityTypeSplitting)
             {
                 t4Version += "_Split";
