@@ -192,6 +192,10 @@
       <Link>T4_1000.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="..\lib\T4_1000_Split.zip">
+      <Link>T4_1000_Split.zip</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <None Include="Westwind.WPF.Statusbar\LICENSE.md" />
     <None Include="Westwind.WPF.Statusbar\README.md" />
     <Resource Include="Resources\TableWarning.png" />
