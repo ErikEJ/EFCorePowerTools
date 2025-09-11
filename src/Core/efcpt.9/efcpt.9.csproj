@@ -23,7 +23,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <DefineConstants>CORE80;CORE90</DefineConstants>
+    <DefineConstants>CORE90</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

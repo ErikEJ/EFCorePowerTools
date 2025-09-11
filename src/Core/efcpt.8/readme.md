@@ -4,13 +4,19 @@ Cross platform command line tool for advanced EF Core reverse engineering. See t
 
 ## Getting started
 
-The tool runs on any operating system with the .NET 6.0 / .NET 8.0 runtime installed. 
+The tool runs on any operating system with the .NET 10.0 / .NET 8.0 runtime installed. 
 
 For a quick intro you can watch [this 2 minute demo video](https://www.youtube.com/watch?v=mtz-O6VXAc0&t=56s).
 
 And there is a longer [30 minute demo here](https://www.youtube.com/watch?v=fwR59ep-2-8).
 
 ### Installing the tool
+
+EF Core 10:
+
+```bash
+dotnet tool install ErikEJ.EFCorePowerTools.Cli -g --version 10.*
+```
 
 EF Core 8:
 
@@ -22,12 +28,6 @@ EF Core 9:
 
 ```bash
 dotnet tool install ErikEJ.EFCorePowerTools.Cli -g --version 9.*
-```
-
-EF Core 6:
-
-```bash
-dotnet tool install ErikEJ.EFCorePowerTools.Cli -g --version 6.*
 ```
 
 ### Running the tool 
