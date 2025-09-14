@@ -73,7 +73,6 @@ namespace EFCorePowerTools.Wizard
                 var onlyGenerate = wea.OnlyGenerate;
                 var forceEdit = wea.ForceEdit;
 
-                // When generating we'll initialize the page to known state
                 wizardViewModel.GenerateStatus = string.Empty;
                 PreviousButton.IsEnabled = false;
                 FinishButton.IsEnabled = false;
@@ -81,8 +80,9 @@ namespace EFCorePowerTools.Wizard
                 wizardViewModel.Bll.GetModelOptionsPostDialog(options, project.Name, wea, wizardViewModel.Model);
                 var errorMessage = string.Empty;
 
-                // Use async operation with proper UI feedback
-                ThreadHelper.JoinableTaskFactory.Run(async () =>
+                // CHANGED: Replaced Run(...) (blocking UI thread) with RunAsync(...) (non-blocking).
+#pragma warning disable VSSDK007 // ThreadHelper.JoinableTaskFactory.RunAsync
+                ThreadHelper.JoinableTaskFactory.RunAsync(async () =>
                 {
                     await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -126,7 +126,6 @@ namespace EFCorePowerTools.Wizard
                             wizardViewModel.GenerateStatus = $"❌ {errorMessage}";
                         }
 
-                        // Return focus to the wizard and the Finish button
                         await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
                         var win = Window.GetWindow(this);
                         if (win != null)
@@ -135,20 +134,22 @@ namespace EFCorePowerTools.Wizard
                             win.Focus();
                         }
 
-                        if (FinishButton != null && FinishButton.IsEnabled)
+                        if (FinishButton != null)
                         {
-                            // Ensure Enter triggers Finish
-                            FinishButton.IsDefault = true; // already set in XAML, but safe to enforce
+                            FinishButton.IsEnabled = true;
+                            FinishButton.IsDefault = true;
                             FinishButton.Focus();
                             Keyboard.Focus(FinishButton);
                         }
+
+                        PreviousButton.IsEnabled = true;
                     }
                     finally
                     {
-                        // Hide busy overlay
                         busyOverlay.IsBusy = false;
                     }
-                });
+                }).FileAndForget("EFCorePowerTools/Wiz4_StatusDialog/Generation");
+#pragma warning restore VSSDK007 // ThreadHelper.JoinableTaskFactory.RunAsync
             }
         }
 
