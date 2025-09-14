@@ -894,7 +894,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 new Contracts.ViewModels.TemplateTypeItem { Key = options.SelectedHandlebarsLanguage },
                 allowedTemplates);
 
-            if (!wizardArgs.IsInvokedByWizard)
+            if (wizardArgs != null && !wizardArgs.IsInvokedByWizard)
             {
                 await VS.StatusBar.ClearAsync();
             }
@@ -1014,7 +1014,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 File.WriteAllText(optionsPath, options.Write(), Encoding.UTF8);
 
-                await project.AddExistingFilesAsync(optionsPath);
+                await project.AddExistingFilesAsync(new List<string> { optionsPath }.ToArray());
             }
 
             if (renamingOptions?.Item1 != null && !File.Exists(renamingOptions.Item2 + ".ignore") && renamingOptions.Item1.Count > 0)
@@ -1026,7 +1026,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 }
 
                 File.WriteAllText(renamingOptions.Item2, CustomNameOptionsExtensions.Write(renamingOptions.Item1), Encoding.UTF8);
-                await project.AddExistingFilesAsync(renamingOptions.Item2);
+                await project.AddExistingFilesAsync(new List<string> { renamingOptions.Item2 }.ToArray());
             }
         }
     }
