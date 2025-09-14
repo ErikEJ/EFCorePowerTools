@@ -18,6 +18,7 @@ using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 using Microsoft.EntityFrameworkCore.Sqlite.Design.Internal;
 using Microsoft.EntityFrameworkCore.SqlServer.Design.Internal;
+using Microsoft.EntityFrameworkCore.SqlServer.Infrastructure.Internal;
 using Microsoft.EntityFrameworkCore.SqlServer.Scaffolding.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
@@ -241,12 +242,20 @@ namespace RevEng.Core
                 var nodaTime = new SqlServerNodaTimeDesignTimeServices();
                 nodaTime.ConfigureDesignTimeServices(serviceCollection);
             }
-#endif
+
             serviceCollection.AddSingleton<IRelationalTypeMappingSource, SqlServerTypeMappingSource>(
                 provider => new SqlServerTypeMappingSource(
                     provider.GetService<TypeMappingSourceDependencies>(),
                     provider.GetService<RelationalTypeMappingSourceDependencies>(),
                     options.UseDateOnlyTimeOnly));
+#else
+            serviceCollection.AddSingleton<IRelationalTypeMappingSource, SqlServerTypeMappingSource>(
+                provider => new SqlServerTypeMappingSource(
+                    provider.GetService<TypeMappingSourceDependencies>(),
+                    provider.GetService<RelationalTypeMappingSourceDependencies>(),
+                    provider.GetService<SqlServerSingletonOptions>(),
+                    options.UseDateOnlyTimeOnly));
+#endif
         }
     }
 }
