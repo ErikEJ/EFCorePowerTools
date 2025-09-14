@@ -19,10 +19,8 @@ using EFCorePowerTools.Helpers;
 using EFCorePowerTools.Locales;
 using EFCorePowerTools.Wizard;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
 using NuGet.Versioning;
 using RevEng.Common;
 
@@ -503,40 +501,33 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             if ((options.SelectedToBeGenerated == 0 || options.SelectedToBeGenerated == 1)
                 && AdvancedOptions.Instance.OpenGeneratedDbContext && !onlyGenerate)
             {
-                var readmeName = "PowerToolsReadMe.md";
+                var readmeName = "PowerToolsReadMe.md"; // Align with non-wizard handler pattern
                 var template = File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), readmeName), Encoding.UTF8);
 
-                if (packages.Any())
-                {
-                    finalText = ReverseEngineerHelper.GetReadMeText(options, template, packages);
-                }
-                else
-                {
-                    finalText = ReverseEngineerHelper.GetReadMeText(options, template);
-                }
+                finalText = packages.Any()
+                    ? ReverseEngineerHelper.GetReadMeText(options, template, packages)
+                    : ReverseEngineerHelper.GetReadMeText(options, template);
 
                 readmePath = Path.Combine(Path.GetTempPath(), readmeName);
-
                 finalText = ReverseEngineerHelper.AddResultToFinalText(finalText, revEngResult);
-
                 File.WriteAllText(readmePath, finalText, Encoding.UTF8);
 
+                // Use same simple open pattern as ReverseEngineerHandler to avoid potential UI hang
                 if (revEngResult.HasIssues)
                 {
                     if (!string.IsNullOrEmpty(revEngResult.ContextFilePath))
                     {
-                        await OpenDocumentAsync(revEngResult.ContextFilePath, preview: false, isCalledByWizard);
+                        await VS.Documents.OpenAsync(revEngResult.ContextFilePath);
                     }
 
-                    await OpenDocumentAsync(readmePath, preview: true, isCalledByWizard);
+                    await VS.Documents.OpenInPreviewTabAsync(readmePath);
                 }
                 else
                 {
-                    await OpenDocumentAsync(readmePath, preview: true, isCalledByWizard);
-
+                    await VS.Documents.OpenInPreviewTabAsync(readmePath);
                     if (!string.IsNullOrEmpty(revEngResult.ContextFilePath))
                     {
-                        await OpenDocumentAsync(revEngResult.ContextFilePath, preview: false, isCalledByWizard);
+                        await VS.Documents.OpenAsync(revEngResult.ContextFilePath);
                     }
                 }
             }
@@ -825,7 +816,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 await VS.StatusBar.ClearAsync();
             }
 
-            // If the wizard is driving then it's implementation of the interface will be used.
             var ptd = wizardArgs?.PickTablesDialog ?? package.GetView<IPickTablesDialog>();
             ptd.AddTables(predefinedTables, namingOptionsAndPath.Item1)
                .PreselectTables(preselectedTables)
@@ -844,11 +834,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         {
             var isInvokedByWizard = wizardArgs.PickTablesDialogComplete;
 
-            // If this is being invoked by wizard then get fresh list of selected files for processing
-            // (developer can select/deselect other objects).
             if (isInvokedByWizard)
             {
-                // If the wizard is driving then it's implementation of the interface will be used.
                 var ptd = wizardArgs.PickTablesDialog ?? package.GetView<IPickTablesDialog>();
                 var pickTablesResult = ptd.ShowAndAwaitUserResponse(true);
 
@@ -898,8 +885,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 T4TemplatePath = options.T4TemplatePath,
             };
 
-            // If the wizard is driving then it's implementation of the interface will be used.
-            var modelDialog = wizardArgs.ModelingOptionsDialog ?? package.GetView<IModelingOptionsDialog>();
+            var modelDialog = wizardArgs?.ModelingOptionsDialog ?? package.GetView<IModelingOptionsDialog>();
             modelDialog.ApplyPresets(presets);
 
             var allowedTemplates = reverseEngineerHelper.CalculateAllowedTemplates(options.CodeGenerationMode);
@@ -908,7 +894,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 new Contracts.ViewModels.TemplateTypeItem { Key = options.SelectedHandlebarsLanguage },
                 allowedTemplates);
 
-            if (!wizardArgs.IsInvokedByWizard)
+            if (wizardArgs != null && !wizardArgs.IsInvokedByWizard)
             {
                 await VS.StatusBar.ClearAsync();
             }
@@ -1041,43 +1027,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 File.WriteAllText(renamingOptions.Item2, CustomNameOptionsExtensions.Write(renamingOptions.Item1), Encoding.UTF8);
                 await project.AddExistingFilesAsync(new List<string> { renamingOptions.Item2 }.ToArray());
-            }
-        }
-
-        // Helper to open documents with consistent provisional/no-activate behavior when wizard is driving
-        private static async Task OpenDocumentAsync(string path, bool preview, bool isCalledByWizard)
-        {
-            if (string.IsNullOrEmpty(path))
-            {
-                return;
-            }
-
-            if (isCalledByWizard)
-            {
-                using (new NewDocumentStateScope(
-                    __VSNEWDOCUMENTSTATE.NDS_NoActivate | __VSNEWDOCUMENTSTATE.NDS_Provisional,
-                    VSConstants.NewDocumentStateReason.Navigation))
-                {
-                    if (preview)
-                    {
-                        await VS.Documents.OpenInPreviewTabAsync(path);
-                    }
-                    else
-                    {
-                        await VS.Documents.OpenAsync(path);
-                    }
-                }
-            }
-            else
-            {
-                if (preview)
-                {
-                    await VS.Documents.OpenInPreviewTabAsync(path);
-                }
-                else
-                {
-                    await VS.Documents.OpenAsync(path);
-                }
             }
         }
     }
