@@ -32,6 +32,9 @@ rd bin\Release\net10.0\x64\publish\runtimes\maccatalyst-x64 /Q /S
 rd bin\Release\net10.0\x64\publish\runtimes\osx-arm64 /Q /S 
 rd bin\Release\net10.0\x64\publish\runtimes\osx-x64 /Q /S
 rd bin\Release\net10.0\x64\publish\runtimes\unix /Q /S
+rd bin\Release\net10.0\x64\publish\runtimes\win-arm /Q /S
+rd bin\Release\net10.0\x64\publish\runtimes\win-arm64 /Q /S
+rd bin\Release\net10.0\x64\publish\runtimes\win-x86 /Q /S
 
 "C:\Program Files\7-Zip\7z.exe" -mm=Deflate -mfb=258 -mpass=15 a efreveng100.exe.zip .\bin\Release\net10.0\x64\publish\*
 
