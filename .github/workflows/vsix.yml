@@ -137,7 +137,7 @@ jobs:
       if: github.ref == 'refs/heads/master' && github.repository_owner == 'erikej' && (github.event_name == 'push' ||  github.event_name == 'workflow_dispatch')
       run: |
         $ErrorActionPreference='Stop'
-        (new-object Net.WebClient).DownloadString("https://raw.github.com/madskristensen/ExtensionScripts/master/AppVeyor/vsix.ps1") | iex
+        (new-object Net.WebClient).DownloadString("https://raw.githubusercontent.com/madskristensen/ExtensionScripts/master/AppVeyor/vsix.ps1") | iex
         Vsix-PublishToGallery 
       shell: pwsh
       continue-on-error: false
