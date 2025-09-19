@@ -28,7 +28,7 @@ namespace #NAMESPACE#
             }
             else
             {
-                await db.Database.ExecuteSqlRawAsync(sql, parameters, cancellationToken);
+                await db.Database.ExecuteSqlRawAsync(sql, parameters, cancellationToken.Value);
                 return default;
             }
         }
