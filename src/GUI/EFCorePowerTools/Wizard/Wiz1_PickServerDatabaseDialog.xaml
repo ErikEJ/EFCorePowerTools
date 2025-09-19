@@ -9,7 +9,7 @@
     xmlns:statusbar="clr-namespace:Westwind.Wpf.Statusbar"
     xmlns:viewModels="clr-namespace:EFCorePowerTools.ViewModels"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+    xmlns:xctk="clr-namespace:DropDownButtonLib.Controls;assembly=DropDownButtonLib"
     KeepAlive="True"
     WindowTitle="{x:Static locale:ReverseEngineerLocale.ChooseDatabaseConnection}">
 
