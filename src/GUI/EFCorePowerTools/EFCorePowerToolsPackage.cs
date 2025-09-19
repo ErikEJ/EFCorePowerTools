@@ -316,7 +316,7 @@ namespace EFCorePowerTools
                 }
 
                 typeof(Microsoft.Xaml.Behaviors.Behavior).ToString();
-                typeof(Xceed.Wpf.Toolkit.SplitButton).ToString();
+                typeof(DropDownButtonLib.Controls.DropDownButton).ToString();
 
                 extensionServices = CreateServiceProvider();
 
