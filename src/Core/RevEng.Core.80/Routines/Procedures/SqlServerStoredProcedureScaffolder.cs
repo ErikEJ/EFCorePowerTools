@@ -167,8 +167,8 @@ namespace RevEng.Core.Routines.Procedures
                         else
                         {
                             Sb.AppendLine(useAsyncCalls
-                                ? $"var _ = await _context.SqlQueryToListAsync<{returnClass}>({fullExec});"
-                                : $"var _ = _context.SqlQueryToList<{returnClass}>({fullExec});");
+                                ? $"var _ = await _context.SqlQueryAsync<{returnClass}>({fullExec});"
+                                : $"var _ = _context.SqlQuery<{returnClass}>({fullExec});");
                         }
                     }
 
@@ -235,6 +235,11 @@ namespace RevEng.Core.Routines.Procedures
                 else
                 {
                     returnType = $"List<{returnClass}>";
+                }
+
+                if (useNullableReferences && !returnType.EndsWith('?'))
+                {
+                    returnType += '?';
                 }
             }
 
