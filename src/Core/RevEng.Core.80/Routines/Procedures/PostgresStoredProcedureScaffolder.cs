@@ -194,6 +194,11 @@ namespace RevEng.Core.Routines.Procedures
                 returnType = $"List<{returnClass}>";
             }
 
+            if (useNullableReferences && !returnType.EndsWith('?'))
+            {
+                returnType += '?';
+            }
+
             returnType = useAsyncCalls ? $"Task<{returnType}>" : returnType;
 
             var lineStart = signatureOnly ? string.Empty : $"public virtual {(useAsyncCalls ? "async " : string.Empty)}";
