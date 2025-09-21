@@ -920,20 +920,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             WizardEventArgs wizardArgs = null,
             ModelingOptionsModel modelingOptionsResult = null)
         {
-            //var isHandleBarsLanguage = modelingOptionsResult.Payload.SelectedHandlebarsLanguage == 0
-            //  || modelingOptionsResult.Payload.SelectedHandlebarsLanguage == 1;
-            //options.UseHandleBars = modelingOptionsResult.Payload.UseHandlebars && isHandleBarsLanguage;
-            //options.SelectedHandlebarsLanguage = modelingOptionsResult.Payload.SelectedHandlebarsLanguage;
-
-            //options.UseT4 = modelingOptionsResult.Payload.UseHandlebars && !isHandleBarsLanguage;
-
-            //if (modelingOptionsResult.Payload.UseHandlebars
-            //    && modelingOptionsResult.Payload.SelectedHandlebarsLanguage == 4)
-            //{
-            //    options.UseT4 = false;
-            //    options.UseT4Split = true;
-            //}
-
             var isHandleBarsLanguage = modelingOptionsResult.SelectedHandlebarsLanguage == 0
                 || modelingOptionsResult.SelectedHandlebarsLanguage == 1;
             options.UseHandleBars = modelingOptionsResult.UseHandlebars && isHandleBarsLanguage;
