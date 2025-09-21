@@ -732,6 +732,24 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 psd.PublishUiHint(options.UiHint);
             }
 
+            var pickDataSourceResult = psd.ShowAndAwaitUserResponse(true);
+            if (!pickDataSourceResult.ClosedByOK)
+            {
+                return false;
+            }
+
+            options.CodeGenerationMode = pickDataSourceResult.Payload.CodeGenerationMode;
+            options.FilterSchemas = pickDataSourceResult.Payload.FilterSchemas;
+            options.Schemas = options.FilterSchemas ? pickDataSourceResult.Payload.Schemas?.ToList() : null;
+            options.UiHint = pickDataSourceResult.Payload.UiHint;
+            options.Dacpac = pickDataSourceResult.Payload.Connection?.FilePath;
+
+            if (pickDataSourceResult.Payload.Connection != null)
+            {
+                options.ConnectionString = pickDataSourceResult.Payload.Connection.ConnectionString;
+                options.DatabaseType = pickDataSourceResult.Payload.Connection.DatabaseType;
+            }
+
             return true;
         }
 
@@ -742,28 +760,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             try
             {
-                // Issue #3101 - 2025.09.15, Moved this code out of wizard page 1. When page 2 loads it will get saved
-                //               settings so that they will be persisted properly.  In this bug, the CodeGenerationMode was not
-                //               being persisted
-                if (wizardArgs.IsInvokedByWizard)
-                {
-                    var psd = wizardArgs?.PickServerDatabaseDialog ?? package.GetView<IPickServerDatabaseDialog>();
-
-                    var pickDataSourceResult = psd.ShowAndAwaitUserResponse(true);
-
-                    options.CodeGenerationMode = pickDataSourceResult.Payload.CodeGenerationMode;
-                    options.FilterSchemas = pickDataSourceResult.Payload.FilterSchemas;
-                    options.Schemas = options.FilterSchemas ? pickDataSourceResult.Payload.Schemas?.ToList() : null;
-                    options.UiHint = pickDataSourceResult.Payload.UiHint;
-                    options.Dacpac = pickDataSourceResult.Payload.Connection?.FilePath;
-
-                    if (pickDataSourceResult.Payload.Connection != null)
-                    {
-                        options.ConnectionString = pickDataSourceResult.Payload.Connection.ConnectionString;
-                        options.DatabaseType = pickDataSourceResult.Payload.Connection.DatabaseType;
-                    }
-                }
-
                 if (!wizardArgs.IsInvokedByWizard)
                 {
                     await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
