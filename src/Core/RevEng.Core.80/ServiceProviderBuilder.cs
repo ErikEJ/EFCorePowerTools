@@ -194,6 +194,10 @@ namespace RevEng.Core
             var provider = new SqlServerDesignTimeServices();
             provider.ConfigureDesignTimeServices(serviceCollection);
 
+#if CORE100
+            serviceCollection.AddSingleton(new SqlServerSingletonOptions());
+#endif
+
             if (options.DatabaseType == DatabaseType.SQLServer)
             {
                 serviceCollection.AddSingleton(options);
