@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
@@ -286,6 +286,22 @@ GO
             Assert.AreEqual(2, dbModel.Tables.Count());
             Assert.AreEqual(1, dbModel.Tables.Count(x => x.Schema == "mat"));
             Assert.AreEqual(1, dbModel.Tables.Count(x => x.Schema == "mat2"));
+        }
+
+        
+        [Test]
+        [Ignore("TBD - need to investigate")]
+        public void Issue2263SprocWithCte()
+        {
+            var factory = new SqlServerDacpacStoredProcedureModelFactory(
+                new SqlServerDacpacDatabaseModelFactoryOptions{ MergeDacpacs = false });
+            var options = new ModuleModelFactoryOptions { FullModel = true, Modules = new List<string>() };
+
+            // Act
+            var dbModel = factory.Create(TestPath("abc.dacpac"), options);
+
+            // Assert
+            Assert.AreEqual(1, dbModel.Routines.Count());
         }
 
         [Test]

@@ -113,13 +113,6 @@ namespace EFCorePowerTools
             });
         }
 
-        internal async Task<TService> GetServiceAsync<TService>()
-        {
-            var service = extensionServices.GetService<TService>();
-            await Task.Yield();
-            return service;
-        }
-
         internal EnvDTE80.DTE2 Dte2()
         {
             ThreadHelper.ThrowIfNotOnUIThread();
