@@ -13,11 +13,17 @@ on:
     branches:
       - '*'
 
+permissions:
+  id-token: write   # required for GitHub OIDC
+
 env:
   VERSION: ${{ github.run_number }}
 
 jobs:
   build:
+    permissions:
+      id-token: write  # enable GitHub OIDC token issuance for this job
+
     runs-on: ubuntu-latest
 
     steps:
@@ -52,6 +58,12 @@ jobs:
       run: dotnet test src/Core/NUnitTestCore/NUnitTestCore.csproj
       continue-on-error: false
 
+    - name: NuGet login (OIDC ? temp API key)
+      uses: NuGet/login@v1
+      id: login
+      with:
+          user: ${{ secrets.NUGET_USER }}
+
     - name: Publish NuGet
       if: startsWith(github.ref, 'refs/heads/master')
-      run: dotnet nuget push **\erikej.*.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key ${{ secrets.NUGET }} --skip-duplicate
+      run: dotnet nuget push **\${{ secrets.NUGET_USER }}.*.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --skip-duplicate
