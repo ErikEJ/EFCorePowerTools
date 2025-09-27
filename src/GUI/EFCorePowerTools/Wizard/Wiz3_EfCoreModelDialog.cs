@@ -44,12 +44,16 @@ namespace EFCorePowerTools.Wizard
 
             setTemplateTypes = (templateType, templateTypes) =>
             {
-                foreach (var item in templateTypes)
+                // ensure that subsequent navigations do not duplicate items
+                if (viewModel.TemplateTypeList.Count == 0)
                 {
-                    viewModel.TemplateTypeList.Add(item);
-                }
+                    foreach (var item in templateTypes)
+                    {
+                        viewModel.TemplateTypeList.Add(item);
+                    }
 
-                viewModel.SelectedTemplateType = templateType.Key;
+                    viewModel.SelectedTemplateType = templateType.Key;
+                }
             };
 
             InitializeComponent();
@@ -86,6 +90,7 @@ namespace EFCorePowerTools.Wizard
                         return result;
                     });
 
+                    wizardViewModel.IsPage3Initialized = true;
                     NextButton.IsEnabled = isSuccessful;
                 });
 
@@ -98,9 +103,41 @@ namespace EFCorePowerTools.Wizard
             }
         }
 
+        private void NextButton_Click(object sender, RoutedEventArgs e)
+        {
+            ShowAndAwaitUserResponse(true);
+
+            // Go to next wizard page
+            if (wizardViewModel.IsPage3Initialized && !IsPageDirty)
+            {
+                NavigationService.GoForward();
+            }
+            else
+            {
+                var wizardPage4 = new Wiz4_StatusDialog((WizardDataViewModel)DataContext, wizardView);
+                wizardPage4.Return += WizardPage_Return;
+                NavigationService?.Navigate(wizardPage4);
+                Statusbar.Status.ShowStatus(ReverseEngineerLocale.StatusbarGeneratingFiles);
+                GenerateFiles_Click(sender, e);
+            }
+        }
+
         private void GenerateFiles_Click(object sender, RoutedEventArgs e)
         {
             var wea = wizardViewModel.WizardEventArgs;
+            var vm = wizardViewModel;
+
+            // Update the selected handlebars language combo index - it'll be referenced on wiz page 4
+            // and used if use "Customize code using templates" [UseHandlebars] checkbox is selected
+            wea.Options.SelectedHandlebarsLanguage = wizardViewModel.Model.SelectedHandlebarsLanguage;
+            var isHandleBarsLanguage = vm.Model.SelectedHandlebarsLanguage == 0 || vm.Model.SelectedHandlebarsLanguage == 1;
+            wea.Options.UseHandleBars = vm.Model.UseHandlebars && isHandleBarsLanguage;
+            wea.Options.UseT4 = vm.Model.UseHandlebars && !isHandleBarsLanguage;
+            wea.Options.UseT4Split = vm.Model.UseHandlebars && vm.Model.SelectedHandlebarsLanguage == 4;
+            if (wea.Options.UseT4Split)
+            {
+                wea.Options.UseT4 = false;
+            }
 
             // Ensure that userOptions hint matches the options hint
             if (wea.UserOptions == null)
@@ -136,26 +173,6 @@ namespace EFCorePowerTools.Wizard
             this.applyPresets(wizardViewModel.Model);
 
             Telemetry.TrackEvent("PowerTools.ReverseEngineer");
-        }
-
-        private void NextButton_Click(object sender, RoutedEventArgs e)
-        {
-            ShowAndAwaitUserResponse(true);
-
-            // Go to next wizard page
-            if (wizardViewModel.IsPage3Initialized && !IsPageDirty)
-            {
-                NavigationService.GoForward();
-            }
-            else
-            {
-                wizardViewModel.IsPage3Initialized = true;
-                var wizardPage4 = new Wiz4_StatusDialog((WizardDataViewModel)DataContext, wizardView);
-                wizardPage4.Return += WizardPage_Return;
-                NavigationService?.Navigate(wizardPage4);
-                Statusbar.Status.ShowStatus(ReverseEngineerLocale.StatusbarGeneratingFiles);
-                GenerateFiles_Click(sender, e);
-            }
         }
 
 #pragma warning disable SA1202 // Elements should be ordered by access
