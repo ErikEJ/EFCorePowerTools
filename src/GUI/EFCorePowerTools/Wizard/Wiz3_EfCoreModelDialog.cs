@@ -132,9 +132,8 @@ namespace EFCorePowerTools.Wizard
             wea.Options.SelectedHandlebarsLanguage = wizardViewModel.Model.SelectedHandlebarsLanguage;
             var isHandleBarsLanguage = vm.Model.SelectedHandlebarsLanguage == 0 || vm.Model.SelectedHandlebarsLanguage == 1;
             wea.Options.UseHandleBars = vm.Model.UseHandlebars && isHandleBarsLanguage;
-            // Removed redundant assignment to SelectedHandlebarsLanguage
             wea.Options.UseT4 = vm.Model.UseHandlebars && !isHandleBarsLanguage;
-            wea.Options.UseT4Split = vm.Model.UseHandlebars && vm.Model.SelectedHandlebarsLanguage == 4;  // T4 (Split DbContext)
+            wea.Options.UseT4Split = vm.Model.UseHandlebars && vm.Model.SelectedHandlebarsLanguage == 4;
             if (wea.Options.UseT4Split)
             {
                 wea.Options.UseT4 = false;
@@ -175,8 +174,6 @@ namespace EFCorePowerTools.Wizard
 
             Telemetry.TrackEvent("PowerTools.ReverseEngineer");
         }
-
-
 
 #pragma warning disable SA1202 // Elements should be ordered by access
         public (bool ClosedByOK, ModelingOptionsModel Payload) ShowAndAwaitUserResponse(bool modal)
