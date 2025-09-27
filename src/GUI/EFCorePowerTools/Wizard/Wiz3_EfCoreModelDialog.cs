@@ -132,7 +132,7 @@ namespace EFCorePowerTools.Wizard
             wea.Options.SelectedHandlebarsLanguage = wizardViewModel.Model.SelectedHandlebarsLanguage;
             var isHandleBarsLanguage = vm.Model.SelectedHandlebarsLanguage == 0 || vm.Model.SelectedHandlebarsLanguage == 1;
             wea.Options.UseHandleBars = vm.Model.UseHandlebars && isHandleBarsLanguage;
-            wea.Options.SelectedHandlebarsLanguage = vm.Model.SelectedHandlebarsLanguage;
+            // Removed redundant assignment to SelectedHandlebarsLanguage
             wea.Options.UseT4 = vm.Model.UseHandlebars && !isHandleBarsLanguage;
             wea.Options.UseT4Split = vm.Model.UseHandlebars && vm.Model.SelectedHandlebarsLanguage == 4;  // T4 (Split DbContext)
             if (wea.Options.UseT4Split)
