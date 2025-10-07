@@ -97,9 +97,24 @@ namespace RevEng.Core
                 }
                 else
                 {
+                    if (options.IrregularWords != null && options.IrregularWords.Count > 0)
+                    {
+                        options.IrregularWords.ForEach(w => Vocabularies.Default.AddIrregular(w.Singular, w.Plural, w.MatchEnding));
+                    }
+
                     if (options.UncountableWords != null && options.UncountableWords.Count > 0)
                     {
                         options.UncountableWords.ForEach(w => Vocabularies.Default.AddUncountable(w));
+                    }
+
+                    if (options.PluralRules != null && options.PluralRules.Count > 0)
+                    {
+                        options.PluralRules.ForEach(w => Vocabularies.Default.AddPlural(w.Rule, w.Replacement));
+                    }
+
+                    if (options.SingularRules != null && options.SingularRules.Count > 0)
+                    {
+                        options.SingularRules.ForEach(w => Vocabularies.Default.AddSingular(w.Rule, w.Replacement));
                     }
 
                     serviceCollection.AddSingleton<IPluralizer, HumanizerPluralizer>();

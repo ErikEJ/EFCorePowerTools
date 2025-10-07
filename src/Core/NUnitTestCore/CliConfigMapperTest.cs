@@ -65,7 +65,7 @@ namespace UnitTests
             config.Names.GetType().GetProperties().Length.Should().Be(4);
             config.CodeGeneration.GetType().GetProperties().Length.Should().Be(23);
             config.FileLayout.GetType().GetProperties().Length.Should().Be(5);
-            config.Replacements.GetType().GetProperties().Length.Should().Be(2);
+            config.Replacements.GetType().GetProperties().Length.Should().Be(5);
             config.TypeMappings.GetType().GetProperties().Length.Should().Be(4);
         }
     }
