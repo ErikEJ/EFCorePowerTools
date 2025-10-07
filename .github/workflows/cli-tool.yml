@@ -58,7 +58,8 @@ jobs:
       run: dotnet test src/Core/NUnitTestCore/NUnitTestCore.csproj
       continue-on-error: false
 
-    - name: NuGet login (OIDC → temp API key)
+    - name: NuGet login
+      if: startsWith(github.ref, 'refs/heads/master')
       uses: NuGet/login@v1
       id: login
       with:
