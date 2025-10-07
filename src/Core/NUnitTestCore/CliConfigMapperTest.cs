@@ -37,6 +37,9 @@ namespace UnitTests
             options.SelectedToBeGenerated.Should().Be(0);
             options.Tables.Count.Should().BeGreaterThanOrEqualTo(config.Tables.Count);
             options.UncountableWords.Should().NotBeEmpty();
+            options.PluralRules.Should().NotBeEmpty();
+            options.SingularRules.Should().NotBeEmpty();
+            options.IrregularWords.Should().NotBeEmpty();
             options.UseBoolPropertiesWithoutDefaultSql.Should().Be(config.CodeGeneration.RemoveDefaultSqlFromBoolProperties);
             options.UseDatabaseNames.Should().Be(config.CodeGeneration.UseDatabaseNames);
             options.UseDatabaseNamesForRoutines.Should().Be(config.CodeGeneration.UseDatabaseNamesForRoutines);
@@ -59,7 +62,7 @@ namespace UnitTests
             options.UseT4.Should().Be(config.CodeGeneration.UseT4);
             options.UseT4Split.Should().Be(config.CodeGeneration.UseT4Split);
 
-            options.GetType().GetProperties().Length.Should().Be(51);
+            options.GetType().GetProperties().Length.Should().Be(54);
 
             config.GetType().GetProperties().Length.Should().Be(10);
             config.Names.GetType().GetProperties().Length.Should().Be(4);
