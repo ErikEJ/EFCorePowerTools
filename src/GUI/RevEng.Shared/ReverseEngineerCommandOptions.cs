@@ -59,13 +59,13 @@ namespace RevEng.Common
 
         public bool UseLegacyPluralizer { get; set; }
 
-        public List<(string Singular, string Plural, bool MatchEnding)> IrregularWords { get; set; }
-
         public List<string> UncountableWords { get; set; }
 
-        public List<(string Rule, string Replacement)> PluralRules { get; set; }
+        public List<IrregularWord> IrregularWords { get; set; }
 
-        public List<(string Rule, string Replacement)> SingularRules { get; set; }
+        public List<ReplacementRule> PluralRules { get; set; }
+
+        public List<ReplacementRule> SingularRules { get; set; }
 
         public bool UseSpatial { get; set; }
 

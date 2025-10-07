@@ -44,6 +44,12 @@ namespace RevEng.Common
 
         public List<string> UncountableWords { get; set; }
 
+        public List<IrregularWord> IrregularWords { get; set; }
+
+        public List<ReplacementRule> PluralRules { get; set; }
+
+        public List<ReplacementRule> SingularRules { get; set; }
+
         public bool UseHandleBars { get; set; }
 
         public bool UseT4 { get; set; }
