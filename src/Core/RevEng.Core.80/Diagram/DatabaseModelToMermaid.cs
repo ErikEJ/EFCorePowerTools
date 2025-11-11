@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 using System.Linq;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 
@@ -38,8 +38,6 @@ namespace RevEng.Core.Diagram
 
             if (createMarkdown)
             {
-                sb.AppendLine(CultureInfo.InvariantCulture, $"## {databaseModel.DatabaseName}");
-                sb.AppendLine();
                 sb.AppendLine("```mermaid");
             }
 
