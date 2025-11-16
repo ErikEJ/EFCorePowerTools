@@ -31,7 +31,10 @@ using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
 #endif
 using RevEng.Common;
 using RevEng.Core.Routines.Extensions;
+
+#if !CORE100
 using SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime.Design;
+#endif
 
 namespace RevEng.Core
 {
@@ -255,13 +258,13 @@ namespace RevEng.Core
                 hierachyId.ConfigureDesignTimeServices(serviceCollection);
             }
 
+#if !CORE100
             if (options.UseNodaTime)
             {
                 var nodaTime = new SqlServerNodaTimeDesignTimeServices();
                 nodaTime.ConfigureDesignTimeServices(serviceCollection);
             }
 
-#if !CORE100
             serviceCollection.AddSingleton<IRelationalTypeMappingSource, SqlServerTypeMappingSource>(
                 provider => new SqlServerTypeMappingSource(
                     provider.GetService<TypeMappingSourceDependencies>(),
