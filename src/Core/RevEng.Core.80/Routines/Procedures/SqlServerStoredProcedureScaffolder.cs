@@ -76,12 +76,24 @@ namespace RevEng.Core.Routines.Procedures
                 .Select(p => Code.Identifier(p.Name, capitalize: false))
                 .ToHashSet();
 
+            // Also collect all output parameter identifiers (excluding the return value itself)
+            var outParamIdentifiers = outParams
+                .Select(p => Code.Identifier(p.Name, capitalize: false))
+                .ToHashSet();
+
+            // Combine all names that should not be duplicated
+            var allUsedIdentifiers = new HashSet<string>(allNonReturnParamNames);
+            foreach (var outParamId in outParamIdentifiers)
+            {
+                allUsedIdentifiers.Add(outParamId);
+            }
+
             // If there's a conflict, append a suffix to make it unique
             var retValueIdentifier = Code.Identifier(retValueName, capitalize: false);
-            if (allNonReturnParamNames.Contains(retValueIdentifier))
+            if (allUsedIdentifiers.Contains(retValueIdentifier))
             {
                 var suffix = 1;
-                while (allNonReturnParamNames.Contains($"{retValueIdentifier}{suffix}"))
+                while (allUsedIdentifiers.Contains($"{retValueIdentifier}{suffix}"))
                 {
                     suffix++;
                 }
