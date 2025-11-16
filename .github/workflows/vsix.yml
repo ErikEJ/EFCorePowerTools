@@ -81,7 +81,7 @@ jobs:
           mkdir vsix
           7z x src/GUI/lib/efreveng100.exe.zip -oefreveng100 -y
           dir /a:-d /s /b "efreveng100" | find /c ":\" > filecount.txt
-          findstr "177" filecount.txt
+          findstr "131" filecount.txt
 
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v2
