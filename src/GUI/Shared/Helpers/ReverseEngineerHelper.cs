@@ -230,7 +230,7 @@ namespace EFCorePowerTools.Helpers
 
             if (minimumVersion.Major >= 10)
             {
-                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore10, Value = "EF Core 10 (preview)" });
+                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore10, Value = "EF Core 10" });
             }
 
             if (!list.Any())

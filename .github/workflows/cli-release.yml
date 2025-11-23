@@ -30,6 +30,9 @@ jobs:
     - name: Package CLI 9
       run: dotnet pack src\Core\efcpt.9\efcpt.9.csproj -p:PackageVersion=9.1.${{ github.event.inputs.version }} -p:InformationalVersion=9.1.${{ github.event.inputs.version }}
 
+    - name: Package CLI 10
+      run: dotnet pack src\Core\efcpt.10\efcpt.10.csproj -p:PackageVersion=10.1.${{ github.event.inputs.version }} -p:InformationalVersion=10.1.${{ github.event.inputs.version }}
+
     - name: NuGet login (OIDC → temp API key)
       uses: NuGet/login@v1
       id: login
