@@ -45,7 +45,7 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="10.0.0" />
     <!--<PackageReference Include="Oracle.EntityFrameworkCore" Version="9.23.90" />-->
     <!--<PackageReference Include="Pomelo.EntityFrameworkCore.MySql.NetTopologySuite" Version="9.0.0" />-->
-    <!--<PackageReference Include="SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime" Version="10.0.0" />-->
+    <PackageReference Include="SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime" Version="10.0.0" />
     <PackageReference Include="System.CodeDom" Version="10.0.0" />
     <PackageReference Include="UnicodeInformation" Version="2.7.1" />
   </ItemGroup>
