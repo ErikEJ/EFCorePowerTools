@@ -290,7 +290,7 @@ namespace RevEng.Common
                         break;
 
                     case CodeGenerationMode.EFCore10:
-                        pkgVersion = "10.0.0-rc.2";
+                        pkgVersion = "10.0.0";
                         break;
 
                     default: throw new NotImplementedException();
