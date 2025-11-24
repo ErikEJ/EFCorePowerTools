@@ -59,7 +59,11 @@ namespace RevEng.Core.Routines
                 {
                     var key = $"[{foundModule.Item1}].[{foundModule.Item2}]";
 
-                    if (filter.Count == 0 || filter.Contains(key))
+                    var alternateKey = $"{foundModule.Item1}.{foundModule.Item2}";
+
+                    if (filter.Count == 0
+                        || filter.Contains(key)
+                        || filter.Contains(alternateKey))
                     {
                         var isScalar = foundModule.Item3;
 
