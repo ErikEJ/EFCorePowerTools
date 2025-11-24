@@ -181,9 +181,6 @@
     <Content Include="Westwind.WPF.Statusbar\Assets\Icons\triangle-exclamation.svg" />
     <Content Include="Westwind.WPF.Statusbar\Icon-512.png" />
     <Content Include="Westwind.WPF.Statusbar\icon.png" />
-    <Content Include="msbuild.sdk.sqlproj.templates.3.2.0.nupkg">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <Content Include="..\lib\efreveng100.exe.zip">
       <Link>efreveng100.exe.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
@@ -198,6 +195,9 @@
     </Content>
     <Content Include="..\lib\efpt100.exe.zip">
       <Link>efpt100.exe.zip</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="msbuild.sdk.sqlproj.templates.3.3.0.nupkg">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <None Include="Westwind.WPF.Statusbar\LICENSE.md" />
