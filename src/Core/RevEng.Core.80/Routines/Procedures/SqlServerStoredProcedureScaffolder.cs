@@ -70,6 +70,36 @@ namespace RevEng.Core.Routines.Procedures
 
             var retValueName = allOutParams[allOutParams.Count - 1].Name;
 
+            // Check for naming conflicts with the return value parameter
+            var allNonReturnParamNames = procedure.Parameters
+                .Where(p => !p.IsReturnValue)
+                .Select(p => Code.Identifier(p.Name, capitalize: false))
+                .ToHashSet();
+
+            // Also collect all output parameter identifiers (excluding the return value itself)
+            var outParamIdentifiers = outParams
+                .Select(p => Code.Identifier(p.Name, capitalize: false))
+                .ToHashSet();
+
+            // Combine all names that should not be duplicated
+            var allUsedIdentifiers = new HashSet<string>(allNonReturnParamNames);
+            foreach (var outParamId in outParamIdentifiers)
+            {
+                allUsedIdentifiers.Add(outParamId);
+            }
+
+            // If there's a conflict, append a suffix to make it unique
+            var retValueIdentifier = Code.Identifier(retValueName, capitalize: false);
+            if (allUsedIdentifiers.Contains(retValueIdentifier))
+            {
+                var suffix = 1;
+                while (allUsedIdentifiers.Contains($"{retValueIdentifier}{suffix}"))
+                {
+                    suffix++;
+                }
+                retValueIdentifier = $"{retValueIdentifier}{suffix}";
+            }
+
             var outParamStrings = outParams
                 .Select(p => $"OutputParameter<{Code.Reference(p.ClrTypeFromSqlParameter())}> {Code.Identifier(p.Name, capitalize: false)}")
                 .ToList();
@@ -87,7 +117,7 @@ namespace RevEng.Core.Routines.Procedures
                 returnClass = procedure.MappedType;
             }
 
-            var line = GenerateMethodSignature(procedure, outParams, paramStrings, retValueName, outParamStrings, identifier, multiResultId, signatureOnly, useAsyncCalls, returnClass, useNullableReferences);
+            var line = GenerateMethodSignature(procedure, outParams, paramStrings, retValueName, retValueIdentifier, outParamStrings, identifier, multiResultId, signatureOnly, useAsyncCalls, returnClass, useNullableReferences);
 
             if (signatureOnly)
             {
@@ -181,11 +211,11 @@ namespace RevEng.Core.Routines.Procedures
 
                     if (procedure.SupportsMultipleResultSet)
                     {
-                        Sb.AppendLine($"{retValueName}?.SetValue(dynamic.Get<int>(\"{retValueName}\"));");
+                        Sb.AppendLine($"{retValueIdentifier}?.SetValue(dynamic.Get<int>(\"{retValueName}\"));");
                     }
                     else
                     {
-                        Sb.AppendLine($"{retValueName}?.SetValue({ParameterPrefix}{retValueName}.Value);");
+                        Sb.AppendLine($"{retValueIdentifier}?.SetValue({ParameterPrefix}{retValueName}.Value);");
                     }
 
                     Sb.AppendLine();
@@ -213,6 +243,7 @@ namespace RevEng.Core.Routines.Procedures
             List<ModuleParameter> outParams,
             IList<string> paramStrings,
             string retValueName,
+            string retValueIdentifier,
             List<string> outParamStrings,
             string identifier,
             string multiResultId,
@@ -265,7 +296,7 @@ namespace RevEng.Core.Routines.Procedures
 
             var nullable = useNullableReferences ? "?" : string.Empty;
 
-            line += $"OutputParameter<int>{nullable} {retValueName} = null";
+            line += $"OutputParameter<int>{nullable} {retValueIdentifier} = null";
 
             line += useAsyncCalls ? $", CancellationToken{nullable} cancellationToken = default)" : ")";
 
