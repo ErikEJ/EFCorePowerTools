@@ -25,8 +25,8 @@ using Microsoft.EntityFrameworkCore.SqlServer.Scaffolding.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
-#if !CORE100
 using Oracle.EntityFrameworkCore.Design.Internal;
+#if !CORE100
 using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
 #endif
 using RevEng.Common;
@@ -126,12 +126,18 @@ namespace RevEng.Core
             {
                 case DatabaseType.SQLServer:
                 case DatabaseType.SQLServerDacpac:
-                    AddSqlServerProviderServices(serviceCollection, options); break;
+                    AddSqlServerProviderServices(serviceCollection, options);
+                    break;
 
                 case DatabaseType.Npgsql:
                     AddPostgresProviderServices(serviceCollection, options);
-
                     break;
+
+                case DatabaseType.Oracle:
+                    var oracleProvider = new OracleDesignTimeServices();
+                    oracleProvider.ConfigureDesignTimeServices(serviceCollection);
+                    break;
+
 #if !CORE100
                 case DatabaseType.Mysql:
                     var mysqlProvider = new MySqlDesignTimeServices();
@@ -143,10 +149,6 @@ namespace RevEng.Core
                         spatial.ConfigureDesignTimeServices(serviceCollection);
                     }
 
-                    break;
-                case DatabaseType.Oracle:
-                    var oracleProvider = new OracleDesignTimeServices();
-                    oracleProvider.ConfigureDesignTimeServices(serviceCollection);
                     break;
 
                 case DatabaseType.Firebird:
