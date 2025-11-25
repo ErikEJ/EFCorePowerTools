@@ -97,6 +97,7 @@ namespace RevEng.Core.Routines.Procedures
                 {
                     suffix++;
                 }
+
                 retValueIdentifier = $"{retValueIdentifier}{suffix}";
             }
 
@@ -117,7 +118,7 @@ namespace RevEng.Core.Routines.Procedures
                 returnClass = procedure.MappedType;
             }
 
-            var line = GenerateMethodSignature(procedure, outParams, paramStrings, retValueName, retValueIdentifier, outParamStrings, identifier, multiResultId, signatureOnly, useAsyncCalls, returnClass, useNullableReferences);
+            var line = GenerateMethodSignature(procedure, outParams, paramStrings, retValueIdentifier, outParamStrings, identifier, multiResultId, signatureOnly, useAsyncCalls, returnClass, useNullableReferences);
 
             if (signatureOnly)
             {
@@ -242,7 +243,6 @@ namespace RevEng.Core.Routines.Procedures
             Routine procedure,
             List<ModuleParameter> outParams,
             IList<string> paramStrings,
-            string retValueName,
             string retValueIdentifier,
             List<string> outParamStrings,
             string identifier,
