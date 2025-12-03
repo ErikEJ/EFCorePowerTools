@@ -31,16 +31,17 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             switch (codeGenerationMode)
             {
-                case CodeGenerationMode.EFCore6:
-                    revengVersion = "6";
-                    break;
-
                 case CodeGenerationMode.EFCore8:
                     revengVersion = "8";
                     break;
 
+                // TODO: Use EF Core 10 only when providers are available.
                 case CodeGenerationMode.EFCore9:
                     revengVersion = "9";
+                    break;
+
+                case CodeGenerationMode.EFCore10:
+                    revengVersion = "10";
                     break;
 
                 default:
@@ -93,6 +94,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseInflector = options.UseInflector,
                 UseLegacyPluralizer = options.UseLegacyPluralizer,
                 UncountableWords = options.UncountableWords,
+                SingularRules = options.SingularRules,
+                PluralRules = options.PluralRules,
+                IrregularWords = options.IrregularWords,
                 UseSpatial = options.UseSpatial,
                 UseHierarchyId = options.UseHierarchyId,
                 UseDbContextSplitting = options.UseDbContextSplitting,
@@ -212,12 +216,11 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
         private async Task<ProcessStartInfo> CreateStartInfoAsync(string arguments)
         {
-            string version = "6.0";
+            string version = "8.0";
 
-            if (codeGenerationMode == CodeGenerationMode.EFCore8
-                || codeGenerationMode == CodeGenerationMode.EFCore9)
+            if (codeGenerationMode == CodeGenerationMode.EFCore10)
             {
-                version = "8.0";
+                version = "10.0";
             }
 
             if (!await IsDotnetInstalledAsync(version))

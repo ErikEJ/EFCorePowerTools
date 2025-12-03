@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <NoWarn>$(NoWarn);EF1001</NoWarn>
+    <RootNamespace>RevEng.Core</RootNamespace>
+    <Nullable>warnings</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DefineConstants>TRACE;CORE100</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\RevEng.Core.80\*.cs" Link="%(Filename)%(Extension)" />
+    <Compile Include="..\RevEng.Core.80\Routines\*.cs" Link="Routines\%(Filename)%(Extension)" />
+    <Compile Include="..\RevEng.Core.80\Routines\Extensions\*.cs" Link="Routines\Extensions\%(Filename)%(Extension)" />
+    <Compile Include="..\RevEng.Core.80\Routines\Functions\*.cs" Link="Routines\Functions\%(Filename)%(Extension)" />
+    <Compile Include="..\RevEng.Core.80\Routines\Procedures\*.cs" Link="Routines\Procedures\%(Filename)%(Extension)" />
+    <Compile Include="..\RevEng.Core.80\Diagram\*.cs" Link="Diagram\%(Filename)%(Extension)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="..\RevEng.Core.80\CustomTemplateFileService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="DbContextExtensionsSqlQuery" />
+    <EmbeddedResource Include="DbContextExtensionsSqlQuery.Sync" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Bricelam.EntityFrameworkCore.Pluralizer" Version="1.0.0" />
+    <!--<PackageReference Include="EFCore.Snowflake" Version="9.0.4" />-->
+    <!--<PackageReference Include="EntityFrameworkCore.Scaffolding.Handlebars" Version="9.0.0" />
+    <PackageReference Include="EntityFrameworkCore.Sqlite.NodaTime" Version="9.1.0" />
+    <PackageReference Include="FirebirdSql.EntityFrameworkCore.Firebird" Version="12.0.0" />-->
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="10.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.HierarchyId" Version="10.0.0" />
+    <PackageReference Include="Microsoft.PowerPlatform.Dataverse.Client" Version="1.2.10" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="10.0.0" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="10.0.0" />
+    <PackageReference Include="Oracle.EntityFrameworkCore" Version="10.23.26000" />
+    <!--<PackageReference Include="Pomelo.EntityFrameworkCore.MySql.NetTopologySuite" Version="9.0.0" />-->
+    <PackageReference Include="SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime" Version="10.0.0" />
+    <PackageReference Include="System.CodeDom" Version="10.0.0" />
+    <PackageReference Include="UnicodeInformation" Version="2.7.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.9.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.9.SqlServer.Dacpac.csproj" />
+    <ProjectReference Include="..\RevEng.Core.Abstractions\RevEng.Core.Abstractions.csproj" />
+    <ProjectReference Include="..\..\GUI\RevEng.Shared\RevEng.Common.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,11 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+#if !CORE100
 using EFCore.Snowflake.Design.Internal;
 using IBM.EntityFrameworkCore.Internal;
 using EntityFrameworkCore.Scaffolding.Handlebars;
+#endif
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
+#if !CORE100
 using FirebirdSql.EntityFrameworkCore.Firebird.Design.Internal;
+#endif
 using Humanizer.Inflections;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
@@ -15,12 +19,17 @@ using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
 using Microsoft.EntityFrameworkCore.Sqlite.Design.Internal;
 using Microsoft.EntityFrameworkCore.SqlServer.Design.Internal;
+#if CORE100
+using Microsoft.EntityFrameworkCore.SqlServer.Infrastructure.Internal;
+#endif
 using Microsoft.EntityFrameworkCore.SqlServer.Scaffolding.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
 using Oracle.EntityFrameworkCore.Design.Internal;
+#if !CORE100
 using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
+#endif
 using RevEng.Common;
 using RevEng.Core.Routines.Extensions;
 using SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime.Design;
@@ -67,6 +76,7 @@ namespace RevEng.Core
                 serviceCollection.AddSingleton<ICandidateNamingService>(provider => new ReplacingCandidateNamingService(options.UsePrefixNavigationNaming, options.CustomReplacers, options.PreserveCasingWithRegex));
             }
 
+#if !CORE100
             if (options.UseHandleBars)
             {
                 serviceCollection.AddHandlebarsScaffolding(hbOptions =>
@@ -77,6 +87,7 @@ namespace RevEng.Core
                 serviceCollection.AddSingleton<ITemplateFileService>(provider
                     => new CustomTemplateFileService(options.OptionsPath));
             }
+#endif
 
             if (options.UseInflector || options.UseLegacyPluralizer)
             {
@@ -86,9 +97,24 @@ namespace RevEng.Core
                 }
                 else
                 {
+                    if (options.IrregularWords != null && options.IrregularWords.Count > 0)
+                    {
+                        options.IrregularWords.ForEach(w => Vocabularies.Default.AddIrregular(w.Singular, w.Plural, w.MatchEnding));
+                    }
+
                     if (options.UncountableWords != null && options.UncountableWords.Count > 0)
                     {
                         options.UncountableWords.ForEach(w => Vocabularies.Default.AddUncountable(w));
+                    }
+
+                    if (options.PluralRules != null && options.PluralRules.Count > 0)
+                    {
+                        options.PluralRules.ForEach(w => Vocabularies.Default.AddPlural(w.Rule, w.Replacement));
+                    }
+
+                    if (options.SingularRules != null && options.SingularRules.Count > 0)
+                    {
+                        options.SingularRules.ForEach(w => Vocabularies.Default.AddSingular(w.Rule, w.Replacement));
                     }
 
                     serviceCollection.AddSingleton<IPluralizer, HumanizerPluralizer>();
@@ -102,13 +128,19 @@ namespace RevEng.Core
             {
                 case DatabaseType.SQLServer:
                 case DatabaseType.SQLServerDacpac:
-                    AddSqlServerProviderServices(serviceCollection, options); break;
+                    AddSqlServerProviderServices(serviceCollection, options);
+                    break;
 
                 case DatabaseType.Npgsql:
                     AddPostgresProviderServices(serviceCollection, options);
-
                     break;
 
+                case DatabaseType.Oracle:
+                    var oracleProvider = new OracleDesignTimeServices();
+                    oracleProvider.ConfigureDesignTimeServices(serviceCollection);
+                    break;
+
+#if !CORE100
                 case DatabaseType.Mysql:
                     var mysqlProvider = new MySqlDesignTimeServices();
                     mysqlProvider.ConfigureDesignTimeServices(serviceCollection);
@@ -119,11 +151,6 @@ namespace RevEng.Core
                         spatial.ConfigureDesignTimeServices(serviceCollection);
                     }
 
-                    break;
-
-                case DatabaseType.Oracle:
-                    var oracleProvider = new OracleDesignTimeServices();
-                    oracleProvider.ConfigureDesignTimeServices(serviceCollection);
                     break;
 
                 case DatabaseType.Firebird:
@@ -139,17 +166,19 @@ namespace RevEng.Core
                     var db2Provider = new Db2DesignTimeServices();
                     db2Provider.ConfigureDesignTimeServices(serviceCollection);
                     break;
+#endif
 
                 case DatabaseType.SQLite:
                     var sqliteProvider = new SqliteDesignTimeServices();
                     sqliteProvider.ConfigureDesignTimeServices(serviceCollection);
 
+#if !CORE100
                     if (options.UseNodaTime)
                     {
                         var nodaTime = new SqliteNodaTimeDesignTimeServices();
                         nodaTime.ConfigureDesignTimeServices(serviceCollection);
                     }
-
+#endif
                     break;
 
                 default:
@@ -185,6 +214,10 @@ namespace RevEng.Core
         {
             var provider = new SqlServerDesignTimeServices();
             provider.ConfigureDesignTimeServices(serviceCollection);
+
+#if CORE100
+            serviceCollection.AddSingleton(new SqlServerSingletonOptions());
+#endif
 
             if (options.DatabaseType == DatabaseType.SQLServer)
             {
@@ -236,11 +269,20 @@ namespace RevEng.Core
                 nodaTime.ConfigureDesignTimeServices(serviceCollection);
             }
 
+#if !CORE100
             serviceCollection.AddSingleton<IRelationalTypeMappingSource, SqlServerTypeMappingSource>(
                 provider => new SqlServerTypeMappingSource(
                     provider.GetService<TypeMappingSourceDependencies>(),
                     provider.GetService<RelationalTypeMappingSourceDependencies>(),
                     options.UseDateOnlyTimeOnly));
+#else
+            serviceCollection.AddSingleton<IRelationalTypeMappingSource, SqlServerTypeMappingSource>(
+                provider => new SqlServerTypeMappingSource(
+                    provider.GetService<TypeMappingSourceDependencies>(),
+                    provider.GetService<RelationalTypeMappingSourceDependencies>(),
+                    provider.GetService<SqlServerSingletonOptions>(),
+                    options.UseDateOnlyTimeOnly));
+#endif
         }
     }
 }

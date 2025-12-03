@@ -1,4 +1,4 @@
-﻿<local:WizardResultPageFunction
+<local:WizardResultPageFunction
     x:Class="EFCorePowerTools.Wizard.Wiz3_EfCoreModelDialog"   
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:converter="clr-namespace:EFCorePowerTools.Converter"
@@ -142,7 +142,7 @@
         </StackPanel>
         <StackPanel Grid.Row="13" Orientation="Horizontal" HorizontalAlignment="Right" >
             <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.NavigationPrevious}" Click="BackButton_Click"/>
-            <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.NavigationNext}" x:Name="NextButton" IsEnabled="False" Click="NextButton_Click" />
+            <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.NavigationNext}" x:Name="NextButton" IsEnabled="False" IsDefault="True" Click="NextButton_Click" />
             <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.Advanced}" Command="{Binding AdvancedCommand}" />
             <Button Style="{StaticResource NavButton}" Content="{x:Static locale:ReverseEngineerLocale.NavigationCancel}" Name="cancelButton" Click="CancelButton_Click" IsCancel="True"/>
         </StackPanel>

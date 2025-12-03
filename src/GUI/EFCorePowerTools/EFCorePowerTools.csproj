@@ -63,6 +63,9 @@
     <Compile Include="Westwind.WPF.Statusbar\StatusBarHelper.cs" />
     <Compile Include="Westwind.WPF.Statusbar\StatusIcons.cs" />
     <Compile Include="Westwind.WPF.Statusbar\Utilities\DebounceDispatcher.cs" />
+    <Compile Include="Wizard\BusyOverlay.xaml.cs">
+      <DependentUpon>BusyOverlay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Wizard\Wiz4_StatusDialog.xaml.cs">
       <DependentUpon>Wiz4_StatusDialog.xaml</DependentUpon>
     </Compile>
@@ -75,6 +78,7 @@
     <Compile Include="Wizard\Wiz3_EfCoreModelDialog.cs">
       <DependentUpon>Wiz3_EfCoreModelDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Wizard\WizardCommandFilter.cs" />
     <Compile Include="Wizard\WizardDialogBox.cs">
       <DependentUpon>WizardDialogBox.xaml</DependentUpon>
     </Compile>
@@ -177,7 +181,23 @@
     <Content Include="Westwind.WPF.Statusbar\Assets\Icons\triangle-exclamation.svg" />
     <Content Include="Westwind.WPF.Statusbar\Icon-512.png" />
     <Content Include="Westwind.WPF.Statusbar\icon.png" />
-    <Content Include="msbuild.sdk.sqlproj.templates.3.2.0.nupkg">
+    <Content Include="..\lib\efreveng100.exe.zip">
+      <Link>efreveng100.exe.zip</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="..\lib\T4_1000.zip">
+      <Link>T4_1000.zip</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="..\lib\T4_1000_Split.zip">
+      <Link>T4_1000_Split.zip</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="..\lib\efpt100.exe.zip">
+      <Link>efpt100.exe.zip</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="msbuild.sdk.sqlproj.templates.3.3.0.nupkg">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <None Include="Westwind.WPF.Statusbar\LICENSE.md" />
@@ -193,14 +213,6 @@
     <EmbeddedResource Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.DgmlBuilder\template.dgml">
       <Link>DgmlBuilder\template.dgml</Link>
     </EmbeddedResource>
-    <Content Include="..\lib\efpt60.exe.zip">
-      <Link>efpt60.exe.zip</Link>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="..\lib\efreveng60.exe.zip">
-      <Link>efreveng60.exe.zip</Link>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <Content Include="..\lib\DacFX161.zip">
       <Link>DacFX161.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
@@ -238,9 +250,6 @@
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <None Include="app.config" />
-    <Content Include="CodeTemplates600.zip">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <Content Include="CodeTemplates800.zip">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
@@ -272,6 +281,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="DropDownButtonLib, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\lib\DropDownButtonLib.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.ApplicationInsights, Version=2.17.0.146, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\lib\Microsoft.ApplicationInsights.dll</HintPath>
     </Reference>
@@ -302,9 +314,6 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="WindowsBase" />
     <Reference Include="WindowsFormsIntegration" />
-    <Reference Include="Xceed.Wpf.Toolkit">
-      <HintPath>..\lib\Xceed.Wpf.Toolkit.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Package.ico" />
@@ -601,6 +610,9 @@
     <Page Include="Westwind.WPF.Statusbar\StatusBarControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Wizard\BusyOverlay.xaml">
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Wizard\Resources\Converter.xaml">
       <Generator>MSBuild:Compile</Generator>

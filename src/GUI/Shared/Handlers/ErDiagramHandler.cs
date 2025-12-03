@@ -48,6 +48,13 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
                 options.ProjectPath = Path.GetDirectoryName(project.FullPath);
 
+                var version = await VS.Shell.GetVsVersionAsync();
+
+                if (version >= new Version(18, 0))
+                {
+                    options.Optional = true;
+                }
+
                 if (!await ChooseDataBaseConnectionAsync(options, uiHint))
                 {
                     await VS.StatusBar.ClearAsync();
@@ -212,7 +219,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 }));
             }
 
-            psd.PublishCodeGenerationMode(CodeGenerationMode.EFCore6, new List<CodeGenerationItem>
+            psd.PublishCodeGenerationMode(CodeGenerationMode.EFCore8, new List<CodeGenerationItem>
             {
                 new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore8, Value = "DAB" },
             });

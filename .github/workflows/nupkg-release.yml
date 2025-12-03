@@ -8,11 +8,11 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
 
-    - uses: actions/    @v4
+    - uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: '9.0.3xx'
+        dotnet-version: '10.0.x'
   
     - name: Package Dacpac 8
       run: dotnet pack src\Nupkg\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac.csproj
@@ -21,7 +21,7 @@ jobs:
       run: dotnet pack src\Nupkg\ErikEJ.EntityFrameworkCore.9.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.9.SqlServer.Dacpac.csproj
 
     - name: Publish artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: Nupkg
         path: |

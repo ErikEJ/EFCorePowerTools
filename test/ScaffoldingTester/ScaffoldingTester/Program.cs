@@ -1,4 +1,5 @@
-﻿using ScaffoldingTester.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using ScaffoldingTester.Models;
 using System;
 
 namespace ScaffoldingTester
@@ -7,7 +8,9 @@ namespace ScaffoldingTester
     {
         static async System.Threading.Tasks.Task Main(string[] args)
         {
-            using (var db = new NorthwindContext())
+            var optionsBuilder = new DbContextOptionsBuilder<NorthwindContext>();
+            optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Northwind;Integrated Security=True;MultipleActiveResultSets=True", x => x.UseNetTopologySuite());
+            using (var db = new NorthwindContext(optionsBuilder.Options))
             {
                 var result = await db.GetProcedures().CustOrdersOrdersAsync("ALFKI");
                 if (result.Count != 6)

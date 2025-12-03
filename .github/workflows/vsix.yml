@@ -26,11 +26,11 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
 
-    - uses: actions/setup-dotnet@v4
+    - uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: '9.0.300'
+        dotnet-version: '10.0.x'
 
     - name: Update Version
       run: |
@@ -52,6 +52,8 @@ jobs:
         call ${{ github.workspace}}\src\Core\efreveng80\BuildCmdlineTool.cmd
         cd ${{ github.workspace}}\src\Core\efreveng90
         call ${{ github.workspace}}\src\Core\efreveng90\BuildCmdlineTool.cmd
+        cd ${{ github.workspace}}\src\Core\efreveng100
+        call ${{ github.workspace}}\src\Core\efreveng100\BuildCmdlineTool.cmd
         cd ${{ github.workspace}}
 
     - name: Extract and verify efreveng80.exe.zip file count
@@ -61,7 +63,7 @@ jobs:
         mkdir vsix
         7z x src/GUI/lib/efreveng80.exe.zip -oefreveng80 -y
         dir /a:-d /s /b "efreveng80" | find /c ":\" > filecount.txt
-        findstr "168" filecount.txt
+        findstr "166" filecount.txt
 
     - name: Extract and verify efreveng90.exe.zip file count
       if: github.event_name != 'pull_request'
@@ -70,7 +72,16 @@ jobs:
           mkdir vsix
           7z x src/GUI/lib/efreveng90.exe.zip -oefreveng90 -y
           dir /a:-d /s /b "efreveng90" | find /c ":\" > filecount.txt
-          findstr "170" filecount.txt
+          findstr "166" filecount.txt
+
+    - name: Extract and verify efreveng100.exe.zip file count
+      if: github.event_name != 'pull_request'
+      shell: cmd
+      run: |
+          mkdir vsix
+          7z x src/GUI/lib/efreveng100.exe.zip -oefreveng100 -y
+          dir /a:-d /s /b "efreveng100" | find /c ":\" > filecount.txt
+          findstr "141" filecount.txt
 
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v2
@@ -85,7 +96,7 @@ jobs:
         mkdir vsix
         7z x src/GUI/EFCorePowerTools/bin/Release/EFCorePowerTools.vsix -ovsix -y
         dir /a:-d /s /b "vsix" | find /c ":\" > filecount.txt
-        findstr "76" filecount.txt
+        findstr "77" filecount.txt
 
     - name: Move build output
       if: github.ref == 'refs/heads/master' && github.repository_owner == 'erikej' && (github.event_name == 'push' ||  github.event_name == 'workflow_dispatch')
@@ -116,7 +127,7 @@ jobs:
 
     - name: Publish artifacts
       if: github.ref == 'refs/heads/master' && github.repository_owner == 'erikej' && (github.event_name == 'push' ||  github.event_name == 'workflow_dispatch')
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: Artifacts
         path: |
@@ -126,7 +137,7 @@ jobs:
       if: github.ref == 'refs/heads/master' && github.repository_owner == 'erikej' && (github.event_name == 'push' ||  github.event_name == 'workflow_dispatch')
       run: |
         $ErrorActionPreference='Stop'
-        (new-object Net.WebClient).DownloadString("https://raw.github.com/madskristensen/ExtensionScripts/master/AppVeyor/vsix.ps1") | iex
+        (new-object Net.WebClient).DownloadString("https://raw.githubusercontent.com/madskristensen/ExtensionScripts/master/AppVeyor/vsix.ps1") | iex
         Vsix-PublishToGallery 
       shell: pwsh
       continue-on-error: false

@@ -13,38 +13,58 @@ on:
     branches:
       - '*'
 
+permissions:
+  id-token: write   # required for GitHub OIDC
+
 env:
   VERSION: ${{ github.run_number }}
 
 jobs:
   build:
+    permissions:
+      id-token: write  # enable GitHub OIDC token issuance for this job
+
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
 
-    - uses: actions/setup-dotnet@v4
+    - uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: '9.0.3xx'
+        dotnet-version: '10.0.x'
 
     - name: Build CLI 8
       run: dotnet build src/Core/efcpt.8/efcpt.8.csproj
 
-    - name: Build CLI 9
-      run: dotnet build src/Core/efcpt.9/efcpt.9.csproj
-  
     - name: Package CLI 8
       if: startsWith(github.ref, 'refs/heads/master')
       run: dotnet pack src/Core/efcpt.8/efcpt.8.csproj -p:PackageVersion=8.1.${{ env.VERSION }}-nightly -p:InformationalVersion=8.1.${{ env.VERSION }}-nightly
 
+    - name: Build CLI 9
+      run: dotnet build src/Core/efcpt.9/efcpt.9.csproj
+
     - name: Package CLI 9
       if: startsWith(github.ref, 'refs/heads/master')
       run: dotnet pack src/Core/efcpt.9/efcpt.9.csproj -p:PackageVersion=9.1.${{ env.VERSION }}-nightly -p:InformationalVersion=9.1.${{ env.VERSION }}-nightly
-      
+
+    - name: Build CLI 10
+      run: dotnet build src/Core/efcpt.10/efcpt.10.csproj
+
+    - name: Package CLI 10
+      if: startsWith(github.ref, 'refs/heads/master')
+      run: dotnet pack src/Core/efcpt.10/efcpt.10.csproj -p:PackageVersion=10.1.${{ env.VERSION }}-nightly -p:InformationalVersion=10.1.${{ env.VERSION }}-nightly
+
     - name: Core test project
       run: dotnet test src/Core/NUnitTestCore/NUnitTestCore.csproj
       continue-on-error: false
 
+    - name: NuGet login
+      if: startsWith(github.ref, 'refs/heads/master')
+      uses: NuGet/login@v1
+      id: login
+      with:
+          user: ${{ secrets.NUGET_USER }}
+
     - name: Publish NuGet
       if: startsWith(github.ref, 'refs/heads/master')
-      run: dotnet nuget push **\erikej.*.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key ${{ secrets.NUGET }} --skip-duplicate
+      run: dotnet nuget push **\${{ secrets.NUGET_USER }}.*.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --skip-duplicate

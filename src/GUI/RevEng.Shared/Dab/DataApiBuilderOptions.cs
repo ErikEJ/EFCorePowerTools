@@ -20,5 +20,7 @@ namespace RevEng.Common.Dab
         public string ConnectionStringName { get; set; } = "dab-connection-string";
 
         public bool MergeDacpacs { get; set; }
+
+        public bool Optional { get; set; }
     }
 }

@@ -22,29 +22,46 @@ namespace RevEng.Core.Routines.Procedures
             ProviderUsing = "using Npgsql";
         }
 
-        public new SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue, bool useAsyncCalls, bool useInternalAccessModifier)
+        public new SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue, bool useAsyncCalls, bool useInternalAccessModifier, bool useNullableReferences)
         {
             ArgumentNullException.ThrowIfNull(scaffoldedModel);
 
-            var files = base.Save(scaffoldedModel, outputDir, nameSpaceValue, useAsyncCalls, useInternalAccessModifier);
+            var files = base.Save(scaffoldedModel, outputDir, nameSpaceValue, useAsyncCalls, useInternalAccessModifier, useNullableReferences);
             var accessModifier = useInternalAccessModifier ? "internal" : "public";
 
             var contextDir = Path.GetDirectoryName(Path.Combine(outputDir, scaffoldedModel.ContextFile.Path));
             var dbContextExtensionsText = ScaffoldHelper.GetDbContextExtensionsText(useAsyncCalls);
             var dbContextExtensionsName = useAsyncCalls ? "DbContextExtensions.cs" : "DbContextExtensions.Sync.cs";
             var dbContextExtensionsPath = Path.Combine(contextDir ?? string.Empty, dbContextExtensionsName);
-            File.WriteAllText(dbContextExtensionsPath, dbContextExtensionsText.Replace("#NAMESPACE#", nameSpaceValue, StringComparison.OrdinalIgnoreCase).Replace("#ACCESSMODIFIER#", accessModifier, StringComparison.OrdinalIgnoreCase), Encoding.UTF8);
+            File.WriteAllText(
+                dbContextExtensionsPath,
+                dbContextExtensionsText
+                    .Replace("#NAMESPACE#", nameSpaceValue, StringComparison.OrdinalIgnoreCase)
+                    .Replace("#ACCESSMODIFIER#", accessModifier, StringComparison.OrdinalIgnoreCase)
+                    .Replace("#NULLABLE#", useNullableReferences ? "?" : string.Empty, StringComparison.OrdinalIgnoreCase)
+                    .Replace("#NULLABLEENABLE#", useNullableReferences ? "enable" : "disable", StringComparison.OrdinalIgnoreCase),
+                Encoding.UTF8);
             files.AdditionalFiles.Add(dbContextExtensionsPath);
 
             return files;
         }
 
-        protected override void GenerateProcedure(Routine procedure, RoutineModel model, bool signatureOnly, bool useAsyncCalls, bool usePascalCase)
+        protected override void GenerateProcedure(Routine procedure, RoutineModel model, bool signatureOnly, bool useAsyncCalls, bool usePascalCase, bool useNullableReferences)
         {
             ArgumentNullException.ThrowIfNull(procedure);
 
             var paramStrings = procedure.Parameters.Where(p => !p.Output)
-                .Select(p => $"{Code.Reference(p.ClrTypeFromNpgsqlParameter(asMethodParameter: true))} {Code.Identifier(p.Name, capitalize: false)}")
+                .Select(p =>
+                {
+                    // Stored procedure Parameters are always nullable.
+                    var type = Code.Reference(p.ClrTypeFromNpgsqlParameter(asMethodParameter: true));
+                    if (useNullableReferences && !type.EndsWith('?'))
+                    {
+                        type += "?";
+                    }
+
+                    return $"{type} {Code.Identifier(p.Name, capitalize: false)}";
+                })
                 .ToList();
 
             var outParams = procedure.Parameters.Where(p => p.Output).ToList();
@@ -64,7 +81,7 @@ namespace RevEng.Core.Routines.Procedures
                 returnClass = procedure.MappedType;
             }
 
-            var line = GenerateMethodSignature(procedure, outParams, paramStrings, outParamStrings, identifier, signatureOnly, useAsyncCalls, returnClass);
+            var line = GenerateMethodSignature(procedure, outParams, paramStrings, outParamStrings, identifier, signatureOnly, useAsyncCalls, returnClass, useNullableReferences);
 
             if (signatureOnly)
             {
@@ -109,8 +126,15 @@ namespace RevEng.Core.Routines.Procedures
 
                     if (procedure.HasValidResultSet && (procedure.Results.Count == 0 || procedure.Results[0].Count == 0))
                     {
+                        var asyncExec = fullExec;
+
+                        if (useNullableReferences)
+                        {
+                            asyncExec = asyncExec.Replace(" cancellationToken", " cancellationToken ?? CancellationToken.None", StringComparison.OrdinalIgnoreCase);
+                        }
+
                         Sb.AppendLine(useAsyncCalls
-                            ? $"var _ = await _context.Database.ExecuteSqlRawAsync({fullExec});"
+                            ? $"var _ = await _context.Database.ExecuteSqlRawAsync({asyncExec});"
                             : $"var _ = _context.Database.ExecuteSqlRaw({fullExec});");
                     }
                     else
@@ -149,7 +173,16 @@ namespace RevEng.Core.Routines.Procedures
             return fullExec;
         }
 
-        private static string GenerateMethodSignature(Routine procedure, List<ModuleParameter> outParams, IList<string> paramStrings, List<string> outParamStrings, string identifier, bool signatureOnly, bool useAsyncCalls, string returnClass)
+        private static string GenerateMethodSignature(
+            Routine procedure,
+            List<ModuleParameter> outParams,
+            IList<string> paramStrings,
+            List<string> outParamStrings,
+            string identifier,
+            bool signatureOnly,
+            bool useAsyncCalls,
+            string returnClass,
+            bool useNullableReferences)
         {
             string returnType;
             if (procedure.HasValidResultSet && (procedure.Results.Count == 0 || procedure.Results[0].Count == 0))
@@ -159,6 +192,11 @@ namespace RevEng.Core.Routines.Procedures
             else
             {
                 returnType = $"List<{returnClass}>";
+            }
+
+            if (useNullableReferences && !returnType.EndsWith('?'))
+            {
+                returnType += '?';
             }
 
             returnType = useAsyncCalls ? $"Task<{returnType}>" : returnType;
@@ -176,7 +214,9 @@ namespace RevEng.Core.Routines.Procedures
                 line += $"{string.Join(", ", outParamStrings)}";
             }
 
-            line += useAsyncCalls ? ", CancellationToken cancellationToken = default)" : ")";
+            var nullable = useNullableReferences ? "?" : string.Empty;
+
+            line += useAsyncCalls ? $", CancellationToken{nullable} cancellationToken = default)" : ")";
 
             return line;
         }

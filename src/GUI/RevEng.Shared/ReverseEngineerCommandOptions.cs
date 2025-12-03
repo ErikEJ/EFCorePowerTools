@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace RevEng.Common
 {
@@ -60,6 +60,12 @@ namespace RevEng.Common
         public bool UseLegacyPluralizer { get; set; }
 
         public List<string> UncountableWords { get; set; }
+
+        public List<IrregularWord> IrregularWords { get; set; }
+
+        public List<ReplacementRule> PluralRules { get; set; }
+
+        public List<ReplacementRule> SingularRules { get; set; }
 
         public bool UseSpatial { get; set; }
 

@@ -153,7 +153,4 @@
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)Resources\Package.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)Contracts\Messages\" />
-  </ItemGroup>
 </Project>

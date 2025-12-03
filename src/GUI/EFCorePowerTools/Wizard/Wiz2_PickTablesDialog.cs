@@ -57,9 +57,9 @@ namespace EFCorePowerTools.Wizard
             {
                 wea.Options.UiHint = viewModel.UiHint;
                 wea.UserOptions.UiHint = viewModel.UiHint;
+                wea.Options.CodeGenerationMode = (CodeGenerationMode)viewModel.CodeGenerationMode;
                 wea.Options.ConnectionString = viewModel.SelectedDatabaseConnection.ConnectionString;
                 wea.Options.DatabaseType = viewModel.SelectedDatabaseConnection.DatabaseType;
-                wea.Options.ContextClassName = null;
                 wea.Options.Dacpac = viewModel.SelectedDatabaseConnection.FilePath;
 
                 ThreadHelper.JoinableTaskFactory.Run(async () =>

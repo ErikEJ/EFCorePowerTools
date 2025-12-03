@@ -113,13 +113,6 @@ namespace EFCorePowerTools
             });
         }
 
-        internal async Task<TService> GetServiceAsync<TService>()
-        {
-            var service = extensionServices.GetService<TService>();
-            await Task.Yield();
-            return service;
-        }
-
         internal EnvDTE80.DTE2 Dte2()
         {
             ThreadHelper.ThrowIfNotOnUIThread();
@@ -316,7 +309,7 @@ namespace EFCorePowerTools
                 }
 
                 typeof(Microsoft.Xaml.Behaviors.Behavior).ToString();
-                typeof(Xceed.Wpf.Toolkit.SplitButton).ToString();
+                typeof(DropDownButtonLib.Controls.DropDownButton).ToString();
 
                 extensionServices = CreateServiceProvider();
 
@@ -605,7 +598,7 @@ namespace EFCorePowerTools
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidSqlBuild ||
                 menuCommand.CommandID.ID == PkgCmdIDList.cmdidDbCompare)
             {
-                menuCommand.Visible = await project.IsNet60OrHigherAsync()
+                menuCommand.Visible = await project.IsNet80OrHigherAsync()
                     && await project.IsInstalledAsync(new NuGetPackage { PackageId = "Microsoft.EntityFrameworkCore" });
             }
         }

@@ -1,10 +1,10 @@
 ﻿{
    "CodeGenerationMode": 4,
-   "ContextClassName": "ErikEJ.Dacpac.ChinookContext",
+   "ContextClassName": "NorthwindContext",
    "ContextNamespace": null,
    "FilterSchemas": false,
    "IncludeConnectionString": false,
-   "MinimumProductVersion": "2.6.0",
+   "MinimumProductVersion": "2.6.1093",
    "ModelNamespace": null,
    "OutputContextPath": null,
    "OutputPath": "Models",
@@ -16,8 +16,180 @@
    "T4TemplatePath": null,
    "Tables": [
       {
-         "Name": "[dbo].[Album]",
+         "Name": "[dbo].[Categories]",
          "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CustomerCustomerDemo]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[CustomerDemographics]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Customers]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Employees]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[EmployeeTerritories]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Order Details]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Orders]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Products]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Region]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Shippers]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Specials]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Suppliers]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Territories]",
+         "ObjectType": 0
+      },
+      {
+         "Name": "[dbo].[Alphabetical list of products]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Category Sales for 1997]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Current Product List]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Customer and Suppliers by City]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Invoices]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Order Details Extended]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Order Subtotals]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Orders Qry]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Product Sales for 1997]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Products Above Average Price]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Products by Category]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Quarterly Orders]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Sales by Category]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Sales Totals by Amount]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Summary of Sales by Quarter]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[Summary of Sales by Year]",
+         "ObjectType": 3
+      },
+      {
+         "Name": "[dbo].[CustOrderHist]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CustOrdersDetail]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[CustOrdersOrders]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Employee Sales by Country]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[MultiSet]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[OutputScenarios]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Sales by Year]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[SalesByCategory]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[SpecialTypes]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[Ten Most Expensive Products]",
+         "ObjectType": 1
+      },
+      {
+         "Name": "[dbo].[FuncWithTvpParameter]",
+         "ObjectType": 2
+      },
+      {
+         "Name": "[dbo].[ISOweek]",
+         "ObjectType": 2
+      },
+      {
+         "Name": "[dbo].[Latest Order Date]",
+         "ObjectType": 2
+      },
+      {
+         "Name": "[dbo].[tvp]",
+         "ObjectType": 2
       }
    ],
    "UiHint": null,
@@ -40,11 +212,11 @@
    "UseNoNavigations": false,
    "UseNoObjectFilter": false,
    "UseNodaTime": false,
-   "UseNullableReferences": false,
+   "UseNullableReferences": true,
    "UsePrefixNavigationNaming": false,
    "UseSchemaFolders": false,
    "UseSchemaNamespaces": false,
-   "UseSpatial": false,
+   "UseSpatial": true,
    "UseT4": false,
    "UseT4Split": false
 }

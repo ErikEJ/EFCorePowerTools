@@ -7,16 +7,22 @@ on:
         description: 'Build version (xxx)'     
         required: true
 
+permissions:
+  id-token: write   # required for GitHub OIDC
+
 jobs:
   build:
+    permissions:
+      id-token: write  # enable GitHub OIDC token issuance for this job
+
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
 
-    - uses: actions/setup-dotnet@v4
+    - uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: '9.0.3xx'
+        dotnet-version: '10.0.x'
   
     - name: Package CLI 8
       run: dotnet pack src\Core\efcpt.8\efcpt.8.csproj -p:PackageVersion=8.1.${{ github.event.inputs.version }} -p:InformationalVersion=8.1.${{ github.event.inputs.version }}
@@ -24,7 +30,16 @@ jobs:
     - name: Package CLI 9
       run: dotnet pack src\Core\efcpt.9\efcpt.9.csproj -p:PackageVersion=9.1.${{ github.event.inputs.version }} -p:InformationalVersion=9.1.${{ github.event.inputs.version }}
 
+    - name: Package CLI 10
+      run: dotnet pack src\Core\efcpt.10\efcpt.10.csproj -p:PackageVersion=10.1.${{ github.event.inputs.version }} -p:InformationalVersion=10.1.${{ github.event.inputs.version }}
+
+    - name: NuGet login (OIDC → temp API key)
+      uses: NuGet/login@v1
+      id: login
+      with:
+          user: ${{ secrets.NUGET_USER }}
+
     - name: Publish NuGet
       if: startsWith(github.ref, 'refs/heads/master')
-      run: dotnet nuget push **\*.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key ${{ secrets.NUGET }} --skip-duplicate
+      run: dotnet nuget push **\${{ secrets.NUGET_USER }}.*.nupkg --source 'https://api.nuget.org/v3/index.json' --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --skip-duplicate
       

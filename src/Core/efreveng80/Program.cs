@@ -154,7 +154,7 @@ namespace EfReveng
 
                         var builder = new ErDiagramBuilder(dabOptions);
 
-                        var buildResult = builder.GetErDiagramFileName();
+                        var buildResult = builder.GetErDiagramFileName(dabOptions.Optional);
 
                         await Console.Out.WriteLineAsync("Result:");
                         await Console.Out.WriteLineAsync(buildResult);

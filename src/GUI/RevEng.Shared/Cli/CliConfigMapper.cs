@@ -78,7 +78,10 @@ namespace RevEng.Common.Cli
                 Dacpac = isDacpac ? connectionString : null,
                 CustomReplacers = GetNamingOptions(configPath, renamingPath),
                 UseLegacyPluralizer = config.CodeGeneration.UseLegacyInflector,
+                IrregularWords = replacements.IrregularWords?.Select(w => new IrregularWord { Singular = w.Singular, Plural = w.Plural, MatchEnding = w.MatchEnding }).ToList(),
                 UncountableWords = replacements.UncountableWords?.ToList(),
+                PluralRules = replacements.PluralWords?.Select(w => new ReplacementRule { Rule = w.Rule, Replacement = w.Replacement }).ToList(),
+                SingularRules = replacements.SingularWords?.Select(w => new ReplacementRule { Rule = w.Rule, Replacement = w.Replacement }).ToList(),
                 UseSpatial = typeMappings.UseSpatial,
                 UseHierarchyId = typeMappings.UseHierarchyId,
                 UseNodaTime = typeMappings.UseNodaTime,
@@ -173,6 +176,9 @@ namespace RevEng.Common.Cli
                 CustomReplacers = GetNamingOptions(configPath, Constants.RenamingFileName),
                 UseLegacyPluralizer = config.CodeGeneration.UseLegacyInflector,
                 UncountableWords = replacements.UncountableWords?.ToList(),
+                IrregularWords = replacements.IrregularWords?.Select(w => new IrregularWord { Singular = w.Singular, Plural = w.Plural, MatchEnding = w.MatchEnding }).ToList(),
+                PluralRules = replacements.PluralWords?.Select(w => new ReplacementRule { Rule = w.Rule, Replacement = w.Replacement }).ToList(),
+                SingularRules = replacements.SingularWords?.Select(w => new ReplacementRule { Rule = w.Rule, Replacement = w.Replacement }).ToList(),
                 UseSpatial = typeMappings.UseSpatial,
                 UseHierarchyId = typeMappings.UseHierarchyId,
                 UseNodaTime = typeMappings.UseNodaTime,
@@ -241,13 +247,10 @@ namespace RevEng.Common.Cli
                     },
                 };
 
-                if (codeGenerationMode == CodeGenerationMode.EFCore8)
+                config.TypeMappings = new TypeMappings
                 {
-                    config.TypeMappings = new TypeMappings
-                    {
-                        UseDateOnlyTimeOnly = true,
-                    };
-                }
+                    UseDateOnlyTimeOnly = true,
+                };
             }
 
             if (config.CodeGeneration.RefreshObjectLists)

@@ -8,8 +8,6 @@ Aims to lower the bar for getting started with EF Core, by providing GUI based a
 [![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/i/ErikEJ.EFCorePowerTools)](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools&ssr=false#review-details)
 [![Twitter Follow](https://img.shields.io/twitter/follow/ErikEJ.svg?style=social&label=Follow)](https://twitter.com/ErikEJ) 
 
-[Reverse Engineering Wizard (beta)](https://github.com/ErikEJ/EFCorePowerTools/issues/2626#issue-2664318817) <img src="img/new.png" width="75"/>
-
 [Quick Start and 10 minute intro video](https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering-Quick-Start)
 
 [Demo video - Introduction](https://youtu.be/uph-AGyOd8c)
@@ -34,7 +32,7 @@ The tool and GitHub based support is free, but I would be very grateful for a [r
 
 ### Requirements
 
-For EF Core reverse engineering with Visual Studio, the .NET 8.0 x64 runtime must be installed.
+For EF Core reverse engineering with Visual Studio, the .NET 8.0 or .NET 10.0 runtime must be installed.
 
 ### Release
 
@@ -62,7 +60,7 @@ Adds the AsDgml() extension method to any derived DbContext. The method will cre
 
 [ErikEJ.EntityFrameworkCore.SqlServer.Dacpac](https://github.com/ErikEJ/EFCorePowerTools/blob/master/src/Nupkg/ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac/readme.md)
 
-Reverse engineer a SQL Server .dacpac with the EF Core tooling
+Reverse engineer a SQL Server .dacpac with the EF Core tooling - `dotnet ef`
 
 ## How do I contribute
 

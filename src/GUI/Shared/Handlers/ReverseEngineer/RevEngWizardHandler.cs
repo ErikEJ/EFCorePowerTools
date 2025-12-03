@@ -403,7 +403,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     missingProviderPackage = null;
                 }
 
-                await GenerateFilesAsync(project, options, missingProviderPackage, onlyGenerate, neededPackages);
+                await GenerateFilesAsync(project, options, missingProviderPackage, onlyGenerate, neededPackages, true);
 
                 var postRunFile = Path.Combine(Path.GetDirectoryName(optionsPath), "efpt.postrun.cmd");
                 if (File.Exists(postRunFile))
@@ -434,7 +434,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (options.InstallNuGetPackage
                 && (!onlyGenerate || forceEdit)
-                && (await project.IsNet60OrHigherAsync() || await project.IsNetStandardAsync()))
+                && (await project.IsNet80OrHigherAsync() || await project.IsNetStandardAsync()))
             {
                 var packages = await project.GetNeededPackagesAsync(options);
 
@@ -457,7 +457,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
         }
 
-        // Note: invoked by page 3 of wizard (Wiz3_EfCoreModelDialog)
+        // Note: invoked by page 3 of the wizard (Wiz3_EfCoreModelDialog)
         public async System.Threading.Tasks.Task<string> GenerateFilesAsync(Project project, ReverseEngineerOptions options, string missingProviderPackage, bool onlyGenerate, List<NuGetPackage> packages, bool isCalledByWizard = false)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
@@ -501,24 +501,18 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             if ((options.SelectedToBeGenerated == 0 || options.SelectedToBeGenerated == 1)
                 && AdvancedOptions.Instance.OpenGeneratedDbContext && !onlyGenerate)
             {
-                var readmeName = "PowerToolsReadMe.md";
+                var readmeName = "PowerToolsReadMe.md"; // Align with non-wizard handler pattern
                 var template = File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), readmeName), Encoding.UTF8);
 
-                if (packages.Any())
-                {
-                    finalText = ReverseEngineerHelper.GetReadMeText(options, template, packages);
-                }
-                else
-                {
-                    finalText = ReverseEngineerHelper.GetReadMeText(options, template);
-                }
+                finalText = packages.Any()
+                    ? ReverseEngineerHelper.GetReadMeText(options, template, packages)
+                    : ReverseEngineerHelper.GetReadMeText(options, template);
 
                 readmePath = Path.Combine(Path.GetTempPath(), readmeName);
-
                 finalText = ReverseEngineerHelper.AddResultToFinalText(finalText, revEngResult);
-
                 File.WriteAllText(readmePath, finalText, Encoding.UTF8);
 
+                // Use same simple open pattern as ReverseEngineerHandler to avoid potential UI hang
                 if (revEngResult.HasIssues)
                 {
                     if (!string.IsNullOrEmpty(revEngResult.ContextFilePath))
@@ -531,7 +525,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 else
                 {
                     await VS.Documents.OpenInPreviewTabAsync(readmePath);
-
                     if (!string.IsNullOrEmpty(revEngResult.ContextFilePath))
                     {
                         await VS.Documents.OpenAsync(revEngResult.ContextFilePath);
@@ -723,7 +716,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (!allowedVersions.Any())
             {
-                wizardArgs.StatusbarMessage = $".NET 5 and earlier is not supported.";
+                wizardArgs.StatusbarMessage = ".NET 5 and earlier is not supported.";
                 if (!wizardArgs.IsInvokedByWizard)
                 {
                     VSHelper.ShowError(wizardArgs.StatusbarMessage);
@@ -761,9 +754,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         }
 
         // Note: invoked by page 2 of the wizard (Wiz2_PickTablesDialog)
-#pragma warning disable SA1202 // Elements should be ordered by access
         public async Task<bool> LoadDataBaseObjectsAsync(ReverseEngineerOptions options, DatabaseConnectionModel dbInfo, Tuple<List<Schema>, string> namingOptionsAndPath, WizardEventArgs wizardArgs = null)
-#pragma warning restore SA1202 // Elements should be ordered by access
         {
             IEnumerable<TableModel> predefinedTables = null;
 
@@ -825,7 +816,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 await VS.StatusBar.ClearAsync();
             }
 
-            // If the wizard is driving then it's implementation of the interface will be used.
             var ptd = wizardArgs?.PickTablesDialog ?? package.GetView<IPickTablesDialog>();
             ptd.AddTables(predefinedTables, namingOptionsAndPath.Item1)
                .PreselectTables(preselectedTables)
@@ -844,11 +834,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         {
             var isInvokedByWizard = wizardArgs.PickTablesDialogComplete;
 
-            // If this is being invoked by wizard then get fresh list of selected files for processing
-            // (developer can select/deselect other objects).
             if (isInvokedByWizard)
             {
-                // If the wizard is driving then it's implementation of the interface will be used.
                 var ptd = wizardArgs.PickTablesDialog ?? package.GetView<IPickTablesDialog>();
                 var pickTablesResult = ptd.ShowAndAwaitUserResponse(true);
 
@@ -898,8 +885,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 T4TemplatePath = options.T4TemplatePath,
             };
 
-            // If the wizard is driving then it's implementation of the interface will be used.
-            var modelDialog = wizardArgs.ModelingOptionsDialog ?? package.GetView<IModelingOptionsDialog>();
+            var modelDialog = wizardArgs?.ModelingOptionsDialog ?? package.GetView<IModelingOptionsDialog>();
             modelDialog.ApplyPresets(presets);
 
             var allowedTemplates = reverseEngineerHelper.CalculateAllowedTemplates(options.CodeGenerationMode);
@@ -908,7 +894,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 new Contracts.ViewModels.TemplateTypeItem { Key = options.SelectedHandlebarsLanguage },
                 allowedTemplates);
 
-            if (!wizardArgs.IsInvokedByWizard)
+            if (wizardArgs != null && !wizardArgs.IsInvokedByWizard)
             {
                 await VS.StatusBar.ClearAsync();
             }
@@ -981,7 +967,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
         public async System.Threading.Tasks.Task SaveOptionsAsync(Project project, string optionsPath, ReverseEngineerOptions options, ReverseEngineerUserOptions userOptions, Tuple<List<Schema>, string> renamingOptions)
         {
-            if (optionsPath.EndsWith(Constants.ConfigFileName, StringComparison.OrdinalIgnoreCase))
+            if (optionsPath.EndsWith(RevEng.Common.Constants.ConfigFileName, StringComparison.OrdinalIgnoreCase))
             {
                 return;
             }
@@ -1015,7 +1001,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     }
                 }
 
-                var versionString = Assembly.GetAssembly(typeof(ReverseEngineerHandler))?.GetName().Version.ToString(3);
+                var versionString = FileVersionInfo.GetVersionInfo(typeof(EFCorePowerToolsPackage).Assembly.Location).FileVersion ?? null;
                 if (versionString != null)
                 {
                     var productVersion = new Version(versionString);

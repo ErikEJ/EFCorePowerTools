@@ -158,7 +158,8 @@ namespace RevEng.Core
                         Path.GetFullPath(Path.Combine(options.ProjectPath, options.OutputPath ?? string.Empty)),
                         contextNamespace,
                         options.UseAsyncCalls,
-                        functionOptions.UseInternalAccessModifier);
+                        functionOptions.UseInternalAccessModifier,
+                        options.UseNullableReferences);
                 }
             }
 
@@ -226,7 +227,8 @@ namespace RevEng.Core
                         Path.GetFullPath(Path.Combine(options.ProjectPath, options.OutputPath ?? string.Empty)),
                         contextNamespace,
                         options.UseAsyncCalls,
-                        procedureOptions.UseInternalAccessModifier);
+                        procedureOptions.UseInternalAccessModifier,
+                        options.UseNullableReferences);
                 }
             }
 

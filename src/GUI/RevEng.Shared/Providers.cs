@@ -136,15 +136,16 @@ namespace RevEng.Common
                 var pkgVersion = string.Empty;
                 switch (codeGenerationMode)
                 {
-                    case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.0.36";
-                        break;
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.0.18";
+                        pkgVersion = "8.0.22";
                         break;
                     case CodeGenerationMode.EFCore9:
-                        pkgVersion = "9.0.7";
+                        pkgVersion = "9.0.11";
                         break;
+                    case CodeGenerationMode.EFCore10:
+                        pkgVersion = "10.0.0";
+                        break;
+
                     default:
                         throw new NotImplementedException();
                 }
@@ -174,16 +175,16 @@ namespace RevEng.Common
                 {
                     switch (codeGenerationMode)
                     {
-                        case CodeGenerationMode.EFCore6:
-                            pkgVersion = "6.0.1";
-                            break;
-
                         case CodeGenerationMode.EFCore8:
                             pkgVersion = "8.0.1";
                             break;
 
                         case CodeGenerationMode.EFCore9:
                             pkgVersion = "9.1.1";
+                            break;
+
+                        case CodeGenerationMode.EFCore10:
+                            pkgVersion = "10.0.0";
                             break;
 
                         default: throw new NotImplementedException();
@@ -201,66 +202,14 @@ namespace RevEng.Common
 
                 if (useHierarchyId)
                 {
-                    switch (codeGenerationMode)
+                    packages.Add(new NuGetPackage
                     {
-                        case CodeGenerationMode.EFCore6:
-                            pkgVersion = "3.0.1";
-                            break;
-                        case CodeGenerationMode.EFCore8:
-                            pkgVersion = "8.0.0";
-                            break;
-                        case CodeGenerationMode.EFCore9:
-                            pkgVersion = "9.0.0";
-                            break;
-
-                        default: throw new NotImplementedException();
-                    }
-
-                    if (codeGenerationMode == CodeGenerationMode.EFCore8
-                        || codeGenerationMode == CodeGenerationMode.EFCore9)
-                    {
-                        packages.Add(new NuGetPackage
-                        {
-                            PackageId = "Microsoft.EntityFrameworkCore.SqlServer.HierarchyId",
-                            Version = pkgVersion,
-                            DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
-                            IsMainProviderPackage = false,
-                            UseMethodName = "HierarchyId",
-                        });
-                    }
-                    else
-                    {
-                        packages.Add(new NuGetPackage
-                        {
-                            PackageId = "EntityFrameworkCore.SqlServer.HierarchyId",
-                            Version = pkgVersion,
-                            DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
-                            IsMainProviderPackage = false,
-                            UseMethodName = "HierarchyId",
-                        });
-                    }
-                }
-
-                if (useDateOnlyTimeOnly)
-                {
-                    switch (codeGenerationMode)
-                    {
-                        case CodeGenerationMode.EFCore6:
-                            pkgVersion = "6.0.11";
-                            break;
-                    }
-
-                    if (codeGenerationMode == CodeGenerationMode.EFCore6)
-                    {
-                        packages.Add(new NuGetPackage
-                        {
-                            PackageId = "ErikEJ.EntityFrameworkCore.SqlServer.DateOnlyTimeOnly",
-                            Version = pkgVersion,
-                            DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
-                            IsMainProviderPackage = false,
-                            UseMethodName = "DateOnlyTimeOnly",
-                        });
-                    }
+                        PackageId = "Microsoft.EntityFrameworkCore.SqlServer.HierarchyId",
+                        Version = pkgVersion,
+                        DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
+                        IsMainProviderPackage = false,
+                        UseMethodName = "HierarchyId",
+                    });
                 }
 
                 if (hasProcedures && discoverMultipleResultSets)
@@ -281,14 +230,16 @@ namespace RevEng.Common
                 var pkgVersion = string.Empty;
                 switch (codeGenerationMode)
                 {
-                    case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.0.36";
-                        break;
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.0.18";
+                        pkgVersion = "8.0.22";
                         break;
+
                     case CodeGenerationMode.EFCore9:
-                        pkgVersion = "9.0.7";
+                        pkgVersion = "9.0.11";
+                        break;
+
+                    case CodeGenerationMode.EFCore10:
+                        pkgVersion = "10.0.0";
                         break;
 
                     default: throw new NotImplementedException();
@@ -307,10 +258,6 @@ namespace RevEng.Common
                 {
                     switch (codeGenerationMode)
                     {
-                        case CodeGenerationMode.EFCore6:
-                            pkgVersion = "6.0.0";
-                            break;
-
                         case CodeGenerationMode.EFCore8:
                             pkgVersion = "8.0.0";
                             break;
@@ -338,14 +285,16 @@ namespace RevEng.Common
                 var pkgVersion = string.Empty;
                 switch (codeGenerationMode)
                 {
-                    case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.0.29";
-                        break;
                     case CodeGenerationMode.EFCore8:
                         pkgVersion = "8.0.11";
                         break;
+
                     case CodeGenerationMode.EFCore9:
                         pkgVersion = "9.0.4";
+                        break;
+
+                    case CodeGenerationMode.EFCore10:
+                        pkgVersion = "10.0.0";
                         break;
 
                     default: throw new NotImplementedException();
@@ -390,16 +339,12 @@ namespace RevEng.Common
                 var pkgVersion = string.Empty;
                 switch (codeGenerationMode)
                 {
-                    case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.0.3";
-                        break;
-
                     case CodeGenerationMode.EFCore8:
                         pkgVersion = "8.0.3";
                         break;
 
                     case CodeGenerationMode.EFCore9:
-                        pkgVersion = "9.0.0-preview.3.efcore.9.0.0";
+                        pkgVersion = "9.0.0";
                         break;
 
                     default: throw new NotImplementedException();
@@ -432,14 +377,15 @@ namespace RevEng.Common
                 var pkgVersion = string.Empty;
                 switch (codeGenerationMode)
                 {
-                    case CodeGenerationMode.EFCore6:
-                        pkgVersion = "6.21.160";
-                        break;
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.23.90";
+                        pkgVersion = "8.23.26000";
                         break;
                     case CodeGenerationMode.EFCore9:
-                        pkgVersion = "9.23.90";
+                        pkgVersion = "9.23.26000";
+                        break;
+
+                    case CodeGenerationMode.EFCore10:
+                        pkgVersion = "10.23.26000";
                         break;
 
                     default: throw new NotImplementedException();
@@ -460,10 +406,6 @@ namespace RevEng.Common
                 var pkgVersion = string.Empty;
                 switch (codeGenerationMode)
                 {
-                    case CodeGenerationMode.EFCore6:
-                        pkgVersion = "9.1.1";
-                        break;
-
                     case CodeGenerationMode.EFCore8:
                         pkgVersion = "11.0.0";
                         break;

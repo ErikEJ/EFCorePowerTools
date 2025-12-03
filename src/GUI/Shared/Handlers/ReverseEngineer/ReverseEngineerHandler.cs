@@ -231,11 +231,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                             return;
                         }
 
-                        if (newOptions)
-                        {
-                            options.UseDateOnlyTimeOnly = options.CodeGenerationMode == CodeGenerationMode.EFCore8;
-                        }
-
                         await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.GettingReadyToConnect);
 
                         dbInfo = await GetDatabaseInfoAsync(options);
@@ -271,9 +266,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                         // HACK Work around for issue with web app project system on initial run
                         userOptions = null;
                     }
-
-                    await SaveOptionsAsync(project, optionsPath, options, userOptions, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
                 }
+
+                await SaveOptionsAsync(project, optionsPath, options, userOptions, new Tuple<List<Schema>, string>(options.CustomReplacers, namingOptionsAndPath.Item2));
 
                 await InstallNuGetPackagesAsync(project, onlyGenerate, options, forceEdit);
 
@@ -312,7 +307,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (options.InstallNuGetPackage
                 && (!onlyGenerate || forceEdit)
-                && (await project.IsNet60OrHigherAsync() || await project.IsNetStandardAsync()))
+                && (await project.IsNet80OrHigherAsync()))
             {
                 var packages = await project.GetNeededPackagesAsync(options);
 
@@ -779,7 +774,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     }
                 }
 
-                var versionString = Assembly.GetAssembly(typeof(ReverseEngineerHandler))?.GetName().Version.ToString(3);
+                var versionString = FileVersionInfo.GetVersionInfo(typeof(EFCorePowerToolsPackage).Assembly.Location).FileVersion ?? null;
                 if (versionString != null)
                 {
                     var productVersion = new Version(versionString);
