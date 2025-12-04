@@ -453,6 +453,29 @@ namespace RevEng.Common
                 });
             }
 
+            if (databaseType == DatabaseType.Db2)
+            {
+                var pkgVersion = string.Empty;
+                switch (codeGenerationMode)
+                {
+                    case CodeGenerationMode.EFCore8:
+                        pkgVersion = "8.0.8";
+                        break;
+                    case CodeGenerationMode.EFCore9:
+                        pkgVersion = "9.0.4";
+                        break;
+                    default:
+                        throw new NotImplementedException();
+                }
+                packages.Add(new NuGetPackage
+                {
+                    PackageId = "IBM.EntityFrameworkCore",
+                    Version = pkgVersion,
+                    DatabaseTypes = new List<DatabaseType> { databaseType },
+                    IsMainProviderPackage = true,
+                    UseMethodName = "Db2",
+                });
+            }
             return packages;
         }
 
@@ -532,6 +555,10 @@ namespace RevEng.Common
                 {
                     "EFCore.Snowflake",
                     new List<string> { "snowflake" }
+                },
+                {
+                    "IBM.EntityFrameworkCore",
+                    new List<string> { "Db2" }
                 },
             };
         }

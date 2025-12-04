@@ -27,8 +27,7 @@
 
   <ItemGroup>
     <PackageReference Include="Bricelam.EntityFrameworkCore.Pluralizer" Version="1.0.0" />
-    <PackageReference Include="EFCore.Snowflake" Version="9.0.4" />
-    <PackageReference Include="IBM.EntityFrameworkCore" Version="9.0.0.200" />
+    <PackageReference Include="IBM.EntityFrameworkCore" Version="9.0.0.400" />
     <PackageReference Include="EFCore.Snowflake" Version="9.0.9" />
     <PackageReference Include="EntityFrameworkCore.Scaffolding.Handlebars" Version="9.0.0" />
     <PackageReference Include="EntityFrameworkCore.Sqlite.NodaTime" Version="9.2.1" />
