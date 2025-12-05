@@ -467,6 +467,7 @@ namespace RevEng.Common
                     default:
                         throw new NotImplementedException();
                 }
+
                 packages.Add(new NuGetPackage
                 {
                     PackageId = "IBM.EntityFrameworkCore",
@@ -476,6 +477,7 @@ namespace RevEng.Common
                     UseMethodName = "Db2",
                 });
             }
+
             return packages;
         }
 

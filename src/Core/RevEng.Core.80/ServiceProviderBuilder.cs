@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 #if !CORE100
 using EFCore.Snowflake.Design.Internal;
-using IBM.EntityFrameworkCore.Internal;
 using EntityFrameworkCore.Scaffolding.Handlebars;
 #endif
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
@@ -28,12 +27,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
 using Oracle.EntityFrameworkCore.Design.Internal;
 #if !CORE100
+using IBM.EntityFrameworkCore.Design.Internal;
 using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
 #endif
 using RevEng.Common;
 using RevEng.Core.Routines.Extensions;
 using SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime.Design;
-using IBM.EntityFrameworkCore.Design.Internal;
 
 namespace RevEng.Core
 {
