@@ -14,8 +14,4 @@ public partial class Special
     public Geometry Test2 { get; set; } = null!;
 
     public Geometry Test3 { get; set; } = null!;
-
-    public DateOnly? TheDate { get; set; }
-
-    public TimeOnly? TheTime { get; set; }
 }

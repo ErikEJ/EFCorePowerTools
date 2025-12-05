@@ -222,15 +222,15 @@ namespace EFCorePowerTools.Helpers
         {
             var list = new List<CodeGenerationItem>();
 
+            if (minimumVersion.Major >= 10)
+            {
+                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore10, Value = "EF Core 10" });
+            }
+
             if (minimumVersion.Major >= 8 || minimumVersion.Major == 2)
             {
                 list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore8, Value = "EF Core 8" });
                 list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore9, Value = "EF Core 9" });
-            }
-
-            if (minimumVersion.Major >= 10)
-            {
-                list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore10, Value = "EF Core 10" });
             }
 
             if (!list.Any())

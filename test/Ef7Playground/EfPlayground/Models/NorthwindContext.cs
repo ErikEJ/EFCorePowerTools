@@ -33,16 +33,8 @@ public partial class NorthwindContext : DbContext
 
     public virtual DbSet<Invoice> Invoices { get; set; }
 
-    public virtual DbSet<MigrationHistory> MigrationHistories { get; set; }
-
-    /// <summary>
-    /// Orders table
-    /// </summary>
     public virtual DbSet<Order> Orders { get; set; }
 
-    /// <summary>
-    /// OrderDetails table
-    /// </summary>
     public virtual DbSet<OrderDetail> OrderDetails { get; set; }
 
     public virtual DbSet<OrderDetailsExtended> OrderDetailsExtendeds { get; set; }
@@ -50,8 +42,6 @@ public partial class NorthwindContext : DbContext
     public virtual DbSet<OrderSubtotal> OrderSubtotals { get; set; }
 
     public virtual DbSet<OrdersQry> OrdersQries { get; set; }
-
-    public virtual DbSet<Person> People { get; set; }
 
     public virtual DbSet<Product> Products { get; set; }
 
@@ -69,14 +59,9 @@ public partial class NorthwindContext : DbContext
 
     public virtual DbSet<SalesTotalsByAmount> SalesTotalsByAmounts { get; set; }
 
-    /// <summary>
-    /// Shipper table comment
-    /// </summary>
     public virtual DbSet<Shipper> Shippers { get; set; }
 
     public virtual DbSet<Special> Specials { get; set; }
-
-    public virtual DbSet<StringSplitResult> StringSplitResults { get; set; }
 
     public virtual DbSet<SummaryOfSalesByQuarter> SummaryOfSalesByQuarters { get; set; }
 
@@ -88,10 +73,9 @@ public partial class NorthwindContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=.\\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True;Encrypt=True;Trust Server Certificate=True;Command Timeout=300", x => x
+        => optionsBuilder.UseSqlServer("Data Source=.\\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True;Encrypt=False;Trust Server Certificate=True;Command Timeout=300", x => x
                 .UseNetTopologySuite()
-                .UseHierarchyId())
-                .LogTo(Console.WriteLine);
+                .UseHierarchyId());
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -116,9 +100,7 @@ public partial class NorthwindContext : DbContext
 
             entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
             entity.Property(e => e.CategoryName).HasMaxLength(15);
-            entity.Property(e => e.Description)
-                .HasComment("Obsolete")
-                .HasColumnType("ntext");
+            entity.Property(e => e.Description).HasColumnType("ntext");
             entity.Property(e => e.Picture).HasColumnType("image");
         });
 
@@ -305,21 +287,8 @@ public partial class NorthwindContext : DbContext
             entity.Property(e => e.UnitPrice).HasColumnType("money");
         });
 
-        modelBuilder.Entity<MigrationHistory>(entity =>
-        {
-            entity.HasKey(e => new { e.MigrationId, e.ContextKey }).HasName("PK_dbo.__MigrationHistory");
-
-            entity.ToTable("__MigrationHistory");
-
-            entity.Property(e => e.MigrationId).HasMaxLength(150);
-            entity.Property(e => e.ContextKey).HasMaxLength(300);
-            entity.Property(e => e.ProductVersion).HasMaxLength(32);
-        });
-
         modelBuilder.Entity<Order>(entity =>
         {
-            entity.ToTable(tb => tb.HasComment("Orders table"));
-
             entity.HasIndex(e => e.CustomerId, "CustomerID");
 
             entity.HasIndex(e => e.CustomerId, "CustomersOrders");
@@ -343,7 +312,7 @@ public partial class NorthwindContext : DbContext
                 .HasColumnName("CustomerID");
             entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
             entity.Property(e => e.Freight)
-                .HasDefaultValue(0m)
+                .HasDefaultValue(0m, "DF_Orders_Freight")
                 .HasColumnType("money");
             entity.Property(e => e.OrderDate).HasColumnType("datetime");
             entity.Property(e => e.RequiredDate).HasColumnType("datetime");
@@ -372,7 +341,7 @@ public partial class NorthwindContext : DbContext
         {
             entity.HasKey(e => new { e.OrderId, e.ProductId }).HasName("PK_Order_Details");
 
-            entity.ToTable("Order Details", tb => tb.HasComment("OrderDetails table"));
+            entity.ToTable("Order Details");
 
             entity.HasIndex(e => e.OrderId, "OrderID");
 
@@ -384,7 +353,7 @@ public partial class NorthwindContext : DbContext
 
             entity.Property(e => e.OrderId).HasColumnName("OrderID");
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
-            entity.Property(e => e.Quantity).HasDefaultValue((short)1);
+            entity.Property(e => e.Quantity).HasDefaultValue((short)1, "DF_Order_Details_Quantity");
             entity.Property(e => e.UnitPrice).HasColumnType("money");
 
             entity.HasOne(d => d.Order).WithMany(p => p.OrderDetails)
@@ -451,26 +420,6 @@ public partial class NorthwindContext : DbContext
             entity.Property(e => e.ShippedDate).HasColumnType("datetime");
         });
 
-        modelBuilder.Entity<Person>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_dbo.Person");
-
-            entity.ToTable("Person");
-
-            entity.Property(e => e.Address)
-                .HasMaxLength(255)
-                .IsUnicode(false);
-            entity.Property(e => e.City)
-                .HasMaxLength(255)
-                .IsUnicode(false);
-            entity.Property(e => e.FirstName)
-                .HasMaxLength(255)
-                .IsUnicode(false);
-            entity.Property(e => e.LastName)
-                .HasMaxLength(255)
-                .IsUnicode(false);
-        });
-
         modelBuilder.Entity<Product>(entity =>
         {
             entity.HasIndex(e => e.CategoryId, "CategoriesProducts");
@@ -487,13 +436,13 @@ public partial class NorthwindContext : DbContext
             entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
             entity.Property(e => e.ProductName).HasMaxLength(40);
             entity.Property(e => e.QuantityPerUnit).HasMaxLength(20);
-            entity.Property(e => e.ReorderLevel).HasDefaultValue((short)0);
+            entity.Property(e => e.ReorderLevel).HasDefaultValue((short)0, "DF_Products_ReorderLevel");
             entity.Property(e => e.SupplierId).HasColumnName("SupplierID");
             entity.Property(e => e.UnitPrice)
-                .HasDefaultValue(0m)
+                .HasDefaultValue(0m, "DF_Products_UnitPrice")
                 .HasColumnType("money");
-            entity.Property(e => e.UnitsInStock).HasDefaultValue((short)0);
-            entity.Property(e => e.UnitsOnOrder).HasDefaultValue((short)0);
+            entity.Property(e => e.UnitsInStock).HasDefaultValue((short)0, "DF_Products_UnitsInStock");
+            entity.Property(e => e.UnitsOnOrder).HasDefaultValue((short)0, "DF_Products_UnitsOnOrder");
 
             entity.HasOne(d => d.Category).WithMany(p => p.Products)
                 .HasForeignKey(d => d.CategoryId)
@@ -591,12 +540,6 @@ public partial class NorthwindContext : DbContext
 
         modelBuilder.Entity<Shipper>(entity =>
         {
-            entity.ToTable(tb =>
-                {
-                    tb.HasComment("Shipper table comment");
-                    tb.HasTrigger("ShippersTrigger");
-                });
-
             entity.Property(e => e.ShipperId).HasColumnName("ShipperID");
             entity.Property(e => e.CompanyName).HasMaxLength(40);
             entity.Property(e => e.Phone).HasMaxLength(24);
@@ -604,17 +547,10 @@ public partial class NorthwindContext : DbContext
 
         modelBuilder.Entity<Special>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Specials__3214EC073B5BB931");
+            entity.HasKey(e => e.Id).HasName("PK__Specials__3214EC0764B86959");
 
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Test2).HasColumnType("geometry");
-        });
-
-        modelBuilder.Entity<StringSplitResult>(entity =>
-        {
-            entity.HasKey(e => e.Value).HasName("PK_dbo.StringSplitResults");
-
-            entity.Property(e => e.Value).HasMaxLength(128);
         });
 
         modelBuilder.Entity<SummaryOfSalesByQuarter>(entity =>
@@ -677,7 +613,6 @@ public partial class NorthwindContext : DbContext
                 .HasConstraintName("FK_Territories_Region");
         });
 
-        OnModelCreatingGeneratedProcedures(modelBuilder);
         OnModelCreatingGeneratedFunctions(modelBuilder);
         OnModelCreatingPartial(modelBuilder);
     }
