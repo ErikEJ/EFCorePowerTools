@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 using Ef7Playground.Models;
 
 namespace Ef7Playground.Models

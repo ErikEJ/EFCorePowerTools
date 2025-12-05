@@ -1,4 +1,4 @@
-﻿<Project Sdk="MSBuild.Sdk.SqlProj/3.2.0">
+﻿<Project Sdk="MSBuild.Sdk.SqlProj/3.3.0">
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
         <SqlServerVersion>Sql150</SqlServerVersion>
@@ -10,11 +10,11 @@
     <ItemGroup>
         <!-- These packages adds additional code analysis rules -->
         <!-- We recommend using these, but they can be removed if desired -->
-        <PackageReference Include="ErikEJ.DacFX.SqlServer.Rules" Version="1.1.2">
+        <PackageReference Include="ErikEJ.DacFX.SqlServer.Rules" Version="3.0.0">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="ErikEJ.DacFX.TSQLSmellSCA" Version="1.1.2">
+        <PackageReference Include="ErikEJ.DacFX.TSQLSmellSCA" Version="3.0.0">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>

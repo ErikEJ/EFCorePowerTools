@@ -1,10 +1,10 @@
 ﻿{
-   "CodeGenerationMode": 4,
+   "CodeGenerationMode": 6,
    "ContextClassName": "NorthwindContext",
    "ContextNamespace": null,
-   "DefaultDacpacSchema": null,
    "FilterSchemas": false,
    "IncludeConnectionString": true,
+   "MinimumProductVersion": "2.6.1166",
    "ModelNamespace": null,
    "OutputContextPath": null,
    "OutputPath": "Models",
@@ -15,10 +15,6 @@
    "SelectedToBeGenerated": 0,
    "T4TemplatePath": null,
    "Tables": [
-      {
-         "Name": "[dbo].[__MigrationHistory]",
-         "ObjectType": 0
-      },
       {
          "Name": "[dbo].[Categories]",
          "ObjectType": 0
@@ -52,10 +48,6 @@
          "ObjectType": 0
       },
       {
-         "Name": "[dbo].[Person]",
-         "ObjectType": 0
-      },
-      {
          "Name": "[dbo].[Products]",
          "ObjectType": 0
       },
@@ -69,10 +61,6 @@
       },
       {
          "Name": "[dbo].[Specials]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[StringSplitResults]",
          "ObjectType": 0
       },
       {
@@ -200,13 +188,15 @@
          "ObjectType": 2
       }
    ],
-   "UiHint": "dg-pf2wppld\\sqlexpress.Northwind.dbo",
+   "UiHint": null,
    "UncountableWords": [
       "Status",
       "Data"
    ],
+   "UseAsyncStoredProcedureCalls": true,
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,
+   "UseDatabaseNamesForRoutines": true,
    "UseDateOnlyTimeOnly": true,
    "UseDbContextSplitting": false,
    "UseDecimalDataAnnotationForSprocResult": true,
@@ -214,6 +204,7 @@
    "UseHandleBars": false,
    "UseHierarchyId": true,
    "UseInflector": true,
+   "UseInternalAccessModifiersForSprocsAndFunctions": false,
    "UseLegacyPluralizer": false,
    "UseManyToManyEntity": false,
    "UseNoDefaultConstructor": false,
@@ -221,8 +212,10 @@
    "UseNoObjectFilter": false,
    "UseNodaTime": false,
    "UseNullableReferences": true,
+   "UsePrefixNavigationNaming": false,
    "UseSchemaFolders": false,
    "UseSchemaNamespaces": false,
    "UseSpatial": true,
-   "UseT4": true
+   "UseT4": true,
+   "UseT4Split": false
 }
