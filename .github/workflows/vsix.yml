@@ -72,7 +72,7 @@ jobs:
           mkdir vsix
           7z x src/GUI/lib/efreveng90.exe.zip -oefreveng90 -y
           dir /a:-d /s /b "efreveng90" | find /c ":\" > filecount.txt
-          findstr "170" filecount.txt
+          findstr "166" filecount.txt
 
     - name: Extract and verify efreveng100.exe.zip file count
       if: github.event_name != 'pull_request'
