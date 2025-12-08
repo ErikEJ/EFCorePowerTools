@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Globalization;
 using System.Windows.Controls;
 using EFCorePowerTools.Common.Models;
@@ -62,9 +62,6 @@ namespace EFCorePowerTools.Dialogs
                     break;
                 case DatabaseType.Snowflake:
                     txtSample.Text = "ACCOUNT=<accountid>;DB=MYDATABASE;SCHEMA=MYSCHEMA;USER=MYUSERNAME;PASSWORD=myPassword";
-                    break;
-                case DatabaseType.Db2:
-                    txtSample.Text = "Server=myServerAddress:<portnumber>;Database=myDataBase;Uid=myUsername;Pwd=myPassword;";
                     break;
 
                 default:
