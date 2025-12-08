@@ -27,7 +27,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Design.Internal;
 using Oracle.EntityFrameworkCore.Design.Internal;
 #if !CORE100
-using IBM.EntityFrameworkCore.Design.Internal;
 using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
 #endif
 using RevEng.Common;
@@ -160,10 +159,6 @@ namespace RevEng.Core
                 case DatabaseType.Snowflake:
                     var snowflakeProvider = new SnowflakeDesignTimeServices();
                     snowflakeProvider.ConfigureDesignTimeServices(serviceCollection);
-                    break;
-                case DatabaseType.Db2:
-                    var db2Provider = new Db2DesignTimeServices();
-                    db2Provider.ConfigureDesignTimeServices(serviceCollection);
                     break;
 #endif
 

@@ -16,7 +16,6 @@ rd bin\Release\net8.0\x64\publish\runtimes\android-arm /Q /S
 rd bin\Release\net8.0\x64\publish\runtimes\android-arm64 /Q /S
 rd bin\Release\net8.0\x64\publish\runtimes\android-x64 /Q /S
 rd bin\Release\net8.0\x64\publish\runtimes\android-x86 /Q /S
-rd bin\Release\net8.0\x64\publish\runtimes\browser /Q /S
 rd bin\Release\net8.0\x64\publish\runtimes\browser-wasm /Q /S
 rd bin\Release\net8.0\x64\publish\runtimes\linux /Q /S
 rd bin\Release\net8.0\x64\publish\runtimes\linux-arm /Q /S
@@ -45,9 +44,6 @@ rd bin\Release\net8.0\x64\publish\runtimes\tvossimulator-x64 /Q /S
 rd bin\Release\net8.0\x64\publish\runtimes\unix /Q /S
 rd bin\Release\net8.0\x64\publish\runtimes\win-arm /Q /S
 rd bin\Release\net8.0\x64\publish\runtimes\win-x86 /Q /S
-
-rd bin\Release\net8.0\x64\publish\es /Q /S
-rd bin\Release\net8.0\x64\publish\clidriver /Q /S
 
 "C:\Program Files\7-Zip\7z.exe" -mm=Deflate -mfb=258 -mpass=15 a efreveng80.exe.zip .\bin\Release\net8.0\x64\publish\*
 
