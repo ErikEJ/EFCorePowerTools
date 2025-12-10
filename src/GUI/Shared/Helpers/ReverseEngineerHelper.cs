@@ -61,7 +61,7 @@ namespace EFCorePowerTools.Helpers
                         break;
 
                     case CodeGenerationMode.EFCore10:
-                        t4Version = "900";
+                        t4Version = "1000";
                         break;
 
                     default:
