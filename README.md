@@ -1,12 +1,12 @@
 # EF Core Power Tools
 
-Reverse engineering and model visualization tools for EF Core in Visual Studio - and reverse engineering from command line.
+Reverse engineering and model visualization tools for EF Core in Visual Studio 2022 - and reverse engineering from command line.
 
 Aims to lower the bar for getting started with EF Core, by providing GUI based assistance with reverse engineering of an existing database and visualizing your DbContext model.
 
 [![Visual Studio Marketplace Rating](https://img.shields.io/visual-studio-marketplace/r/ErikEJ.EFCorePowerTools)](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools&ssr=false#review-details)
 [![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/i/ErikEJ.EFCorePowerTools)](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools&ssr=false#review-details)
-[![Twitter Follow](https://img.shields.io/twitter/follow/ErikEJ.svg?style=social&label=Follow)](https://twitter.com/ErikEJ)
+[![Twitter Follow](https://img.shields.io/twitter/follow/ErikEJ.svg?style=social&label=Follow)](https://twitter.com/ErikEJ) 
 
 [Quick Start and 10 minute intro video](https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering-Quick-Start)
 
