@@ -1,4 +1,4 @@
-﻿using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
+using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Scaffolding;
@@ -21,6 +21,12 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Design
                 .TryAdd<IDatabaseModelFactory, SqlServerDacpacDatabaseModelFactory>()
                 .TryAdd<IProviderConfigurationCodeGenerator, SqlServerCodeGenerator>()
                 .TryAddCoreServices();
+
+            var spatial = new SqlServerNetTopologySuiteDesignTimeServices();
+            spatial.ConfigureDesignTimeServices(serviceCollection);
+
+            var hierachyId = new SqlServerHierarchyIdDesignTimeServices();
+            hierachyId.ConfigureDesignTimeServices(serviceCollection);
         }
     }
 }
