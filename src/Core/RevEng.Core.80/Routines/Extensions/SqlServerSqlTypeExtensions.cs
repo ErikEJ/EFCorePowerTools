@@ -113,6 +113,9 @@ namespace RevEng.Core.Routines.Extensions
                 case SqlDbType.Text:
                 case SqlDbType.VarChar:
                 case SqlDbType.Xml:
+#if NET10_0_OR_GREATER
+                case SqlDbType.Json:
+#endif
                     return typeof(string);
 
                 case SqlDbType.DateTime:
