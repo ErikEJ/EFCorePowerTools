@@ -136,6 +136,14 @@ namespace RevEng.Core
                 case DatabaseType.Oracle:
                     var oracleProvider = new OracleDesignTimeServices();
                     oracleProvider.ConfigureDesignTimeServices(serviceCollection);
+
+#if CORE100
+                    if (options.UseSpatial)
+                    {
+                        var spatial = new OracleNetTopologySuiteDesignTimeServices();
+                        spatial.ConfigureDesignTimeServices(serviceCollection);
+                    }
+#endif
                     break;
 
 #if !CORE100
