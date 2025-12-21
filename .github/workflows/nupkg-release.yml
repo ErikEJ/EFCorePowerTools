@@ -21,7 +21,7 @@ jobs:
       run: dotnet pack src\Nupkg\ErikEJ.EntityFrameworkCore.9.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.9.SqlServer.Dacpac.csproj
 
     - name: Publish artifacts
-      uses: actions/upload-artifact@v5
+      uses: actions/upload-artifact@v6
       with:
         name: Nupkg
         path: |
