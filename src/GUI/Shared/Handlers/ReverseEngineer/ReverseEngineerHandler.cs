@@ -385,11 +385,29 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                         await VS.Documents.OpenAsync(revEngResult.ContextFilePath);
                     }
 
-                    await VS.Documents.OpenInPreviewTabAsync(readmePath);
+                    try
+                    {
+                        // Give VS a moment to breathe
+                        await Task.Delay(500);
+                        await VS.Documents.OpenInPreviewTabAsync(readmePath);
+                    }
+                    catch
+                    {
+                        // ignore
+                    }
                 }
                 else
                 {
-                    await VS.Documents.OpenInPreviewTabAsync(readmePath);
+                    try
+                    {
+                        // Give VS a moment to breathe
+                        await Task.Delay(500);
+                        await VS.Documents.OpenInPreviewTabAsync(readmePath);
+                    }
+                    catch
+                    {
+                        // ignore
+                    }
 
                     if (!string.IsNullOrEmpty(revEngResult.ContextFilePath))
                     {
