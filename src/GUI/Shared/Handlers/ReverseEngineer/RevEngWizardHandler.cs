@@ -790,7 +790,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                                            ? await GetDacpacTablesAsync(options.Dacpac, options.CodeGenerationMode)
                                            : await GetTablesAsync(dbInfo, options.CodeGenerationMode, options.Schemas?.ToArray());
             }
-            catch (InvalidOperationException ex)
+            catch (Exception ex)
             {
                 if (wizardArgs.IsInvokedByWizard)
                 {
