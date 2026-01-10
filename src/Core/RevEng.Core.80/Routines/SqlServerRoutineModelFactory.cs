@@ -276,8 +276,21 @@ SELECT
 
         private static void PopulateTvpColumns(SqlConnection connection, List<ModuleParameter> parameters)
         {
+            // Get list of TVP type IDs that are actually used in the parameters
+            var tvpTypeIds = parameters
+                .Where(p => p.TypeId.HasValue && p.TypeSchema.HasValue)
+                .Select(p => p.TypeId!.Value)
+                .Distinct()
+                .ToList();
+
+            // If no TVP parameters, nothing to do
+            if (tvpTypeIds.Count == 0)
+            {
+                return;
+            }
+
             // Based on https://stackoverflow.com/a/46079868/183934
-            var tvpColumnsSql = @"
+            var tvpColumnsSql = $@"
 SELECT 
     SC.name AS ColumnName, 
     ST.name AS DataType,
@@ -291,6 +304,7 @@ FROM sys.columns SC
 INNER JOIN sys.types ST ON ST.system_type_id = SC.system_type_id AND ST.is_user_defined = 0
 INNER JOIN sys.table_types TT ON TT.type_table_object_id = SC.object_id
 WHERE ST.name <> 'sysname'
+    AND TT.user_type_id IN ({string.Join(",", tvpTypeIds)})
 ORDER BY TT.user_type_id, SC.column_id;";
 
             using var dtTvpColumns = new DataTable();
