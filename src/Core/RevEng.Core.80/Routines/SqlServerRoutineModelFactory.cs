@@ -268,7 +268,79 @@ SELECT
                 }
             }
 
+            // Populate TVP column information for table-valued parameters
+            PopulateTvpColumns(connection, result);
+
             return result.GroupBy(x => $"[{x.RoutineSchema}].[{x.RoutineName}]").ToDictionary(g => g.Key, g => g.ToList(), StringComparer.InvariantCulture);
+        }
+
+        private static void PopulateTvpColumns(SqlConnection connection, List<ModuleParameter> parameters)
+        {
+            // Based on https://stackoverflow.com/a/46079868/183934
+            var tvpColumnsSql = @"
+SELECT 
+    SC.name AS ColumnName, 
+    ST.name AS DataType,
+    SC.max_length AS MaxLength,
+    SC.precision AS Precision,
+    SC.is_identity AS IsIdentity,
+    SC.is_nullable AS IsNullable,
+    TT.user_type_id AS TypeId,
+    TT.schema_id AS SchemaId
+FROM sys.columns SC
+INNER JOIN sys.types ST ON ST.system_type_id = SC.system_type_id AND ST.is_user_defined = 0
+INNER JOIN sys.table_types TT ON TT.type_table_object_id = SC.object_id
+WHERE ST.name <> 'sysname'
+ORDER BY TT.user_type_id, SC.column_id;";
+
+            using var dtTvpColumns = new DataTable();
+            using var tvpAdapter = new SqlDataAdapter
+            {
+                SelectCommand = new SqlCommand(tvpColumnsSql, connection),
+            };
+
+            tvpAdapter.Fill(dtTvpColumns);
+
+            // Group TVP columns by TypeId and SchemaId
+            var tvpColumnsDict = new Dictionary<(int TypeId, int SchemaId), List<ModuleParameterTvpColumn>>();
+
+            foreach (DataRow row in dtTvpColumns.Rows)
+            {
+                if (row != null)
+                {
+                    var typeId = int.Parse(row["TypeId"].ToString()!, CultureInfo.InvariantCulture);
+                    var schemaId = int.Parse(row["SchemaId"].ToString()!, CultureInfo.InvariantCulture);
+                    var key = (typeId, schemaId);
+
+                    if (!tvpColumnsDict.ContainsKey(key))
+                    {
+                        tvpColumnsDict[key] = new List<ModuleParameterTvpColumn>();
+                    }
+
+                    tvpColumnsDict[key].Add(new ModuleParameterTvpColumn
+                    {
+                        Name = row["ColumnName"].ToString(),
+                        DataType = row["DataType"].ToString(),
+                        MaxLength = row["MaxLength"] is DBNull ? (int?)null : int.Parse(row["MaxLength"].ToString()!, CultureInfo.InvariantCulture),
+                        Precision = row["Precision"] is DBNull ? (int?)null : int.Parse(row["Precision"].ToString()!, CultureInfo.InvariantCulture),
+                        IsIdentity = (bool)row["IsIdentity"],
+                        IsNullable = (bool)row["IsNullable"],
+                    });
+                }
+            }
+
+            // Assign TVP columns to parameters
+            foreach (var parameter in parameters)
+            {
+                if (parameter.TypeId.HasValue && parameter.TypeSchema.HasValue)
+                {
+                    var key = (parameter.TypeId.Value, parameter.TypeSchema.Value);
+                    if (tvpColumnsDict.TryGetValue(key, out var columns))
+                    {
+                        parameter.TvpColumns = columns;
+                    }
+                }
+            }
         }
 
         private static ModuleParameter GetReturnParameter()
