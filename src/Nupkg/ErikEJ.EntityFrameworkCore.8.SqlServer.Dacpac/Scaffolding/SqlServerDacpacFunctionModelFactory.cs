@@ -263,10 +263,19 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                         if (dataTypeObject != null)
                         {
                             var dataTypeName = dataTypeObject.Name.Parts.Last();
+                            var maxLength = Microsoft.SqlServer.Dac.Model.TableTypeColumn.Length.GetValue<int>(column);
+                            var precision = Microsoft.SqlServer.Dac.Model.TableTypeColumn.Precision.GetValue<int>(column);
+                            var isIdentity = Microsoft.SqlServer.Dac.Model.TableTypeColumn.IsIdentity.GetValue<bool>(column);
+                            var isNullable = Microsoft.SqlServer.Dac.Model.TableTypeColumn.Nullable.GetValue<bool>(column);
+
                             tvpColumns.Add(new ModuleParameterTvpColumn
                             {
                                 Name = column.Name.Parts.Last(),
                                 DataType = dataTypeName,
+                                MaxLength = maxLength == 0 ? (int?)null : maxLength,
+                                Precision = precision == 0 ? (int?)null : precision,
+                                IsIdentity = isIdentity,
+                                IsNullable = isNullable,
                             });
                         }
                     }

@@ -281,6 +281,10 @@ SELECT
 SELECT 
     SC.name AS ColumnName, 
     ST.name AS DataType,
+    SC.max_length AS MaxLength,
+    SC.precision AS Precision,
+    SC.is_identity AS IsIdentity,
+    SC.is_nullable AS IsNullable,
     TT.user_type_id AS TypeId,
     TT.schema_id AS SchemaId
 FROM sys.columns SC
@@ -317,6 +321,10 @@ ORDER BY TT.user_type_id, SC.column_id;";
                     {
                         Name = row["ColumnName"].ToString(),
                         DataType = row["DataType"].ToString(),
+                        MaxLength = row["MaxLength"] is DBNull ? (int?)null : int.Parse(row["MaxLength"].ToString()!, CultureInfo.InvariantCulture),
+                        Precision = row["Precision"] is DBNull ? (int?)null : int.Parse(row["Precision"].ToString()!, CultureInfo.InvariantCulture),
+                        IsIdentity = (bool)row["IsIdentity"],
+                        IsNullable = (bool)row["IsNullable"],
                     });
                 }
             }
