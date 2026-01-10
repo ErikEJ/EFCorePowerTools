@@ -201,6 +201,8 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
                 var dtReference = parameter.DataType.First() as TSqlDataTypeReference;
 
+                List<ModuleParameterTvpColumn> tvpColumns = null;
+
 #pragma warning disable S2219 // Runtime type checking should be simplified
                 if (dtReference != null
                     && dtReference.Type != null
@@ -220,6 +222,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     // parameter is a table type (TVP)
                     storeType = "structured";
                     typeName = tableReference.Name.ToString();
+                    tvpColumns = GetTvpColumns(tableReference);
                 }
 
 #pragma warning restore S2219 // Runtime type checking should be simplified
@@ -234,12 +237,50 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     StoreType = storeType,
                     Nullable = true,
                     TypeName = typeName,
+                    TvpColumns = tvpColumns,
                 };
 
                 result.Add(newParameter);
             }
 
             return result;
+        }
+
+        private static List<ModuleParameterTvpColumn> GetTvpColumns(TSqlTableTypeReference tableReference)
+        {
+            var tvpColumns = new List<ModuleParameterTvpColumn>();
+
+            try
+            {
+                var tableTypeObject = tableReference.Element;
+                if (tableTypeObject != null)
+                {
+                    var columns = tableTypeObject.GetReferenced(Microsoft.SqlServer.Dac.Model.TableType.Columns);
+                    foreach (var column in columns)
+                    {
+                        var dataTypeObjects = column.GetReferenced(Microsoft.SqlServer.Dac.Model.TableTypeColumn.DataType);
+                        var dataTypeObject = dataTypeObjects.FirstOrDefault();
+                        if (dataTypeObject != null)
+                        {
+                            var dataTypeName = dataTypeObject.Name.Parts.Last();
+                            tvpColumns.Add(new ModuleParameterTvpColumn
+                            {
+                                Name = column.Name.Parts.Last(),
+                                DataType = dataTypeName,
+                            });
+                        }
+                    }
+                }
+            }
+#pragma warning disable CA1031 // Do not catch general exception types
+            catch
+            {
+                // If we can't get TVP columns, just return empty list
+                // This maintains backward compatibility
+            }
+#pragma warning restore CA1031 // Do not catch general exception types
+
+            return tvpColumns.Count > 0 ? tvpColumns : null;
         }
     }
 }

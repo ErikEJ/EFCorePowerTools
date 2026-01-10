@@ -1,4 +1,6 @@
-﻿namespace RevEng.Core.Abstractions.Metadata
+﻿using System.Collections.Generic;
+
+namespace RevEng.Core.Abstractions.Metadata
 {
     public class ModuleParameter
     {
@@ -27,5 +29,14 @@
         public string RoutineName { get; set; }
 
         public string RoutineSchema { get; set; }
+
+        public List<ModuleParameterTvpColumn> TvpColumns { get; set; }
+    }
+
+    public class ModuleParameterTvpColumn
+    {
+        public string Name { get; set; }
+
+        public string DataType { get; set; }
     }
 }
