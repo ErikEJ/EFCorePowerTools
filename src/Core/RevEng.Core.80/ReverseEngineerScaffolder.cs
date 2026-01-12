@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -216,6 +216,7 @@ namespace RevEng.Core
                     UseDecimalDataAnnotation = options.UseDecimalDataAnnotation,
                     UsePascalIdentifiers = !options.UseDatabaseNamesForRoutines,
                     UseInternalAccessModifier = options.UseInternalAccessModifiersForSprocsAndFunctions,
+                    UseTypedTvpParameters = options.UseTypedTvpParameters,
                 };
 
                 var procedureScaffoldedModel = procedureScaffolder.ScaffoldModel(procedureModel, procedureOptions, schemas, ref errors);

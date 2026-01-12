@@ -1,4 +1,4 @@
-﻿[assembly: System.CLSCompliant(true)]
+[assembly: System.CLSCompliant(true)]
 
 namespace RevEng.Core.Abstractions
 {
@@ -25,5 +25,7 @@ namespace RevEng.Core.Abstractions
         public virtual bool UsePascalIdentifiers { get; set; }
 
         public virtual bool UseInternalAccessModifier { get; set; }
+
+        public virtual bool UseTypedTvpParameters { get; set; }
     }
 }

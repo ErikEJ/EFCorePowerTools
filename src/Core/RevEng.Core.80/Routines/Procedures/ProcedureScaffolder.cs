@@ -92,6 +92,38 @@ namespace RevEng.Core.Routines.Procedures
                     });
 #endif
                 }
+
+                if (!scaffolderOptions.UseTypedTvpParameters)
+                {
+                    continue;
+                }
+
+                var tvpParameters = routine.Parameters.Where(p => p.TypeId != null).Select(p => p).ToList();
+
+                foreach (var tvpParameter in tvpParameters)
+                {
+                    if (tvpParameter.TvpColumns?.Count > 0)
+                    {
+                        var typeName = Code.Identifier(ScaffoldHelper.CreateIdentifier(tvpParameter.Name + "Type").Item1, capitalize: true);
+
+                        var classContent = scaffolder.WriteResultClass(tvpParameter.TvpColumns, scaffolderOptions, typeName, routine.Schema);
+
+                        path = $"{typeName}.cs";
+
+                        if (!result.AdditionalFiles.Any(f => f.Path.Equals(path, StringComparison.OrdinalIgnoreCase)))
+                        {
+    #if CORE90 || CORE100
+                            result.AdditionalFiles.Add(new ScaffoldedFile(path, classContent));
+    #else
+                            result.AdditionalFiles.Add(new ScaffoldedFile
+                            {
+                                Code = classContent,
+                                Path = path,
+                            });
+    #endif
+                        }
+                    }
+                }
             }
 
             var dbContextInterface = WriteDbContextInterface(scaffolderOptions, model, schemas.Distinct().ToList());

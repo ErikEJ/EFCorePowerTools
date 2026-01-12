@@ -112,5 +112,7 @@ namespace RevEng.Common
         public bool UseDatabaseNamesForRoutines { get; set; }
 
         public bool UseInternalAccessModifiersForSprocsAndFunctions { get; set; }
+
+        public bool UseTypedTvpParameters { get; set; }
     }
 }

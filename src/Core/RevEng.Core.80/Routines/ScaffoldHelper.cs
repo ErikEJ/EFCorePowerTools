@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -152,7 +152,7 @@ namespace RevEng.Core.Routines
             {
                 var name = GenerateUniqueName(routine, model);
 
-                return CreateIdentifier(name, name, code).Item1;
+                return CreateIdentifier(name).Item1;
             }
             else
             {
@@ -168,7 +168,7 @@ namespace RevEng.Core.Routines
 
             if (!usePascalCase)
             {
-                return CreateIdentifier(propertyName, propertyName, code);
+                return CreateIdentifier(propertyName);
             }
             else
             {
@@ -184,7 +184,7 @@ namespace RevEng.Core.Routines
             }
         }
 
-        public static Tuple<string, string> CreateIdentifier(string name, string propertyName, ICSharpHelper code)
+        public static Tuple<string, string> CreateIdentifier(string name)
         {
             var original = name;
 

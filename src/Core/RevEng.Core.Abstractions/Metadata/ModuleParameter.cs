@@ -31,7 +31,7 @@ namespace RevEng.Core.Abstractions.Metadata
         public string RoutineSchema { get; set; }
 
 #pragma warning disable CA2227 // Collection properties should be read only
-        public List<ModuleParameterTvpColumn> TvpColumns { get; set; }
+        public List<ModuleResultElement> TvpColumns { get; set; }
 #pragma warning restore CA2227 // Collection properties should be read only
     }
 }

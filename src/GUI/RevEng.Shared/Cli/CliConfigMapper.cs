@@ -100,6 +100,8 @@ namespace RevEng.Common.Cli
                 UsePrefixNavigationNaming = config.CodeGeneration.UsePrefixNavigationNaming,
                 UseDatabaseNamesForRoutines = config.CodeGeneration.UseDatabaseNamesForRoutines,
                 UseInternalAccessModifiersForSprocsAndFunctions = config.CodeGeneration.UseInternalAccessModifiersForSprocsAndFunctions,
+                UseTypedTvpParameters = config.CodeGeneration.UseTypedTvpParameters,
+
                 UseNoObjectFilter = false, // There are multiple options in the CLI to support this
 
                 // Handlebars will not be supported in CLI
@@ -193,6 +195,7 @@ namespace RevEng.Common.Cli
                 UsePrefixNavigationNaming = config.CodeGeneration.UsePrefixNavigationNaming,
                 UseDatabaseNamesForRoutines = config.CodeGeneration.UseDatabaseNamesForRoutines,
                 UseInternalAccessModifiersForSprocsAndFunctions = config.CodeGeneration.UseInternalAccessModifiersForSprocsAndFunctions,
+                UseTypedTvpParameters = config.CodeGeneration.UseTypedTvpParameters,
 
                 // HandleBars templates are not supported:
                 UseHandleBars = false,
