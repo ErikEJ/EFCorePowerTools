@@ -276,6 +276,11 @@ SELECT
 
         private static void PopulateTvpColumns(SqlConnection connection, List<ModuleParameter> parameters)
         {
+            if (parameters == null || parameters.Count == 0)
+            {
+                return;
+            }
+
             // Get list of TVP type IDs that are actually used in the parameters
             var tvpTypeIds = parameters
                 .Where(p => p.TypeId.HasValue && p.TypeSchema.HasValue)
@@ -296,8 +301,7 @@ SELECT
     ST.name AS DataType,
     SC.max_length AS MaxLength,
     SC.precision AS Precision,
-    SC.is_identity AS IsIdentity,
-    SC.is_nullable AS IsNullable,
+    SC.is_nullable AS Nullable,
     TT.user_type_id AS TypeId,
     TT.schema_id AS SchemaId
 FROM sys.columns SC
@@ -308,10 +312,12 @@ WHERE ST.name <> 'sysname'
 ORDER BY TT.user_type_id, SC.column_id;";
 
             using var dtTvpColumns = new DataTable();
+#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
             using var tvpAdapter = new SqlDataAdapter
             {
                 SelectCommand = new SqlCommand(tvpColumnsSql, connection),
             };
+#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
 
             tvpAdapter.Fill(dtTvpColumns);
 
@@ -320,27 +326,23 @@ ORDER BY TT.user_type_id, SC.column_id;";
 
             foreach (DataRow row in dtTvpColumns.Rows)
             {
-                if (row != null)
+                var typeId = int.Parse(row["TypeId"].ToString()!, CultureInfo.InvariantCulture);
+                var schemaId = int.Parse(row["SchemaId"].ToString()!, CultureInfo.InvariantCulture);
+                var key = (typeId, schemaId);
+
+                if (!tvpColumnsDict.ContainsKey(key))
                 {
-                    var typeId = int.Parse(row["TypeId"].ToString()!, CultureInfo.InvariantCulture);
-                    var schemaId = int.Parse(row["SchemaId"].ToString()!, CultureInfo.InvariantCulture);
-                    var key = (typeId, schemaId);
-
-                    if (!tvpColumnsDict.ContainsKey(key))
-                    {
-                        tvpColumnsDict[key] = new List<ModuleParameterTvpColumn>();
-                    }
-
-                    tvpColumnsDict[key].Add(new ModuleParameterTvpColumn
-                    {
-                        Name = row["ColumnName"].ToString(),
-                        DataType = row["DataType"].ToString(),
-                        MaxLength = row["MaxLength"] is DBNull ? (int?)null : int.Parse(row["MaxLength"].ToString()!, CultureInfo.InvariantCulture),
-                        Precision = row["Precision"] is DBNull ? (int?)null : int.Parse(row["Precision"].ToString()!, CultureInfo.InvariantCulture),
-                        IsIdentity = (bool)row["IsIdentity"],
-                        IsNullable = (bool)row["IsNullable"],
-                    });
+                    tvpColumnsDict[key] = new List<ModuleParameterTvpColumn>();
                 }
+
+                tvpColumnsDict[key].Add(new ModuleParameterTvpColumn
+                {
+                    Name = row["ColumnName"].ToString(),
+                    DataType = row["DataType"].ToString(),
+                    MaxLength = row["MaxLength"] is DBNull ? (int?)null : int.Parse(row["MaxLength"].ToString()!, CultureInfo.InvariantCulture),
+                    Precision = row["Precision"] is DBNull ? (int?)null : int.Parse(row["Precision"].ToString()!, CultureInfo.InvariantCulture),
+                    Nullable = (bool)row["Nullable"],
+                });
             }
 
             // Assign TVP columns to parameters
