@@ -15,6 +15,7 @@ namespace RevEng.Core.Routines.Procedures
     public class SqlServerStoredProcedureScaffolder : ProcedureScaffolder, IProcedureScaffolder
     {
         private const string ParameterPrefix = "parameter";
+        private bool useTypedTvpParameters;
 
         public SqlServerStoredProcedureScaffolder([NotNull] ICSharpHelper code, IClrTypeMapper typeMapper)
             : base(code, typeMapper)
@@ -47,14 +48,25 @@ namespace RevEng.Core.Routines.Procedures
             return files;
         }
 
-        protected override void GenerateProcedure(Routine procedure, RoutineModel model, bool signatureOnly, bool useAsyncCalls, bool usePascalCase, bool useNullableReferences)
+        protected override void GenerateProcedure(Routine procedure, RoutineModel model, bool signatureOnly, bool useAsyncCalls, bool usePascalCase, bool useNullableReferences, bool useTypedTvpParameters)
         {
             ArgumentNullException.ThrowIfNull(procedure);
+
+            // Store for use in helper methods
+            this.useTypedTvpParameters = useTypedTvpParameters;
 
             var paramStrings = procedure.Parameters.Where(p => !p.Output)
                 .Select(p =>
                 {
                     var type = Code.Reference(p.ClrTypeFromSqlParameter(asMethodParameter: true));
+                    
+                    // For structured (TVP) parameters, use strongly-typed IEnumerable if enabled
+                    if (useTypedTvpParameters && p.GetSqlDbType() == SqlDbType.Structured && p.TvpColumns?.Count > 0)
+                    {
+                        var tvpTypeName = Code.Identifier(ScaffoldHelper.CreateIdentifier(p.Name + "Type").Item1, capitalize: true);
+                        type = $"IEnumerable<{tvpTypeName}>";
+                    }
+                    
                     if (useNullableReferences && !type.EndsWith('?'))
                     {
                         type += '?';
@@ -436,13 +448,22 @@ namespace RevEng.Core.Routines.Procedures
         {
             var name = Code.Identifier(parameter.Name, capitalize: false);
 
-            var value = parameter.Nullable ? $"{name} ?? Convert.DBNull" : $"{name}";
-            if (parameter.Output)
+            // For structured (TVP) parameters with typed TVP support, call ToDataTable()
+            if (useTypedTvpParameters && parameter.GetSqlDbType() == SqlDbType.Structured && parameter.TvpColumns?.Count > 0)
             {
-                value = parameter.Nullable ? $"{name}?._value ?? Convert.DBNull" : $"{name}?._value";
+                var value = parameter.Nullable ? $"ToDataTable({name}) ?? Convert.DBNull" : $"ToDataTable({name})";
+                Sb.AppendLine($"Value = {name} == null ? Convert.DBNull : {value},");
             }
+            else
+            {
+                var value = parameter.Nullable ? $"{name} ?? Convert.DBNull" : $"{name}";
+                if (parameter.Output)
+                {
+                    value = parameter.Nullable ? $"{name}?._value ?? Convert.DBNull" : $"{name}?._value";
+                }
 
-            Sb.AppendLine($"Value = {value},");
+                Sb.AppendLine($"Value = {value},");
+            }
         }
     }
 }
