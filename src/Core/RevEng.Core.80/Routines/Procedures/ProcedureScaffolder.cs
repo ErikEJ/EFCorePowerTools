@@ -98,7 +98,7 @@ namespace RevEng.Core.Routines.Procedures
                     continue;
                 }
 
-                var tvpParameters = routine.Parameters.Where(p => p.TypeId != null).Select(p => p).ToList();
+                var tvpParameters = routine.Parameters.Where(p => p.TvpColumns?.Count > 0).Select(p => p).ToList();
 
                 foreach (var tvpParameter in tvpParameters)
                 {
@@ -157,7 +157,7 @@ namespace RevEng.Core.Routines.Procedures
             return result;
         }
 
-        protected abstract void GenerateProcedure(Routine procedure, RoutineModel model, bool signatureOnly, bool useAsyncCalls, bool usePascalCase, bool useNullableReferences);
+        protected abstract void GenerateProcedure(Routine procedure, RoutineModel model, bool signatureOnly, bool useAsyncCalls, bool usePascalCase, bool useNullableReferences, bool useTypedTvpParameters);
 
         private List<string> CreateUsings(ModuleScaffolderOptions scaffolderOptions, RoutineModel model, List<string> schemas)
         {
@@ -188,6 +188,11 @@ namespace RevEng.Core.Routines.Procedures
                     "using System.Linq",
                 });
             }
+            else if (scaffolderOptions.UseTypedTvpParameters && model.Routines.Any(r => r.Parameters.Any(p => p.TvpColumns?.Count > 0)))
+            {
+                // Need System.Linq for extension methods when TVP is used
+                usings.Add("using System.Linq");
+            }
 
             if (model.Routines.SelectMany(r => r.Parameters).Any(p => typeMapper.GetClrType(p) == typeof(Geometry)))
             {
@@ -195,6 +200,11 @@ namespace RevEng.Core.Routines.Procedures
                 {
                     "using NetTopologySuite.Geometries",
                 });
+            }
+
+            if (scaffolderOptions.UseTypedTvpParameters && model.Routines.Any(r => r.Parameters.Any(p => p.TvpColumns?.Count > 0)))
+            {
+                usings.Add("using System.Reflection");
             }
 
             usings.Sort();
@@ -232,7 +242,7 @@ namespace RevEng.Core.Routines.Procedures
                 {
                     foreach (var procedure in model.Routines)
                     {
-                        GenerateProcedure(procedure, model, true, scaffolderOptions.UseAsyncCalls, scaffolderOptions.UsePascalIdentifiers, scaffolderOptions.NullableReferences);
+                        GenerateProcedure(procedure, model, true, scaffolderOptions.UseAsyncCalls, scaffolderOptions.UsePascalIdentifiers, scaffolderOptions.NullableReferences, scaffolderOptions.UseTypedTvpParameters);
                         Sb.AppendLine(";");
                     }
                 }
@@ -336,12 +346,17 @@ namespace RevEng.Core.Routines.Procedures
 
                 foreach (var procedure in model.Routines)
                 {
-                    GenerateProcedure(procedure, model, false, scaffolderOptions.UseAsyncCalls, scaffolderOptions.UsePascalIdentifiers, scaffolderOptions.NullableReferences);
+                    GenerateProcedure(procedure, model, false, scaffolderOptions.UseAsyncCalls, scaffolderOptions.UsePascalIdentifiers, scaffolderOptions.NullableReferences, scaffolderOptions.UseTypedTvpParameters);
                 }
 
                 if (model.Routines.Exists(r => r.SupportsMultipleResultSet))
                 {
                     GenerateDapperSupport(scaffolderOptions.UseAsyncCalls);
+                }
+
+                if (scaffolderOptions.UseTypedTvpParameters && model.Routines.Any(r => r.Parameters.Any(p => p.TvpColumns?.Count > 0)))
+                {
+                    GenerateToDataTableExtension();
                 }
 
                 Sb.AppendLine("}");
@@ -410,6 +425,56 @@ namespace RevEng.Core.Routines.Procedures
                     }
                 }
 
+                Sb.AppendLine("}");
+            }
+        }
+
+        private void GenerateToDataTableExtension()
+        {
+            Sb.AppendLine();
+            using (Sb.Indent())
+            {
+                Sb.AppendLine("private static DataTable ToDataTable<T>(this IEnumerable<T> items)");
+                Sb.AppendLine("{");
+                using (Sb.Indent())
+                {
+                    Sb.AppendLine("var dataTable = new DataTable();");
+                    Sb.AppendLine("var properties = typeof(T).GetProperties();");
+                    Sb.AppendLine();
+                    Sb.AppendLine("foreach (var prop in properties)");
+                    Sb.AppendLine("{");
+                    using (Sb.Indent())
+                    {
+                        Sb.AppendLine("var propertyType = prop.PropertyType;");
+                        Sb.AppendLine("if (propertyType.IsGenericType && propertyType.GetGenericTypeDefinition() == typeof(Nullable<>))");
+                        Sb.AppendLine("{");
+                        using (Sb.Indent())
+                        {
+                            Sb.AppendLine("propertyType = Nullable.GetUnderlyingType(propertyType);");
+                        }
+                        Sb.AppendLine("}");
+                        Sb.AppendLine("dataTable.Columns.Add(prop.Name, propertyType);");
+                    }
+                    Sb.AppendLine("}");
+                    Sb.AppendLine();
+                    Sb.AppendLine("foreach (var item in items)");
+                    Sb.AppendLine("{");
+                    using (Sb.Indent())
+                    {
+                        Sb.AppendLine("var values = new object[properties.Length];");
+                        Sb.AppendLine("for (int i = 0; i < properties.Length; i++)");
+                        Sb.AppendLine("{");
+                        using (Sb.Indent())
+                        {
+                            Sb.AppendLine("values[i] = properties[i].GetValue(item) ?? DBNull.Value;");
+                        }
+                        Sb.AppendLine("}");
+                        Sb.AppendLine("dataTable.Rows.Add(values);");
+                    }
+                    Sb.AppendLine("}");
+                    Sb.AppendLine();
+                    Sb.AppendLine("return dataTable;");
+                }
                 Sb.AppendLine("}");
             }
         }

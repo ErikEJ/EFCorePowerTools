@@ -334,6 +334,8 @@ GO
             Assert.AreEqual(2, dbModel.Routines[0].Parameters.Count);
             Assert.AreEqual("[Constant].[NumberIDList]", dbModel.Routines[0].Parameters[0].TypeName);
             Assert.AreEqual("structured", dbModel.Routines[0].Parameters[0].StoreType);
+            Assert.IsNotNull(dbModel.Routines[0].Parameters[0].TvpColumns);
+            Assert.Greater(dbModel.Routines[0].Parameters[0].TvpColumns.Count, 0);
         }
 
         private string TestPath(string file)

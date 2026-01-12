@@ -46,7 +46,7 @@ namespace RevEng.Core.Routines.Procedures
             return files;
         }
 
-        protected override void GenerateProcedure(Routine procedure, RoutineModel model, bool signatureOnly, bool useAsyncCalls, bool usePascalCase, bool useNullableReferences)
+        protected override void GenerateProcedure(Routine procedure, RoutineModel model, bool signatureOnly, bool useAsyncCalls, bool usePascalCase, bool useNullableReferences, bool useTypedTvpParameters)
         {
             ArgumentNullException.ThrowIfNull(procedure);
 
