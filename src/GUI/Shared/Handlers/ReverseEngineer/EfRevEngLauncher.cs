@@ -119,6 +119,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseDecimalDataAnnotation = options.UseDecimalDataAnnotationForSprocResult,
                 UsePrefixNavigationNaming = options.UsePrefixNavigationNaming,
                 UseDatabaseNamesForRoutines = options.UseDatabaseNamesForRoutines,
+                UseTypedTvpParameters = options.UseTypedTvpParameters,
             };
 
             var launcher = new EfRevEngLauncher(commandOptions, codeGenerationMode);

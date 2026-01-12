@@ -201,7 +201,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
                 var dtReference = parameter.DataType.First() as TSqlDataTypeReference;
 
-                List<ModuleParameterTvpColumn> tvpColumns = null;
+                List<ModuleResultElement> tvpColumns = null;
 
 #pragma warning disable S2219 // Runtime type checking should be simplified
                 if (dtReference != null

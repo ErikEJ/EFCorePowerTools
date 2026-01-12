@@ -1,4 +1,4 @@
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace RevEng.Common.Cli.Configuration
 {
@@ -91,10 +91,14 @@ namespace RevEng.Common.Cli.Configuration
         public bool UsePrefixNavigationNaming { get; set; }
 
         [JsonPropertyOrder(210)]
+        [JsonPropertyName("use-typed-tvp-parameters")]
+        public bool UseTypedTvpParameters { get; set; } = true;
+
+        [JsonPropertyOrder(220)]
         [JsonPropertyName("use-t4")]
         public bool UseT4 { get; set; }
 
-        [JsonPropertyOrder(220)]
+        [JsonPropertyOrder(230)]
         [JsonPropertyName("use-t4-split")]
         public bool UseT4Split { get; set; }
     }

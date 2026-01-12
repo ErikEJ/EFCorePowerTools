@@ -8,9 +8,9 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
 
 internal static class DacpacModelFactoryHelper
 {
-        public static List<ModuleParameterTvpColumn> GetTvpColumns(TSqlTableTypeReference tableReference)
+        public static List<ModuleResultElement> GetTvpColumns(TSqlTableTypeReference tableReference)
         {
-            var tvpColumns = new List<ModuleParameterTvpColumn>();
+            var tvpColumns = new List<ModuleResultElement>();
 
             var tableTypeObject = tableReference.Element;
             if (tableTypeObject != null)
@@ -25,15 +25,17 @@ internal static class DacpacModelFactoryHelper
                     {
                         var dataTypeName = dataTypeObject.Name.Parts.Last();
                         var maxLength = TableTypeColumn.Length.GetValue<int>(column);
-                        var precision = TableTypeColumn.Precision.GetValue<int>(column);
+                        var precision = TableTypeColumn.Precision.GetValue<int?>(column);
+                        var scale = TableTypeColumn.Scale.GetValue<int?>(column);
                         var isNullable = TableTypeColumn.Nullable.GetValue<bool>(column);
 
-                        tvpColumns.Add(new ModuleParameterTvpColumn
+                        tvpColumns.Add(new ModuleResultElement
                         {
                             Name = column.Name.Parts.Last(),
-                            DataType = dataTypeName,
-                            MaxLength = maxLength == 0 ? null : maxLength,
-                            Precision = precision == 0 ? null : precision,
+                            StoreType = dataTypeName,
+                            MaxLength = maxLength,
+                            Precision = (short?)precision,
+                            Scale = (short?)scale,
                             Nullable = isNullable,
                         });
 #pragma warning restore S6608 // Prefer indexing instead of "Enumerable" methods on types implementing "IList"

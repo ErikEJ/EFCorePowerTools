@@ -301,6 +301,7 @@ SELECT
     ST.name AS DataType,
     SC.max_length AS MaxLength,
     SC.precision AS Precision,
+    SC.scale AS Scale,
     SC.is_nullable AS Nullable,
     TT.user_type_id AS TypeId,
     TT.schema_id AS SchemaId
@@ -322,7 +323,7 @@ ORDER BY TT.user_type_id, SC.column_id;";
             tvpAdapter.Fill(dtTvpColumns);
 
             // Group TVP columns by TypeId and SchemaId
-            var tvpColumnsDict = new Dictionary<(int TypeId, int SchemaId), List<ModuleParameterTvpColumn>>();
+            var tvpColumnsDict = new Dictionary<(int TypeId, int SchemaId), List<ModuleResultElement>>();
 
             foreach (DataRow row in dtTvpColumns.Rows)
             {
@@ -332,15 +333,16 @@ ORDER BY TT.user_type_id, SC.column_id;";
 
                 if (!tvpColumnsDict.ContainsKey(key))
                 {
-                    tvpColumnsDict[key] = new List<ModuleParameterTvpColumn>();
+                    tvpColumnsDict[key] = new List<ModuleResultElement>();
                 }
 
-                tvpColumnsDict[key].Add(new ModuleParameterTvpColumn
+                tvpColumnsDict[key].Add(new ModuleResultElement
                 {
                     Name = row["ColumnName"].ToString(),
-                    DataType = row["DataType"].ToString(),
-                    MaxLength = row["MaxLength"] is DBNull ? (int?)null : int.Parse(row["MaxLength"].ToString()!, CultureInfo.InvariantCulture),
-                    Precision = row["Precision"] is DBNull ? (int?)null : int.Parse(row["Precision"].ToString()!, CultureInfo.InvariantCulture),
+                    StoreType = row["DataType"].ToString(),
+                    MaxLength = row["MaxLength"] is DBNull ? 0 : int.Parse(row["MaxLength"].ToString()!, CultureInfo.InvariantCulture),
+                    Precision = row["Precision"] is DBNull ? null : short.Parse(row["Precision"].ToString()!, CultureInfo.InvariantCulture),
+                    Scale = row["Scale"] is DBNull ? null : short.Parse(row["Scale"].ToString()!, CultureInfo.InvariantCulture),
                     Nullable = (bool)row["Nullable"],
                 });
             }

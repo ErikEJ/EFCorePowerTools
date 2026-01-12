@@ -122,5 +122,7 @@ namespace RevEng.Common
         public bool UseInternalAccessModifiersForSprocsAndFunctions { get; set; }
 
         public string MinimumProductVersion { get; set; }
+
+        public bool UseTypedTvpParameters { get; set; } = true;
     }
 }

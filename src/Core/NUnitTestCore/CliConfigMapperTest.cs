@@ -61,12 +61,13 @@ namespace UnitTests
             options.UseSpatial.Should().Be(config.TypeMappings.UseSpatial);
             options.UseT4.Should().Be(config.CodeGeneration.UseT4);
             options.UseT4Split.Should().Be(config.CodeGeneration.UseT4Split);
+            options.UseTypedTvpParameters.Should().Be(config.CodeGeneration.UseTypedTvpParameters);
 
-            options.GetType().GetProperties().Length.Should().Be(54);
+            options.GetType().GetProperties().Length.Should().Be(55);
 
             config.GetType().GetProperties().Length.Should().Be(10);
             config.Names.GetType().GetProperties().Length.Should().Be(4);
-            config.CodeGeneration.GetType().GetProperties().Length.Should().Be(23);
+            config.CodeGeneration.GetType().GetProperties().Length.Should().Be(24);
             config.FileLayout.GetType().GetProperties().Length.Should().Be(5);
             config.Replacements.GetType().GetProperties().Length.Should().Be(5);
             config.TypeMappings.GetType().GetProperties().Length.Should().Be(4);
