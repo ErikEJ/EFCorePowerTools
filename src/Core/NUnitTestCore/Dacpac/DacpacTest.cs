@@ -336,6 +336,13 @@ GO
             Assert.AreEqual("structured", dbModel.Routines[0].Parameters[0].StoreType);
             Assert.IsNotNull(dbModel.Routines[0].Parameters[0].TvpColumns);
             Assert.Greater(dbModel.Routines[0].Parameters[0].TvpColumns.Count, 0);
+            
+            // Debug - print TVP columns
+            System.Console.WriteLine($"TVP Columns count: {dbModel.Routines[0].Parameters[0].TvpColumns.Count}");
+            foreach (var col in dbModel.Routines[0].Parameters[0].TvpColumns)
+            {
+                System.Console.WriteLine($"  Column: {col.Name}, Type: {col.StoreType}");
+            }
         }
 
         private string TestPath(string file)
