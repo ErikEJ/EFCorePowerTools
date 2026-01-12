@@ -25,8 +25,8 @@ internal static class DacpacModelFactoryHelper
                     {
                         var dataTypeName = dataTypeObject.Name.Parts.Last();
                         var maxLength = TableTypeColumn.Length.GetValue<int>(column);
-                        var precision = TableTypeColumn.Precision.GetValue<short?>(column);
-                        var scale = TableTypeColumn.Scale.GetValue<short?>(column);
+                        var precision = TableTypeColumn.Precision.GetValue<int?>(column);
+                        var scale = TableTypeColumn.Scale.GetValue<int?>(column);
                         var isNullable = TableTypeColumn.Nullable.GetValue<bool>(column);
 
                         tvpColumns.Add(new ModuleResultElement
@@ -34,8 +34,8 @@ internal static class DacpacModelFactoryHelper
                             Name = column.Name.Parts.Last(),
                             StoreType = dataTypeName,
                             MaxLength = maxLength,
-                            Precision = precision,
-                            Scale = scale,
+                            Precision = (short?)precision,
+                            Scale = (short?)scale,
                             Nullable = isNullable,
                         });
 #pragma warning restore S6608 // Prefer indexing instead of "Enumerable" methods on types implementing "IList"
