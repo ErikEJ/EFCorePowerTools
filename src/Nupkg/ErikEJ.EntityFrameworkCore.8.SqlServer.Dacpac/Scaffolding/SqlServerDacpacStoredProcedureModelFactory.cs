@@ -134,7 +134,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     // parameter is a table type (TVP)
                     storeType = "structured";
                     typeName = tableReference.Name.ToString();
-                    tvpColumns = GetTvpColumns(tableReference);
+                    tvpColumns = DacpacModelFactoryHelper.GetTvpColumns(tableReference);
                 }
 
 #pragma warning restore S2219 // Runtime type checking should be simplified
@@ -166,52 +166,6 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             });
 
             return result;
-        }
-
-        private static List<ModuleParameterTvpColumn> GetTvpColumns(TSqlTableTypeReference tableReference)
-        {
-            var tvpColumns = new List<ModuleParameterTvpColumn>();
-
-            try
-            {
-                var tableTypeObject = tableReference.Element;
-                if (tableTypeObject != null)
-                {
-                    var columns = tableTypeObject.GetReferenced(Microsoft.SqlServer.Dac.Model.TableType.Columns);
-                    foreach (var column in columns)
-                    {
-                        var dataTypeObjects = column.GetReferenced(Microsoft.SqlServer.Dac.Model.TableTypeColumn.DataType);
-                        var dataTypeObject = dataTypeObjects.FirstOrDefault();
-                        if (dataTypeObject != null)
-                        {
-                            var dataTypeName = dataTypeObject.Name.Parts.Last();
-                            var maxLength = Microsoft.SqlServer.Dac.Model.TableTypeColumn.Length.GetValue<int>(column);
-                            var precision = Microsoft.SqlServer.Dac.Model.TableTypeColumn.Precision.GetValue<int>(column);
-                            var isIdentity = Microsoft.SqlServer.Dac.Model.TableTypeColumn.IsIdentity.GetValue<bool>(column);
-                            var isNullable = Microsoft.SqlServer.Dac.Model.TableTypeColumn.Nullable.GetValue<bool>(column);
-
-                            tvpColumns.Add(new ModuleParameterTvpColumn
-                            {
-                                Name = column.Name.Parts.Last(),
-                                DataType = dataTypeName,
-                                MaxLength = maxLength == 0 ? (int?)null : maxLength,
-                                Precision = precision == 0 ? (int?)null : precision,
-                                IsIdentity = isIdentity,
-                                IsNullable = isNullable,
-                            });
-                        }
-                    }
-                }
-            }
-#pragma warning disable CA1031 // Do not catch general exception types
-            catch
-            {
-                // If we can't get TVP columns, just return empty list
-                // This maintains backward compatibility
-            }
-#pragma warning restore CA1031 // Do not catch general exception types
-
-            return tvpColumns.Count > 0 ? tvpColumns : null;
         }
 
         private static List<List<ModuleResultElement>> GetStoredProcedureResultElements(TSqlProcedure proc)

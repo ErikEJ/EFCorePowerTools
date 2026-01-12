@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace RevEng.Core.Abstractions.Metadata
 {
@@ -30,21 +30,8 @@ namespace RevEng.Core.Abstractions.Metadata
 
         public string RoutineSchema { get; set; }
 
+#pragma warning disable CA2227 // Collection properties should be read only
         public List<ModuleParameterTvpColumn> TvpColumns { get; set; }
-    }
-
-    public class ModuleParameterTvpColumn
-    {
-        public string Name { get; set; }
-
-        public string DataType { get; set; }
-
-        public int? MaxLength { get; set; }
-
-        public int? Precision { get; set; }
-
-        public bool IsIdentity { get; set; }
-
-        public bool IsNullable { get; set; }
+#pragma warning restore CA2227 // Collection properties should be read only
     }
 }

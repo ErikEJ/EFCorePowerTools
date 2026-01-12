@@ -34,6 +34,7 @@
     <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\DacpacConsolidate\HeaderParser.cs" Link="DacpacConsolidate\HeaderParser.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\DacpacConsolidate\Metadata.cs" Link="DacpacConsolidate\Metadata.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\Design\SqlServerDacpacDesignTimeServices.cs" Link="Design\SqlServerDacpacDesignTimeServices.cs" />
+    <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\Scaffolding\DacpacModelFactoryHelper.cs" Link="Scaffolding\DacpacModelFactoryHelper.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\Scaffolding\SqlServerDacpacDatabaseModelFactory.cs" Link="Scaffolding\SqlServerDacpacDatabaseModelFactory.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\Scaffolding\SqlServerDacpacDatabaseModelFactoryOptions.cs" Link="Scaffolding\SqlServerDacpacDatabaseModelFactoryOptions.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\Scaffolding\SqlServerDacpacStoredProcedureModelFactory.cs" Link="Scaffolding\SqlServerDacpacStoredProcedureModelFactory.cs" />
