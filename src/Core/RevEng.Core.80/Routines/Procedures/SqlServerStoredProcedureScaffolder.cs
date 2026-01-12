@@ -451,8 +451,8 @@ namespace RevEng.Core.Routines.Procedures
             // For structured (TVP) parameters with typed TVP support, call ToDataTable()
             if (useTypedTvpParameters && parameter.GetSqlDbType() == SqlDbType.Structured && parameter.TvpColumns?.Count > 0)
             {
-                var value = parameter.Nullable ? $"{name}?.ToDataTable() ?? Convert.DBNull" : $"{name}.ToDataTable()";
-                Sb.AppendLine($"Value = {value},");
+                var value = parameter.Nullable ? $"ToDataTable({name}) ?? Convert.DBNull" : $"ToDataTable({name})";
+                Sb.AppendLine($"Value = {name} == null ? Convert.DBNull : {value},");
             }
             else
             {

@@ -434,7 +434,7 @@ namespace RevEng.Core.Routines.Procedures
             Sb.AppendLine();
             using (Sb.Indent())
             {
-                Sb.AppendLine("private static DataTable ToDataTable<T>(this IEnumerable<T> items)");
+                Sb.AppendLine("private static DataTable ToDataTable<T>(IEnumerable<T> items)");
                 Sb.AppendLine("{");
                 using (Sb.Indent())
                 {
