@@ -452,9 +452,11 @@ namespace RevEng.Core.Routines.Procedures
                         {
                             Sb.AppendLine("propertyType = Nullable.GetUnderlyingType(propertyType);");
                         }
+
                         Sb.AppendLine("}");
                         Sb.AppendLine("dataTable.Columns.Add(prop.Name, propertyType);");
                     }
+
                     Sb.AppendLine("}");
                     Sb.AppendLine();
                     Sb.AppendLine("foreach (var item in items)");
@@ -468,13 +470,16 @@ namespace RevEng.Core.Routines.Procedures
                         {
                             Sb.AppendLine("values[i] = properties[i].GetValue(item) ?? DBNull.Value;");
                         }
+
                         Sb.AppendLine("}");
                         Sb.AppendLine("dataTable.Rows.Add(values);");
                     }
+
                     Sb.AppendLine("}");
                     Sb.AppendLine();
                     Sb.AppendLine("return dataTable;");
                 }
+
                 Sb.AppendLine("}");
             }
         }

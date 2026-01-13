@@ -59,17 +59,12 @@ namespace RevEng.Core.Routines.Procedures
                 .Select(p =>
                 {
                     var type = Code.Reference(p.ClrTypeFromSqlParameter(asMethodParameter: true));
-                    
+
                     // For structured (TVP) parameters, use strongly-typed IEnumerable if enabled
                     if (useTypedTvpParameters && p.GetSqlDbType() == SqlDbType.Structured && p.TvpColumns?.Count > 0)
                     {
                         var tvpTypeName = Code.Identifier(ScaffoldHelper.CreateIdentifier(p.Name + "Type").Item1, capitalize: true);
                         type = $"IEnumerable<{tvpTypeName}>";
-                    }
-                    
-                    if (useNullableReferences && !type.EndsWith('?'))
-                    {
-                        type += '?';
                     }
 
                     return $"{type} {Code.Identifier(p.Name, capitalize: false)}";
