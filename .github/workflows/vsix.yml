@@ -45,7 +45,6 @@ jobs:
       working-directory: src
 
     - name: Build reveng tools
-      if: github.event_name != 'pull_request'
       shell: cmd
       run: |
         cd ${{ github.workspace}}\src\Core\efreveng80
@@ -57,7 +56,6 @@ jobs:
         cd ${{ github.workspace}}
 
     - name: Extract and verify efreveng80.exe.zip file count
-      if: github.event_name != 'pull_request'
       shell: cmd
       run: |
         mkdir vsix
@@ -66,7 +64,6 @@ jobs:
         findstr "166" filecount.txt
 
     - name: Extract and verify efreveng90.exe.zip file count
-      if: github.event_name != 'pull_request'
       shell: cmd
       run: |
           mkdir vsix
@@ -75,13 +72,12 @@ jobs:
           findstr "166" filecount.txt
 
     - name: Extract and verify efreveng100.exe.zip file count
-      if: github.event_name != 'pull_request'
       shell: cmd
       run: |
           mkdir vsix
           7z x src/GUI/lib/efreveng100.exe.zip -oefreveng100 -y
           dir /a:-d /s /b "efreveng100" | find /c ":\" > filecount.txt
-          findstr "143" filecount.txt
+          findstr "139" filecount.txt
 
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v2
