@@ -88,7 +88,7 @@ namespace EFCorePowerTools.Helpers
                 .ToArray();
         }
 
-        public static async Task<string> BuildSqlProjectAsync(string sqlprojPath, bool mustBuild = true)
+        public static async Task<string> BuildSqlProjectAsync(string sqlprojPath)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -103,7 +103,7 @@ namespace EFCorePowerTools.Helpers
                 return null;
             }
 
-            if (mustBuild && !await VS.Build.ProjectIsUpToDateAsync(project))
+            if (!await VS.Build.ProjectIsUpToDateAsync(project))
             {
                 var ok = await VS.Build.BuildProjectAsync(project, BuildAction.Build);
 
