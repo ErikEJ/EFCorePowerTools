@@ -63,11 +63,13 @@ namespace UnitTests
             options.UseT4Split.Should().Be(config.CodeGeneration.UseT4Split);
             options.UseTypedTvpParameters.Should().Be(config.CodeGeneration.UseTypedTvpParameters);
 
-            options.GetType().GetProperties().Length.Should().Be(55);
+            // Total should be 56 properties (was 55, added GenerateEmptyResultType)
+            options.GetType().GetProperties().Length.Should().Be(56);
 
             config.GetType().GetProperties().Length.Should().Be(10);
             config.Names.GetType().GetProperties().Length.Should().Be(4);
-            config.CodeGeneration.GetType().GetProperties().Length.Should().Be(24);
+            // Total should be 25 properties (was 24, added GenerateEmptyResultType)
+            config.CodeGeneration.GetType().GetProperties().Length.Should().Be(25);
             config.FileLayout.GetType().GetProperties().Length.Should().Be(5);
             config.Replacements.GetType().GetProperties().Length.Should().Be(5);
             config.TypeMappings.GetType().GetProperties().Length.Should().Be(4);
