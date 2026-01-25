@@ -64,6 +64,12 @@ namespace RevEng.Core.Routines.Procedures
                         continue;
                     }
 
+                    // Only generate empty result classes if GenerateEmptyResultType is enabled
+                    if (resultSet.Count == 0 && !scaffolderOptions.GenerateEmptyResultType)
+                    {
+                        continue;
+                    }
+
                     var suffix = string.Empty;
                     if (routine.Results.Count > 1)
                     {

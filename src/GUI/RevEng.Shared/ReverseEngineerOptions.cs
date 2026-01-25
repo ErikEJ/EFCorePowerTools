@@ -124,5 +124,7 @@ namespace RevEng.Common
         public string MinimumProductVersion { get; set; }
 
         public bool UseTypedTvpParameters { get; set; } = true;
+
+        public bool GenerateEmptyResultType { get; set; }
     }
 }

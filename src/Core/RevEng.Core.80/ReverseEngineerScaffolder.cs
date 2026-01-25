@@ -147,6 +147,7 @@ namespace RevEng.Core
                     UsePascalIdentifiers = !options.UseDatabaseNamesForRoutines,
                     UseDecimalDataAnnotation = options.UseDecimalDataAnnotation,
                     UseInternalAccessModifier = options.UseInternalAccessModifiersForSprocsAndFunctions,
+                    GenerateEmptyResultType = options.GenerateEmptyResultType,
                 };
 
                 var functionScaffoldedModel = functionModelScaffolder.ScaffoldModel(functionModel, functionOptions, schemas, ref errors);
@@ -217,6 +218,7 @@ namespace RevEng.Core
                     UsePascalIdentifiers = !options.UseDatabaseNamesForRoutines,
                     UseInternalAccessModifier = options.UseInternalAccessModifiersForSprocsAndFunctions,
                     UseTypedTvpParameters = options.UseTypedTvpParameters,
+                    GenerateEmptyResultType = options.GenerateEmptyResultType,
                 };
 
                 var procedureScaffoldedModel = procedureScaffolder.ScaffoldModel(procedureModel, procedureOptions, schemas, ref errors);

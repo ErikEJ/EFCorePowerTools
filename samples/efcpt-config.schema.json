@@ -278,6 +278,11 @@
           "type": "boolean",
           "title": "When generating the stored procedure and function classes and helpers, set them to internal instead of public.",
           "default": false
+        },
+        "generate-empty-result-type": {
+          "type": "boolean",
+          "title": "Generate empty result classes for stored procedures that cannot be discovered. When false (default), stored procedures with undiscoverable result sets will use SqlQueryRaw directly.",
+          "default": false
         }
       }
     },

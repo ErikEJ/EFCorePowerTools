@@ -14,23 +14,15 @@ namespace #NAMESPACE#
 {
     #ACCESSMODIFIER# static class DbContextExtensions
     {
-        public static async Task<List<T>#NULLABLE#> SqlQueryAsync<T>(this DbContext db, string sql, object[]#NULLABLE# parameters = null, CancellationToken? cancellationToken = default)
+        public static async Task<List<T>> SqlQueryAsync<T>(this DbContext db, string sql, object[]#NULLABLE# parameters = null, CancellationToken#NULLABLE# cancellationToken = default)
            where T : class
         {
             parameters ??= Array.Empty<object>();
             cancellationToken ??= CancellationToken.None;
 
-            if (typeof(T).GetProperties().Any())
-            {
-                return await db.Database
-                    .SqlQueryRaw<T>(sql, parameters)
-                    .ToListAsync(cancellationToken.Value);
-            }
-            else
-            {
-                await db.Database.ExecuteSqlRawAsync(sql, parameters, cancellationToken.Value);
-                return default;
-            }
+            return await db.Database
+                .SqlQueryRaw<T>(sql, parameters)
+                .ToListAsync(cancellationToken.Value);
         }
     }
 

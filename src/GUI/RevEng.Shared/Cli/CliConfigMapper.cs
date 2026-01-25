@@ -101,6 +101,7 @@ namespace RevEng.Common.Cli
                 UseDatabaseNamesForRoutines = config.CodeGeneration.UseDatabaseNamesForRoutines,
                 UseInternalAccessModifiersForSprocsAndFunctions = config.CodeGeneration.UseInternalAccessModifiersForSprocsAndFunctions,
                 UseTypedTvpParameters = config.CodeGeneration.UseTypedTvpParameters,
+                GenerateEmptyResultType = config.CodeGeneration.GenerateEmptyResultType,
 
                 UseNoObjectFilter = false, // There are multiple options in the CLI to support this
 

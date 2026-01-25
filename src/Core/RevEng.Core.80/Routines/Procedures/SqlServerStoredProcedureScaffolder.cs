@@ -275,10 +275,8 @@ namespace RevEng.Core.Routines.Procedures
                     returnType = $"List<{returnClass}>";
                 }
 
-                if (useNullableReferences && !returnType.EndsWith('?'))
-                {
-                    returnType += '?';
-                }
+                // Do not add nullable annotation to List<T> when nullable references are enabled
+                // The list itself is never null (empty list instead)
             }
 
             returnType = useAsyncCalls ? $"Task<{returnType}>" : returnType;
