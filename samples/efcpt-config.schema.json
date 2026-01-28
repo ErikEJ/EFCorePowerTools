@@ -130,6 +130,11 @@
           "default": false,
           "title": "Use sp_describe_first_result_set instead of SET FMTONLY for result set discovery"
         },
+        "generate-empty-result-type": {
+          "type": "boolean",
+          "default": false,
+          "title": "Generate empty result class for this stored procedure when result set cannot be discovered. When false (default), uses SqlQueryRaw directly."
+        },
         "mapped-type": {
           "type": "string",
           "default": null,
@@ -277,11 +282,6 @@
         "use-internal-access-modifiers-for-sprocs-and-functions": {
           "type": "boolean",
           "title": "When generating the stored procedure and function classes and helpers, set them to internal instead of public.",
-          "default": false
-        },
-        "generate-empty-result-type": {
-          "type": "boolean",
-          "title": "Generate empty result classes for stored procedures that cannot be discovered. When false (default), stored procedures with undiscoverable result sets will use SqlQueryRaw directly.",
           "default": false
         }
       }

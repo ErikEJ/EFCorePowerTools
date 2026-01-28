@@ -83,6 +83,11 @@ namespace RevEng.Core.Routines
                                 module.MappedType = options.MappedModules[key];
                             }
 
+                            if (options.ModulesGeneratingEmptyResultTypes?.ContainsKey(key) ?? false)
+                            {
+                                module.GenerateEmptyResultType = options.ModulesGeneratingEmptyResultTypes[key];
+                            }
+
                             if (allParameters.TryGetValue($"[{module.Schema}].[{module.Name}]", out var moduleParameters))
                             {
                                 module.Parameters = moduleParameters;

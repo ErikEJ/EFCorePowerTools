@@ -27,7 +27,5 @@ namespace RevEng.Core.Abstractions
         public virtual bool UseInternalAccessModifier { get; set; }
 
         public virtual bool UseTypedTvpParameters { get; set; }
-
-        public virtual bool GenerateEmptyResultType { get; set; }
     }
 }

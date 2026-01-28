@@ -114,7 +114,5 @@ namespace RevEng.Common
         public bool UseInternalAccessModifiersForSprocsAndFunctions { get; set; }
 
         public bool UseTypedTvpParameters { get; set; }
-
-        public bool GenerateEmptyResultType { get; set; }
     }
 }

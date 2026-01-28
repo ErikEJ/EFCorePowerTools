@@ -147,7 +147,6 @@ namespace RevEng.Core
                     UsePascalIdentifiers = !options.UseDatabaseNamesForRoutines,
                     UseDecimalDataAnnotation = options.UseDecimalDataAnnotation,
                     UseInternalAccessModifier = options.UseInternalAccessModifiersForSprocsAndFunctions,
-                    GenerateEmptyResultType = options.GenerateEmptyResultType,
                 };
 
                 var functionScaffoldedModel = functionModelScaffolder.ScaffoldModel(functionModel, functionOptions, schemas, ref errors);
@@ -198,6 +197,10 @@ namespace RevEng.Core
                         .Where(t => t.ObjectType == ObjectType.Procedure && !string.IsNullOrEmpty(t.MappedType))
                         .Select(m => new { m.Name, m.MappedType })
                         .ToDictionary(m => m.Name, m => m.MappedType),
+                    ModulesGeneratingEmptyResultTypes = options.Tables
+                        .Where(t => t.ObjectType == ObjectType.Procedure && t.GenerateEmptyResultType)
+                        .Select(m => new { m.Name, m.GenerateEmptyResultType })
+                        .ToDictionary(m => m.Name, m => m.GenerateEmptyResultType),
                 };
 
                 var procedureModel = procedureModelFactory.Create(options.Dacpac ?? options.ConnectionString, procedureModelFactoryOptions);
@@ -218,7 +221,6 @@ namespace RevEng.Core
                     UsePascalIdentifiers = !options.UseDatabaseNamesForRoutines,
                     UseInternalAccessModifier = options.UseInternalAccessModifiersForSprocsAndFunctions,
                     UseTypedTvpParameters = options.UseTypedTvpParameters,
-                    GenerateEmptyResultType = options.GenerateEmptyResultType,
                 };
 
                 var procedureScaffoldedModel = procedureScaffolder.ScaffoldModel(procedureModel, procedureOptions, schemas, ref errors);
