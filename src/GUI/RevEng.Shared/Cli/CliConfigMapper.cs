@@ -352,7 +352,7 @@ namespace RevEng.Common.Cli
                 .Select(entity =>
                 {
                     var model = new SerializationTableModel(entity.Name, objectType, entity.ExcludedColumns, entity.ExcludedIndexes);
-                    
+
                     // Map stored procedure specific properties
                     if (entity is StoredProcedure storedProcedure)
                     {
@@ -360,7 +360,7 @@ namespace RevEng.Common.Cli
                         model.MappedType = storedProcedure.MappedType;
                         model.GenerateEmptyResultType = storedProcedure.GenerateEmptyResultType;
                     }
-                    
+
                     return model;
                 })
                 .ToList();
