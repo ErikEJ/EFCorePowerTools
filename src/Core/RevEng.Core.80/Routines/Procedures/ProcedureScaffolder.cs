@@ -104,7 +104,7 @@ namespace RevEng.Core.Routines.Procedures
                 {
                     if (tvpParameter.TvpColumns?.Count > 0)
                     {
-                        var typeName = Code.Identifier(ScaffoldHelper.CreateIdentifier(tvpParameter.Name + "Type").Item1, capitalize: true);
+                        var typeName = Code.Identifier(ScaffoldHelper.CreateIdentifier(tvpParameter.TypeName).Item1, capitalize: true);
 
                         var classContent = scaffolder.WriteResultClass(tvpParameter.TvpColumns, scaffolderOptions, typeName, routine.Schema);
 
