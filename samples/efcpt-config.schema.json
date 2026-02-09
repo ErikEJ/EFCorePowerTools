@@ -130,6 +130,11 @@
           "default": false,
           "title": "Use sp_describe_first_result_set instead of SET FMTONLY for result set discovery"
         },
+        "generate-empty-result-type": {
+          "type": "boolean",
+          "default": false,
+          "title": "Generate empty result class for this stored procedure when result set cannot be discovered. When false (default), uses SqlQueryRaw directly."
+        },
         "mapped-type": {
           "type": "string",
           "default": null,
