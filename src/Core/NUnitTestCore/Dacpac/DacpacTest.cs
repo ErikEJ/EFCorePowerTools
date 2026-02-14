@@ -332,7 +332,8 @@ GO
             // Assert
             Assert.AreEqual(1, dbModel.Routines.Count);
             Assert.AreEqual(2, dbModel.Routines[0].Parameters.Count);
-            Assert.AreEqual("[Constant].[NumberIDList]", dbModel.Routines[0].Parameters[0].TypeName);
+            Assert.AreEqual("NumberIDList", dbModel.Routines[0].Parameters[0].TypeName);
+            Assert.AreEqual("Constant", dbModel.Routines[0].Parameters[0].TypeSchemaName);
             Assert.AreEqual("structured", dbModel.Routines[0].Parameters[0].StoreType);
             Assert.IsNotNull(dbModel.Routines[0].Parameters[0].TvpColumns);
             Assert.Greater(dbModel.Routines[0].Parameters[0].TvpColumns.Count, 0);

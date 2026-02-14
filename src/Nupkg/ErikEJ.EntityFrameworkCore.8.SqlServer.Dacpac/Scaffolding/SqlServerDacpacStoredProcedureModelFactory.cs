@@ -106,6 +106,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             var result = new List<ModuleParameter>();
 
             string typeName = null;
+            string typeSchemaName = null;
 
             foreach (var parameter in proc.Parameters)
             {
@@ -133,7 +134,8 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 {
                     // parameter is a table type (TVP)
                     storeType = "structured";
-                    typeName = tableReference.Name.ToString();
+                    typeName = tableReference.Name.Parts[1];
+                    typeSchemaName = tableReference.Name.Parts[0];
                     tvpColumns = DacpacModelFactoryHelper.GetTvpColumns(tableReference);
                 }
 
@@ -149,6 +151,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     StoreType = storeType,
                     Nullable = true,
                     TypeName = typeName,
+                    TypeSchemaName = typeSchemaName,
                     TvpColumns = tvpColumns,
                 };
 
