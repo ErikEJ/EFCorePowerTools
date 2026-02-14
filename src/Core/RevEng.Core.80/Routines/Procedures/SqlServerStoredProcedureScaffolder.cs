@@ -427,12 +427,12 @@ namespace RevEng.Core.Routines.Procedures
 
                 if (sqlDbType == SqlDbType.Structured)
                 {
-                    Sb.AppendLine($"TypeName = \"{parameter.TypeName}\",");
+                    Sb.AppendLine($"TypeName = \"[{parameter.TypeSchemaName}].[{parameter.TypeName}]\",");
                 }
 
                 if (sqlDbType == SqlDbType.Udt)
                 {
-                    Sb.AppendLine($"UdtTypeName = \"{parameter.TypeName}\",");
+                    Sb.AppendLine($"UdtTypeName = \"[{parameter.TypeSchemaName}].[{parameter.TypeName}]\",");
                 }
             }
 
