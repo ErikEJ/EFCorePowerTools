@@ -48,6 +48,7 @@ namespace RevEng.Core.Routines
 
             if (options.UseDecimalDataAnnotation)
             {
+                Sb.AppendLine("using Microsoft.EntityFrameworkCore;");
                 Sb.AppendLine("using System.ComponentModel.DataAnnotations;");
             }
 
@@ -98,11 +99,11 @@ namespace RevEng.Core.Routines
 
                 if (property.StoreType == "decimal" && useDecimalDataAnnotation)
                 {
-                    Sb.AppendLine($"[Column(\"{property.Name}\", TypeName = \"{property.StoreType}({property.Precision},{property.Scale})\")]");
+                    Sb.AppendLine($"[Precision({property.Precision}, {property.Scale})]");
                 }
                 else if (property.StoreType == "money" && useDecimalDataAnnotation)
                 {
-                    Sb.AppendLine($"[Column(\"{property.Name}\", TypeName = \"{property.StoreType}\")]");
+                    Sb.AppendLine($"[Precision(19, 4)]");
                 }
                 else
                 {
