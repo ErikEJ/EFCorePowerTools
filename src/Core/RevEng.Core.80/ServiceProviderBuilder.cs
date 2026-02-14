@@ -162,7 +162,6 @@ namespace RevEng.Core
                     firebirdProvider.ConfigureDesignTimeServices(serviceCollection);
                     break;
 
-#if !CORE100
                 case DatabaseType.Snowflake:
                     var snowflakeProvider = new SnowflakeDesignTimeServices();
                     snowflakeProvider.ConfigureDesignTimeServices(serviceCollection);
