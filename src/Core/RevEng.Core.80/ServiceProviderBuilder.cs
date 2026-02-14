@@ -6,9 +6,7 @@ using EFCore.Snowflake.Design.Internal;
 using EntityFrameworkCore.Scaffolding.Handlebars;
 #endif
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
-#if !CORE100
 using FirebirdSql.EntityFrameworkCore.Firebird.Design.Internal;
-#endif
 using Humanizer.Inflections;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
@@ -164,6 +162,7 @@ namespace RevEng.Core
                     firebirdProvider.ConfigureDesignTimeServices(serviceCollection);
                     break;
 
+#if !CORE100
                 case DatabaseType.Snowflake:
                     var snowflakeProvider = new SnowflakeDesignTimeServices();
                     snowflakeProvider.ConfigureDesignTimeServices(serviceCollection);

@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-#if !CORE100
 using FirebirdSql.Data.FirebirdClient;
-#endif
 using Microsoft.Data.SqlClient;
 using Microsoft.Data.Sqlite;
 #if !CORE100
@@ -97,7 +95,7 @@ namespace RevEng.Core
             {
                 // Ignore
             }
-
+#endif
             try
             {
                 var a = new FbConnectionStringBuilder(connectionString);
@@ -107,7 +105,7 @@ namespace RevEng.Core
             {
                 // Ignore
             }
-#endif
+
             return aliases;
         }
 #pragma warning restore CA1031
