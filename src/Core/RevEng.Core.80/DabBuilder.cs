@@ -203,7 +203,7 @@ namespace RevEng.Core
 
                 foreach (var column in dbObject.Columns.Where(column => !string.IsNullOrWhiteSpace(column.Comment)))
                 {
-                    var columnName = column.Name;
+                    var columnName = EscapeDescription(column.Name);
                     var columnAlias = GenerateEntityName(columnName.Replace(" ", string.Empty, StringComparison.OrdinalIgnoreCase));
                     var columnDescription = EscapeDescription(column.Comment);
                     sb.AppendLine(CultureInfo.InvariantCulture, $"dab update {type} --fields.{columnAlias} \"{columnName}\" --fields.description \"{columnDescription}\"");
