@@ -133,13 +133,13 @@ namespace RevEng.Common
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.0.22";
+                        pkgVersion = "8.0.24";
                         break;
                     case CodeGenerationMode.EFCore9:
-                        pkgVersion = "9.0.11";
+                        pkgVersion = "9.0.13";
                         break;
                     case CodeGenerationMode.EFCore10:
-                        pkgVersion = "10.0.0";
+                        pkgVersion = "10.0.3";
                         break;
 
                     default:
@@ -227,15 +227,15 @@ namespace RevEng.Common
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.0.22";
+                        pkgVersion = "8.0.24";
                         break;
 
                     case CodeGenerationMode.EFCore9:
-                        pkgVersion = "9.0.11";
+                        pkgVersion = "9.0.13";
                         break;
 
                     case CodeGenerationMode.EFCore10:
-                        pkgVersion = "10.0.0";
+                        pkgVersion = "10.0.3";
                         break;
 
                     default: throw new NotImplementedException();
@@ -374,14 +374,14 @@ namespace RevEng.Common
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.23.26000";
+                        pkgVersion = "8.23.26100";
                         break;
                     case CodeGenerationMode.EFCore9:
-                        pkgVersion = "9.23.26000";
+                        pkgVersion = "9.23.26100";
                         break;
 
                     case CodeGenerationMode.EFCore10:
-                        pkgVersion = "10.23.26000";
+                        pkgVersion = "10.23.26100";
                         break;
 
                     default: throw new NotImplementedException();
