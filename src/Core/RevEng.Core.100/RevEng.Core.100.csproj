@@ -35,18 +35,18 @@
     <!--<PackageReference Include="EntityFrameworkCore.Scaffolding.Handlebars" Version="9.0.0" />
     <PackageReference Include="EntityFrameworkCore.Sqlite.NodaTime" Version="9.1.0" />-->
     <PackageReference Include="FirebirdSql.EntityFrameworkCore.Firebird" Version="13.0.0" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="10.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.HierarchyId" Version="10.0.2" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="10.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.HierarchyId" Version="10.0.3" />
     <PackageReference Include="Microsoft.PowerPlatform.Dataverse.Client" Version="1.2.10" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="10.0.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="10.0.0" />
-    <PackageReference Include="Oracle.EntityFrameworkCore.NetTopologySuite" Version="10.23.26000-preview.1" />
+    <PackageReference Include="Oracle.EntityFrameworkCore.NetTopologySuite" Version="10.23.26000-Preview.1" />
     <!--<PackageReference Include="Pomelo.EntityFrameworkCore.MySql.NetTopologySuite" Version="9.0.0" />-->
     <PackageReference Include="SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime" Version="10.0.0" />
-    <PackageReference Include="System.CodeDom" Version="10.0.2" />
+    <PackageReference Include="System.CodeDom" Version="10.0.3" />
     <PackageReference Include="UnicodeInformation" Version="2.7.1" />
   </ItemGroup>
 
