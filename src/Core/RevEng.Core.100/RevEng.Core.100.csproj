@@ -43,7 +43,7 @@
     <PackageReference Include="Microsoft.PowerPlatform.Dataverse.Client" Version="1.2.10" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime" Version="10.0.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite" Version="10.0.0" />
-    <PackageReference Include="Oracle.EntityFrameworkCore.NetTopologySuite" Version="10.23.26000-preview.1" />
+    <PackageReference Include="Oracle.EntityFrameworkCore.NetTopologySuite" Version="10.23.26100" />
     <!--<PackageReference Include="Pomelo.EntityFrameworkCore.MySql.NetTopologySuite" Version="9.0.0" />-->
     <PackageReference Include="SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime" Version="10.0.0" />
     <PackageReference Include="System.CodeDom" Version="10.0.3" />
