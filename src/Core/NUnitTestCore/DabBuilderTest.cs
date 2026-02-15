@@ -190,13 +190,13 @@ namespace UnitTests
         private static string InvokePrivateStaticMethod(string methodName, string parameter)
         {
             var method = typeof(DabBuilder).GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static);
-            return (string)method?.Invoke(null, new object[] { parameter });
+            return method != null ? (string)method.Invoke(null, new object[] { parameter }) : string.Empty;
         }
 
         private static TResult InvokePrivateStaticMethod<TParam, TResult>(string methodName, TParam parameter)
         {
             var method = typeof(DabBuilder).GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static);
-            return (TResult)method?.Invoke(null, new object[] { parameter });
+            return method != null ? (TResult)method.Invoke(null, new object[] { parameter }) : default;
         }
     }
 }
