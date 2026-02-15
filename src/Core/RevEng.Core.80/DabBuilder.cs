@@ -160,7 +160,10 @@ namespace RevEng.Core
                 entityTypeNames.Add(type);
 
                 var tableKey = $"[{dbObject.Schema}].[{dbObject.Name}]";
-                tableToEntityMap[tableKey] = type;
+                if (!tableToEntityMap.ContainsKey(tableKey))
+                {
+                    tableToEntityMap[tableKey] = type;
+                }
 
                 if (dbObject.PrimaryKey == null)
                 {
