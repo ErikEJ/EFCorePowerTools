@@ -735,7 +735,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (!allowedVersions.Any())
             {
-                wizardArgs.StatusbarMessage = ".NET 5 and earlier is not supported.";
+                wizardArgs.StatusbarMessage = ".NET 7 and earlier is not supported.";
                 if (!wizardArgs.IsInvokedByWizard)
                 {
                     VSHelper.ShowError(wizardArgs.StatusbarMessage);

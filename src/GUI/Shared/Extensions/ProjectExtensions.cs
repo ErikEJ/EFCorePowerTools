@@ -488,7 +488,7 @@ namespace EFCorePowerTools.Extensions
 
         private static bool IsNet100(string targetFrameworkMonikers)
         {
-            return FrameworkCheck(targetFrameworkMonikers, "10");
+            return FrameworkCheck(targetFrameworkMonikers, "10") || FrameworkCheck(targetFrameworkMonikers, "11");
         }
 
         private static bool FrameworkCheck(string targetFrameworkMonikers, string version)
