@@ -67,6 +67,11 @@ namespace RevEng.Core.Routines.Procedures
                         type = $"IEnumerable<{tvpTypeName}>";
                     }
 
+                    if (useNullableReferences && !type.EndsWith('?'))
+                    {
+                        type += '?';
+                    }
+
                     return $"{type} {Code.Identifier(p.Name, capitalize: false)}";
                 })
                 .ToList();
