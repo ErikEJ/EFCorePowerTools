@@ -197,6 +197,10 @@ namespace RevEng.Core
                         .Where(t => t.ObjectType == ObjectType.Procedure && !string.IsNullOrEmpty(t.MappedType))
                         .Select(m => new { m.Name, m.MappedType })
                         .ToDictionary(m => m.Name, m => m.MappedType),
+                    ModulesGeneratingEmptyResultTypes = options.Tables
+                        .Where(t => t.ObjectType == ObjectType.Procedure && t.GenerateEmptyResultType)
+                        .Select(m => new { m.Name, m.GenerateEmptyResultType })
+                        .ToDictionary(m => m.Name, m => m.GenerateEmptyResultType),
                 };
 
                 var procedureModel = procedureModelFactory.Create(options.Dacpac ?? options.ConnectionString, procedureModelFactoryOptions);

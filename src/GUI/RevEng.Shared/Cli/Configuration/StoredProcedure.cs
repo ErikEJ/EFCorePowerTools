@@ -30,6 +30,11 @@ namespace RevEng.Common.Cli.Configuration
         [JsonPropertyName("use-legacy-resultset-discovery")]
         public bool UseLegacyResultsetDiscovery { get; set; }
 
+        [JsonPropertyOrder(60)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        [JsonPropertyName("generate-empty-result-type")]
+        public bool GenerateEmptyResultType { get; set; }
+
         [JsonIgnore]
         public List<string> ExcludedColumns { get; set; }
 

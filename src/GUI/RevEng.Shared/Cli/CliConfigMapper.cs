@@ -349,7 +349,20 @@ namespace RevEng.Common.Cli
 
             var serializationTableModels = entities.Where<T>(entity => ExclusionFilter(entity, excludeAll, filters)
                 && !string.IsNullOrEmpty(entity.Name))
-                .Select(entity => new SerializationTableModel(entity.Name, objectType, entity.ExcludedColumns, entity.ExcludedIndexes))
+                .Select(entity =>
+                {
+                    var model = new SerializationTableModel(entity.Name, objectType, entity.ExcludedColumns, entity.ExcludedIndexes);
+
+                    // Map stored procedure specific properties
+                    if (entity is StoredProcedure storedProcedure)
+                    {
+                        model.UseLegacyResultSetDiscovery = storedProcedure.UseLegacyResultsetDiscovery;
+                        model.MappedType = storedProcedure.MappedType;
+                        model.GenerateEmptyResultType = storedProcedure.GenerateEmptyResultType;
+                    }
+
+                    return model;
+                })
                 .ToList();
 
             if (typeof(T) == typeof(Table)

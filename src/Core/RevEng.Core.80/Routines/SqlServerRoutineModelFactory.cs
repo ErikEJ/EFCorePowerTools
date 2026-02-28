@@ -83,6 +83,11 @@ namespace RevEng.Core.Routines
                                 module.MappedType = options.MappedModules[key];
                             }
 
+                            if (options.ModulesGeneratingEmptyResultTypes?.ContainsKey(key) ?? false)
+                            {
+                                module.GenerateEmptyResultType = options.ModulesGeneratingEmptyResultTypes[key];
+                            }
+
                             if (allParameters.TryGetValue($"[{module.Schema}].[{module.Name}]", out var moduleParameters))
                             {
                                 module.Parameters = moduleParameters;
@@ -114,7 +119,12 @@ namespace RevEng.Core.Routines
                                         new List<ModuleResultElement>(),
                                     };
 #pragma warning disable CA1308 // Normalize strings to uppercase
-                                    errors.Add($"Unable to get result set shape for {RoutineType.ToLower(CultureInfo.InvariantCulture)} '{module.Schema}.{module.Name}'. {ex.Message}.");
+                                    var errorMessage = $"Unable to get result set shape for {RoutineType.ToLower(CultureInfo.InvariantCulture)} '{module.Schema}.{module.Name}'. {ex.Message}.";
+                                    errorMessage += "\n  Suggestions:";
+                                    errorMessage += "\n  - Try alternate result set discovery method: add 'use-legacy-resultset-discovery: true' for this procedure in config";
+                                    errorMessage += "\n  - Set 'generate-empty-result-type: true' in config to create an empty result class that you can customize";
+                                    errorMessage += "\n  - Exclude this procedure from generation if it's not needed";
+                                    errors.Add(errorMessage);
 #pragma warning restore CA1308 // Normalize strings to uppercase
                                 }
 #pragma warning restore CA1031 // Do not catch general exception types
