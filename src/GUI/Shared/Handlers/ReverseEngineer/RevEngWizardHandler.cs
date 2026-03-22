@@ -646,7 +646,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 options.ConnectionString = dbInfo.ConnectionString;
                 options.DatabaseType = dbInfo.DatabaseType;
 
-                options.Dacpac = await SqlProjHelper.BuildSqlProjectAsync(options.Dacpac, mustBuild: false);
+                options.Dacpac = await SqlProjHelper.BuildSqlProjectAsync(options.Dacpac, mustBuild: true);
                 if (string.IsNullOrEmpty(options.Dacpac))
                 {
                     VSHelper.ShowMessage(ReverseEngineerLocale.UnableToBuildSelectedDatabaseProject);

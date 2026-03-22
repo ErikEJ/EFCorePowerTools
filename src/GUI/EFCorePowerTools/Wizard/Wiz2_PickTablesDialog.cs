@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -48,7 +49,7 @@ namespace EFCorePowerTools.Wizard
             InitializeMessengerWithStatusbar(Statusbar, ReverseEngineerLocale.LoadingDatabaseObjects);
         }
 
-        protected override void OnPageVisible(object sender, StatusbarEventArgs e)
+        protected override async Task OnPageVisibleAsync(object sender, StatusbarEventArgs e)
         {
             var viewModel = wizardViewModel;
             IsPageLoaded = viewModel.IsPage2Initialized;
@@ -62,32 +63,31 @@ namespace EFCorePowerTools.Wizard
                 wea.Options.DatabaseType = viewModel.SelectedDatabaseConnection.DatabaseType;
                 wea.Options.Dacpac = viewModel.SelectedDatabaseConnection.FilePath;
 
-                ThreadHelper.JoinableTaskFactory.Run(async () =>
+                var hasDbInfo = await InvokeWithErrorHandlingAsync(async () =>
                 {
-                    await InvokeWithErrorHandlingAsync(async () =>
-                    {
-                        var dbinfo = await RevEngWizardHandler.GetDatabaseInfoAsync(wea.Options);
-                        wea.DbInfo = dbinfo;
-                        return true;
-                    });
+                    var dbinfo = await RevEngWizardHandler.GetDatabaseInfoAsync(wea.Options);
+                    wea.DbInfo = dbinfo;
+                    return dbinfo != null;
                 });
+
+                if (!hasDbInfo)
+                {
+                    NextButton.IsEnabled = false;
+                    return;
+                }
             }
 
             if (!IsPageLoaded && !wizardViewModel.ObjectTree.Types.Any())
             {
                 wea.PickTablesDialog = this;
 
-                var isSuccessful = false;
-                ThreadHelper.JoinableTaskFactory.Run(async () =>
+                viewModel.ObjectTree.Types.Clear(); // Initialize to known state (empty)
+                var isSuccessful = await InvokeWithErrorHandlingAsync(async () =>
                 {
-                    viewModel.ObjectTree.Types.Clear(); // Initialize to known state (empty)
-                    isSuccessful = await InvokeWithErrorHandlingAsync(async () =>
-                    {
-                        return await wizardViewModel.Bll.LoadDataBaseObjectsAsync(wea.Options, wea.DbInfo, wea.NamingOptionsAndPath, wea);
-                    });
-
-                    NextButton.IsEnabled = isSuccessful;
+                    return await wizardViewModel.Bll.LoadDataBaseObjectsAsync(wea.Options, wea.DbInfo, wea.NamingOptionsAndPath, wea);
                 });
+
+                NextButton.IsEnabled = isSuccessful;
             }
             else
             {
