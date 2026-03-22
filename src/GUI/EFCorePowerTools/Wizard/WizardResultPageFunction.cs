@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
@@ -90,17 +90,28 @@ namespace EFCorePowerTools.Wizard
             }
         }
 
-        private void StatusbarCtrl_StatusEvent(object sender, StatusbarEventArgs e)
+#pragma warning disable VSTHRD100 // Avoid async void
+        private async void StatusbarCtrl_StatusEvent(object sender, StatusbarEventArgs e)
         {
             if (e.EventType == StatusbarEventType.Reset)
             {
                 // We're done with this reset event - only fires once
                 statusbarCtrl.StatusEvent -= StatusbarCtrl_StatusEvent;
-                OnPageVisible(sender, e);
-
-                statusbarCtrl.Status.ShowStatus();
+                try
+                {
+                    await OnPageVisibleAsync(sender, e);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+                finally
+                {
+                    statusbarCtrl.Status.ShowStatus();
+                }
             }
         }
+#pragma warning restore VSTHRD100 // Avoid async void
 
         protected virtual void OnPageLoaded(object sender, RoutedEventArgs e)
         {
@@ -110,6 +121,12 @@ namespace EFCorePowerTools.Wizard
         protected virtual void OnPageVisible(object sender, StatusbarEventArgs e)
         {
             // Intended to be overridden
+        }
+
+        protected virtual Task OnPageVisibleAsync(object sender, StatusbarEventArgs e)
+        {
+            OnPageVisible(sender, e);
+            return Task.CompletedTask;
         }
 
         public void BackButton_Click(object sender, RoutedEventArgs e)

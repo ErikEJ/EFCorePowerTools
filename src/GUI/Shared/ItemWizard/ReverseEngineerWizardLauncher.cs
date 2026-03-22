@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using EFCorePowerTools.Handlers.ReverseEngineer;
 using EnvDTE;
 using Microsoft.VisualStudio.Shell;
