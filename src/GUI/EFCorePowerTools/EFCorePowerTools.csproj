@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
@@ -287,7 +287,23 @@
     <Reference Include="Microsoft.ApplicationInsights, Version=2.17.0.146, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\lib\Microsoft.ApplicationInsights.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.TemplateWizardInterface, Version=17.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.TemplateWizardInterface" Condition="Exists('$(VSToolsPath)\PublicAssemblies\Microsoft.VisualStudio.TemplateWizardInterface.dll')">
+      <HintPath>$(VSToolsPath)\PublicAssemblies\Microsoft.VisualStudio.TemplateWizardInterface.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.TemplateWizardInterface" Condition="!Exists('$(VSToolsPath)\PublicAssemblies\Microsoft.VisualStudio.TemplateWizardInterface.dll') and Exists('$(DevEnvDir)VSExtensions\Microsoft\AppModernizationForDotNet\Microsoft.VisualStudio.TemplateWizardInterface.dll')">
+      <HintPath>$(DevEnvDir)VSExtensions\Microsoft\AppModernizationForDotNet\Microsoft.VisualStudio.TemplateWizardInterface.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.TemplateWizardInterface" Condition="!Exists('$(VSToolsPath)\PublicAssemblies\Microsoft.VisualStudio.TemplateWizardInterface.dll') and !Exists('$(DevEnvDir)VSExtensions\Microsoft\AppModernizationForDotNet\Microsoft.VisualStudio.TemplateWizardInterface.dll') and Exists('$(ProgramFiles)\Microsoft Visual Studio\18\Community\Common7\IDE\VSExtensions\Microsoft\AppModernizationForDotNet\Microsoft.VisualStudio.TemplateWizardInterface.dll')">
+      <HintPath>$(ProgramFiles)\Microsoft Visual Studio\18\Community\Common7\IDE\VSExtensions\Microsoft\AppModernizationForDotNet\Microsoft.VisualStudio.TemplateWizardInterface.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.TemplateWizardInterface" Condition="!Exists('$(VSToolsPath)\PublicAssemblies\Microsoft.VisualStudio.TemplateWizardInterface.dll') and !Exists('$(DevEnvDir)VSExtensions\Microsoft\AppModernizationForDotNet\Microsoft.VisualStudio.TemplateWizardInterface.dll') and !Exists('$(ProgramFiles)\Microsoft Visual Studio\18\Community\Common7\IDE\VSExtensions\Microsoft\AppModernizationForDotNet\Microsoft.VisualStudio.TemplateWizardInterface.dll') and Exists('$(ProgramFiles)\Microsoft Visual Studio\18\Insiders\Common7\IDE\VSExtensions\Microsoft\AppModernizationForDotNet\Microsoft.VisualStudio.TemplateWizardInterface.dll')">
+      <HintPath>$(ProgramFiles)\Microsoft Visual Studio\18\Insiders\Common7\IDE\VSExtensions\Microsoft\AppModernizationForDotNet\Microsoft.VisualStudio.TemplateWizardInterface.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.TemplateWizardInterface, Version=17.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" Condition="!Exists('$(VSToolsPath)\PublicAssemblies\Microsoft.VisualStudio.TemplateWizardInterface.dll') and !Exists('$(DevEnvDir)VSExtensions\Microsoft\AppModernizationForDotNet\Microsoft.VisualStudio.TemplateWizardInterface.dll') and !Exists('$(ProgramFiles)\Microsoft Visual Studio\18\Community\Common7\IDE\VSExtensions\Microsoft\AppModernizationForDotNet\Microsoft.VisualStudio.TemplateWizardInterface.dll') and !Exists('$(ProgramFiles)\Microsoft Visual Studio\18\Insiders\Common7\IDE\VSExtensions\Microsoft\AppModernizationForDotNet\Microsoft.VisualStudio.TemplateWizardInterface.dll')" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -715,3 +731,6 @@
     </ItemGroup>
   </Target>
 </Project>
+
+
+
