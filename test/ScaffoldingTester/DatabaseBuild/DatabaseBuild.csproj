@@ -1,12 +1,12 @@
-﻿<Project Sdk="MSBuild.Sdk.SqlProj/3.3.0">
+﻿<Project Sdk="MSBuild.Sdk.SqlProj/4.0.1">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
-	  <RunSqlCodeAnalysis>True</RunSqlCodeAnalysis>  
+      <RunSqlCodeAnalysis>True</RunSqlCodeAnalysis>  
   </PropertyGroup>
 
-	<ItemGroup>
-		<Content Include="..\Database\dbo\**\*.sql" />
-	</ItemGroup>
+    <ItemGroup>
+        <Content Include="..\Database\dbo\**\*.sql" />
+    </ItemGroup>
 
 </Project>
