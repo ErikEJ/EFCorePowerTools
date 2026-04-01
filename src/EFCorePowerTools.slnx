@@ -1,0 +1,82 @@
+<Solution>
+  <Folder Name="/Build/">
+    <File Path="../.github/workflows/cli-release.yml" />
+    <File Path="../.github/workflows/cli-tool.yml" />
+    <File Path="../.github/workflows/nupkg-release.yml" />
+    <File Path="../.github/workflows/vsix.yml" />
+    <File Path="../global.json" />
+    <File Path="../samples/efcpt-config.schema.json" />
+    <File Path=".editorconfig" />
+    <File Path="Directory.Build.Props" />
+    <File Path="NuGet.Config" />
+  </Folder>
+  <Folder Name="/Modelling/">
+    <Project Path="Core/efpt100.core/efpt100.core.csproj" />
+    <Project Path="Core/efpt80.core/efpt80.core.csproj">
+      <Build Solution="Release|*" Project="false" />
+    </Project>
+    <Project Path="Core/efpt90.core/efpt90.core.csproj">
+      <Build Solution="Release|*" Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/Packages/">
+    <Project Path="Nupkg/ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac/ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac.csproj">
+      <Build Solution="Release|*" Project="false" />
+    </Project>
+    <Project Path="Nupkg/ErikEJ.EntityFrameworkCore.9.SqlServer.Dacpac/ErikEJ.EntityFrameworkCore.9.SqlServer.Dacpac.csproj">
+      <Build Solution="Release|*" Project="false" />
+    </Project>
+    <Project Path="Nupkg/ErikEJ.EntityFrameworkCore.DgmlBuilder/ErikEJ.EntityFrameworkCore.DgmlBuilder.csproj">
+      <Build Solution="Release|*" Project="false" />
+    </Project>
+  </Folder>
+  <Folder Name="/RevEng/">
+    <Project Path="Core/DacFxStrongTypedCore.161/DacFxStrongTypedCore.161.csproj">
+      <Build Solution="Release|*" Project="false" />
+    </Project>
+    <Project Path="Core/efcpt.10/efcpt.10.csproj">
+      <Build Solution="Release|*" Project="false" />
+    </Project>
+    <Project Path="Core/efcpt.8/efcpt.8.csproj">
+      <Build Solution="Release|*" Project="false" />
+    </Project>
+    <Project Path="Core/efcpt.9/efcpt.9.csproj">
+      <Build Solution="Release|*" Project="false" />
+    </Project>
+    <Project Path="Core/efreveng100/efreveng100.csproj">
+      <Build Solution="Release|*" Project="false" />
+    </Project>
+    <Project Path="Core/efreveng80/efreveng80.csproj">
+      <Build Solution="Release|*" Project="false" />
+    </Project>
+    <Project Path="Core/efreveng90/efreveng90.csproj">
+      <Build Solution="Release|*" Project="false" />
+    </Project>
+    <Project Path="Core/RevEng.Core.100/RevEng.Core.100.csproj">
+      <Build Solution="Release|*" Project="false" />
+    </Project>
+    <Project Path="Core/RevEng.Core.80/RevEng.Core.80.csproj">
+      <Build Solution="Release|*" Project="false" />
+    </Project>
+    <Project Path="Core/RevEng.Core.90/RevEng.Core.90.csproj">
+      <Build Solution="Release|*" Project="false" />
+    </Project>
+    <Project Path="Core/RevEng.Core.Abstractions/RevEng.Core.Abstractions.csproj">
+      <Build Solution="Release|*" Project="false" />
+    </Project>
+    <Project Path="Core/SqlServer.Rules.Report/SqlServer.Rules.Report.csproj">
+      <Build Solution="Release|*" Project="false" />
+    </Project>
+    <Project Path="GUI/RevEng.Shared/RevEng.Common.csproj" />
+  </Folder>
+  <Folder Name="/Test/">
+    <Project Path="Core/NUnitTestCore/NUnitTestCore.csproj">
+      <Build Solution="Release|*" Project="false" />
+    </Project>
+    <Project Path="GUI/UnitTests/UnitTests.csproj" />
+  </Folder>
+  <Project Path="GUI/EFCorePowerTools/EFCorePowerTools.csproj" />
+  <Project Path="GUI/PowerToolsExtensionPack/PowerToolsExtensionPack.csproj" />
+  <Project Path="GUI/Shared/Shared.shproj" />
+  <Project Path="GUI/WizardItemTemplate/WizardItemTemplate.csproj" />
+</Solution>
