@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using System.Linq;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
@@ -6,31 +7,15 @@ namespace RevEng.Core.Diagram
 {
     public class DatabaseModelToMermaid
     {
-        private static readonly bool[] Lookup = new bool[65536];
         private readonly DatabaseModel databaseModel;
 
         public DatabaseModelToMermaid(DatabaseModel databaseModel)
         {
             this.databaseModel = databaseModel;
-            for (char c = '0'; c <= '9'; c++)
-            {
-                Lookup[c] = true;
-            }
-
-            for (char c = 'A'; c <= 'Z'; c++)
-            {
-                Lookup[c] = true;
-            }
-
-            for (char c = 'a'; c <= 'z'; c++)
-            {
-                Lookup[c] = true;
-            }
-
-            Lookup['.'] = true;
-            Lookup['_'] = true;
-            Lookup['-'] = true;
         }
+
+        private static bool IsValidChar(char c) =>
+            c is (>= '0' and <= '9') or (>= 'A' and <= 'Z') or (>= 'a' and <= 'z') or '.' or '_' or '-';
 
         public string CreateMermaid(bool createMarkdown = true)
         {
@@ -50,7 +35,7 @@ namespace RevEng.Core.Diagram
                     continue;
                 }
 
-                var formattedTableName = Sanitize(table.Name);
+                var formattedTableName = Sanitize(string.IsNullOrEmpty(table.Schema) ? table.Name : $"{table.Schema}.{table.Name}");
 
                 sb.AppendLine(CultureInfo.InvariantCulture, $"  {formattedTableName} {{");
                 foreach (var column in table.Columns)
@@ -92,7 +77,7 @@ namespace RevEng.Core.Diagram
                         relationship = "}o--o";
                     }
 
-                    var formattedPrincipalTableName = Sanitize(foreignKey.PrincipalTable.Name);
+                    var formattedPrincipalTableName = Sanitize(string.IsNullOrEmpty(foreignKey.PrincipalTable.Schema) ? foreignKey.PrincipalTable.Name : $"{foreignKey.PrincipalTable.Schema}.{foreignKey.PrincipalTable.Name}");
                     var formattedForeignKeyName = Sanitize(foreignKey.Name);
 
                     sb.AppendLine(CultureInfo.InvariantCulture, $"  {formattedTableName} {relationship}| {formattedPrincipalTableName} : {formattedForeignKeyName}");
@@ -109,23 +94,20 @@ namespace RevEng.Core.Diagram
 
         private static string Sanitize(string name)
         {
-            if (!string.IsNullOrEmpty(name))
+            if (string.IsNullOrEmpty(name))
             {
-                char[] buffer = new char[name.Length];
-                int index = 0;
-                foreach (char c in name)
-                {
-                    if (Lookup[c])
-                    {
-                        buffer[index] = c;
-                        index++;
-                    }
-                }
-
-                return new string(buffer, 0, index);
+                return name;
             }
 
-            return name;
+            Span<char> buffer = new char[name.Length];
+
+            int index = 0;
+            foreach (var c in name.Where(IsValidChar))
+            {
+                buffer[index++] = c;
+            }
+
+            return new string(buffer[..index]);
         }
     }
 }
