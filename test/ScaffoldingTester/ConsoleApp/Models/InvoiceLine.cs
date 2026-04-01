@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ConsoleApp.Models;
+﻿namespace ConsoleApp.Models;
 
 public partial class InvoiceLine
 {

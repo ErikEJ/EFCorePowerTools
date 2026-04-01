@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ScaffoldingTester.Models
+﻿namespace ScaffoldingTester.Models
 {
     public partial class BoolNullableTest1
     {
