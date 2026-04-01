@@ -1,0 +1,5 @@
+CREATE TABLE dbo.TableTwo (
+    TableTwoId INT NOT NULL IDENTITY (1, 1),
+    CONSTRAINT PK_dbo_TableTwo PRIMARY KEY CLUSTERED (TableTwoId)
+);
+GO

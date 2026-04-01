@@ -1,0 +1,5 @@
+CREATE TABLE dbo.TableOne (
+    TableOneId INT NOT NULL IDENTITY (1, 1),
+    CONSTRAINT PK_dbo_TableOne PRIMARY KEY CLUSTERED (TableOneId)
+);
+GO
