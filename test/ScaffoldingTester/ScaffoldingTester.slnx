@@ -1,0 +1,14 @@
+<Solution>
+  <Project Path="Chinook/ErikEJ.Dacpac.Chinook.csproj" />
+  <Project Path="ConsoleApp/ConsoleApp.csproj" />
+  <Project Path="Database/Database.sqlproj">
+    <Build />
+    <Deploy />
+  </Project>
+  <Project Path="DatabaseBuild/DatabaseBuild.csproj" />
+  <Project Path="DbContextExtensionsTester/DbContextExtensionsTester.csproj" />
+  <Project Path="MigrationsTest/MigrationsTest.csproj" />
+  <Project Path="PostgresTester/PostgresTester.csproj" />
+  <Project Path="ScaffoldingTester/ScaffoldingTester.csproj" />
+  <Project Path="ScaffoldingTester5/ScaffoldingTester5.csproj" />
+</Solution>
