@@ -15,7 +15,7 @@ namespace ScaffoldingTester
                 var result = await db.GetProcedures().CustOrdersOrdersAsync("ALFKI");
                 if (result.Count != 6)
                 {
-                    Console.Error.WriteLine($"AssertEqual failed. Expected: \"6\". Actual: {result.Count}.");
+                    await Console.Error.WriteLineAsync($"AssertEqual failed. Expected: \"6\". Actual: {result.Count}.");
                 }
             }
         }
