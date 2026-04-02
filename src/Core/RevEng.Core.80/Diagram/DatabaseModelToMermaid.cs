@@ -37,7 +37,7 @@ namespace RevEng.Core.Diagram
 
                 var formattedTableName = Sanitize(string.IsNullOrEmpty(table.Schema) ? table.Name : $"{table.Schema}.{table.Name}");
 
-                sb.AppendLine(CultureInfo.InvariantCulture, $"  {formattedTableName} {{");
+                sb.AppendLine(CultureInfo.InvariantCulture, $"  \"{formattedTableName}\" {{");
                 foreach (var column in table.Columns)
                 {
                     var formattedColumnName = Sanitize(column.Name);
@@ -80,7 +80,7 @@ namespace RevEng.Core.Diagram
                     var formattedPrincipalTableName = Sanitize(string.IsNullOrEmpty(foreignKey.PrincipalTable.Schema) ? foreignKey.PrincipalTable.Name : $"{foreignKey.PrincipalTable.Schema}.{foreignKey.PrincipalTable.Name}");
                     var formattedForeignKeyName = Sanitize(foreignKey.Name);
 
-                    sb.AppendLine(CultureInfo.InvariantCulture, $"  {formattedTableName} {relationship}| {formattedPrincipalTableName} : {formattedForeignKeyName}");
+                    sb.AppendLine(CultureInfo.InvariantCulture, $"  \"{formattedTableName}\" {relationship}| \"{formattedPrincipalTableName}\" : {formattedForeignKeyName}");
                 }
             }
 
