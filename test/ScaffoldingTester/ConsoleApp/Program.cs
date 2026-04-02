@@ -1,7 +1,5 @@
 ﻿using ConsoleApp.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using System;
 using System.Linq;
 
 namespace ConsoleApp
