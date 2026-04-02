@@ -14,6 +14,15 @@ using Microsoft.EntityFrameworkCore.SqlServer.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.SqlServer.Dac.Extensions.Prototype;
 using Microsoft.SqlServer.Dac.Model;
+using ScriptDomCastCall = Microsoft.SqlServer.TransactSql.ScriptDom.CastCall;
+using ScriptDomConvertCall = Microsoft.SqlServer.TransactSql.ScriptDom.ConvertCall;
+using ScriptDomIntegerLiteral = Microsoft.SqlServer.TransactSql.ScriptDom.IntegerLiteral;
+using ScriptDomQuerySpecification = Microsoft.SqlServer.TransactSql.ScriptDom.QuerySpecification;
+using ScriptDomSelectScalarExpression = Microsoft.SqlServer.TransactSql.ScriptDom.SelectScalarExpression;
+using ScriptDomSelectStatement = Microsoft.SqlServer.TransactSql.ScriptDom.SelectStatement;
+using ScriptDomTSql150Parser = Microsoft.SqlServer.TransactSql.ScriptDom.TSql150Parser;
+using ScriptDomTSqlBatch = Microsoft.SqlServer.TransactSql.ScriptDom.TSqlBatch;
+using ScriptDomTSqlScript = Microsoft.SqlServer.TransactSql.ScriptDom.TSqlScript;
 
 [assembly: CLSCompliant(false)]
 
@@ -263,12 +272,24 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     OnDelete = ConvertToReferentialAction(fk.DeleteAction),
                 };
 
+                var missingDependentColumn = false;
                 foreach (var fkCol in fk.Columns)
                 {
                     var dbCol = dbTable.Columns
-                        .Single(c => c.Name == fkCol.Name.Parts[2]);
+                        .SingleOrDefault(c => c.Name == fkCol.Name.Parts[2]);
+
+                    if (dbCol == null)
+                    {
+                        missingDependentColumn = true;
+                        break;
+                    }
 
                     foreignKey.Columns.Add(dbCol);
+                }
+
+                if (missingDependentColumn)
+                {
+                    continue;
                 }
 
                 foreach (var fkCol in fk.ForeignColumns)
@@ -324,7 +345,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
                 var col = (TSqlColumn)TSqlModelElement.AdaptInstance(referenced);
 
-                if (col.ColumnType == ColumnType.ComputedColumn)
+                if (col.ColumnType == Microsoft.SqlServer.Dac.Model.ColumnType.ComputedColumn)
                 {
                     if (matchingTableType == null)
                     {
@@ -660,49 +681,58 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
         private IEnumerable<TSqlColumn> GetColumns(TSqlTable item, DatabaseTable dbTable, Dictionary<string, (string StoreType, string TypeName)> typeAliases, List<TSqlDefaultConstraint> defaultConstraints, TSqlTypedModel model)
         {
             var tableColumns = item.Columns
-                .Where(i => i.ColumnType != ColumnType.ColumnSet
-
-                // Computed columns not supported for now
-                // Probably not possible: https://stackoverflow.com/questions/27259640/get-datatype-of-computed-column-from-dacpac
-                && i.ColumnType != ColumnType.ComputedColumn);
+                .Where(i => i.ColumnType != Microsoft.SqlServer.Dac.Model.ColumnType.ColumnSet);
 
             foreach (var col in tableColumns)
             {
                 var def = defaultConstraints.Find(d => d.TargetColumn.First().Name.ToString() == col.Name.ToString());
                 string storeType = null;
                 string systemTypeName = null;
+                var isNullable = GetColumnIsNullable(col);
+                var dataTypeNameParts = GetColumnDataTypeNameParts(col);
 
-                if (col.DataType.First().Name.Parts.Count > 1 && typeAliases.TryGetValue($"{col.DataType.First().Name.Parts[0]}.{col.DataType.First().Name.Parts[1]}", out var value))
+                if (dataTypeNameParts == null)
                 {
-                    storeType = value.StoreType;
-                    systemTypeName = value.TypeName;
+                    if (!TryInferStoreTypeFromExpression(col.Expression, out storeType, out systemTypeName))
+                    {
+                        continue;
+                    }
                 }
                 else
                 {
-                    var dataTypeName = col.DataType.First().Name.Parts[0];
-                    if (col.DataType.First().Name.Parts.Count > 1)
+                    if (dataTypeNameParts.Count > 1 && typeAliases.TryGetValue($"{dataTypeNameParts[0]}.{dataTypeNameParts[1]}", out var value))
                     {
-                        dataTypeName = col.DataType.First().Name.Parts[1];
+                        storeType = value.StoreType;
+                        systemTypeName = value.TypeName;
                     }
+                    else
+                    {
+                        var dataTypeName = dataTypeNameParts[0];
+                        if (dataTypeNameParts.Count > 1)
+                        {
+                            dataTypeName = dataTypeNameParts[1];
+                        }
 
-                    int maxLength = col.IsMax ? -1 : col.Length;
-                    storeType = GetStoreType(dataTypeName, maxLength, col.Precision, col.Scale);
-                    systemTypeName = dataTypeName;
+                        int maxLength = col.IsMax ? -1 : col.Length;
+                        storeType = GetStoreType(dataTypeName, maxLength, col.Precision, col.Scale);
+                        systemTypeName = dataTypeName;
+                    }
                 }
 
-                string defaultValue = def != null ? FilterClrDefaults(systemTypeName, col.Nullable, def.Expression) : null;
+                string defaultValue = def != null ? FilterClrDefaults(systemTypeName, isNullable, def.Expression) : null;
 
                 var dbColumn = new DatabaseColumn
                 {
                     Table = dbTable,
                     Name = col.Name.Parts[2],
-                    IsNullable = col.Nullable,
+                    IsNullable = isNullable,
                     StoreType = storeType,
 
                     // this property affects whether the bool type will be nullable
                     DefaultValue = TryParseClrDefault(systemTypeName, defaultValue),
                     DefaultValueSql = defaultValue,
                     ComputedColumnSql = col.Expression,
+                    IsStored = col.Persisted,
                     ValueGenerated = col.IsIdentity
                         ? ValueGenerated.OnAdd
                         : storeType == "rowversion"
@@ -733,6 +763,80 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             }
 
             return tableColumns;
+        }
+
+        private static bool GetColumnIsNullable(TSqlColumn col)
+        {
+            var persistedNullable = col.PersistedNullable;
+            return persistedNullable ?? col.Nullable;
+        }
+
+        private static IList<string> GetColumnDataTypeNameParts(TSqlColumn col)
+        {
+            var dataTypeReference = col.GetReferenced(Column.DataType).FirstOrDefault();
+            if (dataTypeReference != null)
+            {
+                return dataTypeReference.Name.Parts;
+            }
+
+            var declaredDataType = col.DataType.FirstOrDefault();
+            if (declaredDataType != null)
+            {
+                return declaredDataType.Name.Parts;
+            }
+
+            var expressionDependencyType = col.ExpressionDependencies
+                .FirstOrDefault(d => d.Name?.Parts?.Count > 0);
+
+            return expressionDependencyType?.Name?.Parts;
+        }
+
+        private static bool TryInferStoreTypeFromExpression(string expression, out string storeType, out string systemTypeName)
+        {
+            storeType = null;
+            systemTypeName = null;
+
+            if (string.IsNullOrWhiteSpace(expression))
+            {
+                return false;
+            }
+
+            var parser = new ScriptDomTSql150Parser(false);
+            using var reader = new StringReader($"SELECT {expression} AS [Value];");
+            var fragment = parser.Parse(reader, out var errors);
+
+            if (errors?.Count > 0 || fragment is not ScriptDomTSqlScript script)
+            {
+                return false;
+            }
+
+            var select = script.Batches
+                .OfType<ScriptDomTSqlBatch>()
+                .SelectMany(b => b.Statements.OfType<ScriptDomSelectStatement>())
+                .Select(s => s.QueryExpression as ScriptDomQuerySpecification)
+                .FirstOrDefault(q => q != null);
+
+            var scalar = select?.SelectElements.OfType<ScriptDomSelectScalarExpression>().FirstOrDefault();
+            if (scalar?.Expression is ScriptDomConvertCall convertCall)
+            {
+                systemTypeName = convertCall.DataType.Name.BaseIdentifier.Value;
+            }
+            else if (scalar?.Expression is ScriptDomCastCall castCall)
+            {
+                systemTypeName = castCall.DataType.Name.BaseIdentifier.Value;
+            }
+            else if (scalar?.Expression is ScriptDomIntegerLiteral)
+            {
+                systemTypeName = "int";
+            }
+
+            if (string.IsNullOrEmpty(systemTypeName))
+            {
+                return false;
+            }
+
+            storeType = GetStoreType(systemTypeName, -1, 0, 0);
+            return true;
         }
 
         private void GetUniqueConstraints(TSqlTable table, DatabaseTable dbTable)
