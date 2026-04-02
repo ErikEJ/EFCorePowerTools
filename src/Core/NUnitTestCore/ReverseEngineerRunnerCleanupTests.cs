@@ -1,12 +1,11 @@
-using System;
-using System.IO;
-using System.Reflection;
-using System.Text;
 using NUnit.Framework;
 using RevEng.Common;
 using RevEng.Core;
+using System;
+using System.IO;
+using System.Text;
 
-namespace UnitTests
+namespace NUnitTestCore
 {
     [TestFixture]
     public class ReverseEngineerRunnerCleanupTests
@@ -58,11 +57,7 @@ namespace UnitTests
 
         private static void InvokeTryRemoveFile(string codeFile)
         {
-            var method = typeof(ReverseEngineerRunner).GetMethod("TryRemoveFile", BindingFlags.NonPublic | BindingFlags.Static);
-
-            Assert.That(method, Is.Not.Null);
-
-            method!.Invoke(null, new object[] { codeFile });
+            ReverseEngineerRunner.TryRemoveFile(codeFile);
         }
 
         private static void RemoveIfExists(string codeFile)
