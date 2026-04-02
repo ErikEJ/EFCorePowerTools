@@ -20,7 +20,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 {
     public class SqlServerDacpacDatabaseModelFactory : IDatabaseModelFactory
     {
-        private static readonly HashSet<string> DateTimePrecisionTypes = new HashSet<string> { "datetimeoffset", "datetime2", "time" };
+        private static readonly HashSet<string> DateTimePrecisionTypes = ["datetimeoffset", "datetime2", "time"];
 
         private static readonly HashSet<string> MaxLengthRequiredTypes
             = new HashSet<string> { "binary", "varbinary", "char", "varchar", "nchar", "nvarchar" };
@@ -323,11 +323,6 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
                 var referenced = column.GetReferenced(DacQueryScopes.UserDefined).FirstOrDefault() ?? column;
 
-                if (referenced == null)
-                {
-                    continue;
-                }
-
                 if (referenced.ObjectType.Name != "Column")
                 {
                     continue;
@@ -335,7 +330,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
                 var col = (TSqlColumn)TSqlModelElement.AdaptInstance(referenced);
 
-                if (col.ColumnType == Microsoft.SqlServer.Dac.Model.ColumnType.ComputedColumn)
+                if (col.ColumnType == ColumnType.ComputedColumn)
                 {
                     if (matchingTableType == null)
                     {
@@ -350,7 +345,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     }
 
                     var dataTypeName = matchingColumn.DataType.First().Name.Parts[0];
-                    int maxLength = matchingColumn.IsMax ? -1 : matchingColumn.Length;
+                    var maxLength = matchingColumn.IsMax ? -1 : matchingColumn.Length;
                     storeType = GetStoreType(dataTypeName, maxLength, matchingColumn.Precision, matchingColumn.Scale);
                 }
                 else if (col.DataType.First().Name.Parts.Count > 1)
@@ -363,7 +358,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 else
                 {
                     var dataTypeName = col.DataType.First().Name.Parts[0];
-                    int maxLength = col.IsMax ? -1 : col.Length;
+                    var maxLength = col.IsMax ? -1 : col.Length;
                     storeType = GetStoreType(dataTypeName, maxLength, col.Precision, col.Scale);
                 }
 
@@ -671,13 +666,13 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
         private IEnumerable<TSqlColumn> GetColumns(TSqlTable item, DatabaseTable dbTable, Dictionary<string, (string StoreType, string TypeName)> typeAliases, List<TSqlDefaultConstraint> defaultConstraints, TSqlTypedModel model)
         {
             var tableColumns = item.Columns
-                .Where(i => i.ColumnType != Microsoft.SqlServer.Dac.Model.ColumnType.ColumnSet);
+                .Where(i => i.ColumnType != ColumnType.ColumnSet);
 
             foreach (var col in tableColumns)
             {
                 var def = defaultConstraints.Find(d => d.TargetColumn.First().Name.ToString() == col.Name.ToString());
-                string storeType = null;
-                string systemTypeName = null;
+                string storeType;
+                string systemTypeName;
                 var isNullable = GetColumnIsNullable(col);
                 var dataTypeNameParts = GetColumnDataTypeNameParts(col);
 
@@ -703,13 +698,13 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                             dataTypeName = dataTypeNameParts[1];
                         }
 
-                        int maxLength = col.IsMax ? -1 : col.Length;
+                        var maxLength = col.IsMax ? -1 : col.Length;
                         storeType = GetStoreType(dataTypeName, maxLength, col.Precision, col.Scale);
                         systemTypeName = dataTypeName;
                     }
                 }
 
-                string defaultValue = def != null ? FilterClrDefaults(systemTypeName, isNullable, def.Expression) : null;
+                var defaultValue = def != null ? FilterClrDefaults(systemTypeName, isNullable, def.Expression) : null;
 
                 var dbColumn = new DatabaseColumn
                 {
@@ -801,7 +796,6 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             }
 
             var select = script.Batches
-                .OfType<Microsoft.SqlServer.TransactSql.ScriptDom.TSqlBatch>()
                 .SelectMany(b => b.Statements.OfType<Microsoft.SqlServer.TransactSql.ScriptDom.SelectStatement>())
                 .Select(s => s.QueryExpression as Microsoft.SqlServer.TransactSql.ScriptDom.QuerySpecification)
                 .FirstOrDefault(q => q != null);
