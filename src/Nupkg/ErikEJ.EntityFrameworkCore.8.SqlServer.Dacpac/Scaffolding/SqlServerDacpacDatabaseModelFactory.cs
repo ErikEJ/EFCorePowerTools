@@ -5,7 +5,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using GOEddie.Dacpac.References;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Scaffolding;
@@ -14,15 +13,6 @@ using Microsoft.EntityFrameworkCore.SqlServer.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.SqlServer.Dac.Extensions.Prototype;
 using Microsoft.SqlServer.Dac.Model;
-using ScriptDomCastCall = Microsoft.SqlServer.TransactSql.ScriptDom.CastCall;
-using ScriptDomConvertCall = Microsoft.SqlServer.TransactSql.ScriptDom.ConvertCall;
-using ScriptDomIntegerLiteral = Microsoft.SqlServer.TransactSql.ScriptDom.IntegerLiteral;
-using ScriptDomQuerySpecification = Microsoft.SqlServer.TransactSql.ScriptDom.QuerySpecification;
-using ScriptDomSelectScalarExpression = Microsoft.SqlServer.TransactSql.ScriptDom.SelectScalarExpression;
-using ScriptDomSelectStatement = Microsoft.SqlServer.TransactSql.ScriptDom.SelectStatement;
-using ScriptDomTSql150Parser = Microsoft.SqlServer.TransactSql.ScriptDom.TSql150Parser;
-using ScriptDomTSqlBatch = Microsoft.SqlServer.TransactSql.ScriptDom.TSqlBatch;
-using ScriptDomTSqlScript = Microsoft.SqlServer.TransactSql.ScriptDom.TSqlScript;
 
 [assembly: CLSCompliant(false)]
 
@@ -801,31 +791,31 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 return false;
             }
 
-            var parser = new ScriptDomTSql150Parser(false);
+            var parser = new Microsoft.SqlServer.TransactSql.ScriptDom.TSql160Parser(false);
             using var reader = new StringReader($"SELECT {expression} AS [Value];");
             var fragment = parser.Parse(reader, out var errors);
 
-            if (errors?.Count > 0 || fragment is not ScriptDomTSqlScript script)
+            if (errors?.Count > 0 || fragment is not Microsoft.SqlServer.TransactSql.ScriptDom.TSqlScript script)
             {
                 return false;
             }
 
             var select = script.Batches
-                .OfType<ScriptDomTSqlBatch>()
-                .SelectMany(b => b.Statements.OfType<ScriptDomSelectStatement>())
-                .Select(s => s.QueryExpression as ScriptDomQuerySpecification)
+                .OfType<Microsoft.SqlServer.TransactSql.ScriptDom.TSqlBatch>()
+                .SelectMany(b => b.Statements.OfType<Microsoft.SqlServer.TransactSql.ScriptDom.SelectStatement>())
+                .Select(s => s.QueryExpression as Microsoft.SqlServer.TransactSql.ScriptDom.QuerySpecification)
                 .FirstOrDefault(q => q != null);
 
-            var scalar = select?.SelectElements.OfType<ScriptDomSelectScalarExpression>().FirstOrDefault();
-            if (scalar?.Expression is ScriptDomConvertCall convertCall)
+            var scalar = select?.SelectElements.OfType<Microsoft.SqlServer.TransactSql.ScriptDom.SelectScalarExpression>().FirstOrDefault();
+            if (scalar?.Expression is Microsoft.SqlServer.TransactSql.ScriptDom.ConvertCall convertCall)
             {
                 systemTypeName = convertCall.DataType.Name.BaseIdentifier.Value;
             }
-            else if (scalar?.Expression is ScriptDomCastCall castCall)
+            else if (scalar?.Expression is Microsoft.SqlServer.TransactSql.ScriptDom.CastCall castCall)
             {
                 systemTypeName = castCall.DataType.Name.BaseIdentifier.Value;
             }
-            else if (scalar?.Expression is ScriptDomIntegerLiteral)
+            else if (scalar?.Expression is Microsoft.SqlServer.TransactSql.ScriptDom.IntegerLiteral)
             {
                 systemTypeName = "int";
             }
