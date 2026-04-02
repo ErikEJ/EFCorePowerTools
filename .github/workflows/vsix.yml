@@ -41,7 +41,7 @@ jobs:
       shell: pwsh
 
     - name: Restore
-      run: dotnet restore EFCorePowerTools.sln
+      run: dotnet restore EFCorePowerTools.slnx
       working-directory: src
 
     - name: Build reveng tools
@@ -83,7 +83,7 @@ jobs:
       uses: microsoft/setup-msbuild@v3
 
     - name: Build
-      run: msbuild EFCorePowerTools.sln /property:Configuration=Release /p:DeployExtension=false /p:ZipPackageCompressionLevel=normal /v:m
+      run: msbuild EFCorePowerTools.slnx /property:Configuration=Release /p:DeployExtension=false /p:ZipPackageCompressionLevel=normal /v:m
       working-directory: src
 
     - name: Extract and verify vsix file count

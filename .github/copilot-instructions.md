@@ -30,7 +30,7 @@ Always reference these instructions first and fallback to search or bash command
 - **Test with dacpac**: `efcpt path/to/file.dacpac mssql` (takes 3-5 seconds for typical database)
 
 ### Visual Studio Extension (VSIX)
-- The main solution `src/EFCorePowerTools.sln` builds the VSIX but requires Windows and Visual Studio build tools
+- The main solution `src/EFCorePowerTools.slnx` builds the VSIX but requires Windows and Visual Studio build tools
 - **CRITICAL**: VSIX building requires Windows environment with MSBuild and Visual Studio SDK
 - On Linux: Can build core components but not the full VSIX package
 - Build workflow uses specific CMD scripts in `src/Core/efreveng*/BuildCmdlineTool.cmd`
@@ -123,7 +123,7 @@ samples/                    # Configuration examples and schemas
 ### Common Configuration Files
 - `global.json`: SDK version requirements
 - `src/Directory.Build.Props`: MSBuild common properties, analyzers, code style
-- `src/EFCorePowerTools.sln`: Main solution (includes VSIX projects)
+- `src/EFCorePowerTools.slnx`: Main solution (includes VSIX projects)
 - `samples/efcpt-config.json`: Complete CLI configuration example
 - `.editorconfig`: Code style and formatting rules
 
