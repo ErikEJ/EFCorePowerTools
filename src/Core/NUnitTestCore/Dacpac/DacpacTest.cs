@@ -159,7 +159,7 @@ GO
             Assert.AreEqual(2, dbModel.Tables[1].Columns.Count);
 
             Assert.AreEqual("DefaultComputedValues", dbModel.Tables[0].Name);
-            Assert.AreEqual(5, dbModel.Tables[0].Columns.Count);
+            Assert.AreEqual(6, dbModel.Tables[0].Columns.Count);
         }
 
         [Test]
@@ -177,7 +177,7 @@ GO
             Assert.AreEqual(1, dbModel.Tables.Count());
 
             Assert.AreEqual("DefaultComputedValues", dbModel.Tables[0].Name);
-            Assert.AreEqual(5, dbModel.Tables[0].Columns.Count);
+            Assert.AreEqual(6, dbModel.Tables[0].Columns.Count);
         }
 
         [Test]
@@ -286,6 +286,30 @@ GO
             Assert.AreEqual(2, dbModel.Tables.Count());
             Assert.AreEqual(1, dbModel.Tables.Count(x => x.Schema == "mat"));
             Assert.AreEqual(1, dbModel.Tables.Count(x => x.Schema == "mat2"));
+        }
+
+        [Test]
+        public void Issue3341PersistedComputedForeignKeys()
+        {
+            var factory = new SqlServerDacpacDatabaseModelFactory();
+            var options = new DatabaseModelFactoryOptions(null, new List<string>());
+
+            var dbModel = factory.Create(TestPath("Issue3341.dacpac"), options);
+
+            Assert.AreEqual(3, dbModel.Tables.Count());
+
+            var bin = dbModel.Tables.Single(t => t.Schema == "dbo" && t.Name == "Bin");
+            var inventoryNodeTypeCode = bin.Columns.Single(c => c.Name == "InventoryNodeTypeCode");
+
+            Assert.AreEqual("tinyint", inventoryNodeTypeCode.StoreType);
+            Assert.That(inventoryNodeTypeCode.ComputedColumnSql, Does.Contain("CONVERT"));
+            Assert.That(inventoryNodeTypeCode.ComputedColumnSql, Does.Contain("8"));
+            Assert.IsTrue(inventoryNodeTypeCode.IsStored);
+            Assert.IsFalse(inventoryNodeTypeCode.IsNullable);
+
+            Assert.AreEqual(2, bin.ForeignKeys.Count);
+            Assert.IsTrue(bin.ForeignKeys.Any(fk => fk.Columns.Any(c => c.Name == "InventoryNodeTypeCode")));
+            Assert.IsTrue(bin.ForeignKeys.Any(fk => fk.Columns.Count == 2));
         }
 
         
