@@ -20,7 +20,26 @@ env:
   VERSION: ${{ github.run_number }}
 
 jobs:
+  core-tests:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v6
+
+    - uses: actions/setup-dotnet@v5
+      with:
+        dotnet-version: '10.0.x'
+
+    - name: Core test project
+      run: dotnet test src/Core/NUnitTestCore/NUnitTestCore.csproj
+
   build:
+    needs: core-tests
+
     permissions:
       id-token: write  # enable GitHub OIDC token issuance for this job
 
@@ -53,10 +72,6 @@ jobs:
     - name: Package CLI 10
       if: startsWith(github.ref, 'refs/heads/master')
       run: dotnet pack src/Core/efcpt.10/efcpt.10.csproj -p:PackageVersion=10.1.${{ env.VERSION }}-nightly -p:InformationalVersion=10.1.${{ env.VERSION }}-nightly
-
-    - name: Core test project
-      run: dotnet test src/Core/NUnitTestCore/NUnitTestCore.csproj
-      continue-on-error: false
 
     - name: NuGet login
       if: startsWith(github.ref, 'refs/heads/master')

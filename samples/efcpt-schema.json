@@ -401,7 +401,7 @@
                 "soft-delete-obsolete-files": {
                     "type": "boolean",
                     "default": false,
-                    "title": "Run Cleanup of obsolete files",
+                    "title": "Run Cleanup of obsolete files (on Linux and macOS, files are permanently deleted)",
                     "examples": [
                         false
                     ]
