@@ -73,10 +73,10 @@
     <Project Path="Core/NUnitTestCore/NUnitTestCore.csproj">
       <Build Solution="Release|*" Project="false" />
     </Project>
-    <Project Path="GUI/UnitTests/UnitTests.csproj" />
+    <Project Path="GUI/UnitTests/UnitTests.csproj" Id="562b5f7b-6229-4019-bfa9-cd7fd4773081" />
   </Folder>
-  <Project Path="GUI/EFCorePowerTools/EFCorePowerTools.csproj" />
-  <Project Path="GUI/PowerToolsExtensionPack/PowerToolsExtensionPack.csproj" />
+  <Project Path="GUI/EFCorePowerTools/EFCorePowerTools.csproj" Id="c670be03-6397-4ac0-9914-ad1bb679778f" />
+  <Project Path="GUI/PowerToolsExtensionPack/PowerToolsExtensionPack.csproj" Id="5f2d0f07-f822-4c9d-88cf-dbf0c0199b4f" />
   <Project Path="GUI/Shared/Shared.shproj" />
-  <Project Path="GUI/WizardItemTemplate/WizardItemTemplate.csproj" />
+  <Project Path="GUI/WizardItemTemplate/WizardItemTemplate.csproj" Id="8c77ec98-0296-4dbe-8064-11c4b4315181" />
 </Solution>
