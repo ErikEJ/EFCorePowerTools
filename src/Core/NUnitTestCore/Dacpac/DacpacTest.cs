@@ -312,7 +312,20 @@ GO
             Assert.IsTrue(bin.ForeignKeys.Any(fk => fk.Columns.Count == 2));
         }
 
-        
+        [TestCase(null, null)]
+        [TestCase("N'The location''s address'", "The location's address")]
+        [TestCase("'The location''s address'", "The location's address")]
+        [TestCase("N'Plain text'", "Plain text")]
+        [TestCase("'Plain text'", "Plain text")]
+        [TestCase("Plain text", "Plain text")]
+        [TestCase("N''''", "'")]
+        public void FixExtendedPropertyValueNormalizesSqlStringLiterals(string input, string expected)
+        {
+            var result = SqlServerDacpacDatabaseModelFactory.FixExtendedPropertyValue(input);
+
+            Assert.AreEqual(expected, result);
+        }
+
         [Test]
         [Ignore("TBD - need to investigate")]
         public void Issue2263SprocWithCte()
