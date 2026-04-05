@@ -503,7 +503,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             }
         }
 
-        private static string FixExtendedPropertyValue(string value)
+        public static string FixExtendedPropertyValue(string value)
         {
             if (value == null)
             {
@@ -525,6 +525,8 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             {
                 value = value.Remove(value.Length - 1, 1);
             }
+
+            value = value.Replace("''", "'", StringComparison.Ordinal);
 
             return value;
         }
