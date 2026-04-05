@@ -15,6 +15,7 @@
     <None Remove="Dacpac\DescendingIndex.dacpac" />
     <None Remove="Dacpac\Issue1262.dacpac" />
     <None Remove="Dacpac\Issue3341.dacpac" />
+    <None Remove="Dacpac\SparseColumn.dacpac" />
     <None Remove="Dacpac\Temporal.dacpac" />
     <None Remove="Dacpac\TvpParams.dacpac" />
     <None Remove="Identity.txt" />
@@ -45,6 +46,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Dacpac\Issue3341.dacpac">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dacpac\SparseColumn.dacpac">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Dacpac\Temporal.dacpac">
