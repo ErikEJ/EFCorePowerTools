@@ -531,6 +531,10 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             return value;
         }
 
+        private static bool LooksLikeSystemNamedDefaultConstraint(string constraintName)
+            => !string.IsNullOrEmpty(constraintName)
+                && constraintName.StartsWith("DF__", StringComparison.Ordinal);
+
         private static bool IsNumeric(Type type)
         {
             type = UnwrapNullableType(type);
@@ -729,6 +733,15 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 if (storeType == "rowversion")
                 {
                     dbColumn["ConcurrencyToken"] = true;
+                }
+
+                if (def?.Name.HasName == true)
+                {
+                    var defaultConstraintName = def.Name.Parts[^1];
+                    if (!LooksLikeSystemNamedDefaultConstraint(defaultConstraintName))
+                    {
+                        dbColumn["Relational:DefaultConstraintName"] = defaultConstraintName;
+                    }
                 }
 
                 var description = model.GetObjects<TSqlExtendedProperty>(DacQueryScopes.UserDefined)
