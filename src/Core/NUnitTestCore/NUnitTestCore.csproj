@@ -12,6 +12,7 @@
     <None Remove="Chinook.dacpac" />
     <None Remove="ChinookContext.txt" />
     <None Remove="Dacpac\abc.dacpac" />
+    <None Remove="Dacpac\DescendingIndex.dacpac" />
     <None Remove="Dacpac\Issue1262.dacpac" />
     <None Remove="Dacpac\Issue3341.dacpac" />
     <None Remove="Dacpac\Temporal.dacpac" />
@@ -32,6 +33,9 @@
 
   <ItemGroup>
     <Content Include="Dacpac\abc.dacpac">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dacpac\DescendingIndex.dacpac">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Dacpac\AdventureWorks2014.dacpac">

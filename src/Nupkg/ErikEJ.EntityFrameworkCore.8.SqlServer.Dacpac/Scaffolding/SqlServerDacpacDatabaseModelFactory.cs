@@ -913,6 +913,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     if (dbCol != null)
                     {
                         index.Columns.Add(dbCol);
+                        index.IsDescending.Add(!column.Ascending);
                     }
                 }
 

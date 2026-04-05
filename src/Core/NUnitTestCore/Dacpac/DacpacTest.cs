@@ -13,6 +13,7 @@ namespace UnitTests
     public class DacpacTest
     {
         private string dacpac;
+        private string dacpacDescending;
         private string dacpacViews;
         private string dacpacQuirk;
 
@@ -21,6 +22,7 @@ namespace UnitTests
         {
             dacpacQuirk = TestPath("TestDb.dacpac");
             dacpac = TestPath("Chinook.dacpac");
+            dacpacDescending = TestPath("DescendingIndex.dacpac");
             dacpacViews = TestPath("ViewColumnTypesSqlProj.dacpac");
             #region Here Is the SQL used to create ViewColumnTypesSqlProj.dacpac
             /*
@@ -324,6 +326,20 @@ GO
             var result = SqlServerDacpacDatabaseModelFactory.FixExtendedPropertyValue(input);
 
             Assert.AreEqual(expected, result);
+        }
+
+        [Test]
+        public void DescendingIndexFromDacpacIsCaptured()
+        {
+            var factory = new SqlServerDacpacDatabaseModelFactory();
+            var options = new DatabaseModelFactoryOptions(null, new List<string>());
+
+            var dbModel = factory.Create(dacpacDescending, options);
+            var table = dbModel.Tables.Single(t => t.Schema == "support" && t.Name == "MessageFault");
+            var index = table.Indexes.Single(i => i.Name == "IX_support_MessageFault_MessageFaultStatusCode_FaultedTimestamp");
+
+            Assert.That(index.Columns.Select(c => c.Name), Is.EqualTo(new[] { "MessageFaultStatusCode", "FaultedTimestamp" }));
+            Assert.That(index.IsDescending, Is.EqualTo(new[] { false, true }));
         }
 
         [Test]
