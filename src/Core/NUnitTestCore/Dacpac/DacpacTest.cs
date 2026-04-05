@@ -314,6 +314,20 @@ GO
 
         
         [Test]
+        public void ExplicitDefaultConstraintNameFromDacpacIsCaptured()
+        {
+            var factory = new SqlServerDacpacDatabaseModelFactory();
+            var options = new DatabaseModelFactoryOptions(null, new List<string>());
+
+            var dbModel = factory.Create(TestPath("AdventureWorks2014.dacpac"), options);
+            var table = dbModel.Tables.Single(t => t.Schema == "dbo" && t.Name == "AWBuildVersion");
+            var column = table.Columns.Single(c => c.Name == "ModifiedDate");
+
+            Assert.IsNotNull(column.DefaultValueSql);
+            Assert.AreEqual("DF_AWBuildVersion_ModifiedDate", column["Relational:DefaultConstraintName"]);
+        }
+
+        [Test]
         [Ignore("TBD - need to investigate")]
         public void Issue2263SprocWithCte()
         {
