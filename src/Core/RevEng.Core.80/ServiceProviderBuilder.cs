@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 #if !CORE100
 using EFCore.Snowflake.Design.Internal;
-using EntityFrameworkCore.Scaffolding.Handlebars;
 #endif
+using EntityFrameworkCore.Scaffolding.Handlebars;
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
 using FirebirdSql.EntityFrameworkCore.Firebird.Design.Internal;
 using Humanizer.Inflections;
@@ -72,7 +72,6 @@ namespace RevEng.Core
                 serviceCollection.AddSingleton<ICandidateNamingService>(provider => new ReplacingCandidateNamingService(options.UsePrefixNavigationNaming, options.CustomReplacers, options.PreserveCasingWithRegex));
             }
 
-#if !CORE100
             if (options.UseHandleBars)
             {
                 serviceCollection.AddHandlebarsScaffolding(hbOptions =>
@@ -83,7 +82,6 @@ namespace RevEng.Core
                 serviceCollection.AddSingleton<ITemplateFileService>(provider
                     => new CustomTemplateFileService(options.OptionsPath));
             }
-#endif
 
             if (options.UseInflector || options.UseLegacyPluralizer)
             {
