@@ -304,9 +304,9 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
         {
             var triggers = table.Triggers.ToList();
 
-            if (triggers.Count != 0)
+            foreach (var trigger in triggers)
             {
-                dbTable.Triggers.Add(new DatabaseTrigger { Name = triggers[0].Name.Parts[1] });
+                dbTable.Triggers.Add(new DatabaseTrigger { Name = trigger.Name.Parts[1] });
             }
         }
 
