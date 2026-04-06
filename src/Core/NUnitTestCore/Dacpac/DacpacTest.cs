@@ -314,6 +314,18 @@ GO
             Assert.IsTrue(bin.ForeignKeys.Any(fk => fk.Columns.Count == 2));
         }
 
+        [Test]
+        public void MultipleTriggersFromDacpacAreCaptured()
+        {
+            var factory = new SqlServerDacpacDatabaseModelFactory();
+            var options = new DatabaseModelFactoryOptions(null, new List<string>());
+
+            var dbModel = factory.Create(TestPath("AdventureWorks2014.dacpac"), options);
+            var table = dbModel.Tables.Single(t => t.Schema == "Production" && t.Name == "WorkOrder");
+
+            Assert.That(table.Triggers.Select(t => t.Name), Is.EquivalentTo(new[] { "iWorkOrder", "uWorkOrder" }));
+        }
+
         [TestCase(null, null)]
         [TestCase("N'The location''s address'", "The location's address")]
         [TestCase("'The location''s address'", "The location's address")]
