@@ -14,6 +14,7 @@ namespace UnitTests
     {
         private string dacpac;
         private string dacpacDescending;
+        private string dacpacSparse;
         private string dacpacViews;
         private string dacpacQuirk;
 
@@ -23,6 +24,7 @@ namespace UnitTests
             dacpacQuirk = TestPath("TestDb.dacpac");
             dacpac = TestPath("Chinook.dacpac");
             dacpacDescending = TestPath("DescendingIndex.dacpac");
+            dacpacSparse = TestPath("SparseColumn.dacpac");
             dacpacViews = TestPath("ViewColumnTypesSqlProj.dacpac");
             #region Here Is the SQL used to create ViewColumnTypesSqlProj.dacpac
             /*
@@ -217,6 +219,20 @@ GO
             Assert.AreEqual(1, dbModel.Tables.Count());
             Assert.AreEqual(1, dbModel.Tables
                 .Count(t => t.Columns.Any(c => c.DefaultValueSql != null)));
+        }
+
+        [Test]
+        public void CanCaptureSparseColumnAnnotation()
+        {
+            var factory = new SqlServerDacpacDatabaseModelFactory();
+            var tables = new List<string> { "[dbo].[Department]" };
+            var options = new DatabaseModelFactoryOptions(tables, new List<string>());
+
+            var dbModel = factory.Create(dacpacSparse, options);
+            var importToken = dbModel.Tables.Single().Columns.Single(c => c.Name == "ImportToken");
+
+            Assert.AreEqual(1, dbModel.Tables.Count());
+            Assert.That(importToken.FindAnnotation(SqlServerAnnotationNames.Sparse), Is.Not.Null);
         }
 
         [Test]
