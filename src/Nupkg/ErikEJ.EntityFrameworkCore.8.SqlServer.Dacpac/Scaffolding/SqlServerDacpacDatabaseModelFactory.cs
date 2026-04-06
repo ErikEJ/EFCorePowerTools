@@ -411,66 +411,6 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             return dataTypeName;
         }
 
-        private static string FilterClrDefaults(string dataTypeName, bool nullable, string defaultValue)
-        {
-            defaultValue = StripParentheses(defaultValue);
-
-            if (defaultValue == null
-                || defaultValue == "NULL"
-                || defaultValue == "null")
-            {
-                return null;
-            }
-
-            if (nullable)
-            {
-                return defaultValue;
-            }
-
-            if (defaultValue == "0")
-            {
-                if (dataTypeName == "bigint"
-                    || dataTypeName == "bit"
-                    || dataTypeName == "decimal"
-                    || dataTypeName == "float"
-                    || dataTypeName == "int"
-                    || dataTypeName == "money"
-                    || dataTypeName == "numeric"
-                    || dataTypeName == "real"
-                    || dataTypeName == "smallint"
-                    || dataTypeName == "smallmoney"
-                    || dataTypeName == "tinyint")
-                {
-                    return null;
-                }
-            }
-            else if (defaultValue == "0.0")
-            {
-                if (dataTypeName == "decimal"
-                    || dataTypeName == "float"
-                    || dataTypeName == "money"
-                    || dataTypeName == "numeric"
-                    || dataTypeName == "real"
-                    || dataTypeName == "smallmoney")
-                {
-                    return null;
-                }
-            }
-            else if ((defaultValue == "CONVERT([real],(0))" && dataTypeName == "real")
-                || (defaultValue == "0.0000000000000000e+000" && dataTypeName == "float")
-                || (defaultValue == "'0001-01-01'" && dataTypeName == "date")
-                || (defaultValue == "'1900-01-01T00:00:00.000'" && (dataTypeName == "datetime" || dataTypeName == "smalldatetime"))
-                || (defaultValue == "'0001-01-01T00:00:00.000'" && dataTypeName == "datetime2")
-                || (defaultValue == "'0001-01-01T00:00:00.000+00:00'" && dataTypeName == "datetimeoffset")
-                || (defaultValue == "'00:00:00'" && dataTypeName == "time")
-                || (defaultValue == "'00000000-0000-0000-0000-000000000000'" && dataTypeName == "uniqueidentifier"))
-            {
-                return null;
-            }
-
-            return defaultValue;
-        }
-
         private static string StripParentheses(string defaultValue)
         {
             if (defaultValue.StartsWith('(') && defaultValue.EndsWith(')'))
@@ -710,7 +650,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     }
                 }
 
-                var defaultValue = def != null ? FilterClrDefaults(systemTypeName, isNullable, def.Expression) : null;
+                var defaultValue = def != null ? StripParentheses(def.Expression) : null;
 
                 var dbColumn = new DatabaseColumn
                 {
