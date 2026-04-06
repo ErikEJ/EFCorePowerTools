@@ -108,7 +108,8 @@ namespace EFCorePowerTools
                 }
                 else
                 {
-                    await exception.LogAsync(messageBuilder.ToString());
+                    var ex = new Exception(messageBuilder.ToString());
+                    await ex.LogAsync();
                 }
             });
         }

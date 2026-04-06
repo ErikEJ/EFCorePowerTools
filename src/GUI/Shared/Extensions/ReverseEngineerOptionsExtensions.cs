@@ -1,4 +1,5 @@
-﻿using System.IO;
+using System;
+using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using RevEng.Common;
@@ -30,7 +31,7 @@ namespace EFCorePowerTools.Extensions
                 return deserialized;
             }
 
-            return null;
+            throw new ArgumentException("Could not read options from file: " + optionsPath);
         }
 
         public static string Write(this ReverseEngineerOptions options)
