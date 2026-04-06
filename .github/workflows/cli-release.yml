@@ -7,9 +7,6 @@ on:
         description: 'Build version (xxx)'     
         required: true
 
-permissions:
-  id-token: write   # required for GitHub OIDC
-
 jobs:
   build:
     permissions:
@@ -33,7 +30,15 @@ jobs:
     - name: Package CLI 10
       run: dotnet pack src\Core\efcpt.10\efcpt.10.csproj -p:PackageVersion=10.1.${{ github.event.inputs.version }} -p:InformationalVersion=10.1.${{ github.event.inputs.version }}
 
+    - name: Publish artifacts
+      uses: actions/upload-artifact@v7
+      with:
+        name: Nupkg
+        path: |
+          **/*.nupkg
+
     - name: NuGet login (OIDC → temp API key)
+      if: startsWith(github.ref, 'refs/heads/master')  
       uses: NuGet/login@v1
       id: login
       with:
