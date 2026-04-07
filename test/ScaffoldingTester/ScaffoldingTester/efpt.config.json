@@ -15,10 +15,11 @@
    "SelectedToBeGenerated": 0,
    "T4TemplatePath": null,
    "Tables": [
-      {
-         "Name": "[dbo].[Categories]",
-         "ObjectType": 0
-      },
+    {
+      "Name": "[dbo].[Categories]",
+      "Name": "[dbo].[Categories]",
+      "ObjectType": 0
+    },
       {
          "Name": "[dbo].[CustomerCustomerDemo]",
          "ObjectType": 0
