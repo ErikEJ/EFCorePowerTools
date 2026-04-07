@@ -205,7 +205,7 @@ GO
         }
 
         [Test]
-        public void CanHandleDefaultValues()
+        public void PreservesDefaultValueSql()
         {
             // Arrange
             var factory = new SqlServerDacpacDatabaseModelFactory();
@@ -217,8 +217,45 @@ GO
 
             // Assert
             Assert.AreEqual(1, dbModel.Tables.Count());
-            Assert.AreEqual(1, dbModel.Tables
-                .Count(t => t.Columns.Any(c => c.DefaultValueSql != null)));
+            Assert.That(
+                dbModel.Tables.Single().Columns
+                    .Where(c => c.DefaultValueSql != null)
+                    .Select(c => c.Name),
+                Is.EqualTo(new[]
+                {
+                    "OrderDate",
+                    "Freight1",
+                    "Freight2",
+                    "Freight3",
+                    "Freight4",
+                    "Freight5",
+                    "Freight6",
+                    "Freight7",
+                    "Freight8",
+                }));
+        }
+
+        [Test]
+        public void PreservesNumericClrDefaultConstraintSql()
+        {
+            var factory = new SqlServerDacpacDatabaseModelFactory();
+            var tables = new List<string> { "[dbo].[DefaultValues]" };
+            var options = new DatabaseModelFactoryOptions(tables, new List<string>());
+
+            var dbModel = factory.Create(dacpacQuirk, options);
+            var table = dbModel.Tables.Single(t => t.Name == "DefaultValues");
+
+            var freight2 = table.Columns.Single(c => c.Name == "Freight2");
+            var freight3 = table.Columns.Single(c => c.Name == "Freight3");
+            var freight4 = table.Columns.Single(c => c.Name == "Freight4");
+            var freight5 = table.Columns.Single(c => c.Name == "Freight5");
+            var freight6 = table.Columns.Single(c => c.Name == "Freight6");
+
+            Assert.That(freight2.DefaultValueSql, Is.EqualTo("0"));
+            Assert.That(freight3.DefaultValueSql, Is.EqualTo("0.0"));
+            Assert.That(freight4.DefaultValueSql, Is.EqualTo("0.0"));
+            Assert.That(freight5.DefaultValueSql, Is.EqualTo("0.0"));
+            Assert.That(freight6.DefaultValueSql, Is.EqualTo("0.0"));
         }
 
         [Test]
