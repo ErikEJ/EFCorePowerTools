@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using NUnit.Framework;
-//using NUnit.Framework.Legacy;
 using RevEng.Common;
 using RevEng.Core;
 
@@ -37,7 +36,7 @@ namespace UnitTests.Services
             var result = sut.GenerateCandidateIdentifier(exampleDbTable);
 
             // Assert
-            StringAssert.Contains(expected, result);
+            Assert.That(result, Does.Contain(expected));
         }
 
         [Test]
@@ -74,7 +73,7 @@ namespace UnitTests.Services
             var result = sut.GenerateCandidateIdentifier(exampleDbTable);
 
             // Assert
-            StringAssert.Contains(expected, result);
+            Assert.That(result, Does.Contain(expected));
         }
 
         [Test]
@@ -108,7 +107,7 @@ namespace UnitTests.Services
             var result = sut.GenerateCandidateIdentifier(exampleDbTable);
 
             // Assert
-            StringAssert.Contains(expected, result);
+            Assert.That(result, Does.Contain(expected));
         }
 
         [Test]
@@ -173,10 +172,10 @@ namespace UnitTests.Services
             }
 
             // Assert
-            StringAssert.Contains(expected, results[0]);
-            StringAssert.Contains(expected2, results[1]);
-            StringAssert.Contains(expected3, results[2]);
-            StringAssert.Contains(expected4, results[3]);
+            Assert.That(results[0], Does.Contain(expected));
+            Assert.That(results[1], Does.Contain(expected2));
+            Assert.That(results[2], Does.Contain(expected3));
+            Assert.That(results[3], Does.Contain(expected4));
         }
 
         [Test]
@@ -233,8 +232,8 @@ namespace UnitTests.Services
             }
 
             // Assert
-            StringAssert.AreEqualIgnoringCase("stg_Jobs", results[1]);
-            StringAssert.AreEqualIgnoringCase("stg_DeliveryAddress", results[0]);
+            Assert.That(results[1], Is.EqualTo("stg_Jobs").IgnoreCase);
+            Assert.That(results[0], Is.EqualTo("stg_DeliveryAddress").IgnoreCase);
         }
 
         [Test]
@@ -304,11 +303,11 @@ namespace UnitTests.Services
             }
 
             // Assert
-            StringAssert.Contains(expected, results[0]);
-            StringAssert.Contains(expected2, results[1]);
-            StringAssert.Contains(expected3, results[2]);
-            StringAssert.Contains(expected4, results[3]);
-            StringAssert.Contains(expected5, results[4]);
+            Assert.That(results[0], Does.Contain(expected));
+            Assert.That(results[1], Does.Contain(expected2));
+            Assert.That(results[2], Does.Contain(expected3));
+            Assert.That(results[3], Does.Contain(expected4));
+            Assert.That(results[4], Does.Contain(expected5));
         }
 
         [Test]
@@ -344,7 +343,7 @@ namespace UnitTests.Services
             var result = sut.GenerateCandidateIdentifier(exampleDbTable);
 
             // Assert
-            StringAssert.Contains(expected, result);
+            Assert.That(result, Does.Contain(expected));
         }
 
         [Test]
@@ -401,9 +400,9 @@ namespace UnitTests.Services
             }
 
             // Assert
-            StringAssert.Contains(expected, result[0]);
-            StringAssert.Contains(expected1, result[1]);
-            StringAssert.Contains(expected2, result[2]);
+            Assert.That(result[0], Does.Contain(expected));
+            Assert.That(result[1], Does.Contain(expected1));
+            Assert.That(result[2], Does.Contain(expected2));
         }
 
         [Test]
@@ -452,7 +451,7 @@ namespace UnitTests.Services
             var actResult = sut.GenerateCandidateIdentifier(exampleColumn);
 
             // Assert
-            StringAssert.Contains(expected, actResult);
+            Assert.That(actResult, Does.Contain(expected));
         }
 
         [Test]
@@ -501,7 +500,7 @@ namespace UnitTests.Services
             var actResult = sut.GenerateCandidateIdentifier(exampleColumn);
 
             // Assert
-            StringAssert.Contains(expected, actResult);
+            Assert.That(actResult, Does.Contain(expected));
         }
 
         [Test]
@@ -588,8 +587,8 @@ namespace UnitTests.Services
             }
 
             // Assert
-            StringAssert.Contains(expected, actResult[0]);
-            StringAssert.Contains(expected1, actResult[1]);
+            Assert.That(actResult[0], Does.Contain(expected));
+            Assert.That(actResult[1], Does.Contain(expected1));
         }
 
         /// <summary>
@@ -623,7 +622,7 @@ namespace UnitTests.Services
             var result = sut.GenerateCandidateIdentifier(exampleDbTable);
 
             // Assert
-            StringAssert.Contains(expected, result);
+            Assert.That(result, Does.Contain(expected));
         }
 
         /// <summary>
@@ -657,7 +656,7 @@ namespace UnitTests.Services
             var result = sut.GenerateCandidateIdentifier(exampleDbTable);
 
             // Assert
-            StringAssert.Contains(expected, result);
+            Assert.That(result, Does.Contain(expected));
         }
 
         /// Testing the table renaming method using Regex.
@@ -690,7 +689,7 @@ namespace UnitTests.Services
             var result = sut.GenerateCandidateIdentifier(exampleDbTable);
 
             // Assert
-            StringAssert.Contains(expected, result);
+            Assert.That(result, Does.Contain(expected));
         }
 
         /// Testing the table renaming method using Regex.
@@ -723,7 +722,7 @@ namespace UnitTests.Services
             var result = sut.GenerateCandidateIdentifier(exampleDbTable);
 
             // Assert
-            StringAssert.Contains(expected, result);
+            Assert.That(result, Does.Contain(expected));
         }
 
         [Test]
@@ -775,7 +774,7 @@ namespace UnitTests.Services
             var result = sut.GenerateCandidateIdentifier(exampleDbColumn);
 
             // Assert
-            StringAssert.Contains(expected, result);
+            Assert.That(result, Does.Contain(expected));
         }
 
         [Test]
@@ -812,7 +811,7 @@ namespace UnitTests.Services
             var result = sut.GenerateCandidateIdentifier(exampleDbColumn);
 
             // Assert
-            StringAssert.Contains(expected, result);
+            Assert.That(result, Does.Contain(expected));
         }
 
         [Test]
@@ -850,7 +849,7 @@ namespace UnitTests.Services
             var result = sut.GenerateCandidateIdentifier(exampleDbColumn);
 
             // Assert
-            StringAssert.Contains(expected, result);
+            Assert.That(result, Does.Contain(expected));
         }
 
         /// <summary>
@@ -903,7 +902,7 @@ namespace UnitTests.Services
             var result = sut.GenerateCandidateIdentifier(exampleDbColumn);
 
             // Assert
-            StringAssert.Contains(expected, result);
+            Assert.That(result, Does.Contain(expected));
         }
 
         /// <summary>
@@ -945,7 +944,7 @@ namespace UnitTests.Services
             var result = sut.GenerateCandidateIdentifier(exampleDbTable);
 
             // Assert
-            StringAssert.Contains(expected, result);
+            Assert.That(result, Does.Contain(expected));
         }
 
         /// <summary>
@@ -984,7 +983,7 @@ namespace UnitTests.Services
             var actResult = sut.GenerateCandidateIdentifier(exampleColumn);
 
             // Assert
-            StringAssert.Contains(expected, actResult);
+            Assert.That(actResult, Does.Contain(expected));
         }
 
         /// <summary>
@@ -1038,7 +1037,7 @@ namespace UnitTests.Services
             var actResult = sut.GenerateCandidateIdentifier(exampleColumn);
 
             // Assert
-            StringAssert.Contains(expected, actResult);
+            Assert.That(actResult, Does.Contain(expected));
         }
 
         public abstract class NavigationBase

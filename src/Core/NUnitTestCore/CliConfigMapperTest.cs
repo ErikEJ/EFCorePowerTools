@@ -1,8 +1,7 @@
-using AutoFixture.NUnit3;
+using AutoFixture.NUnit4;
 using FluentAssertions;
 using NUnit.Framework;
 using RevEng.Common;
-//using NUnit.Framework.Legacy;
 using RevEng.Common.Cli;
 using RevEng.Common.Cli.Configuration;
 

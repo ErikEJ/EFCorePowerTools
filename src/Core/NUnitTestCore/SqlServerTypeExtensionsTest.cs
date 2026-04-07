@@ -58,24 +58,24 @@ namespace UnitTests
 
                     if (typeName == "date")
                     {
-                        Assert.AreEqual(typeof(DateTime?), res1);
+                        Assert.That(res1, Is.EqualTo(typeof(DateTime?)));
                     }
 
                     if (typeName == "time")
                     {
-                        Assert.AreEqual(typeof(TimeSpan?), res1);
+                        Assert.That(res1, Is.EqualTo(typeof(TimeSpan?)));
                     }
 
                     var res2 = SqlServerSqlTypeExtensions.GetClrType(typeName, false);
 
                     if (typeName == "date")
                     {
-                        Assert.AreEqual(typeof(DateTime), res2);
+                        Assert.That(res2, Is.EqualTo(typeof(DateTime)));
                     }
 
                     if (typeName == "time")
                     {
-                        Assert.AreEqual(typeof(TimeSpan), res2);
+                        Assert.That(res2, Is.EqualTo(typeof(TimeSpan)));
                     }
 
                     SqlServerSqlTypeExtensions.UseDateOnlyTimeOnly = true;
@@ -84,24 +84,24 @@ namespace UnitTests
 
                     if (typeName == "date")
                     {
-                        Assert.AreEqual(typeof(DateOnly?), res3);
+                        Assert.That(res3, Is.EqualTo(typeof(DateOnly?)));
                     }
 
                     if (typeName == "time")
                     {
-                        Assert.AreEqual(typeof(TimeOnly?), res3);
+                        Assert.That(res3, Is.EqualTo(typeof(TimeOnly?)));
                     }
 
                     var res4 = SqlServerSqlTypeExtensions.GetClrType(typeName, false);
 
                     if (typeName == "date")
                     {
-                        Assert.AreEqual(typeof(DateOnly), res4);
+                        Assert.That(res4, Is.EqualTo(typeof(DateOnly)));
                     }
 
                     if (typeName == "time")
                     {
-                        Assert.AreEqual(typeof(TimeOnly), res4);
+                        Assert.That(res4, Is.EqualTo(typeof(TimeOnly)));
                     }
                 }
                 catch

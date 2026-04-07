@@ -109,7 +109,7 @@ GO
             var dbModel = factory.Create(dacpac, options);
 
             // Assert
-            Assert.AreEqual(11, dbModel.Tables.Count());
+            Assert.That(dbModel.Tables.Count(), Is.EqualTo(11));
         }
 
         [Test]
@@ -123,7 +123,7 @@ GO
             var dbModel = factory.Create(dacpacViews, options);
 
             // Assert
-            Assert.AreEqual(28, dbModel.Tables[0].Columns.Count());
+            Assert.That(dbModel.Tables[0].Columns.Count(), Is.EqualTo(28));
         }
 
         [Test]
@@ -138,10 +138,10 @@ GO
             var dbModel = factory.Create(dacpac, options);
 
             // Assert
-            Assert.AreEqual(3, dbModel.Tables.Count());
-            Assert.AreEqual("Album", dbModel.Tables[0].Name);
-            Assert.AreEqual(1, dbModel.Tables[0].ForeignKeys.Count);
-            Assert.AreEqual(3, dbModel.Tables[0].Columns.Count);
+            Assert.That(dbModel.Tables.Count(), Is.EqualTo(3));
+            Assert.That(dbModel.Tables[0].Name, Is.EqualTo("Album"));
+            Assert.That(dbModel.Tables[0].ForeignKeys.Count, Is.EqualTo(1));
+            Assert.That(dbModel.Tables[0].Columns.Count, Is.EqualTo(3));
         }
 
         [Test]
@@ -156,14 +156,12 @@ GO
             var dbModel = factory.Create(dacpacQuirk, options);
 
             // Assert
-            Assert.AreEqual(2, dbModel.Tables.Count());
-
-            Assert.AreEqual("FilteredIndexTable", dbModel.Tables[1].Name);
-            Assert.AreEqual(0, dbModel.Tables[1].ForeignKeys.Count);
-            Assert.AreEqual(2, dbModel.Tables[1].Columns.Count);
-
-            Assert.AreEqual("DefaultComputedValues", dbModel.Tables[0].Name);
-            Assert.AreEqual(6, dbModel.Tables[0].Columns.Count);
+            Assert.That(dbModel.Tables.Count(), Is.EqualTo(2));
+            Assert.That(dbModel.Tables[1].Name, Is.EqualTo("FilteredIndexTable"));
+            Assert.That(dbModel.Tables[1].ForeignKeys.Count, Is.EqualTo(0));
+            Assert.That(dbModel.Tables[1].Columns.Count, Is.EqualTo(2));
+            Assert.That(dbModel.Tables[0].Name, Is.EqualTo("DefaultComputedValues"));
+            Assert.That(dbModel.Tables[0].Columns.Count, Is.EqualTo(6));
         }
 
         [Test]
@@ -178,10 +176,9 @@ GO
             var dbModel = factory.Create(dacpacQuirk, options);
 
             // Assert
-            Assert.AreEqual(1, dbModel.Tables.Count());
-
-            Assert.AreEqual("DefaultComputedValues", dbModel.Tables[0].Name);
-            Assert.AreEqual(6, dbModel.Tables[0].Columns.Count);
+            Assert.That(dbModel.Tables.Count(), Is.EqualTo(1));
+            Assert.That(dbModel.Tables[0].Name, Is.EqualTo("DefaultComputedValues"));
+            Assert.That(dbModel.Tables[0].Columns.Count, Is.EqualTo(6));
         }
 
         [Test]
@@ -196,12 +193,10 @@ GO
             var dbModel = factory.Create(dacpacQuirk, options);
 
             // Assert
-            Assert.AreEqual(1, dbModel.Tables.Count());
-
-            Assert.AreEqual("TypeAlias", dbModel.Tables[0].Name);
-            Assert.AreEqual(2, dbModel.Tables[0].Columns.Count);
-
-            Assert.AreEqual("nvarchar(max)", dbModel.Tables[0].Columns[1].StoreType);
+            Assert.That(dbModel.Tables.Count(), Is.EqualTo(1));
+            Assert.That(dbModel.Tables[0].Name, Is.EqualTo("TypeAlias"));
+            Assert.That(dbModel.Tables[0].Columns.Count, Is.EqualTo(2));
+            Assert.That(dbModel.Tables[0].Columns[1].StoreType, Is.EqualTo("nvarchar(max)"));
         }
 
         [Test]
@@ -216,7 +211,7 @@ GO
             var dbModel = factory.Create(dacpacQuirk, options);
 
             // Assert
-            Assert.AreEqual(1, dbModel.Tables.Count());
+            Assert.That(dbModel.Tables.Count(), Is.EqualTo(1));
             Assert.That(
                 dbModel.Tables.Single().Columns
                     .Where(c => c.DefaultValueSql != null)
@@ -268,7 +263,7 @@ GO
             var dbModel = factory.Create(dacpacSparse, options);
             var importToken = dbModel.Tables.Single().Columns.Single(c => c.Name == "ImportToken");
 
-            Assert.AreEqual(1, dbModel.Tables.Count());
+            Assert.That(dbModel.Tables.Count(), Is.EqualTo(1));
             Assert.That(importToken.FindAnnotation(SqlServerAnnotationNames.Sparse), Is.Not.Null);
         }
 
@@ -283,7 +278,7 @@ GO
             var dbModel = factory.Create(TestPath("AdventureWorks2014.dacpac"), options);
 
             // Assert
-            Assert.AreEqual(91, dbModel.Tables.Count());
+            Assert.That(dbModel.Tables.Count(), Is.EqualTo(91));
         }
 
         [Test]
@@ -297,7 +292,7 @@ GO
             var dbModel = factory.Create(TestPath("Issue208.dacpac"), options);
 
             // Assert
-            Assert.AreEqual(1, dbModel.Tables.Count());
+            Assert.That(dbModel.Tables.Count(), Is.EqualTo(1));
         }
 
         [Test]
@@ -311,7 +306,7 @@ GO
             var dbModel = factory.Create(TestPath("Issue210.dacpac"), options);
 
             // Assert
-            Assert.AreEqual(2, dbModel.Tables.Count());
+            Assert.That(dbModel.Tables.Count(), Is.EqualTo(2));
         }
 
         [Test]
@@ -324,8 +319,8 @@ GO
             var dbModel = factory.Create(TestPath("Issue1262.dacpac"), options);
 
             // Assert
-            Assert.AreEqual(1, dbModel.Tables.Count());
-            Assert.AreEqual("mat", dbModel.Tables.Single().Schema);
+            Assert.That(dbModel.Tables.Count(), Is.EqualTo(1));
+            Assert.That(dbModel.Tables.Single().Schema, Is.EqualTo("mat"));
         }
 
         [Test]
@@ -338,9 +333,9 @@ GO
             var dbModel = factory.Create(TestPath("Issue1262.dacpac"), options);
 
             // Assert
-            Assert.AreEqual(2, dbModel.Tables.Count());
-            Assert.AreEqual(1, dbModel.Tables.Count(x => x.Schema == "mat"));
-            Assert.AreEqual(1, dbModel.Tables.Count(x => x.Schema == "mat2"));
+            Assert.That(dbModel.Tables.Count(), Is.EqualTo(2));
+            Assert.That(dbModel.Tables.Count(x => x.Schema == "mat"), Is.EqualTo(1));
+            Assert.That(dbModel.Tables.Count(x => x.Schema == "mat2"), Is.EqualTo(1));
         }
 
         [Test]
@@ -351,20 +346,19 @@ GO
 
             var dbModel = factory.Create(TestPath("Issue3341.dacpac"), options);
 
-            Assert.AreEqual(3, dbModel.Tables.Count());
+            Assert.That(dbModel.Tables.Count(), Is.EqualTo(3));
 
             var bin = dbModel.Tables.Single(t => t.Schema == "dbo" && t.Name == "Bin");
             var inventoryNodeTypeCode = bin.Columns.Single(c => c.Name == "InventoryNodeTypeCode");
 
-            Assert.AreEqual("tinyint", inventoryNodeTypeCode.StoreType);
+            Assert.That(inventoryNodeTypeCode.StoreType, Is.EqualTo("tinyint"));
             Assert.That(inventoryNodeTypeCode.ComputedColumnSql, Does.Contain("CONVERT"));
             Assert.That(inventoryNodeTypeCode.ComputedColumnSql, Does.Contain("8"));
-            Assert.IsTrue(inventoryNodeTypeCode.IsStored);
-            Assert.IsFalse(inventoryNodeTypeCode.IsNullable);
-
-            Assert.AreEqual(2, bin.ForeignKeys.Count);
-            Assert.IsTrue(bin.ForeignKeys.Any(fk => fk.Columns.Any(c => c.Name == "InventoryNodeTypeCode")));
-            Assert.IsTrue(bin.ForeignKeys.Any(fk => fk.Columns.Count == 2));
+            Assert.That(inventoryNodeTypeCode.IsStored, Is.True);
+            Assert.That(inventoryNodeTypeCode.IsNullable, Is.False);
+            Assert.That(bin.ForeignKeys.Count, Is.EqualTo(2));
+            Assert.That(bin.ForeignKeys.Any(fk => fk.Columns.Any(c => c.Name == "InventoryNodeTypeCode")), Is.True);
+            Assert.That(bin.ForeignKeys.Any(fk => fk.Columns.Count == 2), Is.True);
         }
 
         [Test]
@@ -390,7 +384,7 @@ GO
         {
             var result = SqlServerDacpacDatabaseModelFactory.FixExtendedPropertyValue(input);
 
-            Assert.AreEqual(expected, result);
+            Assert.That(result, Is.EqualTo(expected));
         }
 
         [Test]
@@ -417,8 +411,8 @@ GO
             var table = dbModel.Tables.Single(t => t.Schema == "dbo" && t.Name == "AWBuildVersion");
             var column = table.Columns.Single(c => c.Name == "ModifiedDate");
 
-            Assert.IsNotNull(column.DefaultValueSql);
-            Assert.AreEqual("DF_AWBuildVersion_ModifiedDate", column["Relational:DefaultConstraintName"]);
+            Assert.That(column.DefaultValueSql, Is.Not.Null);
+            Assert.That(column["Relational:DefaultConstraintName"], Is.EqualTo("DF_AWBuildVersion_ModifiedDate"));
         }
 
         [Test]
@@ -433,7 +427,7 @@ GO
             var dbModel = factory.Create(TestPath("abc.dacpac"), options);
 
             // Assert
-            Assert.AreEqual(1, dbModel.Routines.Count());
+            Assert.That(dbModel.Routines.Count(), Is.EqualTo(1));
         }
 
         [Test]
@@ -447,8 +441,8 @@ GO
             var dbModel = factory.Create(TestPath("Temporal.dacpac"), options);
 
             // Assert
-            Assert.AreEqual(1, dbModel.Tables.Count());
-            Assert.NotNull(dbModel.Tables.Single().FindAnnotation(SqlServerAnnotationNames.IsTemporal));
+            Assert.That(dbModel.Tables.Count(), Is.EqualTo(1));
+            Assert.That(dbModel.Tables.Single().FindAnnotation(SqlServerAnnotationNames.IsTemporal), Is.Not.Null);
         }
 
         [Test]
@@ -462,13 +456,13 @@ GO
             var dbModel = factory.Create(TestPath("TvpParams.dacpac"), options);
 
             // Assert
-            Assert.AreEqual(1, dbModel.Routines.Count);
-            Assert.AreEqual(2, dbModel.Routines[0].Parameters.Count);
-            Assert.AreEqual("NumberIDList", dbModel.Routines[0].Parameters[0].TypeName);
-            Assert.AreEqual("Constant", dbModel.Routines[0].Parameters[0].TypeSchemaName);
-            Assert.AreEqual("structured", dbModel.Routines[0].Parameters[0].StoreType);
-            Assert.IsNotNull(dbModel.Routines[0].Parameters[0].TvpColumns);
-            Assert.Greater(dbModel.Routines[0].Parameters[0].TvpColumns.Count, 0);
+            Assert.That(dbModel.Routines.Count, Is.EqualTo(1));
+            Assert.That(dbModel.Routines[0].Parameters.Count, Is.EqualTo(2));
+            Assert.That(dbModel.Routines[0].Parameters[0].TypeName, Is.EqualTo("NumberIDList"));
+            Assert.That(dbModel.Routines[0].Parameters[0].TypeSchemaName, Is.EqualTo("Constant"));
+            Assert.That(dbModel.Routines[0].Parameters[0].StoreType, Is.EqualTo("structured"));
+            Assert.That(dbModel.Routines[0].Parameters[0].TvpColumns, Is.Not.Null);
+            Assert.That(dbModel.Routines[0].Parameters[0].TvpColumns.Count, Is.GreaterThan(0));
             
             // Debug - print TVP columns
             System.Console.WriteLine($"TVP Columns count: {dbModel.Routines[0].Parameters[0].TvpColumns.Count}");

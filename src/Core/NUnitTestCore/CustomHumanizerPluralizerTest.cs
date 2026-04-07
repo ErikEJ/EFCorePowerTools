@@ -31,7 +31,7 @@ namespace UnitTests
             var sut = new HumanizerPluralizer();
             var result = sut.Pluralize(word);
 
-            Assert.AreEqual(word, result);
+            Assert.That(result, Is.EqualTo(word));
         }
 
         private static void Singularize(string word)
@@ -40,7 +40,7 @@ namespace UnitTests
             var sut = new HumanizerPluralizer();
             var result = sut.Singularize(word);
 
-            Assert.AreEqual(word, result);
+            Assert.That(result, Is.EqualTo(word));
         }
 
         [Test]
@@ -50,13 +50,13 @@ namespace UnitTests
         {
             // Verify inflection fails by default. If this assertion fails, then Humanizer's default logic has been enhanced and a better test case is needed.
             var sut = new HumanizerPluralizer();
-            Assert.AreNotEqual(plural, sut.Pluralize(singular), "New test case needed.");
-            Assert.AreNotEqual(singular, sut.Singularize(plural), "New test case needed.");
+            Assert.That(sut.Pluralize(singular), Is.Not.EqualTo(plural), "New test case needed.");
+            Assert.That(sut.Singularize(plural), Is.Not.EqualTo(singular), "New test case needed.");
 
             Vocabularies.Default.AddIrregular(singular, plural);
 
-            Assert.AreEqual(plural, sut.Pluralize(singular));
-            Assert.AreEqual(singular, sut.Singularize(plural));
+            Assert.That(sut.Pluralize(singular), Is.EqualTo(plural));
+            Assert.That(sut.Singularize(plural), Is.EqualTo(singular));
         }
 
         [Test]
@@ -65,11 +65,11 @@ namespace UnitTests
         {
             // Verify inflection fails by default. If this assertion fails, then Humanizer's default logic has been enhanced and a better test case is needed.
             var sut = new HumanizerPluralizer();
-            Assert.AreNotEqual(plural, sut.Pluralize(singular), "New test case needed.");
+            Assert.That(sut.Pluralize(singular), Is.Not.EqualTo(plural), "New test case needed.");
 
             Vocabularies.Default.AddPlural(rule, replacement);
 
-            Assert.AreEqual(plural, sut.Pluralize(singular));
+            Assert.That(sut.Pluralize(singular), Is.EqualTo(plural));
         }
 
         [Test]
@@ -78,11 +78,11 @@ namespace UnitTests
         {
             // Verify inflection fails by default. If this assertion fails, then Humanizer's default logic has been enhanced and a better test case is needed.
             var sut = new HumanizerPluralizer();
-            Assert.AreNotEqual(singular, sut.Singularize(plural), "New test case needed.");
+            Assert.That(sut.Singularize(plural), Is.Not.EqualTo(singular), "New test case needed.");
 
             Vocabularies.Default.AddSingular(rule, replacement);
 
-            Assert.AreEqual(singular, sut.Singularize(plural));
+            Assert.That(sut.Singularize(plural), Is.EqualTo(singular));
         }
 
     }
