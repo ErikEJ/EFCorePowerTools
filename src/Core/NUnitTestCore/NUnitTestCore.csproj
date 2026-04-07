@@ -108,7 +108,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoFixture.NUnit4" Version="4.19.0" />
-    <PackageReference Include="FluentAssertions" Version="7.2.0" />
     <PackageReference Include="nunit" Version="4.5.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="6.2.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.4.0" />

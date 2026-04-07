@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
-using FluentAssertions;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using NUnit.Framework;
 using RevEng.Core;
@@ -33,7 +32,7 @@ namespace UnitTests
             var result = InvokePrivateStaticMethod("GenerateEntityName", input);
 
             // Assert
-            result.Should().Be(expected);
+            Assert.That(result, Is.EqualTo(expected));
         }
 
         [Test]
@@ -55,7 +54,7 @@ namespace UnitTests
             var result = InvokePrivateStaticMethod("EscapeDescription", input);
 
             // Assert
-            result.Should().Be(expected);
+            Assert.That(result, Is.EqualTo(expected));
         }
 
         [Test]
@@ -70,7 +69,7 @@ namespace UnitTests
             var result = InvokePrivateStaticMethod("GetDescriptionParameter", input);
 
             // Assert
-            result.Should().Be(expected);
+            Assert.That(result, Is.EqualTo(expected));
         }
 
         [Test]
@@ -83,7 +82,7 @@ namespace UnitTests
             var result = InvokePrivateStaticMethod<DatabaseTable, bool>("BreaksOn", table);
 
             // Assert
-            result.Should().BeTrue();
+            Assert.That(result, Is.True);
         }
 
         [Test]
@@ -104,7 +103,7 @@ namespace UnitTests
             var result = InvokePrivateStaticMethod<DatabaseTable, bool>("BreaksOn", table);
 
             // Assert
-            result.Should().BeTrue();
+            Assert.That(result, Is.True);
         }
 
         [Test]
@@ -123,7 +122,7 @@ namespace UnitTests
             var result = InvokePrivateStaticMethod<DatabaseTable, bool>("BreaksOn", table);
 
             // Assert
-            result.Should().BeFalse();
+            Assert.That(result, Is.False);
         }
 
         [Test]
@@ -131,19 +130,19 @@ namespace UnitTests
         {
             // Test empty string
             var emptyResult = InvokePrivateStaticMethod("GenerateEntityName", "");
-            emptyResult.Should().Be("");
+            Assert.That(emptyResult, Is.EqualTo(string.Empty));
 
             // Test single character
             var singleChar = InvokePrivateStaticMethod("GenerateEntityName", "a");
-            singleChar.Should().Be("A");
+            Assert.That(singleChar, Is.EqualTo("A"));
 
             // Test all underscores
             var underscores = InvokePrivateStaticMethod("GenerateEntityName", "___");
-            underscores.Should().Be("");
+            Assert.That(underscores, Is.EqualTo(string.Empty));
 
             // Test mixed case with underscores
             var mixed = InvokePrivateStaticMethod("GenerateEntityName", "My_Table_NAME");
-            mixed.Should().Be("MyTableName");
+            Assert.That(mixed, Is.EqualTo("MyTableName"));
         }
 
         [Test]
@@ -157,7 +156,7 @@ namespace UnitTests
             var result = InvokePrivateStaticMethod("EscapeDescription", input);
 
             // Assert
-            result.Should().Be(expected);
+            Assert.That(result, Is.EqualTo(expected));
         }
 
         // Helper methods
