@@ -65,6 +65,23 @@ namespace RevEng.Core.Routines.Extensions
             return LengthRequiredTypes.Contains(sqlDbType);
         }
 
+        public static int? NormalizeParameterLength(string storeType, int? length)
+        {
+            if (!length.HasValue || length <= 0)
+            {
+                return length;
+            }
+
+            var sqlDbType = GetSqlDbType(storeType);
+
+            if (sqlDbType is SqlDbType.NChar or SqlDbType.NVarChar)
+            {
+                return length.Value / 2;
+            }
+
+            return length;
+        }
+
         public static Type ClrTypeFromSqlParameter(this ModuleParameter storedProcedureParameter, bool asMethodParameter = false)
         {
             ArgumentNullException.ThrowIfNull(storedProcedureParameter);

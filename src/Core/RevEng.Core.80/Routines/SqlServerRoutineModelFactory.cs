@@ -194,12 +194,12 @@ SELECT
     p.is_output AS output,
     'TypeName' = TYPE_NAME(p.user_type_id),
     'TypeSchemaName' = SCHEMA_NAME(t.schema_id),
-	'TypeSchema' = t.schema_id,
-	'TypeId' = p.user_type_id,
+    'TypeSchema' = t.schema_id,
+    'TypeId' = p.user_type_id,
     'RoutineName' = OBJECT_NAME(p.object_id),
     'RoutineSchema' = OBJECT_SCHEMA_NAME(p.object_id)
     from sys.parameters p
-	LEFT JOIN sys.table_types t ON t.user_type_id = p.user_type_id
+    LEFT JOIN sys.table_types t ON t.user_type_id = p.user_type_id
     ORDER BY p.object_id, p.parameter_id;";
 
             if (GetVersion(connection) == "Microsoft SQL Kusto")
@@ -220,8 +220,8 @@ SELECT
         p.is_output AS output,
         'TypeName' = tu.name,
         'TypeSchemaName' = s.name,
-	    'TypeSchema' = tu.schema_id,
-	    'TypeId' = p.user_type_id,
+        'TypeSchema' = tu.schema_id,
+        'TypeId' = p.user_type_id,
         'RoutineName' = o.name,
         'RoutineSchema' = s.name
         from sys.parameters p
@@ -256,7 +256,9 @@ SELECT
                         RoutineName = par["RoutineName"].ToString(),
                         RoutineSchema = par["RoutineSchema"].ToString(),
                         StoreType = par["Type"].ToString(),
-                        Length = (par["Length"] is DBNull) ? (int?)null : int.Parse(par["Length"].ToString()!, CultureInfo.InvariantCulture),
+                        Length = SqlServerSqlTypeExtensions.NormalizeParameterLength(
+                            par["Type"].ToString(),
+                            (par["Length"] is DBNull) ? (int?)null : int.Parse(par["Length"].ToString()!, CultureInfo.InvariantCulture)),
                         Precision = (par["Precision"] is DBNull) ? (int?)null : int.Parse(par["Precision"].ToString()!, CultureInfo.InvariantCulture),
                         Scale = (par["Scale"] is DBNull) ? (int?)null : int.Parse(par["Scale"].ToString()!, CultureInfo.InvariantCulture),
                         Output = (bool)par["output"],

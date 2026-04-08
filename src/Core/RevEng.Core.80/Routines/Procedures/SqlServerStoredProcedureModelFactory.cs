@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
+using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
 using Microsoft.Data.SqlClient;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
@@ -48,105 +49,68 @@ ORDER BY ROUTINE_NAME;";
 
             if (useLegacyResultSetDiscovery)
             {
-                return GetFirstResultSet(connection, module);
+                try
+                {
+                    return GetFirstResultSet(connection, module);
+                }
+                catch (SqlException ex) when (ShouldTryFmtOnlyFallback(ex))
+                {
+                    return GetResultSetsWithFallbacks(connection, module, true, ex);
+                }
             }
 
-            return GetAllResultSets(connection, module, !multipleResults);
+            try
+            {
+                return GetAllResultSets(connection, module, !multipleResults);
+            }
+            catch (SqlException ex) when (ShouldTryFmtOnlyFallback(ex))
+            {
+                return GetResultSetsWithFallbacks(connection, module, !multipleResults, ex);
+            }
         }
 
         private static List<List<ModuleResultElement>> GetAllResultSets(SqlConnection connection, Routine module, bool singleResult)
         {
             var result = new List<List<ModuleResultElement>>();
-            using var sqlCommand = connection.CreateCommand();
-
-#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
-            sqlCommand.CommandText = $"[{module.Schema}].[{module.Name}]";
-#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
-            sqlCommand.CommandType = CommandType.StoredProcedure;
-
-            var parameters = module.Parameters.Take(module.Parameters.Count - 1);
-
-            foreach (var parameter in parameters)
-            {
-                var param = new SqlParameter("@" + parameter.Name, DBNull.Value);
-
-                if (parameter.ClrTypeFromSqlParameter() == typeof(DataTable))
-                {
-                    param.Value = GetDataTableFromSchema(parameter, connection);
-                    param.SqlDbType = SqlDbType.Structured;
-                }
-
-                if (parameter.ClrTypeFromSqlParameter() == typeof(byte[]))
-                {
-                    param.SqlDbType = SqlDbType.VarBinary;
-                }
-
-                sqlCommand.Parameters.Add(param);
-            }
+            using var sqlCommand = CreateStoredProcedureCommand(connection, module);
 
             using var schemaReader = sqlCommand.ExecuteReader(CommandBehavior.SchemaOnly);
-            do
-            {
-                // https://docs.microsoft.com/en-us/dotnet/api/system.data.datatablereader.getschematable
-                var schemaTable = schemaReader.GetSchemaTable();
-                var list = new List<ModuleResultElement>();
-
-                if (schemaTable == null)
-                {
-                    break;
-                }
-
-                var unnamedColumnCount = 0;
-
-                foreach (DataRow row in schemaTable.Rows)
-                {
-                    if (row != null)
-                    {
-                        var name = row["ColumnName"].ToString();
-                        if (string.IsNullOrWhiteSpace(name))
-                        {
-                            unnamedColumnCount++;
-                            continue;
-                        }
-
-                        var storeType = row["DataTypeName"].ToString();
-
-                        if (row["ProviderSpecificDataType"]?.ToString()?.StartsWith("Microsoft.SqlServer.Types.Sql", StringComparison.OrdinalIgnoreCase) ?? false)
-                        {
-#pragma warning disable CA1308 // Normalize strings to uppercase
-                            storeType = row["ProviderSpecificDataType"].ToString()?.Replace("Microsoft.SqlServer.Types.Sql", string.Empty, StringComparison.OrdinalIgnoreCase).ToLowerInvariant();
-#pragma warning restore CA1308 // Normalize strings to uppercase
-                        }
-
-                        list.Add(new ModuleResultElement
-                        {
-                            Name = name,
-                            Nullable = (bool?)row["AllowDBNull"] ?? true,
-                            Ordinal = (int)row["ColumnOrdinal"],
-                            StoreType = storeType,
-                            Precision = (short?)row["NumericPrecision"],
-                            Scale = (short?)row["NumericScale"],
-                            MaxLength = (int)row["ColumnSize"],
-                        });
-                    }
-                }
-
-                // If the result set only contains un-named columns
-                if (schemaTable.Rows.Count > 0 && schemaTable.Rows.Count == unnamedColumnCount)
-                {
-                    throw new InvalidOperationException($"Only un-named result columns in procedure");
-                }
-
-                if (unnamedColumnCount > 0)
-                {
-                    module.UnnamedColumnCount += unnamedColumnCount;
-                }
-
-                result.Add(list);
-            }
-            while (schemaReader.NextResult() && !singleResult);
+            ReadResultSets(module, singleResult, result, schemaReader);
 
             return result;
+        }
+
+        /// <summary>
+        /// Uses an <c>FMTONLY</c> batch to ask SQL Server for stored procedure result-set metadata without consuming rows.
+        /// </summary>
+        private static List<List<ModuleResultElement>> GetResultSetsWithFmtOnly(SqlConnection connection, Routine module, bool singleResult)
+        {
+            var result = new List<List<ModuleResultElement>>();
+            using var sqlCommand = CreateFmtOnlyCommand(connection, module);
+            using var schemaReader = sqlCommand.ExecuteReader();
+            ReadResultSets(module, singleResult, result, schemaReader);
+            return result;
+        }
+
+        /// <summary>
+        /// Falls back from live metadata discovery to <c>FMTONLY</c>, then to parsing the stored procedure definition.
+        /// </summary>
+        private static List<List<ModuleResultElement>> GetResultSetsWithFallbacks(SqlConnection connection, Routine module, bool singleResult, SqlException originalException)
+        {
+            try
+            {
+                return GetResultSetsWithFmtOnly(connection, module, singleResult);
+            }
+            catch (SqlException)
+            {
+                var resultFromDefinition = GetResultSetsFromDefinition(connection, module, singleResult);
+                if (resultFromDefinition.Count > 0)
+                {
+                    return resultFromDefinition;
+                }
+
+                throw originalException;
+            }
         }
 
         private static List<List<ModuleResultElement>> GetFirstResultSet(SqlConnection connection, Routine module)
@@ -222,6 +186,193 @@ ORDER BY ROUTINE_NAME;";
             return result;
         }
 
+        /// <summary>
+        /// Creates a schema-only stored procedure command with placeholder parameters for metadata discovery.
+        /// </summary>
+        private static SqlCommand CreateStoredProcedureCommand(SqlConnection connection, Routine module)
+        {
+            var sqlCommand = connection.CreateCommand();
+
+#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
+            sqlCommand.CommandText = $"[{module.Schema}].[{module.Name}]";
+#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
+            sqlCommand.CommandType = CommandType.StoredProcedure;
+
+            AddStoredProcedureParameters(sqlCommand, module, connection);
+
+            return sqlCommand;
+        }
+
+        /// <summary>
+        /// Creates a text command that wraps the stored procedure execution in an <c>FMTONLY</c> batch.
+        /// </summary>
+        private static SqlCommand CreateFmtOnlyCommand(SqlConnection connection, Routine module)
+        {
+            var sqlCommand = connection.CreateCommand();
+            sqlCommand.CommandType = CommandType.Text;
+#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
+            sqlCommand.CommandText = BuildFmtOnlyBatch(module);
+#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
+
+            AddStoredProcedureParameters(sqlCommand, module, connection);
+
+            return sqlCommand;
+        }
+
+        /// <summary>
+        /// Adds placeholder parameters needed to compile the stored procedure and infer its result shape.
+        /// </summary>
+        private static void AddStoredProcedureParameters(SqlCommand sqlCommand, Routine module, SqlConnection connection)
+        {
+            var parameters = module.Parameters.Take(module.Parameters.Count - 1);
+
+            foreach (var parameter in parameters)
+            {
+                var param = new SqlParameter("@" + parameter.Name, DBNull.Value);
+
+                if (parameter.ClrTypeFromSqlParameter() == typeof(DataTable))
+                {
+                    param.Value = GetDataTableFromSchema(parameter, connection);
+                    param.SqlDbType = SqlDbType.Structured;
+                }
+
+                if (parameter.ClrTypeFromSqlParameter() == typeof(byte[]))
+                {
+                    param.SqlDbType = SqlDbType.VarBinary;
+                }
+
+                sqlCommand.Parameters.Add(param);
+            }
+        }
+
+        /// <summary>
+        /// Builds a batch that enables <c>FMTONLY</c>, issues the stored procedure <c>EXEC</c>, and then disables <c>FMTONLY</c>.
+        /// </summary>
+        private static string BuildFmtOnlyBatch(Routine module)
+        {
+            var parameterAssignments = module.Parameters
+                .Where(p => !p.IsReturnValue)
+                .Select(p => $"@{p.Name} = @{p.Name}");
+
+            var executeStatement = $"EXEC [{module.Schema}].[{module.Name}]";
+            if (parameterAssignments.Any())
+            {
+                executeStatement += " " + string.Join(", ", parameterAssignments);
+            }
+
+            return $"SET FMTONLY ON; {executeStatement}; SET FMTONLY OFF;";
+        }
+
+        /// <summary>
+        /// Reads one or more result-set schemas from a data reader into <see cref="ModuleResultElement"/> collections.
+        /// </summary>
+        private static void ReadResultSets(Routine module, bool singleResult, List<List<ModuleResultElement>> result, SqlDataReader schemaReader)
+        {
+            do
+            {
+                // https://docs.microsoft.com/en-us/dotnet/api/system.data.datatablereader.getschematable
+                var schemaTable = schemaReader.GetSchemaTable();
+                var list = new List<ModuleResultElement>();
+
+                if (schemaTable == null)
+                {
+                    break;
+                }
+
+                var unnamedColumnCount = 0;
+
+                foreach (DataRow row in schemaTable.Rows)
+                {
+                    if (row != null)
+                    {
+                        var name = row["ColumnName"].ToString();
+                        if (string.IsNullOrWhiteSpace(name))
+                        {
+                            unnamedColumnCount++;
+                            continue;
+                        }
+
+                        var storeType = row["DataTypeName"].ToString();
+
+                        if (row["ProviderSpecificDataType"]?.ToString()?.StartsWith("Microsoft.SqlServer.Types.Sql", StringComparison.OrdinalIgnoreCase) ?? false)
+                        {
+#pragma warning disable CA1308 // Normalize strings to uppercase
+                            storeType = row["ProviderSpecificDataType"].ToString()?.Replace("Microsoft.SqlServer.Types.Sql", string.Empty, StringComparison.OrdinalIgnoreCase).ToLowerInvariant();
+#pragma warning restore CA1308 // Normalize strings to uppercase
+                        }
+
+                        list.Add(new ModuleResultElement
+                        {
+                            Name = name,
+                            Nullable = (bool?)row["AllowDBNull"] ?? true,
+                            Ordinal = (int)row["ColumnOrdinal"],
+                            StoreType = storeType,
+                            Precision = (short?)row["NumericPrecision"],
+                            Scale = (short?)row["NumericScale"],
+                            MaxLength = (int)row["ColumnSize"],
+                        });
+                    }
+                }
+
+                // If the result set only contains un-named columns
+                if (schemaTable.Rows.Count > 0 && schemaTable.Rows.Count == unnamedColumnCount)
+                {
+                    throw new InvalidOperationException("Only un-named result columns in procedure");
+                }
+
+                if (unnamedColumnCount > 0)
+                {
+                    module.UnnamedColumnCount += unnamedColumnCount;
+                }
+
+                result.Add(list);
+            }
+            while (schemaReader.NextResult() && !singleResult);
+        }
+
+        /// <summary>
+        /// Identifies SQL Server errors that commonly occur when metadata discovery encounters temp tables or describe-result-set limitations.
+        /// </summary>
+        private static bool ShouldTryFmtOnlyFallback(SqlException ex)
+        {
+            return (ex.Number == 208 && ex.Message.Contains('#'))
+                || ex.Message.Contains("temporary table", StringComparison.OrdinalIgnoreCase)
+                || ex.Message.Contains("sp_describe_first_result_set", StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// Reads the stored procedure body from SQL Server and parses it to infer result sets when live discovery fails.
+        /// </summary>
+        private static List<List<ModuleResultElement>> GetResultSetsFromDefinition(SqlConnection connection, Routine module, bool singleResult)
+        {
+            var definition = GetRoutineDefinition(connection, module);
+            if (string.IsNullOrWhiteSpace(definition))
+            {
+                return new List<List<ModuleResultElement>>();
+            }
+
+            return SqlServerStoredProcedureResultSetFactory.CreateFromDefinition(definition, singleResult);
+        }
+
+        /// <summary>
+        /// Retrieves the T-SQL module definition for the target stored procedure from system catalog views.
+        /// </summary>
+        private static string GetRoutineDefinition(SqlConnection connection, Routine module)
+        {
+            using var command = connection.CreateCommand();
+            command.CommandText = @"
+SELECT sm.definition
+FROM sys.sql_modules sm
+INNER JOIN sys.objects o ON sm.object_id = o.object_id
+INNER JOIN sys.schemas s ON o.schema_id = s.schema_id
+WHERE s.name = @schemaName
+AND o.name = @routineName;";
+
+            command.Parameters.AddWithValue("@schemaName", module.Schema);
+            command.Parameters.AddWithValue("@routineName", module.Name);
+
+            return command.ExecuteScalar() as string;
+        }
         private static DataTable GetDataTableFromSchema(ModuleParameter parameter, SqlConnection connection)
         {
             var userType = new SqlParameter
