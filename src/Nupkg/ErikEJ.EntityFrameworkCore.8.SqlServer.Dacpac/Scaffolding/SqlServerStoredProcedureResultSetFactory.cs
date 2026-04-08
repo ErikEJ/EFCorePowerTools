@@ -104,87 +104,6 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
         }
 
         /// <summary>
-        /// Normalizes ScriptDom data type references to SQL Server store type names used by the type map.
-        /// </summary>
-        private static string GetStoreTypeName(DataTypeReference dataType)
-        {
-            var typeName = dataType switch
-            {
-                SqlDataTypeReference sqlDataTypeReference => sqlDataTypeReference.SqlDataTypeOption.ToString(),
-                UserDataTypeReference userDataTypeReference => userDataTypeReference.Name?.BaseIdentifier?.Value,
-                _ => null,
-            };
-
-            return typeName?.ToLowerInvariant() switch
-            {
-                "sysname" => "nvarchar",
-                var name => name,
-            };
-        }
-
-        /// <summary>
-        /// Extracts max length from parameterized SQL type declarations, preserving <c>MAX</c> as <c>-1</c>.
-        /// </summary>
-        private static int GetMaxLength(DataTypeReference dataType)
-        {
-            if (dataType is not ParameterizedDataTypeReference parameterizedDataType || parameterizedDataType.Parameters.Count == 0)
-            {
-                return 0;
-            }
-
-            if (parameterizedDataType.Parameters[0].LiteralType == LiteralType.Max)
-            {
-                return -1;
-            }
-
-            if (parameterizedDataType.Parameters[0] is IntegerLiteral integerLiteral
-                && int.TryParse(integerLiteral.Value, out var value))
-            {
-                return value;
-            }
-
-            return 0;
-        }
-
-        /// <summary>
-        /// Extracts precision from parameterized SQL type declarations when present.
-        /// </summary>
-        private static short? GetPrecision(DataTypeReference dataType)
-        {
-            if (dataType is not ParameterizedDataTypeReference parameterizedDataType || parameterizedDataType.Parameters.Count == 0)
-            {
-                return null;
-            }
-
-            if (parameterizedDataType.Parameters[0] is IntegerLiteral integerLiteral
-                && short.TryParse(integerLiteral.Value, out var value))
-            {
-                return value;
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Extracts scale from parameterized SQL type declarations when present.
-        /// </summary>
-        private static short? GetScale(DataTypeReference dataType)
-        {
-            if (dataType is not ParameterizedDataTypeReference parameterizedDataType || parameterizedDataType.Parameters.Count < 2)
-            {
-                return null;
-            }
-
-            if (parameterizedDataType.Parameters[1] is IntegerLiteral integerLiteral
-                && short.TryParse(integerLiteral.Value, out var value))
-            {
-                return value;
-            }
-
-            return null;
-        }
-
-        /// <summary>
         /// Collects temp-table column types and query specifications from a stored procedure definition.
         /// </summary>
         private sealed class ProcedureDefinitionVisitor : TSqlFragmentVisitor
@@ -194,28 +113,30 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             public List<QuerySpecification> Selects { get; } = new();
 
             /// <summary>
-            /// Maps a temp-table column definition to a SqlSharpener <see cref="DataType"/> when the type is supported.
-            /// </summary>
-            private static DataType CreateDataType(ColumnDefinition column)
+             /// Maps a temp-table column definition to a SqlSharpener <see cref="DataType"/> when the type is supported.
+             /// </summary>
+            private static bool TryCreateDataType(ColumnDefinition column, out DataType dataType)
             {
+                dataType = null;
+
                 if (column.DataType == null)
                 {
-                    return null;
+                    return false;
                 }
 
                 var storeType = GetStoreTypeName(column.DataType);
                 if (string.IsNullOrWhiteSpace(storeType))
                 {
-                    return null;
+                    return false;
                 }
 
                 var typeMap = DataTypeHelper.Instance.GetMap(TypeFormat.SqlServerDbType, storeType);
                 if (typeMap == null)
                 {
-                    return null;
+                    return false;
                 }
 
-                return new DataType
+                dataType = new DataType
                 {
                     Map = typeMap,
                     Nullable = !column.Constraints.OfType<NullableConstraintDefinition>().Any(c => !c.Nullable),
@@ -223,6 +144,89 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     Precision = GetPrecision(column.DataType),
                     Scale = GetScale(column.DataType),
                 };
+
+                return true;
+            }
+
+            /// <summary>
+            /// Normalizes ScriptDom data type references to SQL Server store type names used by the type map.
+            /// </summary>
+            private static string GetStoreTypeName(DataTypeReference dataType)
+            {
+                var typeName = dataType switch
+                {
+                    SqlDataTypeReference sqlDataTypeReference => sqlDataTypeReference.SqlDataTypeOption.ToString(),
+                    UserDataTypeReference userDataTypeReference => userDataTypeReference.Name?.BaseIdentifier?.Value,
+                    _ => null,
+                };
+
+                return typeName?.ToLowerInvariant() switch
+                {
+                    "sysname" => "nvarchar",
+                    var name => name,
+                };
+            }
+
+            /// <summary>
+            /// Extracts max length from parameterized SQL type declarations, preserving <c>MAX</c> as <c>-1</c>.
+            /// </summary>
+            private static int GetMaxLength(DataTypeReference dataType)
+            {
+                if (dataType is not ParameterizedDataTypeReference parameterizedDataType || parameterizedDataType.Parameters.Count == 0)
+                {
+                    return 0;
+                }
+
+                if (parameterizedDataType.Parameters[0].LiteralType == LiteralType.Max)
+                {
+                    return -1;
+                }
+
+                if (parameterizedDataType.Parameters[0] is IntegerLiteral integerLiteral
+                    && int.TryParse(integerLiteral.Value, out var value))
+                {
+                    return value;
+                }
+
+                return 0;
+            }
+
+            /// <summary>
+            /// Extracts precision from parameterized SQL type declarations when present.
+            /// </summary>
+            private static short? GetPrecision(DataTypeReference dataType)
+            {
+                if (dataType is not ParameterizedDataTypeReference parameterizedDataType || parameterizedDataType.Parameters.Count == 0)
+                {
+                    return null;
+                }
+
+                if (parameterizedDataType.Parameters[0] is IntegerLiteral integerLiteral
+                    && short.TryParse(integerLiteral.Value, out var value))
+                {
+                    return value;
+                }
+
+                return null;
+            }
+
+            /// <summary>
+            /// Extracts scale from parameterized SQL type declarations when present.
+            /// </summary>
+            private static short? GetScale(DataTypeReference dataType)
+            {
+                if (dataType is not ParameterizedDataTypeReference parameterizedDataType || parameterizedDataType.Parameters.Count < 2)
+                {
+                    return null;
+                }
+
+                if (parameterizedDataType.Parameters[1] is IntegerLiteral integerLiteral
+                    && short.TryParse(integerLiteral.Value, out var value))
+                {
+                    return value;
+                }
+
+                return null;
             }
 
             public override void Visit(CreateTableStatement node)
@@ -237,8 +241,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
                 foreach (var column in node.Definition.ColumnDefinitions)
                 {
-                    var dataType = CreateDataType(column);
-                    if (dataType == null)
+                    if (!TryCreateDataType(column, out var dataType))
                     {
                         continue;
                     }
