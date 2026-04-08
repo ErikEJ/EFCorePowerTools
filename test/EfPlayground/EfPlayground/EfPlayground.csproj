@@ -8,11 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-  <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.4" />
-  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.5">
-    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    <PrivateAssets>all</PrivateAssets>
-  </PackageReference>
   <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="10.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.HierarchyId" Version="10.0.5" /> 
   </ItemGroup>
