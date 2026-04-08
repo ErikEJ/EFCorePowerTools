@@ -14,7 +14,7 @@ namespace UnitTests
             var result = DacpacConsolidator.Consolidate(@"C:\Users\Erik\Downloads\CompositeDatabase\CompositeDatabase\CompositeDatabase\bin\Debug\CompositeDatabase.dacpac");
 
             // Assert
-            Assert.IsTrue(result.Contains("\\efpt-"));
+            Assert.That(result, Does.Contain("\\efpt-"));
         }
 
         [Test]
@@ -27,7 +27,7 @@ namespace UnitTests
             var result = DacpacConsolidator.Consolidate(dacPath);
 
             // Assert
-            Assert.AreEqual(result, dacPath);
+            Assert.That(result, Is.EqualTo(dacPath));
         }
 
         private string TestPath(string file)

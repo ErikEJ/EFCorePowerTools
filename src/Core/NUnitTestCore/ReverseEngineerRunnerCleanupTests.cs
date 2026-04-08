@@ -19,7 +19,7 @@ namespace NUnitTestCore
             {
                 InvokeTryRemoveFile(codeFile);
 
-                Assert.That(File.Exists(codeFile), Is.False);
+                NUnit.Framework.Assert.That(File.Exists(codeFile), Is.False);
             }
             finally
             {
@@ -36,7 +36,7 @@ namespace NUnitTestCore
             {
                 InvokeTryRemoveFile(codeFile);
 
-                Assert.That(File.Exists(codeFile), Is.True);
+                NUnit.Framework.Assert.That(File.Exists(codeFile), Is.True);
             }
             finally
             {

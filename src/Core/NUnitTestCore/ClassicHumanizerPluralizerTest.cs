@@ -11,7 +11,7 @@ namespace UnitTests
             var sut = new HumanizerPluralizer();
             var result = sut.Singularize("UserData");
 
-            Assert.AreEqual("UserDatum", result);
+            Assert.That(result, Is.EqualTo("UserDatum"));
         }
 
         [Test]
@@ -20,7 +20,7 @@ namespace UnitTests
             var sut = new HumanizerPluralizer();
             var result = sut.Pluralize("UserStatus");
 
-            Assert.AreEqual("UserStatuses", result);
+            Assert.That(result, Is.EqualTo("UserStatuses"));
         }
     }
 }
