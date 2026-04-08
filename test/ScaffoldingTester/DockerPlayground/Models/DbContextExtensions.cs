@@ -19,7 +19,7 @@ namespace DockerPlayground.Models
         {
             parameters ??= Array.Empty<object>();
             cancellationToken ??= CancellationToken.None;
-
+            
             if (typeof(T).GetProperties().Any())
             {
                 return await db.Database

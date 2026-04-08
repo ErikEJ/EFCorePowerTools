@@ -37,6 +37,12 @@
   "stored-procedures": [
     {
       "name": "[dbo].[StoGetSomeData]"
+    },
+    {
+      "name": "[dbo].[StoGetSomeDataMultipleResults]"
+    },
+    {
+      "name": "[dbo].[StoGetSomeDataWithParameters]"
     }
   ],
   "type-mappings": {

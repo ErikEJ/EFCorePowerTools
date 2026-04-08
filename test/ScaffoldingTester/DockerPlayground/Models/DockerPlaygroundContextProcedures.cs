@@ -62,5 +62,72 @@ namespace DockerPlayground.Models
 
             return _;
         }
+
+        public virtual async Task<List<StoGetSomeDataMultipleResultsResult>?> StoGetSomeDataMultipleResultsAsync(int? categoryId, OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default)
+        {
+            var parameterreturnValue = new SqlParameter
+            {
+                ParameterName = "returnValue",
+                Direction = System.Data.ParameterDirection.Output,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
+
+            var sqlParameters = new []
+            {
+                new SqlParameter
+                {
+                    ParameterName = "CategoryId",
+                    Value = categoryId ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                parameterreturnValue,
+            };
+            var _ = await _context.SqlQueryAsync<StoGetSomeDataMultipleResultsResult>("EXEC @returnValue = [dbo].[StoGetSomeDataMultipleResults] @CategoryId = @CategoryId", sqlParameters, cancellationToken);
+
+            returnValue?.SetValue(parameterreturnValue.Value);
+
+            return _;
+        }
+
+        public virtual async Task<List<StoGetSomeDataWithParametersResult>?> StoGetSomeDataWithParametersAsync(int? categoryId, string? searchTerm, decimal? amount, OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default)
+        {
+            var parameterreturnValue = new SqlParameter
+            {
+                ParameterName = "returnValue",
+                Direction = System.Data.ParameterDirection.Output,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
+
+            var sqlParameters = new []
+            {
+                new SqlParameter
+                {
+                    ParameterName = "CategoryId",
+                    Value = categoryId ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Int,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "SearchTerm",
+                    Size = 50,
+                    Value = searchTerm ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.NVarChar,
+                },
+                new SqlParameter
+                {
+                    ParameterName = "Amount",
+                    Precision = 10,
+                    Scale = 2,
+                    Value = amount ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.Decimal,
+                },
+                parameterreturnValue,
+            };
+            var _ = await _context.SqlQueryAsync<StoGetSomeDataWithParametersResult>("EXEC @returnValue = [dbo].[StoGetSomeDataWithParameters] @CategoryId = @CategoryId, @SearchTerm = @SearchTerm, @Amount = @Amount", sqlParameters, cancellationToken);
+
+            returnValue?.SetValue(parameterreturnValue.Value);
+
+            return _;
+        }
     }
 }
