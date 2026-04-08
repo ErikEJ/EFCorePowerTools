@@ -73,6 +73,9 @@
     <Project Path="Core/NUnitTestCore/NUnitTestCore.csproj">
       <Build Solution="Release|*" Project="false" />
     </Project>
+    <Project Path="Core/NUnitTestCore100/NUnitTestCore100.csproj">
+      <Build Solution="Release|*" Project="false" />
+    </Project>
     <Project Path="GUI/UnitTests/UnitTests.csproj" Id="562b5f7b-6229-4019-bfa9-cd7fd4773081" />
   </Folder>
   <Project Path="GUI/EFCorePowerTools/EFCorePowerTools.csproj" Id="c670be03-6397-4ac0-9914-ad1bb679778f" />

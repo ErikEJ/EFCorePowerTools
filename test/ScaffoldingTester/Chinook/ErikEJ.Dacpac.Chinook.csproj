@@ -1,4 +1,4 @@
-﻿<Project Sdk="MSBuild.Sdk.SqlProj/4.0.1">
+﻿<Project Sdk="MSBuild.Sdk.SqlProj/4.1.1">
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
         <SqlServerVersion>Sql160</SqlServerVersion>
