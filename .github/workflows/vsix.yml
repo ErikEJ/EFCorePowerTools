@@ -58,7 +58,6 @@ jobs:
     - name: Extract and verify efreveng80.exe.zip file count
       shell: cmd
       run: |
-        mkdir vsix
         7z x src/GUI/lib/efreveng80.exe.zip -oefreveng80 -y
         dir /a:-d /s /b "efreveng80" | find /c ":\" > filecount.txt
         findstr "166" filecount.txt
@@ -66,7 +65,6 @@ jobs:
     - name: Extract and verify efreveng90.exe.zip file count
       shell: cmd
       run: |
-          mkdir vsix
           7z x src/GUI/lib/efreveng90.exe.zip -oefreveng90 -y
           dir /a:-d /s /b "efreveng90" | find /c ":\" > filecount.txt
           findstr "166" filecount.txt
@@ -74,7 +72,6 @@ jobs:
     - name: Extract and verify efreveng100.exe.zip file count
       shell: cmd
       run: |
-          mkdir vsix
           7z x src/GUI/lib/efreveng100.exe.zip -oefreveng100 -y
           dir /a:-d /s /b "efreveng100" | find /c ":\" > filecount.txt
           findstr "143" filecount.txt
@@ -89,7 +86,7 @@ jobs:
     - name: Extract and verify vsix file count
       shell: cmd
       run: |
-        mkdir vsix
+        if not exist vsix mkdir vsix
         7z x src/GUI/EFCorePowerTools/bin/Release/EFCorePowerTools.vsix -ovsix -y
         dir /a:-d /s /b "vsix" | find /c ":\" > filecount.txt
         findstr "78" filecount.txt
