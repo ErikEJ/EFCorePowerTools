@@ -11,7 +11,9 @@
     <File Path="NuGet.Config" />
   </Folder>
   <Folder Name="/Modelling/">
-    <Project Path="Core/efpt100.core/efpt100.core.csproj" />
+    <Project Path="Core/efpt100.core/efpt100.core.csproj">
+      <Build Solution="Release|*" Project="false" />
+    </Project>
     <Project Path="Core/efpt80.core/efpt80.core.csproj">
       <Build Solution="Release|*" Project="false" />
     </Project>
