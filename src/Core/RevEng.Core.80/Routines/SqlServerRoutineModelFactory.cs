@@ -21,6 +21,19 @@ namespace RevEng.Core.Routines
         protected abstract List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection, Routine module, bool multipleResults, bool useLegacyResultSetDiscovery);
 #pragma warning restore CA1716 // Identifiers should not match keywords
 
+        public static bool ShouldUseLegacyResultSetDiscovery(ModuleModelFactoryOptions options, Routine module)
+        {
+            ArgumentNullException.ThrowIfNull(options);
+            ArgumentNullException.ThrowIfNull(module);
+
+            if (options.UseLegacyResultSetDiscovery)
+            {
+                return true;
+            }
+
+            return options.ModulesUsingLegacyDiscovery?.Contains($"[{module.Schema}].[{module.Name}]") ?? false;
+        }
+
         protected RoutineModel GetRoutines(string connectionString, ModuleModelFactoryOptions options)
         {
             ArgumentNullException.ThrowIfNull(options);
@@ -98,12 +111,7 @@ namespace RevEng.Core.Routines
 #pragma warning disable CA1031 // Do not catch general exception types
                                 try
                                 {
-                                    var forceLegacy = options.UseLegacyResultSetDiscovery;
-                                    if (!forceLegacy)
-                                    {
-                                        forceLegacy = options.ModulesUsingLegacyDiscovery?.Contains($"[{module.Schema}].[{module.Name}]") ?? false;
-                                    }
-
+                                    var forceLegacy = ShouldUseLegacyResultSetDiscovery(options, module);
                                     module.Results.AddRange(GetResultElementLists(connection, module, options.DiscoverMultipleResultSets, forceLegacy));
                                 }
                                 catch (Exception ex)
