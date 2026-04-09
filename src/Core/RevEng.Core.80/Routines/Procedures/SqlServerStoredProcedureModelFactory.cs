@@ -335,7 +335,7 @@ ORDER BY ROUTINE_NAME;";
         /// </summary>
         private static bool ShouldTryFmtOnlyFallback(SqlException ex)
         {
-            return (ex.Number == 208 && ex.Message.Contains('#'))
+            return (ex.Number == 208 && ex.Message.Contains('#', StringComparison.Ordinal))
                 || ex.Message.Contains("temporary table", StringComparison.OrdinalIgnoreCase)
                 || ex.Message.Contains("sp_describe_first_result_set", StringComparison.OrdinalIgnoreCase);
         }
@@ -373,6 +373,7 @@ AND o.name = @routineName;";
 
             return command.ExecuteScalar() as string;
         }
+
         private static DataTable GetDataTableFromSchema(ModuleParameter parameter, SqlConnection connection)
         {
             var userType = new SqlParameter
