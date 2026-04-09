@@ -1,25 +1,23 @@
 using Humanizer.Inflections;
-using NUnit.Framework;
-using RevEng.Core;
+using Xunit;
 
 namespace UnitTests
 {
-    [TestFixture]
     public class CustomHumanizerPluralizerTest
     {
-        [Test]
-        [TestCase("UserStatus")]
-        [TestCase("UserData")]
-        [TestCase("Delta")]
+        [Theory]
+        [InlineData("UserStatus")]
+        [InlineData("UserData")]
+        [InlineData("Delta")]
         public void DoesNotPluralize(string word)
         {
             Pluralize(word);
         }
 
-        [Test]
-        [TestCase("UserStatus")]
-        [TestCase("UserData")]
-        [TestCase("Delta")]
+        [Theory]
+        [InlineData("UserStatus")]
+        [InlineData("UserData")]
+        [InlineData("Delta")]
         public void DoesNotSinguralize(string word)
         {
             Singularize(word);
@@ -27,63 +25,62 @@ namespace UnitTests
 
         private static void Pluralize(string word)
         {
-            Vocabularies.Default.AddUncountable(word);
-            var sut = new HumanizerPluralizer();
-            var result = sut.Pluralize(word);
-
-            Assert.That(result, Is.EqualTo(word));
+            var vocabulary = HumanizerVocabularyFactory.CreateDefault();
+            vocabulary.AddUncountable(word);
+            var result = vocabulary.Pluralize(word, inputIsKnownToBeSingular: false);
+            Assert.Equal(word, result);
         }
 
         private static void Singularize(string word)
         {
-            Vocabularies.Default.AddUncountable(word);
-            var sut = new HumanizerPluralizer();
-            var result = sut.Singularize(word);
-
-            Assert.That(result, Is.EqualTo(word));
+            var vocabulary = HumanizerVocabularyFactory.CreateDefault();
+            vocabulary.AddUncountable(word);
+            var result = vocabulary.Singularize(word, inputIsKnownToBePlural: false, skipSimpleWords: false);
+            Assert.Equal(word, result);
         }
-
-        [Test]
-        [TestCase("Locus", "Loci")]
-        [TestCase("Krone", "Kroner")]
+        [Theory]
+        [InlineData("Locus", "Loci")]
+        [InlineData("Krone", "Kroner")]
         public void PluralizesAndSingularizesIrregularly(string singular, string plural)
         {
+            var vocabulary = HumanizerVocabularyFactory.CreateDefault();
+
             // Verify inflection fails by default. If this assertion fails, then Humanizer's default logic has been enhanced and a better test case is needed.
-            var sut = new HumanizerPluralizer();
-            Assert.That(sut.Pluralize(singular), Is.Not.EqualTo(plural), "New test case needed.");
-            Assert.That(sut.Singularize(plural), Is.Not.EqualTo(singular), "New test case needed.");
+            Assert.NotEqual(plural, vocabulary.Pluralize(singular, inputIsKnownToBeSingular: false));
+            Assert.NotEqual(singular, vocabulary.Singularize(plural, inputIsKnownToBePlural: false, skipSimpleWords: false));
 
-            Vocabularies.Default.AddIrregular(singular, plural);
+            vocabulary.AddIrregular(singular, plural);
 
-            Assert.That(sut.Pluralize(singular), Is.EqualTo(plural));
-            Assert.That(sut.Singularize(plural), Is.EqualTo(singular));
+            Assert.Equal(plural, vocabulary.Pluralize(singular, inputIsKnownToBeSingular: false));
+            Assert.Equal(singular, vocabulary.Singularize(plural, inputIsKnownToBePlural: false, skipSimpleWords: false));
         }
 
-        [Test]
-        [TestCase("(.*)mas$", "$1mases", "Christmas", "Christmases")]
+        [Theory]
+        [InlineData("(.*)mas$", "$1mases", "Christmas", "Christmases")]
         public void DoesPluralizeWithRule(string rule, string replacement, string singular, string plural)
         {
+            var vocabulary = HumanizerVocabularyFactory.CreateDefault();
+
             // Verify inflection fails by default. If this assertion fails, then Humanizer's default logic has been enhanced and a better test case is needed.
-            var sut = new HumanizerPluralizer();
-            Assert.That(sut.Pluralize(singular), Is.Not.EqualTo(plural), "New test case needed.");
+            Assert.NotEqual(plural, vocabulary.Pluralize(singular, inputIsKnownToBeSingular: false));
 
-            Vocabularies.Default.AddPlural(rule, replacement);
+            vocabulary.AddPlural(rule, replacement);
 
-            Assert.That(sut.Pluralize(singular), Is.EqualTo(plural));
+            Assert.Equal(plural, vocabulary.Pluralize(singular, inputIsKnownToBeSingular: false));
         }
 
-        [Test]
-        [TestCase("(.*)mases$", "$1mas", "Christmas", "Christmases")]
+        [Theory]
+        [InlineData("(.*)mases$", "$1mas", "Christmas", "Christmases")]
         public void DoesSingularizeWithRule(string rule, string replacement, string singular, string plural)
         {
+            var vocabulary = HumanizerVocabularyFactory.CreateDefault();
+
             // Verify inflection fails by default. If this assertion fails, then Humanizer's default logic has been enhanced and a better test case is needed.
-            var sut = new HumanizerPluralizer();
-            Assert.That(sut.Singularize(plural), Is.Not.EqualTo(singular), "New test case needed.");
+            Assert.NotEqual(singular, vocabulary.Singularize(plural, inputIsKnownToBePlural: false, skipSimpleWords: false));
 
-            Vocabularies.Default.AddSingular(rule, replacement);
+            vocabulary.AddSingular(rule, replacement);
 
-            Assert.That(sut.Singularize(plural), Is.EqualTo(singular));
+            Assert.Equal(singular, vocabulary.Singularize(plural, inputIsKnownToBePlural: false, skipSimpleWords: false));
         }
-
     }
 }

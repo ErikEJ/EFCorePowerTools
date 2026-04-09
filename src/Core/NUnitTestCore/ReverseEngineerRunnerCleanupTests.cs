@@ -1,4 +1,4 @@
-using NUnit.Framework;
+using Xunit;
 using RevEng.Common;
 using RevEng.Core;
 using System;
@@ -7,10 +7,9 @@ using System.Text;
 
 namespace NUnitTestCore
 {
-    [TestFixture]
     public class ReverseEngineerRunnerCleanupTests
     {
-        [Test]
+        [Fact]
         public void TryRemoveFileDeletesGeneratedFile()
         {
             var codeFile = CreateTestFile(PathHelper.Header + Environment.NewLine + "public class TableTwo {}");
@@ -19,7 +18,7 @@ namespace NUnitTestCore
             {
                 InvokeTryRemoveFile(codeFile);
 
-                NUnit.Framework.Assert.That(File.Exists(codeFile), Is.False);
+                Assert.False(File.Exists(codeFile));
             }
             finally
             {
@@ -27,7 +26,7 @@ namespace NUnitTestCore
             }
         }
 
-        [Test]
+        [Fact]
         public void TryRemoveFileDoesNotDeleteNonGeneratedFile()
         {
             var codeFile = CreateTestFile("public class TableTwo {}");
@@ -36,7 +35,7 @@ namespace NUnitTestCore
             {
                 InvokeTryRemoveFile(codeFile);
 
-                NUnit.Framework.Assert.That(File.Exists(codeFile), Is.True);
+                Assert.True(File.Exists(codeFile));
             }
             finally
             {

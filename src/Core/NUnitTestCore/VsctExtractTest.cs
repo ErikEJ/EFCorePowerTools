@@ -1,15 +1,14 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Xml;
-using NUnit.Framework;
+using Xunit;
 using System.IO;
 using System.Linq;
 
 namespace UnitTests
 {
-    [TestFixture]
     public class VsctExtractTest
     {
-        [Test, Ignore("Run locally only")]
+        [Fact(Skip = "Run locally only")]
         public void CanExtract()
         {
             var buttonTexts = new List<Buttontexts>();

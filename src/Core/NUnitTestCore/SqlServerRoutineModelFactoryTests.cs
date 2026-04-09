@@ -1,15 +1,14 @@
-using NUnit.Framework;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Routines;
 using RevEng.Core.Routines.Procedures;
+using Xunit;
 
 namespace UnitTests
 {
-    [TestFixture]
     public class SqlServerRoutineModelFactoryTests
     {
-        [Test]
+        [Fact]
         public void ShouldUseLegacyResultSetDiscoveryReturnsTrueWhenGlobalOptionEnabled()
         {
             var options = new ModuleModelFactoryOptions
@@ -25,10 +24,10 @@ namespace UnitTests
 
             var useLegacy = SqlServerRoutineModelFactory.ShouldUseLegacyResultSetDiscovery(options, module);
 
-            Assert.That(useLegacy, Is.True);
+            Assert.True(useLegacy);
         }
 
-        [Test]
+        [Fact]
         public void ShouldUseLegacyResultSetDiscoveryReturnsTrueWhenModuleIsConfiguredForLegacyDiscovery()
         {
             var options = new ModuleModelFactoryOptions
@@ -44,10 +43,10 @@ namespace UnitTests
 
             var useLegacy = SqlServerRoutineModelFactory.ShouldUseLegacyResultSetDiscovery(options, module);
 
-            Assert.That(useLegacy, Is.True);
+            Assert.True(useLegacy);
         }
 
-        [Test]
+        [Fact]
         public void ShouldUseLegacyResultSetDiscoveryReturnsFalseWhenNeitherGlobalNorModuleOptionIsEnabled()
         {
             var options = new ModuleModelFactoryOptions
@@ -63,26 +62,27 @@ namespace UnitTests
 
             var useLegacy = SqlServerRoutineModelFactory.ShouldUseLegacyResultSetDiscovery(options, module);
 
-            Assert.That(useLegacy, Is.False);
+            Assert.False(useLegacy);
         }
 
-        [Test]
+        [Fact]
         public void UseStoredProcedureResultSetFallbackDefaultsToTrue()
         {
             var options = new ModuleModelFactoryOptions();
 
-            Assert.That(options.UseStoredProcedureResultSetFallback, Is.True);
+            Assert.True(options.UseStoredProcedureResultSetFallback);
         }
 
-        [TestCase(208, "Invalid object name '#OrderTable'.", true)]
-        [TestCase(208, "Invalid object name '#OrderLegacyTable'.", true)]
-        [TestCase(208, "Invalid object name '#OrderSummaryTable'.", true)]
-        [TestCase(208, "Invalid object name '#OrderSearchTable'.", true)]
+        [Theory]
+        [InlineData(208, "Invalid object name '#OrderTable'.", true)]
+        [InlineData(208, "Invalid object name '#OrderLegacyTable'.", true)]
+        [InlineData(208, "Invalid object name '#OrderSummaryTable'.", true)]
+        [InlineData(208, "Invalid object name '#OrderSearchTable'.", true)]
         public void ShouldTryDefinitionFallbackMatchesObservedDockerPlaygroundLiveDbFailures(int errorNumber, string message, bool expected)
         {
             var result = SqlServerStoredProcedureModelFactory.ShouldTryDefinitionFallback(errorNumber, message);
 
-            Assert.That(result, Is.EqualTo(expected));
+            Assert.Equal(expected, result);
         }
     }
 }

@@ -2,77 +2,76 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
-using NUnit.Framework;
+using Xunit;
 using RevEng.Core;
 
 namespace UnitTests
 {
-    [TestFixture]
     [SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores", Justification = "Test method names")]
     public class DabBuilderTest
     {
-        [Test]
-        [TestCase("User", "User")]
-        [TestCase("Users", "User")]
-        [TestCase("UserStatus", "UserStatus")]
-        [TestCase("UserData", "UserData")]
-        [TestCase("user_accounts", "UserAccount")]
-        [TestCase("order_details", "OrderDetail")]
-        [TestCase("product_categories", "ProductCategory")]
-        [TestCase("my_table_name", "MyTableName")]
-        [TestCase("TABLE_NAME", "TableName")]
-        [TestCase("tableName", "TableName")]
-        [TestCase("TableName", "TableName")]
-        [TestCase("table123", "Table123")]
-        [TestCase("123table", "123table")]
-        [TestCase("table_with_multiple_underscores", "TableWithMultipleUnderscore")]
+        [Theory]
+        [InlineData("User", "User")]
+        [InlineData("Users", "User")]
+        [InlineData("UserStatus", "UserStatus")]
+        [InlineData("UserData", "UserDatum")]
+        [InlineData("user_accounts", "UserAccount")]
+        [InlineData("order_details", "OrderDetail")]
+        [InlineData("product_categories", "ProductCategory")]
+        [InlineData("my_table_name", "MyTableName")]
+        [InlineData("TABLE_NAME", "TableName")]
+        [InlineData("tableName", "TableName")]
+        [InlineData("TableName", "TableName")]
+        [InlineData("table123", "Table123")]
+        [InlineData("123table", "123table")]
+        [InlineData("table_with_multiple_underscores", "TableWithMultipleUnderscore")]
         public void GenerateEntityName_ShouldConvertToSingularPascalCase(string input, string expected)
         {
             // Act
             var result = InvokePrivateStaticMethod("GenerateEntityName", input);
 
             // Assert
-            Assert.That(result, Is.EqualTo(expected));
+            Assert.Equal(expected, result);
         }
 
-        [Test]
-        [TestCase("", "")]
-        [TestCase(null, "")]
-        [TestCase("simple text", "simple text")]
-        [TestCase("text with ^ caret", "text with ^^ caret")]
-        [TestCase("text with & ampersand", "text with ^& ampersand")]
-        [TestCase("text with | pipe", "text with ^| pipe")]
-        [TestCase("text with < less", "text with ^< less")]
-        [TestCase("text with > greater", "text with ^> greater")]
-        [TestCase("text with ! exclamation", "text with ^! exclamation")]
-        [TestCase("text with % percent", "text with %% percent")]
-        [TestCase("text with \"quote\"", "text with \\\"quote\\\"")]
-        [TestCase("complex ^&|<>!%\" test", "complex ^^^&^|^<^>^!%%\\\" test")]
+        [Theory]
+        [InlineData("", "")]
+        [InlineData(null, "")]
+        [InlineData("simple text", "simple text")]
+        [InlineData("text with ^ caret", "text with ^^ caret")]
+        [InlineData("text with & ampersand", "text with ^& ampersand")]
+        [InlineData("text with | pipe", "text with ^| pipe")]
+        [InlineData("text with < less", "text with ^< less")]
+        [InlineData("text with > greater", "text with ^> greater")]
+        [InlineData("text with ! exclamation", "text with ^! exclamation")]
+        [InlineData("text with % percent", "text with %% percent")]
+        [InlineData("text with \"quote\"", "text with \\\"quote\\\"")]
+        [InlineData("complex ^&|<>!%\" test", "complex ^^^&^|^<^>^!%%\\\" test")]
         public void EscapeDescription_ShouldEscapeSpecialCharacters(string input, string expected)
         {
             // Act
             var result = InvokePrivateStaticMethod("EscapeDescription", input);
 
             // Assert
-            Assert.That(result, Is.EqualTo(expected));
+            Assert.Equal(expected, result);
         }
 
-        [Test]
-        [TestCase(null, "")]
-        [TestCase("", "")]
-        [TestCase("   ", "")]
-        [TestCase("My table description", "--description \"My table description\"")]
-        [TestCase("Description with ^ special", "--description \"Description with ^^ special\"")]
+        [Theory]
+        [InlineData(null, "")]
+        [InlineData("", "")]
+        [InlineData("   ", "")]
+        [InlineData("My table description", "--description \"My table description\"")]
+        [InlineData("Description with ^ special", "--description \"Description with ^^ special\"")]
         public void GetDescriptionParameter_ShouldFormatDescriptionCorrectly(string input, string expected)
         {
             // Act
             var result = InvokePrivateStaticMethod("GetDescriptionParameter", input);
 
             // Assert
-            Assert.That(result, Is.EqualTo(expected));
+            Assert.Equal(expected, result);
         }
 
-        [Test]
+        [Fact]
         public void BreaksOn_ShouldReturnTrue_WhenTableHasNoColumns()
         {
             // Arrange
@@ -82,13 +81,13 @@ namespace UnitTests
             var result = InvokePrivateStaticMethod<DatabaseTable, bool>("BreaksOn", table);
 
             // Assert
-            Assert.That(result, Is.True);
+            Assert.True(result);
         }
 
-        [Test]
-        [TestCase("hierarchyid")]
-        [TestCase("geometry")]
-        [TestCase("geography")]
+        [Theory]
+        [InlineData("hierarchyid")]
+        [InlineData("geometry")]
+        [InlineData("geography")]
         public void BreaksOn_ShouldReturnTrue_WhenTableHasUnsupportedColumnTypes(string storeType)
         {
             // Arrange
@@ -103,10 +102,10 @@ namespace UnitTests
             var result = InvokePrivateStaticMethod<DatabaseTable, bool>("BreaksOn", table);
 
             // Assert
-            Assert.That(result, Is.True);
+            Assert.True(result);
         }
 
-        [Test]
+        [Fact]
         public void BreaksOn_ShouldReturnFalse_WhenTableHasSupportedColumns()
         {
             // Arrange
@@ -122,30 +121,30 @@ namespace UnitTests
             var result = InvokePrivateStaticMethod<DatabaseTable, bool>("BreaksOn", table);
 
             // Assert
-            Assert.That(result, Is.False);
+            Assert.False(result);
         }
 
-        [Test]
+        [Fact]
         public void GenerateEntityName_ShouldHandleEdgeCases()
         {
             // Test empty string
             var emptyResult = InvokePrivateStaticMethod("GenerateEntityName", "");
-            Assert.That(emptyResult, Is.EqualTo(string.Empty));
+            Assert.Equal(string.Empty, emptyResult);
 
             // Test single character
             var singleChar = InvokePrivateStaticMethod("GenerateEntityName", "a");
-            Assert.That(singleChar, Is.EqualTo("A"));
+            Assert.Equal("A", singleChar);
 
             // Test all underscores
             var underscores = InvokePrivateStaticMethod("GenerateEntityName", "___");
-            Assert.That(underscores, Is.EqualTo(string.Empty));
+            Assert.Equal(string.Empty, underscores);
 
             // Test mixed case with underscores
             var mixed = InvokePrivateStaticMethod("GenerateEntityName", "My_Table_NAME");
-            Assert.That(mixed, Is.EqualTo("MyTableName"));
+            Assert.Equal("MyTableName", mixed);
         }
 
-        [Test]
+        [Fact]
         public void EscapeDescription_ShouldHandleMultipleSpecialCharacters()
         {
             // Arrange
@@ -156,7 +155,7 @@ namespace UnitTests
             var result = InvokePrivateStaticMethod("EscapeDescription", input);
 
             // Assert
-            Assert.That(result, Is.EqualTo(expected));
+            Assert.Equal(expected, result);
         }
 
         // Helper methods

@@ -2,15 +2,14 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
-using NUnit.Framework;
+using Xunit;
 
 namespace IntegrationTests
 {
-    [TestFixture]
-    [NonParallelizable]
+    [Collection("NonParallel")]
     public class CliDacpacSmokeTests
     {
-        [Test]
+        [Fact]
         public async Task Efcpt8DockerPlaygroundDacpacSmokeTestCompletes()
         {
             var workingDirectory = CreateWorkingDirectory("efcpt-dockerplayground8-");
@@ -18,9 +17,9 @@ namespace IntegrationTests
             {
                 var stdout = await RunEfcptCliAsync(GetEfcpt8CliPath(), GetDockerPlaygroundDacpacPath(), workingDirectory);
 
-                Assert.That(stdout, Does.Contain("Getting database objects..."));
-                Assert.That(stdout, Does.Contain("database objects discovered"));
-                Assert.That(stdout, Does.Contain("files generated"));
+                Assert.Contains("Getting database objects...", stdout);
+                Assert.Contains("database objects discovered", stdout);
+                Assert.Contains("files generated", stdout);
             }
             finally
             {
@@ -28,7 +27,7 @@ namespace IntegrationTests
             }
         }
 
-        [Test]
+        [Fact]
         public async Task Efcpt10DockerPlaygroundDacpacSmokeTestCompletes()
         {
             var workingDirectory = CreateWorkingDirectory("efcpt-dockerplayground10-");
@@ -36,9 +35,9 @@ namespace IntegrationTests
             {
                 var stdout = await RunEfcptCliAsync(GetEfcpt10CliPath(), GetDockerPlaygroundDacpacPath(), workingDirectory);
 
-                Assert.That(stdout, Does.Contain("Getting database objects..."));
-                Assert.That(stdout, Does.Contain("database objects discovered"));
-                Assert.That(stdout, Does.Contain("files generated"));
+                Assert.Contains("Getting database objects...", stdout);
+                Assert.Contains("database objects discovered", stdout);
+                Assert.Contains("files generated", stdout);
             }
             finally
             {
@@ -117,20 +116,20 @@ namespace IntegrationTests
             };
 
             using var process = Process.Start(startInfo);
-            Assert.That(process, Is.Not.Null);
+            Assert.NotNull(process);
 
             var stdout = await process.StandardOutput.ReadToEndAsync();
             var stderr = await process.StandardError.ReadToEndAsync();
             await process.WaitForExitAsync();
 
-            Assert.That(process.ExitCode, Is.EqualTo(0), $"efcpt failed.{Environment.NewLine}{stdout}{Environment.NewLine}{stderr}");
+            Assert.True(process.ExitCode == 0, $"efcpt failed.{Environment.NewLine}{stdout}{Environment.NewLine}{stderr}");
 
             return stdout;
         }
 
         private static string GetRepositoryRoot()
         {
-            var current = new DirectoryInfo(TestContext.CurrentContext.TestDirectory);
+            var current = new DirectoryInfo(AppContext.BaseDirectory);
 
             while (current != null)
             {
@@ -144,5 +143,10 @@ namespace IntegrationTests
 
             throw new DirectoryNotFoundException("Unable to locate repository root from test output directory.");
         }
+    }
+
+    [CollectionDefinition("NonParallel", DisableParallelization = true)]
+    public class NonParallelCollectionDefinition
+    {
     }
 }
