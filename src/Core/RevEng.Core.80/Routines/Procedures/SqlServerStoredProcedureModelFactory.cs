@@ -53,20 +53,13 @@ ORDER BY ROUTINE_NAME;";
                 {
                     return GetFirstResultSet(connection, module);
                 }
-                catch (SqlException ex) when (ShouldTryFmtOnlyFallback(ex))
+                catch (SqlException ex) when (ShouldTryDefinitionFallback(ex))
                 {
-                    return GetResultSetsWithFallbacks(connection, module, true, ex);
+                    return GetResultSetsWithMetadataOrDefinitionFallback(connection, module, true, ex);
                 }
             }
 
-            try
-            {
-                return GetAllResultSets(connection, module, !multipleResults);
-            }
-            catch (SqlException ex) when (ShouldTryFmtOnlyFallback(ex))
-            {
-                return GetResultSetsWithFallbacks(connection, module, !multipleResults, ex);
-            }
+            return GetResultSetsWithMetadataOrDefinitionFallback(connection, module, !multipleResults);
         }
 
         private static List<List<ModuleResultElement>> GetAllResultSets(SqlConnection connection, Routine module, bool singleResult)
@@ -81,27 +74,15 @@ ORDER BY ROUTINE_NAME;";
         }
 
         /// <summary>
-        /// Uses an <c>FMTONLY</c> batch to ask SQL Server for stored procedure result-set metadata without consuming rows.
+        /// Tries SQL Server metadata discovery first and falls back to parsing the stored procedure definition.
         /// </summary>
-        private static List<List<ModuleResultElement>> GetResultSetsWithFmtOnly(SqlConnection connection, Routine module, bool singleResult)
-        {
-            var result = new List<List<ModuleResultElement>>();
-            using var sqlCommand = CreateFmtOnlyCommand(connection, module);
-            using var schemaReader = sqlCommand.ExecuteReader();
-            ReadResultSets(module, singleResult, result, schemaReader);
-            return result;
-        }
-
-        /// <summary>
-        /// Falls back from live metadata discovery to <c>FMTONLY</c>, then to parsing the stored procedure definition.
-        /// </summary>
-        private static List<List<ModuleResultElement>> GetResultSetsWithFallbacks(SqlConnection connection, Routine module, bool singleResult, SqlException originalException)
+        private static List<List<ModuleResultElement>> GetResultSetsWithMetadataOrDefinitionFallback(SqlConnection connection, Routine module, bool singleResult, SqlException originalException = null)
         {
             try
             {
-                return GetResultSetsWithFmtOnly(connection, module, singleResult);
+                return GetAllResultSets(connection, module, singleResult);
             }
-            catch (SqlException)
+            catch (SqlException ex) when (ShouldTryDefinitionFallback(ex))
             {
                 var resultFromDefinition = GetResultSetsFromDefinition(connection, module, singleResult);
                 if (resultFromDefinition.Count > 0)
@@ -109,7 +90,7 @@ ORDER BY ROUTINE_NAME;";
                     return resultFromDefinition;
                 }
 
-                throw originalException;
+                throw originalException ?? ex;
             }
         }
 
@@ -204,22 +185,6 @@ ORDER BY ROUTINE_NAME;";
         }
 
         /// <summary>
-        /// Creates a text command that wraps the stored procedure execution in an <c>FMTONLY</c> batch.
-        /// </summary>
-        private static SqlCommand CreateFmtOnlyCommand(SqlConnection connection, Routine module)
-        {
-            var sqlCommand = connection.CreateCommand();
-            sqlCommand.CommandType = CommandType.Text;
-#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
-            sqlCommand.CommandText = BuildFmtOnlyBatch(module);
-#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
-
-            AddStoredProcedureParameters(sqlCommand, module, connection);
-
-            return sqlCommand;
-        }
-
-        /// <summary>
         /// Adds placeholder parameters needed to compile the stored procedure and infer its result shape.
         /// </summary>
         private static void AddStoredProcedureParameters(SqlCommand sqlCommand, Routine module, SqlConnection connection)
@@ -243,24 +208,6 @@ ORDER BY ROUTINE_NAME;";
 
                 sqlCommand.Parameters.Add(param);
             }
-        }
-
-        /// <summary>
-        /// Builds a batch that enables <c>FMTONLY</c>, issues the stored procedure <c>EXEC</c>, and then disables <c>FMTONLY</c>.
-        /// </summary>
-        private static string BuildFmtOnlyBatch(Routine module)
-        {
-            var parameterAssignments = module.Parameters
-                .Where(p => !p.IsReturnValue)
-                .Select(p => $"@{p.Name} = @{p.Name}");
-
-            var executeStatement = $"EXEC [{module.Schema}].[{module.Name}]";
-            if (parameterAssignments.Any())
-            {
-                executeStatement += " " + string.Join(", ", parameterAssignments);
-            }
-
-            return $"SET FMTONLY ON; {executeStatement}; SET FMTONLY OFF;";
         }
 
         /// <summary>
@@ -331,9 +278,9 @@ ORDER BY ROUTINE_NAME;";
         }
 
         /// <summary>
-        /// Identifies SQL Server errors that commonly occur when metadata discovery encounters temp tables or describe-result-set limitations.
+        /// Identifies SQL Server errors that should fall back to parsing the stored procedure definition.
         /// </summary>
-        private static bool ShouldTryFmtOnlyFallback(SqlException ex)
+        private static bool ShouldTryDefinitionFallback(SqlException ex)
         {
             return (ex.Number == 208 && ex.Message.Contains('#', StringComparison.Ordinal))
                 || ex.Message.Contains("temporary table", StringComparison.OrdinalIgnoreCase)
