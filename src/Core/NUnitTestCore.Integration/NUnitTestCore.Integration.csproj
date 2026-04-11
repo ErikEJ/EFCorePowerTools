@@ -20,6 +20,7 @@
     <ProjectReference Include="..\RevEng.Core.Abstractions\RevEng.Core.Abstractions.csproj" />
     <ProjectReference Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac.csproj" />
     <ProjectReference Include="..\efcpt.8\efcpt.8.csproj" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\efcpt.10\efcpt.10.csproj" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\..\..\test\ScaffoldingTester\DockerPlayground\DockerPlayground.csproj" ReferenceOutputAssembly="false" />
   </ItemGroup>
 

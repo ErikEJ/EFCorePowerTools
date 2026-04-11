@@ -128,14 +128,35 @@ namespace IntegrationTests
         }
 
         [Test]
-        public async Task EfcptCliLiveDbSmokeTestGeneratesExpectedStoredProcedureOutput()
+        public async Task EfcptCliNet8LiveDbSmokeTestCompletes()
+        {
+            var workingDirectory = CreateSmokeTestWorkingDirectory();
+            try
+            {
+                var stdout = await RunEfcptCliAsync(GetEfcpt8CliPath(), _databaseConnectionString, workingDirectory);
+
+                Assert.That(stdout, Does.Contain("Getting database objects..."));
+                Assert.That(stdout, Does.Contain("database objects discovered"));
+                Assert.That(stdout, Does.Contain("files generated"));
+            }
+            finally
+            {
+                if (Directory.Exists(workingDirectory))
+                {
+                    Directory.Delete(workingDirectory, recursive: true);
+                }
+            }
+        }
+
+        [Test]
+        public async Task EfcptCliNet10LiveDbSmokeTestGeneratesExpectedStoredProcedureOutput()
         {
             // This is a narrow end-to-end smoke test of the actual efcpt live-db path.
             // It complements the model-factory assertions above by checking the user-facing generated code.
             var workingDirectory = CreateSmokeTestWorkingDirectory();
             try
             {
-                var stdout = await RunEfcptCliAsync(workingDirectory);
+                var stdout = await RunEfcptCliAsync(GetEfcpt10CliPath(), _databaseConnectionString, workingDirectory);
                 Assert.That(stdout, Does.Not.Contain("warning: Unable to get result set shape"));
 
                 var modelsPath = Path.Combine(workingDirectory, "Models");
@@ -175,7 +196,7 @@ namespace IntegrationTests
             var workingDirectory = CreateSmokeTestWorkingDirectory();
             try
             {
-                var stdout = await RunEfcptCliAsync(workingDirectory);
+                var stdout = await RunEfcptCliAsync(GetEfcpt10CliPath(), _databaseConnectionString, workingDirectory);
                 Assert.That(stdout, Does.Not.Contain("warning: Unable to get result set shape"));
 
                 var modelsPath = Path.Combine(workingDirectory, "Models");
@@ -193,6 +214,30 @@ namespace IntegrationTests
                 AssertGoldenFileMatch(
                     Path.Combine(goldenFilesPath, "StoGetSomeDataWithParametersResult.cs"),
                     Path.Combine(modelsPath, "StoGetSomeDataWithParametersResult.cs"));
+            }
+            finally
+            {
+                if (Directory.Exists(workingDirectory))
+                {
+                    Directory.Delete(workingDirectory, recursive: true);
+                }
+            }
+        }
+
+        [Test]
+        public async Task EfcptCliNet8DacpacSmokeTestCompletes()
+        {
+            // This guards the host-lifecycle regression where the net10 CLI stopped after
+            // "Getting database objects..." without completing scaffolding.
+            var workingDirectory = CreateSmokeTestWorkingDirectory();
+            try
+            {
+                var dacpacPath = GetDockerPlaygroundDacpacPath();
+                var stdout = await RunEfcptCliAsync(GetEfcpt8CliPath(), dacpacPath, workingDirectory);
+
+                Assert.That(stdout, Does.Contain("Getting database objects..."));
+                Assert.That(stdout, Does.Contain("database objects discovered"));
+                Assert.That(stdout, Does.Contain("files generated"));
             }
             finally
             {
@@ -302,13 +347,25 @@ namespace IntegrationTests
             return dacpacPath;
         }
 
-        private static string GetEfcptCliPath()
+        private static string GetEfcpt8CliPath()
         {
             var cliPath = Path.Combine(GetRepositoryRoot(), "src", "Core", "efcpt.8", "bin", "Debug", "net8.0", "efcpt.8.dll");
 
             if (!File.Exists(cliPath))
             {
-                throw new FileNotFoundException("efcpt CLI assembly was not created by the build graph.", cliPath);
+                throw new FileNotFoundException("efcpt.8 CLI assembly was not created by the build graph.", cliPath);
+            }
+
+            return cliPath;
+        }
+
+        private static string GetEfcpt10CliPath()
+        {
+            var cliPath = Path.Combine(GetRepositoryRoot(), "src", "Core", "efcpt.10", "bin", "Debug", "net10.0", "efcpt.10.dll");
+
+            if (!File.Exists(cliPath))
+            {
+                throw new FileNotFoundException("efcpt.10 CLI assembly was not created by the build graph.", cliPath);
             }
 
             return cliPath;
@@ -326,9 +383,9 @@ namespace IntegrationTests
             return workingDirectory;
         }
 
-        private async Task<string> RunEfcptCliAsync(string workingDirectory)
+        private static async Task<string> RunEfcptCliAsync(string cliPath, string input, string workingDirectory)
         {
-            var startInfo = new ProcessStartInfo("dotnet", $"\"{GetEfcptCliPath()}\" \"{_databaseConnectionString}\" mssql")
+            var startInfo = new ProcessStartInfo("dotnet", $"\"{cliPath}\" \"{input}\" mssql")
             {
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
