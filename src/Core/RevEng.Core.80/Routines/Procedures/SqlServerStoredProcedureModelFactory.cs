@@ -55,11 +55,18 @@ ORDER BY ROUTINE_NAME;";
                 }
                 catch (SqlException ex) when (ShouldTryDefinitionFallback(ex))
                 {
-                    return GetResultSetsWithMetadataOrDefinitionFallback(connection, module, true, ex);
+                    return GetResultSetsWithMetadataOrDefinitionFallback(
+                        () => GetAllResultSets(connection, module, !multipleResults),
+                        () => GetResultSetsFromDefinition(connection, module, !multipleResults),
+                        fallbackException => fallbackException is SqlException sqlException && ShouldTryDefinitionFallback(sqlException),
+                        ex);
                 }
             }
 
-            return GetResultSetsWithMetadataOrDefinitionFallback(connection, module, !multipleResults);
+            return GetResultSetsWithMetadataOrDefinitionFallback(
+                () => GetAllResultSets(connection, module, !multipleResults),
+                () => GetResultSetsFromDefinition(connection, module, !multipleResults),
+                ex => ex is SqlException sqlException && ShouldTryDefinitionFallback(sqlException));
         }
 
         private static List<List<ModuleResultElement>> GetAllResultSets(SqlConnection connection, Routine module, bool singleResult)
@@ -76,15 +83,19 @@ ORDER BY ROUTINE_NAME;";
         /// <summary>
         /// Tries SQL Server metadata discovery first and falls back to parsing the stored procedure definition.
         /// </summary>
-        private static List<List<ModuleResultElement>> GetResultSetsWithMetadataOrDefinitionFallback(SqlConnection connection, Routine module, bool singleResult, SqlException originalException = null)
+        private static List<List<ModuleResultElement>> GetResultSetsWithMetadataOrDefinitionFallback(
+            Func<List<List<ModuleResultElement>>> getMetadataResultSets,
+            Func<List<List<ModuleResultElement>>> getDefinitionResultSets,
+            Func<Exception, bool> shouldTryDefinitionFallback,
+            Exception originalException = null)
         {
             try
             {
-                return GetAllResultSets(connection, module, singleResult);
+                return getMetadataResultSets();
             }
-            catch (SqlException ex) when (ShouldTryDefinitionFallback(ex))
+            catch (Exception ex) when (shouldTryDefinitionFallback(ex))
             {
-                var resultFromDefinition = GetResultSetsFromDefinition(connection, module, singleResult);
+                var resultFromDefinition = getDefinitionResultSets();
                 if (resultFromDefinition.Count > 0)
                 {
                     return resultFromDefinition;
@@ -279,12 +290,31 @@ ORDER BY ROUTINE_NAME;";
 
         /// <summary>
         /// Identifies SQL Server errors that should fall back to parsing the stored procedure definition.
+        /// Known observed live-db discovery failures from the DockerPlayground repro include:
+        /// "Invalid object name '#OrderTable'."
+        /// "Invalid object name '#OrderLegacyTable'."
+        /// "Invalid object name '#OrderSummaryTable'."
+        /// "Invalid object name '#OrderSearchTable'."
+        /// The broader text matches remain as defensive fallbacks for temp-table wording and describe-result-set errors.
         /// </summary>
         private static bool ShouldTryDefinitionFallback(SqlException ex)
         {
-            return (ex.Number == 208 && ex.Message.Contains('#', StringComparison.Ordinal))
-                || ex.Message.Contains("temporary table", StringComparison.OrdinalIgnoreCase)
-                || ex.Message.Contains("sp_describe_first_result_set", StringComparison.OrdinalIgnoreCase);
+            return ShouldTryDefinitionFallback(ex.Number, ex.Message);
+        }
+
+        internal static bool ShouldTryDefinitionFallback(int errorNumber, string message)
+        {
+            ArgumentNullException.ThrowIfNull(message);
+
+            // Observed live-db failures from DockerPlayground are SqlException 208
+            // with temp-table object names such as '#OrderTable'.
+            if (errorNumber == 208 && message.Contains('#', StringComparison.Ordinal))
+            {
+                return true;
+            }
+
+            return message.Contains("temp table", StringComparison.OrdinalIgnoreCase)
+                || message.Contains("sp_describe_first_result_set", StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>

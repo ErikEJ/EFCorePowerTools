@@ -1,8 +1,8 @@
-using System.Collections.Generic;
 using NUnit.Framework;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Routines;
+using RevEng.Core.Routines.Procedures;
 
 namespace UnitTests
 {
@@ -33,10 +33,7 @@ namespace UnitTests
         {
             var options = new ModuleModelFactoryOptions
             {
-                ModulesUsingLegacyDiscovery = new List<string>
-                {
-                    "[dbo].[StoGetSomeData]",
-                },
+                ModulesUsingLegacyDiscovery = ["[dbo].[StoGetSomeData]"],
             };
 
             var module = new Procedure
@@ -55,10 +52,7 @@ namespace UnitTests
         {
             var options = new ModuleModelFactoryOptions
             {
-                ModulesUsingLegacyDiscovery = new List<string>
-                {
-                    "[dbo].[SomeOtherProcedure]",
-                },
+                ModulesUsingLegacyDiscovery = ["[dbo].[SomeOtherProcedure]"],
             };
 
             var module = new Procedure
@@ -70,6 +64,17 @@ namespace UnitTests
             var useLegacy = SqlServerRoutineModelFactory.ShouldUseLegacyResultSetDiscovery(options, module);
 
             Assert.That(useLegacy, Is.False);
+        }
+
+        [TestCase(208, "Invalid object name '#OrderTable'.", true)]
+        [TestCase(208, "Invalid object name '#OrderLegacyTable'.", true)]
+        [TestCase(208, "Invalid object name '#OrderSummaryTable'.", true)]
+        [TestCase(208, "Invalid object name '#OrderSearchTable'.", true)]
+        public void ShouldTryDefinitionFallbackMatchesObservedDockerPlaygroundLiveDbFailures(int errorNumber, string message, bool expected)
+        {
+            var result = SqlServerStoredProcedureModelFactory.ShouldTryDefinitionFallback(errorNumber, message);
+
+            Assert.That(result, Is.EqualTo(expected));
         }
     }
 }
