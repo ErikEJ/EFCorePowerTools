@@ -52,10 +52,11 @@ internal static class Program
                     options.RenamingFile = options.RenamingFile ?? new FileInfo(fileSystem.Path.GetFullPath(Constants.RenamingFileName));
 
                     DisplayHeader(options);
-                    var hostBuilder = new HostBuilder();
-                    await hostBuilder.Configure()
+                    using var host = new HostBuilder()
+                        .Configure()
                         .RegisterServices(fileSystem, options)
-                        .StartAsync()
+                        .Build();
+                    await host.RunAsync()
                         .ConfigureAwait(false);
                     return Environment.ExitCode;
                 },
