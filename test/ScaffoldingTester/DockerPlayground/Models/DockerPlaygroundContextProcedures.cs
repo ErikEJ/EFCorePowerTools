@@ -63,6 +63,46 @@ namespace DockerPlayground.Models
             return _;
         }
 
+        public virtual async Task<int> StoGetSomeDataDirectAsync(OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default)
+        {
+            var parameterreturnValue = new SqlParameter
+            {
+                ParameterName = "returnValue",
+                Direction = System.Data.ParameterDirection.Output,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
+
+            var sqlParameters = new []
+            {
+                parameterreturnValue,
+            };
+            var _ = await _context.Database.ExecuteSqlRawAsync("EXEC @returnValue = [dbo].[StoGetSomeDataDirect]", sqlParameters, cancellationToken ?? CancellationToken.None);
+
+            returnValue?.SetValue(parameterreturnValue.Value);
+
+            return _;
+        }
+
+        public virtual async Task<List<StoGetSomeDataLegacyDiscoveryResult>?> StoGetSomeDataLegacyDiscoveryAsync(OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default)
+        {
+            var parameterreturnValue = new SqlParameter
+            {
+                ParameterName = "returnValue",
+                Direction = System.Data.ParameterDirection.Output,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
+
+            var sqlParameters = new []
+            {
+                parameterreturnValue,
+            };
+            var _ = await _context.SqlQueryAsync<StoGetSomeDataLegacyDiscoveryResult>("EXEC @returnValue = [dbo].[StoGetSomeDataLegacyDiscovery]", sqlParameters, cancellationToken);
+
+            returnValue?.SetValue(parameterreturnValue.Value);
+
+            return _;
+        }
+
         public virtual async Task<List<StoGetSomeDataMultipleResultsResult>?> StoGetSomeDataMultipleResultsAsync(int? categoryId, OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter

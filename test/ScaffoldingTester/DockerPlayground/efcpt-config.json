@@ -43,6 +43,13 @@
     },
     {
       "name": "[dbo].[StoGetSomeDataWithParameters]"
+    },
+    {
+      "name": "[dbo].[StoGetSomeDataLegacyDiscovery]",
+      "use-legacy-resultset-discovery": true
+    },
+    {
+      "name": "[dbo].[StoGetSomeDataDirect]"
     }
   ],
   "type-mappings": {

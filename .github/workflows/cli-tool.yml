@@ -41,6 +41,10 @@ jobs:
     - name: Core test project
       run: dotnet test src/Core/NUnitTestCore/NUnitTestCore.csproj
 
+    - name: Core integration test project
+      if: matrix.os == 'ubuntu-latest'
+      run: dotnet test src/Core/NUnitTestCore.Integration/NUnitTestCore.Integration.csproj
+
   build:
     needs: core-tests
 

@@ -3,7 +3,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    CREATE TABLE #Temp
+    CREATE TABLE #OrderTable
     (
         SomeName NVARCHAR(100),
         SomeValue NVARCHAR(100),
@@ -12,8 +12,8 @@ BEGIN
     SELECT
         t.SomeName,
         t.SomeValue
-    FROM #Temp t;
+    FROM #OrderTable t;
 
-    DROP TABLE #Temp;
+    DROP TABLE #OrderTable;
 END;
 GO

@@ -4,19 +4,19 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    CREATE TABLE #Summary
+    CREATE TABLE #OrderSummaryTable
     (
         CategoryId INT NOT NULL,
         TotalCount INT NOT NULL
     );
 
-    CREATE TABLE #Details
+    CREATE TABLE #OrderDetailTable
     (
         CategoryId INT NOT NULL,
         ItemName NVARCHAR(100) NULL
     );
 
-    INSERT INTO #Summary
+    INSERT INTO #OrderSummaryTable
     (
         CategoryId,
         TotalCount
@@ -27,7 +27,7 @@ BEGIN
         1
     );
 
-    INSERT INTO #Details
+    INSERT INTO #OrderDetailTable
     (
         CategoryId,
         ItemName
@@ -41,11 +41,11 @@ BEGIN
     SELECT
         s.CategoryId,
         s.TotalCount
-    FROM #Summary s;
+    FROM #OrderSummaryTable s;
 
     SELECT
         d.CategoryId,
         d.ItemName
-    FROM #Details d;
+    FROM #OrderDetailTable d;
 END;
 GO

@@ -6,14 +6,14 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    CREATE TABLE #Temp
+    CREATE TABLE #OrderSearchTable
     (
         CategoryId INT NOT NULL,
         SearchTerm NVARCHAR(50) NULL,
         Amount DECIMAL(10,2) NOT NULL
     );
 
-    INSERT INTO #Temp
+    INSERT INTO #OrderSearchTable
     (
         CategoryId,
         SearchTerm,
@@ -30,8 +30,8 @@ BEGIN
         t.CategoryId,
         t.SearchTerm,
         t.Amount
-    FROM #Temp t;
+    FROM #OrderSearchTable t;
 
-    DROP TABLE #Temp;
+    DROP TABLE #OrderSearchTable;
 END;
 GO

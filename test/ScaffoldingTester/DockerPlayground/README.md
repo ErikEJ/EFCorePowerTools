@@ -6,6 +6,8 @@ This DockerPlayground allows us to quickly verify the results of:
 
 This helps when wanting to quickly compare both of these paths as there are some minor differences between the two paths
 
+The repro procedures intentionally use named temp tables like `#OrderTable`, `#OrderSearchTable`, `#OrderSummaryTable`, and `#OrderLegacyTable` so the behavior is clearly about temp-table-backed procedures in general, not a special case for a table literally named `#Temp`.
+
 ## Setup/Build
 
 1. First you must build the database project
@@ -69,6 +71,12 @@ efcpt 'Server=localhost,1433;Initial Catalog=DockerPlayground;User ID=sa;Passwor
 ```
 
 You can verify the output that will exist in the 'Models' directory
+
+The current harness includes these stored procedure scenarios:
+- `dbo.StoGetSomeData`: single result set via temp table
+- `dbo.StoGetSomeDataWithParameters`: parameterized temp-table procedure for result-shape and parameter-size checks
+- `dbo.StoGetSomeDataMultipleResults`: multiple result sets via temp tables
+- `dbo.StoGetSomeDataLegacyDiscovery`: temp-table procedure configured with `use-legacy-resultset-discovery`
 
 ### efcpt from a dacpac
 
