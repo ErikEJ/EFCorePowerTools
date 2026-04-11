@@ -17,7 +17,7 @@ using Spectre.Console;
 namespace ErikEJ.EFCorePowerTools.HostedServices;
 
 #pragma warning disable CA1812 // Avoid uninstantiated internal classes
-internal sealed class ScaffoldHostedService : HostedService
+internal sealed class ScaffoldHostedService : BackgroundService
 {
     private readonly IFileSystem fileSystem;
     private readonly IHostApplicationLifetime hostApplicationLifetime;
