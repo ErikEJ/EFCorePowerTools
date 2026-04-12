@@ -91,6 +91,7 @@ namespace RevEng.Common.Cli
                 UseManyToManyEntity = config.CodeGeneration.UseManyToManyEntity,
                 UseMultipleSprocResultSets = config.CodeGeneration.DiscoverMultipleStoredProcedureResultsetsPreview,
                 UseLegacyResultSetDiscovery = config.CodeGeneration.UseAlternateStoredProcedureResultsetDiscovery,
+                UseStoredProcedureResultSetFallback = config.CodeGeneration.UseStoredProcedureResultSetFallback,
                 PreserveCasingWithRegex = replacements.PreserveCasingWithRegex,
                 UseDateOnlyTimeOnly = typeMappings.UseDateOnlyTimeOnly,
                 UseNullableReferences = config.CodeGeneration.UseNullableReferenceTypes,

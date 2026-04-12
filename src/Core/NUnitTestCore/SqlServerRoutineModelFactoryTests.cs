@@ -66,6 +66,14 @@ namespace UnitTests
             Assert.That(useLegacy, Is.False);
         }
 
+        [Test]
+        public void UseStoredProcedureResultSetFallbackDefaultsToTrue()
+        {
+            var options = new ModuleModelFactoryOptions();
+
+            Assert.That(options.UseStoredProcedureResultSetFallback, Is.True);
+        }
+
         [TestCase(208, "Invalid object name '#OrderTable'.", true)]
         [TestCase(208, "Invalid object name '#OrderLegacyTable'.", true)]
         [TestCase(208, "Invalid object name '#OrderSummaryTable'.", true)]

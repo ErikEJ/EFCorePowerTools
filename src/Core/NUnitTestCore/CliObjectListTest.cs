@@ -187,6 +187,7 @@ namespace UnitTests
         public void TryGetCliConfigWithExistingFileReturnsExpectedConfig()
         {
             var config = GetConfig();
+            config.CodeGeneration.UseStoredProcedureResultSetFallback = false;
 
             var testPath = TestPath("test.efpcli.json");
             try
@@ -202,6 +203,7 @@ namespace UnitTests
                 Assert.That(fetchedConfigSuccess, Is.True);
                 Assert.That(resultConfig, Is.Not.Null);
                 Assert.That(config.Tables.Count, Is.EqualTo(resultConfig.Tables.Count));
+                Assert.That(resultConfig.CodeGeneration.UseStoredProcedureResultSetFallback, Is.False);
 
                 for (var i = 0; i < config.Tables.Count; i++)
                 {

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.SqlServer.Dac;
@@ -128,6 +131,38 @@ namespace IntegrationTests
         }
 
         [Test]
+        public void LiveDbDiscoveryWithoutStoredProcedureResultSetFallbackFailsForObservedTempTableProcedures()
+        {
+            var model = CreateRoutineModel(
+                discoverMultipleResultSets: true,
+                useLegacyForLegacyProcedure: true,
+                useGlobalLegacyDiscovery: false,
+                useStoredProcedureResultSetFallback: false);
+
+            Assert.That(model.Errors, Is.EqualTo(new[]
+            {
+                "Unable to get result set shape for procedure 'dbo.StoGetSomeData'. Invalid object name '#OrderTable'..",
+                "Unable to get result set shape for procedure 'dbo.StoGetSomeDataLegacyDiscovery'. The metadata could not be determined because statement 'SELECT\n        t.OrderName,\n        t.OrderValue\n    FROM #OrderLegacyTable t' in procedure 'StoGetSomeDataLegacyDiscovery' uses a temp table..",
+                "Unable to get result set shape for procedure 'dbo.StoGetSomeDataMultipleResults'. Invalid object name '#OrderSummaryTable'..",
+                "Unable to get result set shape for procedure 'dbo.StoGetSomeDataWithParameters'. Invalid object name '#OrderSearchTable'..",
+            }));
+
+            foreach (var routineName in new[]
+                     {
+                         "StoGetSomeData",
+                         "StoGetSomeDataLegacyDiscovery",
+                         "StoGetSomeDataMultipleResults",
+                         "StoGetSomeDataWithParameters",
+                     })
+            {
+                var routine = model.Routines.Single(r => r.Name == routineName);
+                Assert.That(routine.HasValidResultSet, Is.False, routineName);
+            }
+
+            Assert.That(model.Routines.Single(r => r.Name == "StoGetSomeDataDirect").HasValidResultSet, Is.True);
+        }
+
+        [Test]
         public async Task EfcptCliNet8LiveDbSmokeTestCompletes()
         {
             var workingDirectory = CreateSmokeTestWorkingDirectory();
@@ -138,6 +173,28 @@ namespace IntegrationTests
                 Assert.That(stdout, Does.Contain("Getting database objects..."));
                 Assert.That(stdout, Does.Contain("database objects discovered"));
                 Assert.That(stdout, Does.Contain("files generated"));
+            }
+            finally
+            {
+                if (Directory.Exists(workingDirectory))
+                {
+                    Directory.Delete(workingDirectory, recursive: true);
+                }
+            }
+        }
+
+        [Test]
+        public async Task EfcptCliLiveDbWithStoredProcedureResultSetFallbackDisabledShowsDiscoveryWarning()
+        {
+            var workingDirectory = CreateSmokeTestWorkingDirectory();
+            try
+            {
+                SetStoredProcedureResultSetFallback(workingDirectory, enabled: false);
+
+                var stdout = await RunEfcptCliAsync(GetEfcpt10CliPath(), _databaseConnectionString, workingDirectory);
+                const string expectedWarning = "warning: Unable to get result set shape for procedure 'dbo.StoGetSomeData'. Invalid object name '#OrderTable'..";
+
+                Assert.That(NormalizeConsoleOutput(stdout), Does.Contain(NormalizeConsoleOutput(expectedWarning)));
             }
             finally
             {
@@ -303,6 +360,7 @@ namespace IntegrationTests
             bool discoverMultipleResultSets,
             bool useLegacyForLegacyProcedure,
             bool useGlobalLegacyDiscovery = false,
+            bool useStoredProcedureResultSetFallback = true,
             IEnumerable<string> modules = null)
         {
             var factory = new SqlServerStoredProcedureModelFactory();
@@ -312,6 +370,7 @@ namespace IntegrationTests
                 DiscoverMultipleResultSets = discoverMultipleResultSets,
                 FullModel = true,
                 UseLegacyResultSetDiscovery = useGlobalLegacyDiscovery,
+                UseStoredProcedureResultSetFallback = useStoredProcedureResultSetFallback,
                 Modules = modules ?? new[]
                 {
                     "[dbo].[StoGetSomeData]",
@@ -381,6 +440,31 @@ namespace IntegrationTests
             File.Copy(sourceConfigPath, Path.Combine(workingDirectory, "efcpt-config.json"));
 
             return workingDirectory;
+        }
+
+        private static void SetStoredProcedureResultSetFallback(string workingDirectory, bool enabled)
+        {
+            var configPath = Path.Combine(workingDirectory, "efcpt-config.json");
+            var config = JsonNode.Parse(File.ReadAllText(configPath))?.AsObject()
+                ?? throw new InvalidOperationException("Unable to parse efcpt-config.json.");
+
+            var codeGeneration = config["code-generation"]?.AsObject()
+                ?? throw new InvalidOperationException("efcpt-config.json is missing the code-generation section.");
+
+            codeGeneration["use-stored-procedure-resultset-fallback"] = enabled;
+
+            File.WriteAllText(
+                configPath,
+                config.ToJsonString(new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+                }));
+        }
+
+        private static string NormalizeConsoleOutput(string value)
+        {
+            var withoutAnsi = Regex.Replace(value, @"\x1B\[[0-9;?]*[ -/]*[@-~]", string.Empty);
+            return Regex.Replace(withoutAnsi, "\\s+", " ").Trim();
         }
 
         private static async Task<string> RunEfcptCliAsync(string cliPath, string input, string workingDirectory)

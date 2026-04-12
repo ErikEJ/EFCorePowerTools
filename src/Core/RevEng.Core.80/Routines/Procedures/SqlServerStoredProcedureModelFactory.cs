@@ -41,7 +41,7 @@ ORDER BY ROUTINE_NAME;";
             return GetRoutines(connectionString, options);
         }
 
-        protected override List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection, Routine module, bool multipleResults, bool useLegacyResultSetDiscovery)
+        protected override List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection, Routine module, bool multipleResults, bool useLegacyResultSetDiscovery, bool useStoredProcedureResultSetFallback)
         {
             ArgumentNullException.ThrowIfNull(connection);
 
@@ -53,7 +53,7 @@ ORDER BY ROUTINE_NAME;";
                 {
                     return GetFirstResultSet(connection, module);
                 }
-                catch (SqlException ex) when (ShouldTryDefinitionFallback(ex))
+                catch (SqlException ex) when (useStoredProcedureResultSetFallback && ShouldTryDefinitionFallback(ex))
                 {
                     return GetResultSetsWithMetadataOrDefinitionFallback(
                         () => GetAllResultSets(connection, module, !multipleResults),
@@ -61,6 +61,11 @@ ORDER BY ROUTINE_NAME;";
                         fallbackException => fallbackException is SqlException sqlException && ShouldTryDefinitionFallback(sqlException),
                         ex);
                 }
+            }
+
+            if (!useStoredProcedureResultSetFallback)
+            {
+                return GetAllResultSets(connection, module, !multipleResults);
             }
 
             return GetResultSetsWithMetadataOrDefinitionFallback(

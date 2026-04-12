@@ -18,7 +18,7 @@ namespace RevEng.Core.Routines
         public string RoutineType { get; set; }
 
 #pragma warning disable CA1716 // Identifiers should not match keywords
-        protected abstract List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection, Routine module, bool multipleResults, bool useLegacyResultSetDiscovery);
+        protected abstract List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection, Routine module, bool multipleResults, bool useLegacyResultSetDiscovery, bool useStoredProcedureResultSetFallback);
 #pragma warning restore CA1716 // Identifiers should not match keywords
 
         public static bool ShouldUseLegacyResultSetDiscovery(ModuleModelFactoryOptions options, Routine module)
@@ -112,7 +112,7 @@ namespace RevEng.Core.Routines
                                 try
                                 {
                                     var forceLegacy = ShouldUseLegacyResultSetDiscovery(options, module);
-                                    module.Results.AddRange(GetResultElementLists(connection, module, options.DiscoverMultipleResultSets, forceLegacy));
+                                    module.Results.AddRange(GetResultElementLists(connection, module, options.DiscoverMultipleResultSets, forceLegacy, options.UseStoredProcedureResultSetFallback));
                                 }
                                 catch (Exception ex)
                                 {

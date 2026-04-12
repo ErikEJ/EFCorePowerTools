@@ -175,7 +175,8 @@
         "use-t4",
         "remove-defaultsql-from-bool-properties",
         "soft-delete-obsolete-files",
-        "use-alternate-stored-procedure-resultset-discovery"
+        "use-alternate-stored-procedure-resultset-discovery",
+        "use-stored-procedure-resultset-fallback"
       ],
       "properties": {
         "enable-on-configuring": {
@@ -238,6 +239,11 @@
         "use-alternate-stored-procedure-resultset-discovery": {
           "type": "boolean",
           "title": "Use alternate result set discovery - use sp_describe_first_result_set to retrieve stored procedure result sets"
+        },
+        "use-stored-procedure-resultset-fallback": {
+          "type": "boolean",
+          "default": true,
+          "title": "Use fallback result set discovery by reading the stored procedure definition from SQL Server system tables when metadata discovery fails"
         },
         "t4-template-path": {
           "type": [ "string", "null" ],
