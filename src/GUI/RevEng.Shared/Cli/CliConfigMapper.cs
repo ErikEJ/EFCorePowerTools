@@ -131,107 +131,6 @@ namespace RevEng.Common.Cli
             return options;
         }
 
-        public static ReverseEngineerOptions ToOptions(this CliConfig config, string projectPath, string configPath)
-        {
-            if (config is null)
-            {
-                throw new ArgumentNullException(nameof(config));
-            }
-
-            if (string.IsNullOrEmpty(projectPath))
-            {
-                throw new ArgumentNullException(nameof(projectPath));
-            }
-
-            if (string.IsNullOrEmpty(configPath))
-            {
-                throw new ArgumentNullException(nameof(configPath));
-            }
-
-            var selectedToBeGenerated = config.CodeGeneration.Type.ToUpperInvariant() switch
-            {
-                "DBCONTEXT" => 1,
-                "ENTITIES" => 2,
-                _ => 0, // "all"
-            };
-
-            var replacements = config.Replacements ?? new Replacements();
-            var typeMappings = config.TypeMappings ?? new TypeMappings();
-            var names = config.Names ?? new Names();
-
-            var options = new ReverseEngineerOptions
-            {
-                ProjectPath = projectPath,
-                ModelNamespace = names.ModelNamespace,
-                ContextNamespace = names.DbContextNamespace,
-                UseFluentApiOnly = !config.CodeGeneration.UseDataAnnotations,
-                ContextClassName = names.DbContextName,
-                Tables = BuildObjectList(config),
-                UseDatabaseNames = config.CodeGeneration.UseDatabaseNames,
-                UseInflector = config.CodeGeneration.UseInflector,
-                UseT4 = config.CodeGeneration.UseT4,
-                UseT4Split = config.CodeGeneration.UseT4Split,
-                T4TemplatePath = config.CodeGeneration.T4TemplatePath != null ? PathHelper.GetAbsPath(config.CodeGeneration.T4TemplatePath, projectPath) : null,
-                IncludeConnectionString = config.CodeGeneration.EnableOnConfiguring,
-                SelectedToBeGenerated = selectedToBeGenerated,
-                Dacpac = null,
-                CustomReplacers = GetNamingOptions(configPath, Constants.RenamingFileName),
-                UseLegacyPluralizer = config.CodeGeneration.UseLegacyInflector,
-                UncountableWords = replacements.UncountableWords?.ToList(),
-                IrregularWords = replacements.IrregularWords?.Select(w => new IrregularWord { Singular = w.Singular, Plural = w.Plural, MatchEnding = w.MatchEnding }).ToList(),
-                PluralRules = replacements.PluralWords?.Select(w => new ReplacementRule { Rule = w.Rule, Replacement = w.Replacement }).ToList(),
-                SingularRules = replacements.SingularWords?.Select(w => new ReplacementRule { Rule = w.Rule, Replacement = w.Replacement }).ToList(),
-                UseSpatial = typeMappings.UseSpatial,
-                UseHierarchyId = typeMappings.UseHierarchyId,
-                UseNodaTime = typeMappings.UseNodaTime,
-                UseBoolPropertiesWithoutDefaultSql = config.CodeGeneration.RemoveDefaultSqlFromBoolProperties,
-                UseNoNavigations = config.CodeGeneration.UseNoNavigationsPreview,
-                UseManyToManyEntity = config.CodeGeneration.UseManyToManyEntity,
-                PreserveCasingWithRegex = replacements.PreserveCasingWithRegex,
-                UseDateOnlyTimeOnly = typeMappings.UseDateOnlyTimeOnly,
-                UseNullableReferences = config.CodeGeneration.UseNullableReferenceTypes,
-                ProjectRootNamespace = names.RootNamespace,
-                UseDecimalDataAnnotationForSprocResult = config.CodeGeneration.UseDecimalDataAnnotation,
-                UsePrefixNavigationNaming = config.CodeGeneration.UsePrefixNavigationNaming,
-                UseDatabaseNamesForRoutines = config.CodeGeneration.UseDatabaseNamesForRoutines,
-                UseInternalAccessModifiersForSprocsAndFunctions = config.CodeGeneration.UseInternalAccessModifiersForSprocsAndFunctions,
-                UseTypedTvpParameters = config.CodeGeneration.UseTypedTvpParameters,
-
-                // HandleBars templates are not supported:
-                UseHandleBars = false,
-                SelectedHandlebarsLanguage = 0, // handlebars support, will not support it
-                OptionsPath = null, // handlebars support, will not support it (not in use!) - [IgnoreDataMember]
-
-                // Not implemented:
-                UseNoDefaultConstructor = false, // not implemented, will consider if asked for
-                DefaultDacpacSchema = null, // not implemented, will consider if asked for - [IgnoreDataMember]
-                UseNoObjectFilter = false, // will add all objects and use exclusions to filter list - "refresh-object-lists" allows you to avoid this (switch to manual)
-                UseAsyncStoredProcedureCalls = true, // not implemented
-                FilterSchemas = false, // not implemented
-                Schemas = null, // not implemented,
-
-                CodeGenerationMode = CodeGenerationMode.EFCore8, // not implemented/persisted
-
-                ConnectionString = null, // not persisted, set at runtime - [IgnoreDataMember]
-                DatabaseType = DatabaseType.Undefined, // not persisted, set at runtime - [IgnoreDataMember]
-                InstallNuGetPackage = false, // not persisted, set at runtime - [IgnoreDataMember]
-                UiHint = null, // not persisted, set in .user file
-            };
-
-            if (config.FileLayout is null)
-            {
-                return options;
-            }
-
-            options.OutputPath = config.FileLayout.OutputPath;
-            options.OutputContextPath = config.FileLayout.OutputDbContextPath;
-            options.UseSchemaFolders = config.FileLayout.UseSchemaFoldersPreview;
-            options.UseSchemaNamespaces = config.FileLayout.UseSchemaNamespacesPreview;
-            options.UseDbContextSplitting = config.FileLayout.SplitDbContextPreview;
-
-            return options;
-        }
-
         public static bool TryGetCliConfig(string fullPath, string connectionString, DatabaseType databaseType, List<TableModel> objects, CodeGenerationMode codeGenerationMode, out CliConfig config, out List<string> warnings)
         {
             var cliConfigExists = File.Exists(fullPath);
@@ -357,6 +256,16 @@ namespace RevEng.Common.Cli
             {
                     // No tables selected, so add a dummy table in order to generate an empty DbContext
                     serializationTableModels.Add(new SerializationTableModel($"Dummy_{new Guid("9A016951-3470-4926-A7B2-58392A3F8CF3")}", ObjectType.Table, null, null));
+            }
+
+            if (typeof(T) == typeof(StoredProcedure))
+            {
+                foreach (var model in serializationTableModels)
+                {
+                    var spConfig = entities.Cast<StoredProcedure>().Single(e => e.Name == model.Name);
+                    model.UseLegacyResultSetDiscovery = spConfig.UseLegacyResultsetDiscovery;
+                    model.MappedType = spConfig.MappedType;
+                }
             }
 
             addRange(serializationTableModels);
