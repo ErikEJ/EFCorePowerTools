@@ -49,9 +49,11 @@ namespace UnitTests
 
             Assert.That(result.Any(x => x.Name == "TestProcedure"), Is.True);
 
-            Assert.That(result[6].UseLegacyResultSetDiscovery, Is.True);
+            var testProcedure = result.Single(x => x.Name == "TestProcedure");
 
-            Assert.That(result[6].MappedType, Is.EqualTo("MyNamespace.MyType"));
+            Assert.That(testProcedure.UseLegacyResultSetDiscovery, Is.True);
+
+            Assert.That(testProcedure.MappedType, Is.EqualTo("MyNamespace.MyType"));
         }
 
         [Test]
