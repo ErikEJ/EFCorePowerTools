@@ -33,7 +33,25 @@ namespace UnitTests
             var result = CliConfigMapper.BuildObjectList(config);
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Count, Is.EqualTo(6));
+            Assert.That(result.Count, Is.EqualTo(7));
+
+            Assert.That(result.Any(x => x.Name == "[dbo].[Users]"), Is.True);
+
+            Assert.That(result.Any(x => x.Name == "[other].[Accounts]"), Is.True);
+
+            Assert.That(result.Any(x => x.Name == "[dbo].[Extras]"), Is.True);
+
+            Assert.That(result.Any(x => x.Name == "[dbo].[Actors]"), Is.True);
+
+            Assert.That(result.Any(x => x.Name == "[dbo].[Directors]"), Is.True);
+
+            Assert.That(result.Any(x => x.Name == "[dbo].[UsersView]"), Is.True);
+
+            Assert.That(result.Any(x => x.Name == "TestProcedure"), Is.True);
+
+            Assert.That(result[6].UseLegacyResultSetDiscovery, Is.True);
+
+            Assert.That(result[6].MappedType, Is.EqualTo("MyNamespace.MyType"));
         }
 
         [Test]
@@ -47,7 +65,7 @@ namespace UnitTests
             var result = CliConfigMapper.BuildObjectList(config);
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Count, Is.EqualTo(1));
+            Assert.That(result.Count, Is.EqualTo(2));
             Assert.That(result[0].Name.StartsWith("Dummy"), Is.True);
         }
 
@@ -61,7 +79,7 @@ namespace UnitTests
             var result = CliConfigMapper.BuildObjectList(config);
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Count, Is.EqualTo(2));
+            Assert.That(result.Count, Is.EqualTo(3));
         }
 
         [Test]
@@ -74,7 +92,7 @@ namespace UnitTests
             var result = CliConfigMapper.BuildObjectList(config);
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Count, Is.EqualTo(5));
+            Assert.That(result.Count, Is.EqualTo(6));
         }
 
         [Test]
@@ -89,7 +107,7 @@ namespace UnitTests
             var result = CliConfigMapper.BuildObjectList(config);
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Count, Is.EqualTo(3));
+            Assert.That(result.Count, Is.EqualTo(4));
         }
 
         [Test]
@@ -104,7 +122,7 @@ namespace UnitTests
             var result = CliConfigMapper.BuildObjectList(config);
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Count, Is.EqualTo(3));
+            Assert.That(result.Count, Is.EqualTo(4));
         }
 
         [Test]
@@ -117,7 +135,7 @@ namespace UnitTests
             var result = CliConfigMapper.BuildObjectList(config);
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Count, Is.EqualTo(4));
+            Assert.That(result.Count, Is.EqualTo(5));
         }
 
         [Test]
@@ -132,7 +150,7 @@ namespace UnitTests
             var result = CliConfigMapper.BuildObjectList(config);
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Count, Is.EqualTo(4));
+            Assert.That(result.Count, Is.EqualTo(5));
         }
 
         [Test]
@@ -145,7 +163,7 @@ namespace UnitTests
             var result = CliConfigMapper.BuildObjectList(config);
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Count, Is.EqualTo(4));
+            Assert.That(result.Count, Is.EqualTo(5));
         }
 
         [Test]
@@ -160,7 +178,7 @@ namespace UnitTests
             var result = CliConfigMapper.BuildObjectList(config);
 
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.Count, Is.EqualTo(5));
+            Assert.That(result.Count, Is.EqualTo(6));
         }
 
         [Test]
@@ -343,6 +361,15 @@ namespace UnitTests
                     new View()
                     {
                         Name = "[dbo].[UsersView]"
+                    }
+                },
+                StoredProcedures = new List<StoredProcedure>()
+                {
+                    new StoredProcedure()
+                    {
+                        Name = "TestProcedure",
+                        UseLegacyResultsetDiscovery = true,
+                        MappedType = "MyNamespace.MyType",
                     }
                 }
             };
