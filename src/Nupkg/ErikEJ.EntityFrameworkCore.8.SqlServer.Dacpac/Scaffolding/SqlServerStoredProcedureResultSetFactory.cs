@@ -172,6 +172,12 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             /// </summary>
             private static int GetMaxLength(DataTypeReference dataType)
             {
+                if (dataType is UserDataTypeReference userDataTypeReference
+                    && string.Equals(userDataTypeReference.Name?.BaseIdentifier?.Value, "sysname", StringComparison.OrdinalIgnoreCase))
+                {
+                    return 128;
+                }
+
                 if (dataType is not ParameterizedDataTypeReference parameterizedDataType || parameterizedDataType.Parameters.Count == 0)
                 {
                     return 0;

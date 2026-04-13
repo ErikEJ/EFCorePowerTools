@@ -139,5 +139,36 @@ END;";
             Assert.That(itemName.MaxLength, Is.EqualTo(100));
             Assert.That(itemName.Nullable, Is.True);
         }
+
+        [Test]
+        public void CanParseSysnameColumnsFromProcedureDefinition()
+        {
+            const string definition = @"
+CREATE PROCEDURE dbo.StoGetSomeData
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    CREATE TABLE #Temp
+    (
+        ObjectName SYSNAME NOT NULL
+    );
+
+    SELECT
+        ObjectName
+    FROM #Temp;
+END;";
+
+            var resultSets = SqlServerStoredProcedureResultSetFactory.CreateFromDefinition(definition, singleResult: true);
+
+            Assert.That(resultSets, Has.Count.EqualTo(1));
+            Assert.That(resultSets[0], Has.Count.EqualTo(1));
+
+            var objectName = resultSets[0].Single(c => c.Name == "ObjectName");
+
+            Assert.That(objectName.StoreType, Is.EqualTo("nvarchar"));
+            Assert.That(objectName.MaxLength, Is.EqualTo(128));
+            Assert.That(objectName.Nullable, Is.False);
+        }
     }
 }
