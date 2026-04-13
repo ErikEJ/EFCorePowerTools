@@ -72,10 +72,10 @@
     <Project Path="GUI/RevEng.Shared/RevEng.Common.csproj" />
   </Folder>
   <Folder Name="/Test/">
-    <Project Path="Core/NUnitTestCore/NUnitTestCore.csproj">
+    <Project Path="Core/TestCore/TestCore.csproj">
       <Build Solution="Release|*" Project="false" />
     </Project>
-    <Project Path="Core/NUnitTestCore100/NUnitTestCore100.csproj">
+    <Project Path="Core/TestCore100/TestCore100.csproj">
       <Build Solution="Release|*" Project="false" />
     </Project>
     <Project Path="GUI/UnitTests/UnitTests.csproj" Id="562b5f7b-6229-4019-bfa9-cd7fd4773081" />

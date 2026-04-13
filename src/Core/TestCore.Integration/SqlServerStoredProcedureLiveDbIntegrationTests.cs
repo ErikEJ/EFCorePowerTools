@@ -227,7 +227,7 @@ namespace IntegrationTests
                 Assert.DoesNotContain("warning: Unable to get result set shape", stdout);
 
                 var modelsPath = Path.Combine(workingDirectory, "Models");
-                var goldenFilesPath = Path.Combine(GetRepositoryRoot(), "src", "Core", "NUnitTestCore.Integration", "GoldenFiles");
+                var goldenFilesPath = Path.Combine(GetRepositoryRoot(), "src", "Core", "TestCore.Integration", "GoldenFiles");
 
                 AssertGoldenFileMatch(
                     Path.Combine(goldenFilesPath, "StoGetSomeDataResult.cs"),

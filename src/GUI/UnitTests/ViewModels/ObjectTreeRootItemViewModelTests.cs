@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+﻿using Xunit;
 
 namespace UnitTests.ViewModels
 {
@@ -7,12 +7,9 @@ namespace UnitTests.ViewModels
     using EFCorePowerTools.ViewModels;
     using GalaSoft.MvvmLight.Messaging;
     using Moq;
-    using NUnit.Framework.Legacy;
-
-    [TestFixture]
     public class ObjectTreeRootItemViewModelTests
     {
-        [Test]
+        [Fact]
         public void IsSelected_AllSelected()
         {
             // Arrange
@@ -26,10 +23,10 @@ namespace UnitTests.ViewModels
             }
 
             // Assert
-            ClassicAssert.IsTrue(vm.IsSelected);
+            Assert.True(vm.IsSelected);
         }
 
-        [Test]
+        [Fact]
         public void IsSelected_NoneSelected()
         {
             // Arrange
@@ -43,10 +40,10 @@ namespace UnitTests.ViewModels
             }
 
             // Assert
-            ClassicAssert.IsFalse(vm.IsSelected);
+            Assert.False(vm.IsSelected);
         }
 
-        [Test]
+        [Fact]
         public void IsSelected_PartialSelection()
         {
             // Arrange
@@ -60,10 +57,10 @@ namespace UnitTests.ViewModels
             }
 
             // Assert
-            ClassicAssert.IsNull(vm.IsSelected);
+            Assert.Null(vm.IsSelected);
         }
 
-        [Test]
+        [Fact]
         public void IsVisible_NoneVisible()
         {
             // Arrange
@@ -77,10 +74,10 @@ namespace UnitTests.ViewModels
             }
 
             // Assert
-            ClassicAssert.IsFalse(vm.IsVisible);
+            Assert.False(vm.IsVisible);
         }
 
-        [Test]
+        [Fact]
         public void IsVisible_PartialVisible()
         {
             // Arrange
@@ -94,10 +91,10 @@ namespace UnitTests.ViewModels
             }
 
             // Assert
-            ClassicAssert.IsTrue(vm.IsVisible);
+            Assert.True(vm.IsVisible);
         }
 
-        [Test]
+        [Fact]
         public void Text_SameValue()
         {
             // Arrange
@@ -110,10 +107,10 @@ namespace UnitTests.ViewModels
             vm.Text = "Tables";
 
             // Assert
-            ClassicAssert.IsFalse(propertyChangedInvoked);
+            Assert.False(propertyChangedInvoked);
         }
 
-        [Test]
+        [Fact]
         public void Text_DifferentValue()
         {
             // Arrange
@@ -126,7 +123,7 @@ namespace UnitTests.ViewModels
             vm.Text = "Views";
 
             // Assert
-            ClassicAssert.IsTrue(propertyChangedInvoked);
+            Assert.True(propertyChangedInvoked);
         }
 
         private static void AddObjects(ObjectTreeRootItemViewModel vm)

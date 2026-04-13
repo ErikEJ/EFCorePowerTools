@@ -1,17 +1,14 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
 using Moq;
-using NUnit.Framework;
+using Xunit;
 
 namespace UnitTests.ViewModels
 {
     using System.Linq;
     using EFCorePowerTools.ViewModels;
-    using NUnit.Framework.Legacy;
-
-    [TestFixture]
     public class SchemaInformationViewModelTests
     {
-        [Test]
+        [Fact]
         public void PropertyChanged_Name_SameValue()
         {
             // Arrange
@@ -26,10 +23,10 @@ namespace UnitTests.ViewModels
             vm.Name = "dbo";
 
             // Assert
-            ClassicAssert.IsFalse(propertyChangedInvoked);
+            Assert.False(propertyChangedInvoked);
         }
 
-        [Test]
+        [Fact]
         public void PropertyChanged_IsSelected_SameValue()
         {
             // Arrange
@@ -44,10 +41,10 @@ namespace UnitTests.ViewModels
             vm.SetSelectedCommand.Execute(false);
 
             // Assert
-            ClassicAssert.IsFalse(propertyChangedInvoked);
+            Assert.False(propertyChangedInvoked);
         }
 
-        [Test]
+        [Fact]
         public void PropertyChanged_IsSelected_DifferentValue()
         {
             // Arrange
@@ -62,11 +59,13 @@ namespace UnitTests.ViewModels
             vm.SetSelectedCommand.Execute(true);
 
             // Assert
-            ClassicAssert.IsTrue(propertyChangedInvoked);
+            Assert.True(propertyChangedInvoked);
         }
 
-        [Test]
-        public void PropertyChanged_IsSelected_ObjectSelection([Values(true, false)] bool isSelected)
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void PropertyChanged_IsSelected_ObjectSelection(bool isSelected)
         {
             // Arrange
             var vm = new SchemaInformationViewModel
@@ -81,10 +80,10 @@ namespace UnitTests.ViewModels
             vm.SetSelectedCommand.Execute(isSelected);
 
             // Assert
-            ClassicAssert.IsTrue(vm.Objects.All(c => c.IsSelected == isSelected));
+            Assert.True(vm.Objects.All(c => c.IsSelected == isSelected));
         }
 
-        [Test]
+        [Fact]
         public void PropertyChanged_IsSelected_PartialObjectSelection()
         {
             // Arrange
@@ -100,7 +99,7 @@ namespace UnitTests.ViewModels
             vm.Objects[0].SetSelectedCommand.Execute(true);
 
             // Assert
-            ClassicAssert.IsNull(vm.IsSelected);
+            Assert.Null(vm.IsSelected);
         }
 
         private static TableInformationViewModel CreateTable(string name)

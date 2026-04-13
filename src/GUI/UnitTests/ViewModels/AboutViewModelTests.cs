@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+﻿using Xunit;
 
 namespace UnitTests.ViewModels
 {
@@ -8,12 +8,9 @@ namespace UnitTests.ViewModels
     using EFCorePowerTools.Common.Models;
     using EFCorePowerTools.ViewModels;
     using Moq;
-    using NUnit.Framework.Legacy;
-
-    [TestFixture]
     public class AboutViewModelTests
     {
-        [Test]
+        [Fact]
         public void Constructor_ArgumentNullException_AboutExtensionModel()
         {
             // Arrange
@@ -22,10 +19,10 @@ namespace UnitTests.ViewModels
             IOperatingSystemAccess osa = null;
 
             // Act & Assert
-            ClassicAssert.Throws<ArgumentNullException>(() => new AboutViewModel(aem, evs, osa));
+            Assert.Throws<ArgumentNullException>(() => new AboutViewModel(aem, evs, osa));
         }
 
-        [Test]
+        [Fact]
         public void Constructor_ArgumentNullException_ExtensionVersionService()
         {
             // Arrange
@@ -34,10 +31,10 @@ namespace UnitTests.ViewModels
             IOperatingSystemAccess osa = null;
 
             // Act & Assert
-            ClassicAssert.Throws<ArgumentNullException>(() => new AboutViewModel(aem, evs, osa));
+            Assert.Throws<ArgumentNullException>(() => new AboutViewModel(aem, evs, osa));
         }
 
-        [Test]
+        [Fact]
         public void Constructor_ArgumentNullException_InstalledComponentsService()
         {
             // Arrange
@@ -46,10 +43,10 @@ namespace UnitTests.ViewModels
             IOperatingSystemAccess osa = null;
 
             // Act & Assert
-            ClassicAssert.Throws<ArgumentNullException>(() => new AboutViewModel(aem, evs, osa));
+            Assert.Throws<ArgumentNullException>(() => new AboutViewModel(aem, evs, osa));
         }
 
-        [Test]
+        [Fact]
         public void Constructor_ArgumentNullException_OperatingSystemAccess()
         {
             // Arrange
@@ -58,13 +55,13 @@ namespace UnitTests.ViewModels
             IOperatingSystemAccess osa = null;
 
             // Act & Assert
-            ClassicAssert.Throws<ArgumentNullException>(() => new AboutViewModel(aem, evs, osa));
+            Assert.Throws<ArgumentNullException>(() => new AboutViewModel(aem, evs, osa));
 
             // Act & Assert
-            ClassicAssert.Throws<ArgumentNullException>(() => new AboutViewModel(aem, evs, osa));
+            Assert.Throws<ArgumentNullException>(() => new AboutViewModel(aem, evs, osa));
         }
 
-        [Test]
+        [Fact]
         public void Constructor_CommandsInitialized()
         {
             // Arrange
@@ -76,13 +73,13 @@ namespace UnitTests.ViewModels
             var avm = new AboutViewModel(aem, evs, osa);
 
             // Assert
-            ClassicAssert.IsNotNull(avm.LoadedCommand);
-            ClassicAssert.IsNotNull(avm.OkCommand);
-            ClassicAssert.IsNotNull(avm.OpenSourcesCommand);
-            ClassicAssert.IsNotNull(avm.OpenMarketplaceCommand);
+            Assert.NotNull(avm.LoadedCommand);
+            Assert.NotNull(avm.OkCommand);
+            Assert.NotNull(avm.OpenSourcesCommand);
+            Assert.NotNull(avm.OpenMarketplaceCommand);
         }
 
-        [Test]
+        [Fact]
         public void LoadedCommand_CanExecute()
         {
             // Arrange
@@ -95,10 +92,10 @@ namespace UnitTests.ViewModels
             var canExecute = avm.LoadedCommand.CanExecute(null);
 
             // Assert
-            ClassicAssert.IsTrue(canExecute);
+            Assert.True(canExecute);
         }
 
-        [Test]
+        [Fact]
         public void LoadedCommand_Execute_EmptyModel_LoadData()
         {
             // Arrange
@@ -114,10 +111,10 @@ namespace UnitTests.ViewModels
 
             // Assert
             evsMock.Verify(m => m.SetExtensionVersion(aem), Times.Once);
-            ClassicAssert.IsFalse(string.IsNullOrWhiteSpace(avm.Version));
+            Assert.False(string.IsNullOrWhiteSpace(avm.Version));
         }
 
-        [Test]
+        [Fact]
         public void LoadedCommand_Execute_FilledModel_FormatData()
         {
             // Arrange
@@ -135,10 +132,10 @@ namespace UnitTests.ViewModels
 
             // Assert
             evsMock.Verify(m => m.SetExtensionVersion(aem), Times.Never);
-            ClassicAssert.IsFalse(string.IsNullOrWhiteSpace(avm.Version));
+            Assert.False(string.IsNullOrWhiteSpace(avm.Version));
         }
 
-        [Test]
+        [Fact]
         public void OkCommand_CanExecute()
         {
             // Arrange
@@ -151,10 +148,10 @@ namespace UnitTests.ViewModels
             var canExecute = avm.OkCommand.CanExecute(null);
 
             // Assert
-            ClassicAssert.IsTrue(canExecute);
+            Assert.True(canExecute);
         }
 
-        [Test]
+        [Fact]
         public void OkCommand_Executed_CloseRequestedToView()
         {
             // Arrange
@@ -169,10 +166,10 @@ namespace UnitTests.ViewModels
             avm.OkCommand.Execute(null);
 
             // Assert
-            ClassicAssert.IsTrue(closeRequested);
+            Assert.True(closeRequested);
         }
 
-        [Test]
+        [Fact]
         public void OpenSourcesCommand_CanExecute()
         {
             // Arrange
@@ -185,10 +182,10 @@ namespace UnitTests.ViewModels
             var canExecute = avm.OpenSourcesCommand.CanExecute(null);
 
             // Assert
-            ClassicAssert.IsTrue(canExecute);
+            Assert.True(canExecute);
         }
 
-        [Test]
+        [Fact]
         public void OpenMarketplaceCommand_CanExecute()
         {
             // Arrange
@@ -201,10 +198,10 @@ namespace UnitTests.ViewModels
             var canExecute = avm.OpenMarketplaceCommand.CanExecute(null);
 
             // Assert
-            ClassicAssert.IsTrue(canExecute);
+            Assert.True(canExecute);
         }
 
-        [Test]
+        [Fact]
         public void OpenMarketplace_Executed_NavigateToHttpHandler()
         {
             // Arrange

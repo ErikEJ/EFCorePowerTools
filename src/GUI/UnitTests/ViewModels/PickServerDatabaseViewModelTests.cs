@@ -5,15 +5,13 @@ using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.DAL;
 using EFCorePowerTools.ViewModels;
 using Moq;
-using NUnit.Framework;
-using NUnit.Framework.Legacy;
+using Xunit;
 
 namespace UnitTests.ViewModels
 {
-    [TestFixture]
     public class PickServerDatabaseViewModelTests
     {
-        [Test]
+        [Fact]
         public void Constructor_ArgumentNullException()
         {
             // Arrange
@@ -23,10 +21,10 @@ namespace UnitTests.ViewModels
             var creds = Mock.Of<ICredentialStore>();
 
             // Act & Assert
-            ClassicAssert.Throws<ArgumentNullException>(() => new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory));
+            Assert.Throws<ArgumentNullException>(() => new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory));
         }
 
-        [Test]
+        [Fact]
         public void Constructor_Argument2NullException()
         {
             // Arrange
@@ -36,10 +34,10 @@ namespace UnitTests.ViewModels
             ICredentialStore creds = null;
 
             // Act & Assert
-            ClassicAssert.Throws<ArgumentNullException>(() => new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory));
+            Assert.Throws<ArgumentNullException>(() => new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory));
         }
 
-        [Test]
+        [Fact]
         public void Constructor_Argument3NullException()
         {
             // Arrange
@@ -49,10 +47,10 @@ namespace UnitTests.ViewModels
             var creds = Mock.Of<ICredentialStore>();
 
             // Act & Assert
-            ClassicAssert.Throws<ArgumentNullException>(() => new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory));
+            Assert.Throws<ArgumentNullException>(() => new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory));
         }
 
-        [Test]
+        [Fact]
         public void Constructor_Argument4NullException()
         {
             // Arrange
@@ -61,10 +59,10 @@ namespace UnitTests.ViewModels
             var creds = Mock.Of<ICredentialStore>();
 
             // Act & Assert
-            ClassicAssert.Throws<ArgumentNullException>(() => new PickServerDatabaseViewModel(vsa, creds, psdFactory, null));
+            Assert.Throws<ArgumentNullException>(() => new PickServerDatabaseViewModel(vsa, creds, psdFactory, null));
         }
 
-        [Test]
+        [Fact]
         public void Constructor_CommandsInitialized()
         {
             // Arrange
@@ -77,15 +75,15 @@ namespace UnitTests.ViewModels
             var vm = new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory);
 
             // Assert
-            ClassicAssert.IsNotNull(vm.LoadedCommand);
-            ClassicAssert.IsNotNull(vm.AddDatabaseConnectionCommand);
-            ClassicAssert.IsNotNull(vm.AddDatabaseDefinitionCommand);
-            ClassicAssert.IsNotNull(vm.OkCommand);
-            ClassicAssert.IsNotNull(vm.CancelCommand);
-            ClassicAssert.IsNotNull(vm.FilterSchemasCommand);
+            Assert.NotNull(vm.LoadedCommand);
+            Assert.NotNull(vm.AddDatabaseConnectionCommand);
+            Assert.NotNull(vm.AddDatabaseDefinitionCommand);
+            Assert.NotNull(vm.OkCommand);
+            Assert.NotNull(vm.CancelCommand);
+            Assert.NotNull(vm.FilterSchemasCommand);
         }
 
-        [Test]
+        [Fact]
         public void Constructor_CollectionsInitialized()
         {
             // Arrange
@@ -98,10 +96,10 @@ namespace UnitTests.ViewModels
             var vm = new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory);
 
             // Assert
-            ClassicAssert.IsNotNull(vm.DatabaseConnections);
+            Assert.NotNull(vm.DatabaseConnections);
         }
 
-        [Test]
+        [Fact]
         public void Constructor_NoSelection()
         {
             // Arrange
@@ -114,10 +112,10 @@ namespace UnitTests.ViewModels
             var vm = new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory);
 
             // Assert
-            ClassicAssert.IsNull(vm.SelectedDatabaseConnection);
+            Assert.Null(vm.SelectedDatabaseConnection);
         }
 
-        [Test]
+        [Fact]
         public void LoadedCommand_CanExecute()
         {
             // Arrange
@@ -131,10 +129,10 @@ namespace UnitTests.ViewModels
             var canExecute = vm.LoadedCommand.CanExecute(null);
 
             // Assert
-            ClassicAssert.IsTrue(canExecute);
+            Assert.True(canExecute);
         }
 
-        [Test]
+        [Fact]
         public void LoadedCommand_Executed_OnlyDatabaseConnections()
         {
             // Arrange
@@ -152,10 +150,10 @@ namespace UnitTests.ViewModels
             vm.LoadedCommand.Execute(null);
 
             // Assert
-            ClassicAssert.AreSame(dbConnection1, vm.SelectedDatabaseConnection);
+            Assert.Same(dbConnection1, vm.SelectedDatabaseConnection);
         }
 
-        [Test]
+        [Fact]
         public void AddDatabaseConnectionCommand_CanExecute()
         {
             // Arrange
@@ -169,10 +167,10 @@ namespace UnitTests.ViewModels
             var canExecute = vm.AddDatabaseConnectionCommand.CanExecute(null);
 
             // Assert
-            ClassicAssert.IsTrue(canExecute);
+            Assert.True(canExecute);
         }
 
-        [Test]
+        [Fact]
         public void AddDatabaseConnectionCommand_Executed_ExceptionDuringPrompt()
         {
             // Arrange
@@ -187,13 +185,13 @@ namespace UnitTests.ViewModels
             vm.AddDatabaseConnectionCommand.Execute(null);
 
             // Assert
-            CollectionAssert.IsEmpty(vm.DatabaseConnections);
-            ClassicAssert.IsNull(vm.SelectedDatabaseConnection);
+            Assert.Empty(vm.DatabaseConnections);
+            Assert.Null(vm.SelectedDatabaseConnection);
             vsaMock.Verify(m => m.PromptForNewDatabaseConnection(), Times.Once);
             vsaMock.Verify(m => m.ShowMessage(It.IsNotNull<string>()), Times.Once);
         }
 
-        [Test]
+        [Fact]
         public void AddDatabaseConnectionCommand_Executed_NoConnectionReturned()
         {
             // Arrange
@@ -208,13 +206,13 @@ namespace UnitTests.ViewModels
             vm.AddDatabaseConnectionCommand.Execute(null);
 
             // Assert
-            CollectionAssert.IsEmpty(vm.DatabaseConnections);
-            ClassicAssert.IsNull(vm.SelectedDatabaseConnection);
+            Assert.Empty(vm.DatabaseConnections);
+            Assert.Null(vm.SelectedDatabaseConnection);
             vsaMock.Verify(m => m.PromptForNewDatabaseConnection(), Times.Once);
             vsaMock.Verify(m => m.ShowMessage(It.IsNotNull<string>()), Times.Never);
         }
 
-        [Test]
+        [Fact]
         public void AddDatabaseConnectionCommand_Executed_NewConnectionReturned()
         {
             // Arrange
@@ -230,13 +228,13 @@ namespace UnitTests.ViewModels
             vm.AddDatabaseConnectionCommand.Execute(null);
 
             // Assert
-            CollectionAssert.Contains(vm.DatabaseConnections, dbConnection);
-            ClassicAssert.AreSame(dbConnection, vm.SelectedDatabaseConnection);
+            Assert.Contains(dbConnection, vm.DatabaseConnections);
+            Assert.Same(dbConnection, vm.SelectedDatabaseConnection);
             vsaMock.Verify(m => m.PromptForNewDatabaseConnection(), Times.Once);
             vsaMock.Verify(m => m.ShowMessage(It.IsNotNull<string>()), Times.Never);
         }
 
-        [Test]
+        [Fact]
         public void AddDatabaseDefinitionCommand_CanExecute()
         {
             // Arrange
@@ -250,10 +248,10 @@ namespace UnitTests.ViewModels
             var canExecute = vm.AddDatabaseDefinitionCommand.CanExecute(null);
 
             // Assert
-            ClassicAssert.IsTrue(canExecute);
+            Assert.True(canExecute);
         }
 
-        [Test]
+        [Fact]
         public void OkCommand_CanExecute_NothingSelected()
         {
             // Arrange
@@ -267,10 +265,10 @@ namespace UnitTests.ViewModels
             var canExecute = vm.OkCommand.CanExecute(null);
 
             // Assert
-            ClassicAssert.IsFalse(canExecute);
+            Assert.False(canExecute);
         }
 
-        [Test]
+        [Fact]
         public void OkCommand_CanExecute_ConnectionSelected()
         {
             // Arrange
@@ -288,10 +286,10 @@ namespace UnitTests.ViewModels
             var canExecute = vm.OkCommand.CanExecute(null);
 
             // Assert
-            ClassicAssert.IsTrue(canExecute);
+            Assert.True(canExecute);
         }
 
-        [Test]
+        [Fact]
         public void OkCommand_Executed_CloseRequestedToView_DatabaseConnection()
         {
             // Arrange
@@ -316,12 +314,12 @@ namespace UnitTests.ViewModels
             vm.OkCommand.Execute(null);
 
             // Assert
-            ClassicAssert.IsTrue(closeRequested);
-            ClassicAssert.IsTrue(dialogResult);
-            ClassicAssert.AreSame(dbConnection, vm.SelectedDatabaseConnection);
+            Assert.True(closeRequested);
+            Assert.True(dialogResult);
+            Assert.Same(dbConnection, vm.SelectedDatabaseConnection);
         }
 
-        [Test]
+        [Fact]
         public void CancelCommand_CanExecute()
         {
             // Arrange
@@ -335,10 +333,10 @@ namespace UnitTests.ViewModels
             var canExecute = vm.CancelCommand.CanExecute(null);
 
             // Assert
-            ClassicAssert.IsTrue(canExecute);
+            Assert.True(canExecute);
         }
 
-        [Test]
+        [Fact]
         public void CancelCommand_Executed_DatabaseConnection()
         {
             // Arrange
@@ -363,12 +361,12 @@ namespace UnitTests.ViewModels
             vm.CancelCommand.Execute(null);
 
             // Assert
-            ClassicAssert.IsTrue(closeRequested);
-            ClassicAssert.IsFalse(dialogResult);
-            ClassicAssert.IsNull(vm.SelectedDatabaseConnection);
+            Assert.True(closeRequested);
+            Assert.False(dialogResult);
+            Assert.Null(vm.SelectedDatabaseConnection);
         }
 
-        [Test]
+        [Fact]
         public void FilterSchemasCommand_CanNotExecute()
         {
             // Arrange
@@ -382,10 +380,10 @@ namespace UnitTests.ViewModels
             var canExecute = vm.FilterSchemasCommand.CanExecute(null);
 
             // Assert
-            ClassicAssert.IsFalse(canExecute);
+            Assert.False(canExecute);
         }
 
-        [Test]
+        [Fact]
         public void FilterSchemasCommand_CanExecute()
         {
             // Arrange
@@ -400,7 +398,7 @@ namespace UnitTests.ViewModels
             var canExecute = vm.FilterSchemasCommand.CanExecute(null);
 
             // Assert
-            ClassicAssert.IsTrue(canExecute);
+            Assert.True(canExecute);
         }
     }
 }

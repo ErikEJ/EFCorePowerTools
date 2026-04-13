@@ -18,7 +18,7 @@ Always reference these instructions first and fallback to search or bash command
   - `cd src/Core/efcpt.8 && dotnet build` -- takes 15-20 seconds from clean. NEVER CANCEL. Set timeout to 60+ seconds.
   - `cd src/Core/efreveng80 && dotnet build` -- takes 10-15 seconds from clean. NEVER CANCEL. Set timeout to 60+ seconds.
 - **Running tests**:
-  - `cd src/Core/NUnitTestCore && dotnet test` -- takes 20-25 seconds. NEVER CANCEL. Set timeout to 120+ seconds.
+  - `cd src/Core/TestCore && dotnet test` -- takes 20-25 seconds. NEVER CANCEL. Set timeout to 120+ seconds.
   - Tests: 74 passed, 3 skipped (normal behavior)
 - **Building dacpac projects**:
   - `cd test/ScaffoldingTester/Chinook && dotnet build` -- takes 7-10 seconds. NEVER CANCEL. Set timeout to 60+ seconds.
@@ -48,7 +48,7 @@ Always reference these instructions first and fallback to search or bash command
   7. Verify: Data annotations added to generated classes
 
 - **ALWAYS run core tests** to ensure no regressions:
-  - `cd src/Core/NUnitTestCore && dotnet test` -- NEVER CANCEL, wait 2+ minutes
+  - `cd src/Core/TestCore && dotnet test` -- NEVER CANCEL, wait 2+ minutes
 
 - **Build validation timing expectations**:
   - Clean CLI build: 15-20 seconds
@@ -83,7 +83,7 @@ cd /home/runner/work/EFCorePowerTools/EFCorePowerTools
 cd src/Core/efcpt.8 && dotnet build
 
 # Run tests  
-cd src/Core/NUnitTestCore && dotnet test
+cd src/Core/TestCore && dotnet test
 
 # Build test dacpac
 cd test/ScaffoldingTester/Chinook && dotnet build
@@ -105,7 +105,7 @@ src/
 │   ├── efreveng80/         # Reverse engineering tool for EF Core 8  
 │   ├── RevEng.Core.80/     # Core reverse engineering library for EF Core 8
 │   ├── efcpt.10/           # CLI tool for EF Core 10 (requires .NET 10 SDK)
-│   └── NUnitTestCore/      # Core test suite (74 tests)
+│   └── TestCore/           # Core test suite (74 tests)
 ├── GUI/                     # Visual Studio extension components
 │   ├── EFCorePowerTools/   # Main VSIX project (Windows/VS only)
 │   └── Shared/             # Shared GUI components

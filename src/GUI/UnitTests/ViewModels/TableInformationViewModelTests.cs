@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+﻿using Xunit;
 
 namespace UnitTests.ViewModels
 {
@@ -7,13 +7,10 @@ namespace UnitTests.ViewModels
     using EFCorePowerTools.ViewModels;
     using GalaSoft.MvvmLight.Messaging;
     using Moq;
-    using NUnit.Framework.Legacy;
     using RevEng.Common;
-
-    [TestFixture]
     public class TableInformationViewModelTests
     {
-        [Test]
+        [Fact]
         public void PropertyChanged_Name_SameValue()
         {
             // Arrange
@@ -26,10 +23,10 @@ namespace UnitTests.ViewModels
             vm.Name = "album";
 
             // Assert
-            ClassicAssert.IsFalse(propertyChangedInvoked);
+            Assert.False(propertyChangedInvoked);
         }
 
-        [Test]
+        [Fact]
         public void PropertyChanged_ObjectType_SameValue()
         {
             // Arrange
@@ -42,10 +39,10 @@ namespace UnitTests.ViewModels
             vm.ObjectType = ObjectType.Table;
 
             // Assert
-            ClassicAssert.IsFalse(propertyChangedInvoked);
+            Assert.False(propertyChangedInvoked);
         }
 
-        [Test]
+        [Fact]
         public void PropertyChanged_NewName_SameValue()
         {
             // Arrange
@@ -58,10 +55,10 @@ namespace UnitTests.ViewModels
             vm.NewName = "album";
 
             // Assert
-            ClassicAssert.IsFalse(propertyChangedInvoked);
+            Assert.False(propertyChangedInvoked);
         }
 
-        [Test]
+        [Fact]
         public void PropertyChanged_Name_DifferentValue()
         {
             // Arrange
@@ -75,10 +72,10 @@ namespace UnitTests.ViewModels
             vm.Name = "dbo.album2";
 
             // Assert
-            ClassicAssert.IsTrue(propertyChangedInvoked);
+            Assert.True(propertyChangedInvoked);
         }
 
-        [Test]
+        [Fact]
         public void PropertyChanged_ObjectType_DifferentValue()
         {
             // Arrange
@@ -91,10 +88,10 @@ namespace UnitTests.ViewModels
             vm.ObjectType = ObjectType.ScalarFunction;
 
             // Assert
-            ClassicAssert.IsTrue(propertyChangedInvoked);
+            Assert.True(propertyChangedInvoked);
         }
 
-        [Test]
+        [Fact]
         public void PropertyChanged_NewName_DifferentValue()
         {
             // Arrange
@@ -107,10 +104,10 @@ namespace UnitTests.ViewModels
             vm.NewName = "album2";
 
             // Assert
-            ClassicAssert.IsTrue(propertyChangedInvoked);
+            Assert.True(propertyChangedInvoked);
         }
 
-        [Test]
+        [Fact]
         public void PropertyChanged_DisplayName_SameNameNewName()
         {
             // Arrange
@@ -120,10 +117,10 @@ namespace UnitTests.ViewModels
 
             // Act
             // Assert
-            ClassicAssert.AreEqual(vm.Name, vm.DisplayName);
+            Assert.Equal(vm.Name, vm.DisplayName);
         }
 
-        [Test]
+        [Fact]
         public void PropertyChanged_DisplayName_DifferentNameNewName()
         {
             // Arrange
@@ -133,10 +130,10 @@ namespace UnitTests.ViewModels
 
             // Act
             // Assert
-            ClassicAssert.AreEqual(vm.DisplayName, $"{vm.NewName} - ({vm.Name})");
+            Assert.Equal(vm.DisplayName, $"{vm.NewName} - ({vm.Name})");
         }
 
-        [Test]
+        [Fact]
         public void PropertyChanged_ObjectTypeIcon_Procedure()
         {
             // Arrange
@@ -145,11 +142,13 @@ namespace UnitTests.ViewModels
 
             // Act
             // Assert
-            ClassicAssert.AreEqual(ObjectTypeIcon.Procedure, vm.ObjectTypeIcon);
+            Assert.Equal(ObjectTypeIcon.Procedure, vm.ObjectTypeIcon);
         }
 
-        [Test]
-        public void PropertyChanged_ObjectTypeIcon_Table([Values(true, false)] bool hasPrimaryKey)
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void PropertyChanged_ObjectTypeIcon_Table(bool hasPrimaryKey)
         {
             // Arrange
             var vm = CreateViewModel();
@@ -163,15 +162,15 @@ namespace UnitTests.ViewModels
             // Assert
             if (hasPrimaryKey)
             {
-                ClassicAssert.AreEqual(ObjectTypeIcon.Table, vm.ObjectTypeIcon);
+                Assert.Equal(ObjectTypeIcon.Table, vm.ObjectTypeIcon);
             }
             else
             {
-                ClassicAssert.AreEqual(ObjectTypeIcon.TableWithoutKey, vm.ObjectTypeIcon);
+                Assert.Equal(ObjectTypeIcon.TableWithoutKey, vm.ObjectTypeIcon);
             }
         }
 
-        [Test]
+        [Fact]
         public void PropertyChanged_ObjectTypeIcon_View()
         {
             // Arrange
@@ -180,11 +179,13 @@ namespace UnitTests.ViewModels
 
             // Act
             // Assert
-            ClassicAssert.AreEqual(ObjectTypeIcon.View, vm.ObjectTypeIcon);
+            Assert.Equal(ObjectTypeIcon.View, vm.ObjectTypeIcon);
         }
 
-        [Test]
-        public void PropertyChanged_IsSelected_ColumnsSelection([Values(true, false)] bool isSelected)
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void PropertyChanged_IsSelected_ColumnsSelection(bool isSelected)
         {
             // Arrange
             var vm = CreateViewModel();
@@ -197,10 +198,10 @@ namespace UnitTests.ViewModels
             vm.SetSelectedCommand.Execute(isSelected);
 
             // Assert
-            ClassicAssert.IsTrue(vm.Columns.All(c => c.IsSelected == isSelected));
+            Assert.True(vm.Columns.All(c => c.IsSelected == isSelected));
         }
 
-        [Test]
+        [Fact]
         public void PropertyChanged_DisplayName_NewNameDifferentName()
         {
             // Arrange
@@ -211,10 +212,10 @@ namespace UnitTests.ViewModels
             vm.NewName = "newname";
 
             // Assert
-            ClassicAssert.AreEqual("newname - (table1)", vm.DisplayName);
+            Assert.Equal("newname - (table1)", vm.DisplayName);
         }
 
-        [Test]
+        [Fact]
         public void PropertyChanged_DisplayName_NewNameEqualsName()
         {
             // Arrange
@@ -225,10 +226,10 @@ namespace UnitTests.ViewModels
             vm.NewName = "table1";
 
             // Assert
-            ClassicAssert.AreEqual("table1", vm.DisplayName);
+            Assert.Equal("table1", vm.DisplayName);
         }
 
-        [Test]
+        [Fact]
         public void StartEditing_Execute()
         {
             // Arrange
@@ -239,10 +240,10 @@ namespace UnitTests.ViewModels
             vm.StartEditCommand.Execute(null);
 
             // Assert
-            ClassicAssert.IsTrue(vm.IsEditing);
+            Assert.True(vm.IsEditing);
         }
 
-        [Test]
+        [Fact]
         public void ConfirmEditing_Execute()
         {
             // Arrange
@@ -255,11 +256,11 @@ namespace UnitTests.ViewModels
             vm.ConfirmEditCommand.Execute(null);
 
             // Assert
-            ClassicAssert.IsFalse(vm.IsEditing);
-            ClassicAssert.AreNotSame(vm.Name, vm.NewName);
+            Assert.False(vm.IsEditing);
+            Assert.NotSame(vm.Name, vm.NewName);
         }
 
-        [Test]
+        [Fact]
         public void CancelEditing_Execute()
         {
             // Arrange
@@ -272,8 +273,8 @@ namespace UnitTests.ViewModels
             vm.CancelEditCommand.Execute(null);
 
             // Assert
-            ClassicAssert.IsFalse(vm.IsEditing);
-            ClassicAssert.AreSame(vm.Name, vm.NewName);
+            Assert.False(vm.IsEditing);
+            Assert.Same(vm.Name, vm.NewName);
         }
 
         private static TableInformationViewModel CreateViewModel()

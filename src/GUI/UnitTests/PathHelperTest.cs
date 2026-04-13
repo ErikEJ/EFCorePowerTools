@@ -1,70 +1,68 @@
-﻿using NUnit.Framework;
-using NUnit.Framework.Legacy;
+﻿using Xunit;
 using RevEng.Common;
 
 namespace UnitTests
 {
-    [TestFixture]
     public class PathHelperTest
     {
-        [Test]
+        [Fact]
         public void ParsePathType1()
         {
             // Act
             var result = PathHelper.GetAbsPath("..\\..\\folder", "C:\\temp\\data\\");
 
             // Assert
-            ClassicAssert.AreEqual(@"C:\folder", result);
+            Assert.Equal(@"C:\folder", result);
         }
 
-        [Test]
+        [Fact]
         public void ParsePathType2()
         {
             // Act
             var result = PathHelper.GetAbsPath("D:\\folder", "C:\\temp\\data\\");
 
             // Assert
-            ClassicAssert.AreEqual(@"D:\folder", result);
+            Assert.Equal(@"D:\folder", result);
         }
 
-        [Test]
+        [Fact]
         public void ParsePathType3()
         {
             // Act
             var result = PathHelper.GetAbsPath("\\server\\folder", "C:\\temp\\data\\");
 
             // Assert
-            ClassicAssert.AreEqual(@"\server\folder", result);
+            Assert.Equal(@"\server\folder", result);
         }
 
-        [Test]
+        [Fact]
         public void ParsePathType4()
         {
             // Act
             var result = PathHelper.GetAbsPath("folder", "C:\\temp\\data\\");
 
             // Assert
-            ClassicAssert.AreEqual(@"C:\temp\data\folder", result);
+            Assert.Equal(@"C:\temp\data\folder", result);
         }
 
-        [Test]
+        [Fact]
         public void GetRelativePath1()
         {
             // Act
             var result = PathHelper.GetAbsPath("..\\", "C:\\Code\\Github\\EFCorePowerTools\\test\\Ef7Playground\\Ef7Playground");
 
             // Assert
-            ClassicAssert.AreEqual(@"C:\Code\Github\EFCorePowerTools\test\Ef7Playground", result);
+            Assert.Equal(@"C:\Code\Github\EFCorePowerTools\test\Ef7Playground", result);
         }
 
-        [Test]
+        [Fact]
         public void GetRelativePath2()
         {
             // Act
             var result = PathHelper.GetAbsPath("..\\..\\", "C:\\Code\\Github\\EFCorePowerTools\\test\\Ef7Playground\\Ef7Playground");
 
             // Assert
-            ClassicAssert.AreEqual(@"C:\Code\Github\EFCorePowerTools\test", result);
+            Assert.Equal(@"C:\Code\Github\EFCorePowerTools\test", result);
         }
     }
 }

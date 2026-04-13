@@ -1,14 +1,12 @@
 ﻿using EFCorePowerTools.Common.Models;
-using NUnit.Framework;
-using NUnit.Framework.Legacy;
+using Xunit;
 using RevEng.Common;
 
 namespace UnitTests.Models
 {
-    [TestFixture]
     public class DatabaseConnectionModelTests
     {
-        [Test]
+        [Fact]
         public void PropertyChanged_NotInvokedForEqualValues()
         {
             // Arrange
@@ -22,13 +20,13 @@ namespace UnitTests.Models
             dcm.DatabaseType = DatabaseType.Undefined;
 
             // Assert
-            ClassicAssert.AreEqual(0, invokes);
-            ClassicAssert.IsNull(dcm.ConnectionName);
-            ClassicAssert.IsNull(dcm.ConnectionString);
-            ClassicAssert.AreEqual(DatabaseType.Undefined, dcm.DatabaseType);
+            Assert.Equal(0, invokes);
+            Assert.Null(dcm.ConnectionName);
+            Assert.Null(dcm.ConnectionString);
+            Assert.Equal(DatabaseType.Undefined, dcm.DatabaseType);
         }
 
-        [Test]
+        [Fact]
         public void PropertyChanged_InvokedForDifferentValues()
         {
             // Arrange
@@ -45,10 +43,10 @@ namespace UnitTests.Models
             dcm.DatabaseType = dbType;
 
             // Assert
-            ClassicAssert.AreEqual(3, invokes);
-            ClassicAssert.AreEqual(connectionName, dcm.ConnectionName);
-            ClassicAssert.AreEqual(connectionString, dcm.ConnectionString);
-            ClassicAssert.AreEqual(dbType, dcm.DatabaseType);
+            Assert.Equal(3, invokes);
+            Assert.Equal(connectionName, dcm.ConnectionName);
+            Assert.Equal(connectionString, dcm.ConnectionString);
+            Assert.Equal(dbType, dcm.DatabaseType);
         }
     }
 }

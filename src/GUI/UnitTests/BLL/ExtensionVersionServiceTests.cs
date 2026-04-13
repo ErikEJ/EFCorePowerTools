@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+﻿using Xunit;
 
 namespace UnitTests.BLL
 {
@@ -8,22 +8,19 @@ namespace UnitTests.BLL
     using EFCorePowerTools.Common.DAL;
     using EFCorePowerTools.Common.Models;
     using Moq;
-    using NUnit.Framework.Legacy;
-
-    [TestFixture]
     public class ExtensionVersionServiceTests
     {
-        [Test]
+        [Fact]
         public void Constructor_ArgumentNullException()
         {
             // Arrange
             IDotNetAccess dna = null;
 
             // Act & Assert
-            ClassicAssert.Throws<ArgumentNullException>(() => new ExtensionVersionService(dna));
+            Assert.Throws<ArgumentNullException>(() => new ExtensionVersionService(dna));
         }
 
-        [Test]
+        [Fact]
         public void SetExtensionVersion_ArgumentNullException()
         {
             // Arrange
@@ -31,10 +28,10 @@ namespace UnitTests.BLL
             IExtensionVersionService evs = new ExtensionVersionService(dna);
 
             // Act & Assert
-            ClassicAssert.Throws<ArgumentNullException>(() => evs.SetExtensionVersion(null));
+            Assert.Throws<ArgumentNullException>(() => evs.SetExtensionVersion(null));
         }
 
-        [Test]
+        [Fact]
         public void SetExtensionVersion_ProvideVersion()
         {
             // Arrange
@@ -48,7 +45,7 @@ namespace UnitTests.BLL
             evs.SetExtensionVersion(aem);
 
             // Assert
-            ClassicAssert.AreSame(version, aem.ExtensionVersion);
+            Assert.Same(version, aem.ExtensionVersion);
         }
     }
 }

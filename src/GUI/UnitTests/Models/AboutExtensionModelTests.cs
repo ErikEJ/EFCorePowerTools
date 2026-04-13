@@ -1,14 +1,11 @@
-﻿using NUnit.Framework;
+﻿using Xunit;
 
 namespace UnitTests.Models
 {
     using EFCorePowerTools.Common.Models;
-    using NUnit.Framework.Legacy;
-
-    [TestFixture]
     public class AboutExtensionModelTests
     {
-        [Test]
+        [Fact]
         public void SourceCodeUrl_NotEmpty()
         {
             // Arrange
@@ -16,10 +13,10 @@ namespace UnitTests.Models
             var sourceCodeUrl = AboutExtensionModel.SourceCodeUrl;
 
             // Assert
-            ClassicAssert.IsFalse(string.IsNullOrWhiteSpace(sourceCodeUrl));
+            Assert.False(string.IsNullOrWhiteSpace(sourceCodeUrl));
         }
 
-        [Test]
+        [Fact]
         public void MarketplaceUrl_NotEmpty()
         {
             // Arrange
@@ -27,7 +24,7 @@ namespace UnitTests.Models
             var marketplaceUrl = AboutExtensionModel.MarketplaceUrl;
 
             // Assert
-            ClassicAssert.IsFalse(string.IsNullOrWhiteSpace(marketplaceUrl));
+            Assert.False(string.IsNullOrWhiteSpace(marketplaceUrl));
         }
     }
 }

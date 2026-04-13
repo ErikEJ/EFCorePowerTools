@@ -33,7 +33,7 @@ bld/
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
 
-# NUNIT
+# Test runner artifacts
 *.VisualState.xml
 TestResult.xml
 

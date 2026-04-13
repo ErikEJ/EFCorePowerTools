@@ -1,16 +1,13 @@
-using NUnit.Framework;
+using Xunit;
 
 namespace UnitTests.ViewModels
 {
     using EFCorePowerTools.ViewModels;
     using GalaSoft.MvvmLight.Messaging;
     using Moq;
-    using NUnit.Framework.Legacy;
-
-    [TestFixture]
     public class ColumnInformationViewModelTests
     {
-        [Test]
+        [Fact]
         public void PropertyChanged_Name_SameValue()
         {
             // Arrange
@@ -23,10 +20,10 @@ namespace UnitTests.ViewModels
             vm.Name = "column1";
 
             // Assert
-            ClassicAssert.IsFalse(propertyChangedInvoked);
+            Assert.False(propertyChangedInvoked);
         }
 
-        [Test]
+        [Fact]
         public void PropertyChanged_IsPrimaryKey_SameValue()
         {
             // Arrange
@@ -40,10 +37,10 @@ namespace UnitTests.ViewModels
             vm.IsPrimaryKey = true;
 
             // Assert
-            ClassicAssert.IsFalse(propertyChangedInvoked);
+            Assert.False(propertyChangedInvoked);
         }
 
-        [Test]
+        [Fact]
         public void PropertyChanged_Name_DifferentValue()
         {
             // Arrange
@@ -56,10 +53,10 @@ namespace UnitTests.ViewModels
             vm.Name = "column2";
 
             // Assert
-            ClassicAssert.IsTrue(propertyChangedInvoked);
+            Assert.True(propertyChangedInvoked);
         }
 
-        [Test]
+        [Fact]
         public void PropertyChanged_IsPrimaryKey_DifferentValue()
         {
             // Arrange
@@ -73,10 +70,10 @@ namespace UnitTests.ViewModels
             vm.IsPrimaryKey = false;
 
             // Assert
-            ClassicAssert.IsTrue(propertyChangedInvoked);
+            Assert.True(propertyChangedInvoked);
         }
 
-        [Test]
+        [Fact]
         public void PropertyChanged_SetSelectedCommand_PrimaryKeyColumn_TableNotSelected_SetSelected()
         {
             // Arrange
@@ -89,10 +86,10 @@ namespace UnitTests.ViewModels
             vm.SetSelectedCommand.Execute(true);
 
             // Assert
-            ClassicAssert.IsFalse(vm.IsSelected);
+            Assert.False(vm.IsSelected);
         }
 
-        [Test]
+        [Fact]
         public void PropertyChanged_SetSelectedCommand_PrimaryKeyColumn_TableSelected_SetSelected()
         {
             // Arrange
@@ -107,10 +104,10 @@ namespace UnitTests.ViewModels
             vm.SetSelectedCommand.Execute(false);
 
             // Assert
-            ClassicAssert.IsTrue(vm.IsSelected);
+            Assert.True(vm.IsSelected);
         }
 
-        [Test]
+        [Fact]
         public void PropertyChanged_SetSelectedCommand_Column_TableSelected_SetSelected()
         {
             // Arrange
@@ -123,10 +120,10 @@ namespace UnitTests.ViewModels
             vm.SetSelectedCommand.Execute(true);
 
             // Assert
-            ClassicAssert.IsTrue(vm.IsSelected);
+            Assert.True(vm.IsSelected);
         }
 
-        [Test]
+        [Fact]
         public void PropertyChanged_DisplayName_NewNameDifferentName()
         {
             // Arrange
@@ -138,10 +135,10 @@ namespace UnitTests.ViewModels
             vm.NewName = "newname";
 
             // Assert
-            ClassicAssert.AreEqual("newname - (column1)", vm.DisplayName);
+            Assert.Equal("newname - (column1)", vm.DisplayName);
         }
 
-        [Test]
+        [Fact]
         public void PropertyChanged_DisplayName_NewNameEqualsName()
         {
             // Arrange
@@ -153,10 +150,10 @@ namespace UnitTests.ViewModels
             vm.NewName = "column1";
 
             // Assert
-            ClassicAssert.AreEqual("column1", vm.DisplayName);
+            Assert.Equal("column1", vm.DisplayName);
         }
 
-        [Test]
+        [Fact]
         public void StartEditing_Execute()
         {
             // Arrange
@@ -167,10 +164,10 @@ namespace UnitTests.ViewModels
             vm.StartEditCommand.Execute(null);
 
             // Assert
-            ClassicAssert.IsTrue(vm.IsEditing);
+            Assert.True(vm.IsEditing);
         }
 
-        [Test]
+        [Fact]
         public void ConfirmEditing_Execute()
         {
             // Arrange
@@ -183,11 +180,11 @@ namespace UnitTests.ViewModels
             vm.ConfirmEditCommand.Execute(null);
 
             // Assert
-            ClassicAssert.IsFalse(vm.IsEditing);
-            ClassicAssert.AreNotSame(vm.Name, vm.NewName);
+            Assert.False(vm.IsEditing);
+            Assert.NotSame(vm.Name, vm.NewName);
         }
 
-        [Test]
+        [Fact]
         public void CancelEditing_Execute()
         {
             // Arrange
@@ -200,8 +197,8 @@ namespace UnitTests.ViewModels
             vm.CancelEditCommand.Execute(null);
 
             // Assert
-            ClassicAssert.IsFalse(vm.IsEditing);
-            ClassicAssert.AreSame(vm.Name, vm.NewName);
+            Assert.False(vm.IsEditing);
+            Assert.Same(vm.Name, vm.NewName);
         }
 
         private static ColumnInformationViewModel CreateViewModel()

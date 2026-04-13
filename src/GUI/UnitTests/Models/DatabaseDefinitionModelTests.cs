@@ -1,14 +1,11 @@
-﻿using NUnit.Framework;
+﻿using Xunit;
 
 namespace UnitTests.Models
 {
     using EFCorePowerTools.Common.Models;
-    using NUnit.Framework.Legacy;
-
-    [TestFixture]
     public class DatabaseDefinitionModelTests
     {
-        [Test]
+        [Fact]
         public void PropertyChanged_NotInvokedForEqualValues()
         {
             // Arrange
@@ -20,11 +17,11 @@ namespace UnitTests.Models
             ddm.FilePath = null;
 
             // Assert
-            ClassicAssert.AreEqual(0, invokes);
-            ClassicAssert.IsNull(ddm.FilePath);
+            Assert.Equal(0, invokes);
+            Assert.Null(ddm.FilePath);
         }
 
-        [Test]
+        [Fact]
         public void PropertyChanged_InvokedForDifferentValues()
         {
             // Arrange
@@ -37,8 +34,8 @@ namespace UnitTests.Models
             ddm.FilePath = filePath;
 
             // Assert
-            ClassicAssert.AreEqual(1, invokes);
-            ClassicAssert.AreEqual(filePath, ddm.FilePath);
+            Assert.Equal(1, invokes);
+            Assert.Equal(filePath, ddm.FilePath);
         }
     }
 }

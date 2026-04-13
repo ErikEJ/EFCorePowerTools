@@ -1,14 +1,12 @@
 ﻿using System.IO;
 using EFCorePowerTools.Handlers.ReverseEngineer;
-using NUnit.Framework;
-using NUnit.Framework.Legacy;
+using Xunit;
 
 namespace UnitTests
 {
-    [TestFixture]
     public class ResultDeserializerTest
     {
-        [Test]
+        [Fact]
         [Ignore("Investigate build fail")]
         public void ParseTableResult()
         {
@@ -19,11 +17,11 @@ namespace UnitTests
             var parsed = ResultDeserializer.BuildTableResult(result);
 
             // Assert
-            ClassicAssert.IsNotNull(parsed);
-            ClassicAssert.AreEqual(29, parsed.Count);
+            Assert.NotNull(parsed);
+            Assert.Equal(29, parsed.Count);
         }
 
-        [Test]
+        [Fact]
         [Ignore("Investigate build fail")]
         public void ParseTableResultWithWarning()
         {
@@ -34,11 +32,11 @@ namespace UnitTests
             var parsed = ResultDeserializer.BuildTableResult(result);
 
             // Assert
-            ClassicAssert.IsNotNull(parsed);
-            ClassicAssert.AreEqual(29, parsed.Count);
+            Assert.NotNull(parsed);
+            Assert.Equal(29, parsed.Count);
         }
 
-        [Test]
+        [Fact]
         [Ignore("Investigate build issue")]
         public void ParseResultWithError()
         {

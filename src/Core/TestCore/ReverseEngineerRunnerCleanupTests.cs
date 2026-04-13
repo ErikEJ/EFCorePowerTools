@@ -5,7 +5,7 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace NUnitTestCore
+namespace TestCore
 {
     public class ReverseEngineerRunnerCleanupTests
     {

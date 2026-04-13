@@ -1,21 +1,20 @@
-﻿using NUnit.Framework;
+﻿using Xunit;
 
 namespace UnitTests.ViewModels
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
+    using System.Threading;
     using EFCorePowerTools.Contracts.ViewModels;
     using EFCorePowerTools.ViewModels;
     using GalaSoft.MvvmLight.Messaging;
     using Moq;
-    using NUnit.Framework.Legacy;
     using RevEng.Common;
-
-    [TestFixture]
     public class ObjectTreeViewModelTests
     {
-        [Test]
+        [Fact]
         public void Constructors_ArgumentNullException_ViewModelFactory()
         {
             // Arrange
@@ -24,20 +23,20 @@ namespace UnitTests.ViewModels
             Func<IColumnInformationViewModel> c = null;
 
             // Act & Assert
-            ClassicAssert.Throws<ArgumentNullException>(() => new ObjectTreeViewModel(s, t, c));
+            Assert.Throws<ArgumentNullException>(() => new ObjectTreeViewModel(s, t, c));
         }
 
-        [Test]
+        [Fact]
         public void Constructors_CollectionsInitialized()
         {
             // Act
             var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
 
             // Assert
-            ClassicAssert.IsNotNull(vm.Types);
+            Assert.NotNull(vm.Types);
         }
 
-        [Test]
+        [Fact]
         public void AddObjects_Null()
         {
             // Arrange
@@ -45,10 +44,10 @@ namespace UnitTests.ViewModels
 
             // Act
             // Assert
-            ClassicAssert.Throws<ArgumentNullException>(() => vm.AddObjects(null, null));
+            Assert.Throws<ArgumentNullException>(() => vm.AddObjects(null, null));
         }
 
-        [Test]
+        [Fact]
         public void AddObjects_EmptyCollection()
         {
             // Arrange
@@ -59,10 +58,10 @@ namespace UnitTests.ViewModels
             vm.AddObjects(objectsToAdd, null);
 
             // Assert
-            ClassicAssert.IsEmpty(vm.Types.SelectMany(t => t.Schemas));
+            Assert.Empty(vm.Types.SelectMany(t => t.Schemas));
         }
 
-        [Test]
+        [Fact]
         public void AddObjects_Collection()
         {
             // Arrange
@@ -75,16 +74,16 @@ namespace UnitTests.ViewModels
             var vmobjects = vm.Types.SelectMany(t => t.Schemas).SelectMany(c => c.Objects).OrderBy(c => c.Schema).ThenBy(c => c.Name).ToArray();
 
             // Assert
-            ClassicAssert.IsNotEmpty(vm.Types.SelectMany(t => t.Schemas).SelectMany(t => t.Objects));
-            ClassicAssert.AreEqual(objects.Length, vm.Types.SelectMany(t => t.Schemas).SelectMany(t => t.Objects).Count());
+            Assert.NotEmpty(vm.Types.SelectMany(t => t.Schemas).SelectMany(t => t.Objects));
+            Assert.Equal(objects.Length, vm.Types.SelectMany(t => t.Schemas).SelectMany(t => t.Objects).Count());
             for (var i = 0; i < objects.Count(); i++)
             {
                 AreObjectsEqual(objects[i], vmobjects[i]);
-                ClassicAssert.IsFalse(vm.Types.SelectMany(t => t.Schemas).SelectMany(t => t.Objects).ElementAt(i).IsSelected);
+                Assert.False(vm.Types.SelectMany(t => t.Schemas).SelectMany(t => t.Objects).ElementAt(i).IsSelected);
             }
         }
 
-        [Test]
+        [Fact]
         public void AddObjects_Replacers()
         {
             // Arrange
@@ -99,23 +98,23 @@ namespace UnitTests.ViewModels
             var renamers = vm.GetRenamedObjects();
 
             // Assert
-            ClassicAssert.AreEqual(replacers.Length, renamers.Count());
+            Assert.Equal(replacers.Length, renamers.Count());
 
             foreach (var replacerSchema in replacers)
             {
                 foreach (var table in replacerSchema.Tables)
                 {
                     var vmobject = vmobjects.First(o => o.Schema == replacerSchema.SchemaName && o.Name.Equals(table.Name, StringComparison.OrdinalIgnoreCase));
-                    ClassicAssert.AreEqual(vmobject.NewName, table.NewName);
+                    Assert.Equal(vmobject.NewName, table.NewName);
                     foreach (var column in table.Columns)
                     {
-                        ClassicAssert.AreEqual(vmobject.Columns.First(c => c.Name.Equals(column.Name, StringComparison.OrdinalIgnoreCase)).NewName, column.NewName);
+                        Assert.Equal(vmobject.Columns.First(c => c.Name.Equals(column.Name, StringComparison.OrdinalIgnoreCase)).NewName, column.NewName);
                     }
                 }
             }
         }
 
-        [Test]
+        [Fact]
         public void AddObjects_Replacers_Issue679()
         {
             // Arrange
@@ -166,22 +165,22 @@ namespace UnitTests.ViewModels
             var renamers = vm.GetRenamedObjects().ToList();
 
             // Assert
-            ClassicAssert.AreEqual(3, renamers[0].Tables.Count);
-            ClassicAssert.AreEqual(1, renamers[0].Tables[0].Columns.Count);
-            ClassicAssert.AreEqual(1, renamers[0].Tables[1].Columns.Count);
+            Assert.Equal(3, renamers[0].Tables.Count);
+            Assert.Equal(1, renamers[0].Tables[0].Columns.Count);
+            Assert.Equal(1, renamers[0].Tables[1].Columns.Count);
         }
 
-        [Test]
+        [Fact]
         public void SelectObjects_Null()
         {
             // Arrange
             var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
 
             // Act and assert
-            ClassicAssert.Throws<ArgumentNullException>(() => vm.SelectObjects(null));
+            Assert.Throws<ArgumentNullException>(() => vm.SelectObjects(null));
         }
 
-        [Test]
+        [Fact]
         public void SelectTables_EmptyCollection()
         {
             // Arrange
@@ -192,10 +191,10 @@ namespace UnitTests.ViewModels
             vm.SelectObjects(selectedTables);
 
             // Assert
-            ClassicAssert.IsEmpty(vm.GetSelectedObjects());
+            Assert.Empty(vm.GetSelectedObjects());
         }
 
-        [Test]
+        [Fact]
         public void SelectTables_Collection()
         {
             // Arrange
@@ -207,22 +206,22 @@ namespace UnitTests.ViewModels
             vm.SelectObjects(selectedObjects);
 
             // Assert
-            ClassicAssert.AreEqual(GetSelectedObjects().Count(), vm.GetSelectedObjects().Count());
+            Assert.Equal(GetSelectedObjects().Count(), vm.GetSelectedObjects().Count());
             for (var i = 0; i < vm.GetSelectedObjects().Count(); i++)
             {
                 var a = vm.GetSelectedObjects().ElementAt(i);
                 var b = selectedObjects[i];
 
-                ClassicAssert.AreEqual(a.Name, b.Name);
-                ClassicAssert.AreEqual(a.ObjectType, b.ObjectType);
+                Assert.Equal(a.Name, b.Name);
+                Assert.Equal(a.ObjectType, b.ObjectType);
                 for (var j = 0; j < a.ExcludedColumns?.Count(); j++)
                 {
-                    ClassicAssert.AreEqual(a.ExcludedColumns.ElementAt(0), b.ExcludedColumns.ElementAt(0));
+                    Assert.Equal(a.ExcludedColumns.ElementAt(0), b.ExcludedColumns.ElementAt(0));
                 }
             }
         }
 
-        [Test]
+        [Fact]
         public void SearchText_NoDirectFilter()
         {
             // Arrange
@@ -235,12 +234,12 @@ namespace UnitTests.ViewModels
             vm.Search("ref", SearchMode.Text);
 
             // Assert
-            ClassicAssert.AreEqual(databaseObjects.Length, preFilter.Count());
+            Assert.Equal(databaseObjects.Length, preFilter.Count());
             var postFilter = vm.Types.SelectMany(c => c.Schemas).SelectMany(c => c.Objects).Where(c => c.IsVisible);
-            ClassicAssert.AreEqual(2, postFilter.Count());
+            Assert.Equal(2, postFilter.Count());
         }
 
-        [Test]
+        [Fact]
         public void SearchText_FilterAfterDelay()
         {
             // Arrange
@@ -252,16 +251,15 @@ namespace UnitTests.ViewModels
             vm.Search("ref", SearchMode.Text);
 
             // Assert
-            ClassicAssert.That(
+            AssertEventually(
                 () =>
                 {
                     var postFilter = vm.Types.SelectMany(c => c.Schemas).SelectMany(c => c.Objects).Where(c => c.IsVisible);
                     return postFilter.Count() < databaseObjects.Length && postFilter.All(m => m.Name.ToUpper().Contains("REF"));
-                },
-                Is.True.After(1500, 200));
+                });
         }
 
-        [Test]
+        [Fact]
         public void GetSelectedObjects_NoTables()
         {
             // Arrange
@@ -271,11 +269,11 @@ namespace UnitTests.ViewModels
             var result = vm.GetSelectedObjects();
 
             // Assert
-            ClassicAssert.IsNotNull(result);
-            ClassicAssert.IsEmpty(result);
+            Assert.NotNull(result);
+            Assert.Empty(result);
         }
 
-        [Test]
+        [Fact]
         public void GetSelectedObjects_WithObjects_NoneSelected()
         {
             // Arrange
@@ -286,11 +284,11 @@ namespace UnitTests.ViewModels
             var result = vm.GetSelectedObjects();
 
             // Assert
-            ClassicAssert.IsNotNull(result);
-            ClassicAssert.IsEmpty(result);
+            Assert.NotNull(result);
+            Assert.Empty(result);
         }
 
-        [Test]
+        [Fact]
         public void GetSelectedObjects_WithObjects_AllSelected()
         {
             // Arrange
@@ -306,19 +304,19 @@ namespace UnitTests.ViewModels
             var result = vm.GetSelectedObjects().OrderBy(c => c.Name).ToArray();
 
             // Assert
-            ClassicAssert.IsNotNull(result);
-            ClassicAssert.AreEqual(11, result.Count());
+            Assert.NotNull(result);
+            Assert.Equal(11, result.Count());
             for (var i = 0; i < result.Length - 1; i++)
             {
-                ClassicAssert.AreEqual(databaseObjects[i + 1].DisplayName, result[i].Name);
+                Assert.Equal(databaseObjects[i + 1].DisplayName, result[i].Name);
             }
 
             // Act
             var renamed = vm.GetRenamedObjects();
-            ClassicAssert.AreEqual(0, renamed.Count());
+            Assert.Equal(0, renamed.Count());
         }
 
-        [Test]
+        [Fact]
         public void GetSelectedObjects_WithObjects_PartialSelection()
         {
             // Arrange
@@ -334,15 +332,15 @@ namespace UnitTests.ViewModels
             var result = vm.GetSelectedObjects().ToList();
 
             // Assert
-            ClassicAssert.IsNotNull(result);
-            ClassicAssert.AreEqual(6, result.Count);
+            Assert.NotNull(result);
+            Assert.Equal(6, result.Count);
             foreach (var item in vm.Types.SelectMany(c => c.Schemas).OrderBy(c => c.Name))
             {
-                ClassicAssert.IsTrue(result.Exists(c => c.Name == item.Objects[0].ModelDisplayName));
+                Assert.True(result.Exists(c => c.Name == item.Objects[0].ModelDisplayName));
             }
         }
 
-        [Test]
+        [Fact]
         public void GetSelectionState_NoneSelected()
         {
             // Arrange
@@ -357,10 +355,10 @@ namespace UnitTests.ViewModels
             }
 
             // Assert
-            ClassicAssert.IsTrue(vm.GetSelectionState());
+            Assert.True(vm.GetSelectionState());
         }
 
-        [Test]
+        [Fact]
         public void GetSelectionState_AllSelected()
         {
             // Arrange
@@ -375,10 +373,10 @@ namespace UnitTests.ViewModels
             }
 
             // Assert
-            ClassicAssert.IsFalse(vm.GetSelectionState());
+            Assert.False(vm.GetSelectionState());
         }
 
-        [Test]
+        [Fact]
         public void GetSelectionState_PartialSelection()
         {
             // Arrange
@@ -393,11 +391,13 @@ namespace UnitTests.ViewModels
             }
 
             // Assert
-            ClassicAssert.IsNull(vm.GetSelectionState());
+            Assert.Null(vm.GetSelectionState());
         }
 
-        [Test]
-        public void SetSelectionState([Values(true, false)] bool selected)
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void SetSelectionState(bool selected)
         {
             // Arrange
             var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
@@ -410,15 +410,15 @@ namespace UnitTests.ViewModels
             // Assert
             if (selected)
             {
-                ClassicAssert.AreEqual(databaseObjects.Length, vm.GetSelectedObjects().Count());
+                Assert.Equal(databaseObjects.Length, vm.GetSelectedObjects().Count());
             }
             else
             {
-                ClassicAssert.AreEqual(0, vm.GetSelectedObjects().Count());
+                Assert.Equal(0, vm.GetSelectedObjects().Count());
             }
         }
 
-        [Test]
+        [Fact]
         public void GetRenamedObjects()
         {
             // Arrange
@@ -439,12 +439,28 @@ namespace UnitTests.ViewModels
 
             // Assert
             var renamedObjects = vm.GetRenamedObjects();
-            ClassicAssert.IsNotNull(renamedObjects);
-            ClassicAssert.AreSame("NewTableName", renamedObjects.First().Tables[0].NewName);
-            ClassicAssert.AreSame("NewColumnName", renamedObjects.First().Tables[0].Columns[0].NewName);
+            Assert.NotNull(renamedObjects);
+            Assert.Equal("NewTableName", renamedObjects.First().Tables[0].NewName);
+            Assert.Equal("NewColumnName", renamedObjects.First().Tables[0].Columns[0].NewName);
 
-            ClassicAssert.AreSame("DepartmentDetail", renamedObjects.Last().Tables[0].NewName);
-            ClassicAssert.AreSame("DepartmentName", renamedObjects.Last().Tables[0].Columns[0].NewName);
+            Assert.Equal("DepartmentDetail", renamedObjects.Last().Tables[0].NewName);
+            Assert.Equal("DepartmentName", renamedObjects.Last().Tables[0].Columns[0].NewName);
+        }
+
+        private static void AssertEventually(Func<bool> condition, int timeoutMs = 1500, int pollIntervalMs = 200)
+        {
+            var stopwatch = Stopwatch.StartNew();
+            while (stopwatch.ElapsedMilliseconds < timeoutMs)
+            {
+                if (condition())
+                {
+                    return;
+                }
+
+                Thread.Sleep(pollIntervalMs);
+            }
+
+            Assert.True(condition());
         }
 
         private static TableModel[] GetDatabaseObjects()
@@ -571,12 +587,12 @@ namespace UnitTests.ViewModels
 
         private static void AreObjectsEqual(TableModel a, ITableInformationViewModel b)
         {
-            ClassicAssert.AreEqual(a.Name, b.Name);
-            ClassicAssert.AreEqual(a.Schema, b.Schema);
-            ClassicAssert.AreEqual(a.ObjectType, b.ObjectType);
+            Assert.Equal(a.Name, b.Name);
+            Assert.Equal(a.Schema, b.Schema);
+            Assert.Equal(a.ObjectType, b.ObjectType);
             for (var i = 0; i < a.Columns.Count(); i++)
             {
-                ClassicAssert.AreEqual(a.Columns.ElementAt(i).Name, b.Columns[i].Name);
+                Assert.Equal(a.Columns.ElementAt(i).Name, b.Columns[i].Name);
             }
         }
     }

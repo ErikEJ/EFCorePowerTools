@@ -39,11 +39,11 @@ jobs:
         dotnet-version: '10.0.x'
 
     - name: Core test project
-      run: dotnet test src/Core/NUnitTestCore/NUnitTestCore.csproj
+      run: dotnet test src/Core/TestCore/TestCore.csproj
 
     - name: Core integration test project
       if: matrix.os == 'ubuntu-latest'
-      run: dotnet test src/Core/NUnitTestCore.Integration/NUnitTestCore.Integration.csproj
+      run: dotnet test src/Core/TestCore.Integration/TestCore.Integration.csproj
 
   build:
     needs: core-tests

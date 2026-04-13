@@ -1,21 +1,19 @@
 using EFCorePowerTools.ViewModels;
-using NUnit.Framework;
-using NUnit.Framework.Legacy;
+using Xunit;
 
 namespace UnitTests.ViewModels
 {
-    [TestFixture]
     public class AdvancedModelingOptionsViewModelTests
     {
-        [Test]
+        [Fact]
         public void Constructor_ArgumentNullException()
         {
             // Arrange & Act
             var vm = new AdvancedModelingOptionsViewModel();
 
             // Assert
-            ClassicAssert.IsNotNull(vm.OkCommand);
-            ClassicAssert.IsNotNull(vm.CancelCommand);
+            Assert.NotNull(vm.OkCommand);
+            Assert.NotNull(vm.CancelCommand);
         }
     }
 }

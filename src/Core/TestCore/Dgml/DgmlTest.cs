@@ -209,7 +209,7 @@ namespace UnitTests
 
         private static string GetTemplate()
         {
-            var resourceName = "NUnitTestCore.template.dgml";
+            var resourceName = "TestCore.template.dgml";
 
             using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
             {

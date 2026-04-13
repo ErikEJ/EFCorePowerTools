@@ -1,15 +1,13 @@
 using System.Collections.Generic;
 using EFCorePowerTools.Helpers;
-using NUnit.Framework;
-using NUnit.Framework.Legacy;
+using Xunit;
 using RevEng.Common;
 
 namespace UnitTests
 {
-    [TestFixture]
     public class ReverseEngineerHelperTest
     {
-        [Test]
+        [Fact]
         public void CanParseTables()
         {
             // Arrange
@@ -25,14 +23,14 @@ namespace UnitTests
             var result = ReverseEngineerHelper.NormalizeTables(tables, true);
 
             // Assert
-            ClassicAssert.AreEqual(4, result.Count);
-            ClassicAssert.AreEqual("[dbo].[table]", result[0].Name);
-            ClassicAssert.AreEqual("[dbo].[table.crazy]", result[1].Name);
-            ClassicAssert.AreEqual("[dbo].[table]", result[2].Name);
-            ClassicAssert.AreEqual("[dbo].[table.mad]", result[3].Name);
+            Assert.Equal(4, result.Count);
+            Assert.Equal("[dbo].[table]", result[0].Name);
+            Assert.Equal("[dbo].[table.crazy]", result[1].Name);
+            Assert.Equal("[dbo].[table]", result[2].Name);
+            Assert.Equal("[dbo].[table.mad]", result[3].Name);
         }
 
-        [Test]
+        [Fact]
         public void CanSkipTables()
         {
             // Arrange
@@ -49,10 +47,10 @@ namespace UnitTests
             var result = ReverseEngineerHelper.NormalizeTables(tables, false);
 
             // Assert
-            ClassicAssert.AreEqual(5, result.Count);
+            Assert.Equal(5, result.Count);
             for (int i = 0; i < 5; i++)
             {
-                ClassicAssert.AreEqual(result[i].Name, tables[i].Name);
+                Assert.Equal(result[i].Name, tables[i].Name);
             }
         }
     }

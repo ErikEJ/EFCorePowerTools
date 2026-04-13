@@ -1,63 +1,60 @@
 ﻿namespace UnitTests.Models
 {
     using System;
-    using NUnit.Framework;
-    using NUnit.Framework.Legacy;
+    using Xunit;
     using RevEng.Common;
-
-    [TestFixture]
     public class TableModelTest
     {
-        [Test]
+        [Fact]
         public void Constructor_ArgumentException_Schema()
         {
             // Arrange
             string table = null;
 
             // Act & Assert
-            ClassicAssert.Throws<ArgumentException>(() => new TableModel(table, null, DatabaseType.SQLServer, ObjectType.Table, null));
+            Assert.Throws<ArgumentException>(() => new TableModel(table, null, DatabaseType.SQLServer, ObjectType.Table, null));
         }
 
-        [Test]
+        [Fact]
         public void Constructor_CorrectCreation()
         {
             // Act
             var ti = new TableModel("Album", "dbo", DatabaseType.Npgsql, ObjectType.Table, null);
 
             // Assert
-            ClassicAssert.AreEqual("dbo.Album", ti.DisplayName);
-            ClassicAssert.AreEqual("Album", ti.Name);
-            ClassicAssert.AreEqual("dbo", ti.Schema);
-            ClassicAssert.AreEqual(ObjectType.Table, ti.ObjectType);
-            ClassicAssert.AreEqual(DatabaseType.Npgsql, ti.DatabaseType);
+            Assert.Equal("dbo.Album", ti.DisplayName);
+            Assert.Equal("Album", ti.Name);
+            Assert.Equal("dbo", ti.Schema);
+            Assert.Equal(ObjectType.Table, ti.ObjectType);
+            Assert.Equal(DatabaseType.Npgsql, ti.DatabaseType);
         }
 
-        [Test]
+        [Fact]
         public void Constructor_CorrectCreation_2()
         {
             // Act
             var ti = new TableModel("Album", "dbo", DatabaseType.SQLServer, ObjectType.Table, null);
 
             // Assert
-            ClassicAssert.AreEqual("[dbo].[Album]", ti.DisplayName);
-            ClassicAssert.AreEqual("Album", ti.Name);
-            ClassicAssert.AreEqual("dbo", ti.Schema);
-            ClassicAssert.AreEqual(ObjectType.Table, ti.ObjectType);
-            ClassicAssert.AreEqual(DatabaseType.SQLServer, ti.DatabaseType);
+            Assert.Equal("[dbo].[Album]", ti.DisplayName);
+            Assert.Equal("Album", ti.Name);
+            Assert.Equal("dbo", ti.Schema);
+            Assert.Equal(ObjectType.Table, ti.ObjectType);
+            Assert.Equal(DatabaseType.SQLServer, ti.DatabaseType);
         }
 
-        [Test]
+        [Fact]
         public void Constructor_CorrectCreation_3()
         {
             // Act
             var ti = new TableModel("Album", "dbo", DatabaseType.SQLServerDacpac, ObjectType.Table, null);
 
             // Assert
-            ClassicAssert.AreEqual("[dbo].[Album]", ti.DisplayName);
-            ClassicAssert.AreEqual("Album", ti.Name);
-            ClassicAssert.AreEqual("dbo", ti.Schema);
-            ClassicAssert.AreEqual(ObjectType.Table, ti.ObjectType);
-            ClassicAssert.AreEqual(DatabaseType.SQLServerDacpac, ti.DatabaseType);
+            Assert.Equal("[dbo].[Album]", ti.DisplayName);
+            Assert.Equal("Album", ti.Name);
+            Assert.Equal("dbo", ti.Schema);
+            Assert.Equal(ObjectType.Table, ti.ObjectType);
+            Assert.Equal(DatabaseType.SQLServerDacpac, ti.DatabaseType);
         }
     }
 }

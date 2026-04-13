@@ -1,38 +1,35 @@
 ﻿namespace UnitTests.ViewModels
 {
     using EFCorePowerTools.ViewModels;
-    using NUnit.Framework;
-    using NUnit.Framework.Legacy;
+    using Xunit;
     using RevEng.Common;
-
-    [TestFixture]
     public class PickSchemasViewModelTests
     {
-        [Test]
+        [Fact]
         public void Constructor_ArgumentNullException()
         {
             // Arrange & Act
             var vm = new PickSchemasViewModel();
 
             // Assert
-            ClassicAssert.IsNotNull(vm.OkCommand);
-            ClassicAssert.IsNotNull(vm.CancelCommand);
-            ClassicAssert.IsNotNull(vm.AddCommand);
-            ClassicAssert.IsNotNull(vm.RemoveCommand);
+            Assert.NotNull(vm.OkCommand);
+            Assert.NotNull(vm.CancelCommand);
+            Assert.NotNull(vm.AddCommand);
+            Assert.NotNull(vm.RemoveCommand);
         }
 
-        [Test]
+        [Fact]
         public void Constructor_CollectionInitializedEmpty()
         {
             // Arrange & Act
             var vm = new PickSchemasViewModel();
 
             // Assert
-            ClassicAssert.IsNotNull(vm.Schemas);
-            ClassicAssert.IsEmpty(vm.Schemas);
+            Assert.NotNull(vm.Schemas);
+            Assert.Empty(vm.Schemas);
         }
 
-        [Test]
+        [Fact]
         public void OkCommand_CanNotExecute()
         {
             // Arrange
@@ -42,10 +39,10 @@
             var canExecute = vm.OkCommand.CanExecute(null);
 
             // Assert
-            ClassicAssert.IsFalse(canExecute);
+            Assert.False(canExecute);
         }
 
-        [Test]
+        [Fact]
         public void OkCommand_CanExecute()
         {
             // Arrange
@@ -56,10 +53,10 @@
             var canExecute = vm.OkCommand.CanExecute(null);
 
             // Assert
-            ClassicAssert.IsTrue(canExecute);
+            Assert.True(canExecute);
         }
 
-        [Test]
+        [Fact]
         public void OkCommand_Executed_EmptySchemasRemoved()
         {
             // Arrange
@@ -72,10 +69,10 @@
             vm.OkCommand.Execute(null);
 
             // Assert
-            ClassicAssert.AreEqual(1, vm.Schemas.Count);
+            Assert.Equal(1, vm.Schemas.Count);
         }
 
-        [Test]
+        [Fact]
         public void CancelCommand_CanExecute()
         {
             // Arrange
@@ -85,10 +82,10 @@
             var canExecute = vm.CancelCommand.CanExecute(null);
 
             // Assert
-            ClassicAssert.IsTrue(canExecute);
+            Assert.True(canExecute);
         }
 
-        [Test]
+        [Fact]
         public void AddCommand_Executed_SchemaAdded()
         {
             // Arrange
@@ -98,10 +95,10 @@
             vm.AddCommand.Execute(null);
 
             // Assert
-            ClassicAssert.AreEqual(1, vm.Schemas.Count);
+            Assert.Equal(1, vm.Schemas.Count);
         }
 
-        [Test]
+        [Fact]
         public void RemoveCommand_CanNotExecute()
         {
             // Arrange
@@ -111,10 +108,10 @@
             var canExecute = vm.RemoveCommand.CanExecute(null);
 
             // Assert
-            ClassicAssert.IsFalse(canExecute);
+            Assert.False(canExecute);
         }
 
-        [Test]
+        [Fact]
         public void RemoveCommand_CanExecute()
         {
             // Arrange
@@ -129,10 +126,10 @@
             var canExecute = vm.RemoveCommand.CanExecute(null);
 
             // Assert
-            ClassicAssert.IsTrue(canExecute);
+            Assert.True(canExecute);
         }
 
-        [Test]
+        [Fact]
         public void RemoveCommand_Executed_SchemaRemoved()
         {
             // Arrange
@@ -145,8 +142,8 @@
             vm.RemoveCommand.Execute(null);
 
             // Assert
-            ClassicAssert.AreEqual(0, vm.Schemas.Count);
-            ClassicAssert.IsNull(vm.SelectedSchema);
+            Assert.Equal(0, vm.Schemas.Count);
+            Assert.Null(vm.SelectedSchema);
         }
     }
 }

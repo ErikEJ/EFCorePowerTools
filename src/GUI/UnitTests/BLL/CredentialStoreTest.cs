@@ -1,15 +1,13 @@
 ﻿using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Helpers;
-using NUnit.Framework;
-using NUnit.Framework.Legacy;
+using Xunit;
 using RevEng.Common;
 
 namespace UnitTests.BLL
 {
-    [TestFixture]
     public class CredentialStoreTest
     {
-        [Test]
+        [Fact]
         public void SaveCredential_Get_DeleteCredential()
         {
             CredentialStore credentialStore = new CredentialStore();
@@ -24,18 +22,18 @@ namespace UnitTests.BLL
 
             var saved = credentialStore.SaveCredential(databaseConnection);
 
-            ClassicAssert.IsTrue(saved);
+            Assert.True(saved);
 
             var connections = credentialStore.GetStoredDatabaseConnections();
 
-            ClassicAssert.AreEqual(1, connections.Count);
-            ClassicAssert.AreEqual("test", connections[0].ConnectionName);
-            ClassicAssert.AreEqual("Data Source=test", connections[0].ConnectionString);
-            ClassicAssert.AreEqual(DatabaseType.SQLite, connections[0].DatabaseType);
+            Assert.Equal(1, connections.Count);
+            Assert.Equal("test", connections[0].ConnectionName);
+            Assert.Equal("Data Source=test", connections[0].ConnectionString);
+            Assert.Equal(DatabaseType.SQLite, connections[0].DatabaseType);
 
             var deleted = credentialStore.DeleteCredential("test");
 
-            ClassicAssert.IsTrue(deleted);
+            Assert.True(deleted);
         }
     }
 }
