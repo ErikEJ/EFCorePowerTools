@@ -6,7 +6,7 @@ BEGIN
     CREATE TABLE #OrderTable
     (
         SomeName NVARCHAR(100),
-        SomeValue NVARCHAR(100),
+        SomeValue NVARCHAR(100)
     );
 
     SELECT
