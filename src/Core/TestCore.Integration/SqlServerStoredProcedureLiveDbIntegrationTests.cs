@@ -21,11 +21,11 @@ namespace IntegrationTests
     [Collection("NonParallel")]
     public class SqlServerStoredProcedureLiveDbIntegrationTests : IClassFixture<SqlServerStoredProcedureLiveDbFixture>
     {
-        private readonly SqlServerStoredProcedureLiveDbFixture _fixture;
+        private readonly SqlServerStoredProcedureLiveDbFixture fixture;
 
         public SqlServerStoredProcedureLiveDbIntegrationTests(SqlServerStoredProcedureLiveDbFixture fixture)
         {
-            _fixture = fixture;
+            this.fixture = fixture;
         }
 
         [Fact]
@@ -138,7 +138,7 @@ namespace IntegrationTests
             var workingDirectory = CreateSmokeTestWorkingDirectory();
             try
             {
-                var stdout = await RunEfcptCliAsync(GetEfcpt8CliPath(), _fixture.DatabaseConnectionString, workingDirectory);
+                var stdout = await RunEfcptCliAsync(GetEfcpt8CliPath(), fixture.DatabaseConnectionString, workingDirectory);
 
                 Assert.Contains("Getting database objects...", stdout);
                 Assert.Contains("database objects discovered", stdout);
@@ -161,7 +161,7 @@ namespace IntegrationTests
             {
                 SetStoredProcedureResultSetFallback(workingDirectory, enabled: false);
 
-                var stdout = await RunEfcptCliAsync(GetEfcpt10CliPath(), _fixture.DatabaseConnectionString, workingDirectory);
+                var stdout = await RunEfcptCliAsync(GetEfcpt10CliPath(), fixture.DatabaseConnectionString, workingDirectory);
                 const string expectedWarning = "warning: Unable to get result set shape for procedure 'dbo.StoGetSomeData'. Invalid object name '#OrderTable'..";
 
                 Assert.Contains(NormalizeConsoleOutput(expectedWarning), NormalizeConsoleOutput(stdout));
@@ -183,7 +183,7 @@ namespace IntegrationTests
             var workingDirectory = CreateSmokeTestWorkingDirectory();
             try
             {
-                var stdout = await RunEfcptCliAsync(GetEfcpt10CliPath(), _fixture.DatabaseConnectionString, workingDirectory);
+                var stdout = await RunEfcptCliAsync(GetEfcpt10CliPath(), fixture.DatabaseConnectionString, workingDirectory);
                 Assert.DoesNotContain("warning: Unable to get result set shape", stdout);
 
                 var modelsPath = Path.Combine(workingDirectory, "Models");
@@ -223,7 +223,7 @@ namespace IntegrationTests
             var workingDirectory = CreateSmokeTestWorkingDirectory();
             try
             {
-                var stdout = await RunEfcptCliAsync(GetEfcpt10CliPath(), _fixture.DatabaseConnectionString, workingDirectory);
+                var stdout = await RunEfcptCliAsync(GetEfcpt10CliPath(), fixture.DatabaseConnectionString, workingDirectory);
                 Assert.DoesNotContain("warning: Unable to get result set shape", stdout);
 
                 var modelsPath = Path.Combine(workingDirectory, "Models");
@@ -335,7 +335,7 @@ namespace IntegrationTests
         {
             var factory = new SqlServerStoredProcedureModelFactory();
 
-            return factory.Create(_fixture.DatabaseConnectionString, new ModuleModelFactoryOptions
+            return factory.Create(fixture.DatabaseConnectionString, new ModuleModelFactoryOptions
             {
                 DiscoverMultipleResultSets = discoverMultipleResultSets,
                 FullModel = true,
@@ -499,22 +499,22 @@ namespace IntegrationTests
         private const string DatabaseName = "DockerPlayground";
         private const string SaPassword = "Password!123";
 
-        private MsSqlContainer _container;
+        private MsSqlContainer container;
 
         public string DatabaseConnectionString { get; private set; }
 
         public async ValueTask InitializeAsync()
         {
-            _container = new MsSqlBuilder("mcr.microsoft.com/mssql/server:2022-latest")
+            container = new MsSqlBuilder("mcr.microsoft.com/mssql/server:2022-latest")
                 .WithPassword(SaPassword)
                 .Build();
 
-            await _container.StartAsync();
+            await container.StartAsync();
 
             var dacpacPath = GetDockerPlaygroundDacpacPath();
             DeployDacpac(dacpacPath);
 
-            var connectionStringBuilder = new SqlConnectionStringBuilder(_container.GetConnectionString())
+            var connectionStringBuilder = new SqlConnectionStringBuilder(container.GetConnectionString())
             {
                 InitialCatalog = DatabaseName,
                 TrustServerCertificate = true,
@@ -526,15 +526,15 @@ namespace IntegrationTests
 
         public async ValueTask DisposeAsync()
         {
-            if (_container != null)
+            if (container != null)
             {
-                await _container.DisposeAsync();
+                await container.DisposeAsync();
             }
         }
 
         private void DeployDacpac(string dacpacPath)
         {
-            var adminConnectionString = new SqlConnectionStringBuilder(_container.GetConnectionString())
+            var adminConnectionString = new SqlConnectionStringBuilder(container.GetConnectionString())
             {
                 InitialCatalog = "master",
                 TrustServerCertificate = true,
