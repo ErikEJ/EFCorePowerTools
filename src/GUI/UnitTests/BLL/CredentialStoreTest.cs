@@ -1,7 +1,7 @@
 ﻿using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Helpers;
-using Xunit;
 using RevEng.Common;
+using Xunit;
 
 namespace UnitTests.BLL
 {
@@ -26,10 +26,10 @@ namespace UnitTests.BLL
 
             var connections = credentialStore.GetStoredDatabaseConnections();
 
-            Assert.Equal(1, connections.Count);
-            Assert.Equal("test", connections[0].ConnectionName);
-            Assert.Equal("Data Source=test", connections[0].ConnectionString);
-            Assert.Equal(DatabaseType.SQLite, connections[0].DatabaseType);
+            var connection = Assert.Single(connections);
+            Assert.Equal("test", connection.ConnectionName);
+            Assert.Equal("Data Source=test", connection.ConnectionString);
+            Assert.Equal(DatabaseType.SQLite, connection.DatabaseType);
 
             var deleted = credentialStore.DeleteCredential("test");
 

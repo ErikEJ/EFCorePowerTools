@@ -8,6 +8,7 @@ namespace UnitTests.ViewModels
     using GalaSoft.MvvmLight.Messaging;
     using Moq;
     using RevEng.Common;
+
     public class TableInformationViewModelTests
     {
         [Fact]

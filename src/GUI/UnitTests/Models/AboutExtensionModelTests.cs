@@ -3,6 +3,7 @@
 namespace UnitTests.Models
 {
     using EFCorePowerTools.Common.Models;
+
     public class AboutExtensionModelTests
     {
         [Fact]

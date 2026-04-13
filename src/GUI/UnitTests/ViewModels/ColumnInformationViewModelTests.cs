@@ -5,6 +5,7 @@ namespace UnitTests.ViewModels
     using EFCorePowerTools.ViewModels;
     using GalaSoft.MvvmLight.Messaging;
     using Moq;
+
     public class ColumnInformationViewModelTests
     {
         [Fact]

@@ -6,6 +6,7 @@ namespace UnitTests.ViewModels
 {
     using System.Linq;
     using EFCorePowerTools.ViewModels;
+
     public class SchemaInformationViewModelTests
     {
         [Fact]

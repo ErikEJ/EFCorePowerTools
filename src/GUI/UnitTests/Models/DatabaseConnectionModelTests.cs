@@ -1,6 +1,6 @@
 ﻿using EFCorePowerTools.Common.Models;
-using Xunit;
 using RevEng.Common;
+using Xunit;
 
 namespace UnitTests.Models
 {

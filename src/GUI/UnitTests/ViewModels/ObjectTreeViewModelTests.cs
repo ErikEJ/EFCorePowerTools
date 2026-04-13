@@ -12,6 +12,7 @@ namespace UnitTests.ViewModels
     using GalaSoft.MvvmLight.Messaging;
     using Moq;
     using RevEng.Common;
+
     public class ObjectTreeViewModelTests
     {
         [Fact]
@@ -166,8 +167,8 @@ namespace UnitTests.ViewModels
 
             // Assert
             Assert.Equal(3, renamers[0].Tables.Count);
-            Assert.Equal(1, renamers[0].Tables[0].Columns.Count);
-            Assert.Equal(1, renamers[0].Tables[1].Columns.Count);
+            Assert.Single(renamers[0].Tables[0].Columns);
+            Assert.Single(renamers[0].Tables[1].Columns);
         }
 
         [Fact]
@@ -313,7 +314,7 @@ namespace UnitTests.ViewModels
 
             // Act
             var renamed = vm.GetRenamedObjects();
-            Assert.Equal(0, renamed.Count());
+            Assert.Empty(renamed);
         }
 
         [Fact]
@@ -414,7 +415,7 @@ namespace UnitTests.ViewModels
             }
             else
             {
-                Assert.Equal(0, vm.GetSelectedObjects().Count());
+                Assert.Empty(vm.GetSelectedObjects());
             }
         }
 

@@ -1,8 +1,9 @@
 ﻿namespace UnitTests.ViewModels
 {
     using EFCorePowerTools.ViewModels;
-    using Xunit;
     using RevEng.Common;
+    using Xunit;
+
     public class PickSchemasViewModelTests
     {
         [Fact]
@@ -69,7 +70,7 @@
             vm.OkCommand.Execute(null);
 
             // Assert
-            Assert.Equal(1, vm.Schemas.Count);
+            Assert.Single(vm.Schemas);
         }
 
         [Fact]
@@ -95,7 +96,7 @@
             vm.AddCommand.Execute(null);
 
             // Assert
-            Assert.Equal(1, vm.Schemas.Count);
+            Assert.Single(vm.Schemas);
         }
 
         [Fact]
@@ -142,7 +143,7 @@
             vm.RemoveCommand.Execute(null);
 
             // Assert
-            Assert.Equal(0, vm.Schemas.Count);
+            Assert.Empty(vm.Schemas);
             Assert.Null(vm.SelectedSchema);
         }
     }

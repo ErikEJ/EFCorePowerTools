@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using EFCorePowerTools.Helpers;
-using Xunit;
 using RevEng.Common;
+using Xunit;
 
 namespace UnitTests
 {

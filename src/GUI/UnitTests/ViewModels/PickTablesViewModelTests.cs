@@ -7,6 +7,7 @@ namespace UnitTests.ViewModels
     using EFCorePowerTools.ViewModels;
     using Moq;
     using RevEng.Common;
+
     public class PickTablesViewModelTests
     {
         [Fact]
@@ -148,6 +149,9 @@ namespace UnitTests.ViewModels
 
             // Act
             vm.AddObjects(null, null);
+
+            // Assert
+            otvm.Verify(c => c.AddObjects(null, null), Times.Once);
         }
 
         [Fact]
@@ -173,6 +177,9 @@ namespace UnitTests.ViewModels
 
             // Act
             vm.SelectObjects(null);
+
+            // Assert
+            otvm.Verify(c => c.SelectObjects(null), Times.Once);
         }
 
         [Fact]

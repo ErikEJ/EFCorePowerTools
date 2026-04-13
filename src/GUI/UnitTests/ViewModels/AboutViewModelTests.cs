@@ -8,6 +8,7 @@ namespace UnitTests.ViewModels
     using EFCorePowerTools.Common.Models;
     using EFCorePowerTools.ViewModels;
     using Moq;
+
     public class AboutViewModelTests
     {
         [Fact]

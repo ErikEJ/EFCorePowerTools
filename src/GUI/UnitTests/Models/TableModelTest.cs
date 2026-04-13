@@ -1,8 +1,9 @@
 ﻿namespace UnitTests.Models
 {
     using System;
-    using Xunit;
     using RevEng.Common;
+    using Xunit;
+
     public class TableModelTest
     {
         [Fact]
