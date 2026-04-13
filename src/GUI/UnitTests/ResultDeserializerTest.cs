@@ -6,8 +6,7 @@ namespace UnitTests
 {
     public class ResultDeserializerTest
     {
-        [Fact]
-        [Ignore("Investigate build fail")]
+        [Fact(Skip = "Investigate build fail")]
         public void ParseTableResult()
         {
             // Arrange
@@ -21,8 +20,7 @@ namespace UnitTests
             Assert.Equal(29, parsed.Count);
         }
 
-        [Fact]
-        [Ignore("Investigate build fail")]
+        [Fact(Skip = "Investigate build fail")]
         public void ParseTableResultWithWarning()
         {
             // Arrange
@@ -36,8 +34,7 @@ namespace UnitTests
             Assert.Equal(29, parsed.Count);
         }
 
-        [Fact]
-        [Ignore("Investigate build issue")]
+        [Fact(Skip = "Investigate build issue")]
         public void ParseResultWithError()
         {
             // Arrange
@@ -51,7 +48,7 @@ namespace UnitTests
 
         private static string ReadAllText(string file)
         {
-            return File.ReadAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, file));
+            return File.ReadAllText(Path.Combine(AppContext.BaseDirectory, file));
         }
     }
 }
