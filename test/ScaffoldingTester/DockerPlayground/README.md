@@ -62,7 +62,7 @@ For tools that expect separate arguments, use:
 
 ### efcpt from a live database
 
-This is how we reverse engineer from the containeried database, what I'm calling the "live-db path"
+This is how we reverse engineer from the containerized database, what I'm calling the "live-db path"
 
 For `efcpt` CLI commands, run:
 
@@ -94,15 +94,15 @@ After you fix bugs within the EFCorePowerTools repo directly, you can run the fo
 ### From dacpac
 
 ```sh
-cd /home/nmummau/Code/EFCorePowerTools-Fork/test/ScaffoldingTester/DockerPlayground
+cd <repo-root>/test/ScaffoldingTester/DockerPlayground
 
 # NET 8
-dotnet run --project /home/nmummau/Code/EFCorePowerTools-Fork/src/Core/efcpt.8/efcpt.8.csproj -- \
+dotnet run --project ../../../src/Core/efcpt.8/efcpt.8.csproj -- \
   'bin/Debug/net10.0/DockerPlayground.dacpac' \
   mssql
 
 # or NET 10
-dotnet run --project /home/nmummau/Code/EFCorePowerTools-Fork/src/Core/efcpt.10/efcpt.10.csproj -- \
+dotnet run --project ../../../src/Core/efcpt.10/efcpt.10.csproj -- \
   'bin/Debug/net10.0/DockerPlayground.dacpac' \
   mssql
 ```
@@ -110,15 +110,15 @@ dotnet run --project /home/nmummau/Code/EFCorePowerTools-Fork/src/Core/efcpt.10/
 ### From database
 
 ```sh
-cd /home/nmummau/Code/EFCorePowerTools-Fork/test/ScaffoldingTester/DockerPlayground
+cd <repo-root>/test/ScaffoldingTester/DockerPlayground
 
 # NET 8
-dotnet run --project /home/nmummau/Code/EFCorePowerTools-Fork/src/Core/efcpt.8/efcpt.8.csproj -- \
+dotnet run --project ../../../src/Core/efcpt.8/efcpt.8.csproj -- \
   'Server=localhost,1433;Initial Catalog=DockerPlayground;User ID=sa;Password=Password!;Encrypt=False;TrustServerCertificate=True' \
   mssql
 
 # or NET 10
-dotnet run --project /home/nmummau/Code/EFCorePowerTools-Fork/src/Core/efcpt.10/efcpt.10.csproj -- \
+dotnet run --project ../../../src/Core/efcpt.10/efcpt.10.csproj -- \
   'Server=localhost,1433;Initial Catalog=DockerPlayground;User ID=sa;Password=Password!;Encrypt=False;TrustServerCertificate=True' \
   mssql
 ```
