@@ -181,7 +181,7 @@ namespace UnitTests.ViewModels
 
             // Assert
             Assert.False(vm.IsEditing);
-            Assert.NotSame(vm.Name, vm.NewName);
+            Assert.NotEqual(vm.Name, vm.NewName);
         }
 
         [Fact]
@@ -198,7 +198,7 @@ namespace UnitTests.ViewModels
 
             // Assert
             Assert.False(vm.IsEditing);
-            Assert.Same(vm.Name, vm.NewName);
+            Assert.Equal(vm.Name, vm.NewName);
         }
 
         private static ColumnInformationViewModel CreateViewModel()

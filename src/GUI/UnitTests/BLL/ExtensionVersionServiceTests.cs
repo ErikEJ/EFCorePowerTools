@@ -45,7 +45,7 @@ namespace UnitTests.BLL
             evs.SetExtensionVersion(aem);
 
             // Assert
-            Assert.Same(version, aem.ExtensionVersion);
+            Assert.Equal(version, aem.ExtensionVersion);
         }
     }
 }
