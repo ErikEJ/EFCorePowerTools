@@ -8,6 +8,7 @@ namespace UnitTests.BLL
     using EFCorePowerTools.Common.DAL;
     using EFCorePowerTools.Common.Models;
     using Moq;
+
     public class ExtensionVersionServiceTests
     {
         [Fact]

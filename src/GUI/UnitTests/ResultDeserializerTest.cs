@@ -48,7 +48,7 @@ namespace UnitTests
 
         private static string ReadAllText(string file)
         {
-            return File.ReadAllText(Path.Combine(AppContext.BaseDirectory, file));
+            return File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, file));
         }
     }
 }
