@@ -9,6 +9,7 @@ using RevEng.Core.Abstractions;
 
 namespace UnitTests
 {
+    [Collection("Dacpac")]
     public class DacpacTest
     {
         private const string SparseAnnotationName = "SqlServer:Sparse";

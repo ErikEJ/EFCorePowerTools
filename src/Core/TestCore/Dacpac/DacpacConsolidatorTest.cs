@@ -4,6 +4,7 @@ using Xunit;
 
 namespace UnitTests
 {
+    [Collection("Dacpac")]
     public class DacpacConsolidatorTest
     {
         [Fact(Skip = "Local only!")]
