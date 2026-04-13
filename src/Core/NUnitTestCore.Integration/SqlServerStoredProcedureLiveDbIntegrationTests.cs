@@ -25,37 +25,37 @@ namespace IntegrationTests
         private const string DatabaseName = "DockerPlayground";
         private const string SaPassword = "Password!123";
 
-        private MsSqlContainer _container;
-        private string _databaseConnectionString;
+        private MsSqlContainer container;
+        private string databaseConnectionString;
 
         [OneTimeSetUp]
         public async Task OneTimeSetUp()
         {
-            _container = new MsSqlBuilder("mcr.microsoft.com/mssql/server:2022-latest")
+            container = new MsSqlBuilder("mcr.microsoft.com/mssql/server:2022-latest")
                 .WithPassword(SaPassword)
                 .Build();
 
-            await _container.StartAsync();
+            await container.StartAsync();
 
             var dacpacPath = GetDockerPlaygroundDacpacPath();
             DeployDacpac(dacpacPath);
 
-            var connectionStringBuilder = new SqlConnectionStringBuilder(_container.GetConnectionString())
+            var connectionStringBuilder = new SqlConnectionStringBuilder(container.GetConnectionString())
             {
                 InitialCatalog = DatabaseName,
                 TrustServerCertificate = true,
                 Encrypt = false,
             };
 
-            _databaseConnectionString = connectionStringBuilder.ConnectionString;
+            databaseConnectionString = connectionStringBuilder.ConnectionString;
         }
 
         [OneTimeTearDown]
         public async Task OneTimeTearDown()
         {
-            if (_container != null)
+            if (container != null)
             {
-                await _container.DisposeAsync();
+                await container.DisposeAsync();
             }
         }
 
@@ -168,7 +168,7 @@ namespace IntegrationTests
             var workingDirectory = CreateSmokeTestWorkingDirectory();
             try
             {
-                var stdout = await RunEfcptCliAsync(GetEfcpt8CliPath(), _databaseConnectionString, workingDirectory);
+                var stdout = await RunEfcptCliAsync(GetEfcpt8CliPath(), databaseConnectionString, workingDirectory);
 
                 Assert.That(stdout, Does.Contain("Getting database objects..."));
                 Assert.That(stdout, Does.Contain("database objects discovered"));
@@ -191,7 +191,7 @@ namespace IntegrationTests
             {
                 SetStoredProcedureResultSetFallback(workingDirectory, enabled: false);
 
-                var stdout = await RunEfcptCliAsync(GetEfcpt10CliPath(), _databaseConnectionString, workingDirectory);
+                var stdout = await RunEfcptCliAsync(GetEfcpt10CliPath(), databaseConnectionString, workingDirectory);
                 const string expectedWarning = "warning: Unable to get result set shape for procedure 'dbo.StoGetSomeData'. Invalid object name '#OrderTable'..";
 
                 Assert.That(NormalizeConsoleOutput(stdout), Does.Contain(NormalizeConsoleOutput(expectedWarning)));
@@ -213,7 +213,7 @@ namespace IntegrationTests
             var workingDirectory = CreateSmokeTestWorkingDirectory();
             try
             {
-                var stdout = await RunEfcptCliAsync(GetEfcpt10CliPath(), _databaseConnectionString, workingDirectory);
+                var stdout = await RunEfcptCliAsync(GetEfcpt10CliPath(), databaseConnectionString, workingDirectory);
                 Assert.That(stdout, Does.Not.Contain("warning: Unable to get result set shape"));
 
                 var modelsPath = Path.Combine(workingDirectory, "Models");
@@ -253,7 +253,7 @@ namespace IntegrationTests
             var workingDirectory = CreateSmokeTestWorkingDirectory();
             try
             {
-                var stdout = await RunEfcptCliAsync(GetEfcpt10CliPath(), _databaseConnectionString, workingDirectory);
+                var stdout = await RunEfcptCliAsync(GetEfcpt10CliPath(), databaseConnectionString, workingDirectory);
                 Assert.That(stdout, Does.Not.Contain("warning: Unable to get result set shape"));
 
                 var modelsPath = Path.Combine(workingDirectory, "Models");
@@ -365,7 +365,7 @@ namespace IntegrationTests
         {
             var factory = new SqlServerStoredProcedureModelFactory();
 
-            return factory.Create(_databaseConnectionString, new ModuleModelFactoryOptions
+            return factory.Create(databaseConnectionString, new ModuleModelFactoryOptions
             {
                 DiscoverMultipleResultSets = discoverMultipleResultSets,
                 FullModel = true,
@@ -492,7 +492,7 @@ namespace IntegrationTests
 
         private void DeployDacpac(string dacpacPath)
         {
-            var adminConnectionString = new SqlConnectionStringBuilder(_container.GetConnectionString())
+            var adminConnectionString = new SqlConnectionStringBuilder(container.GetConnectionString())
             {
                 InitialCatalog = "master",
                 TrustServerCertificate = true,
