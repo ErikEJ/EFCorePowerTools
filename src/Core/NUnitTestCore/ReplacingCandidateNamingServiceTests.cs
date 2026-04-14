@@ -1,16 +1,15 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
-using NUnit.Framework;
+using Xunit;
 using RevEng.Common;
 using RevEng.Core;
 
 namespace UnitTests.Services
 {
-    [TestFixture]
     public class ReplacingCandidateNamingServiceTests
     {
-        [Test]
+        [Fact]
         public void GeneratePascalCaseTableNameWithSchemaName()
         {
             // Arrange
@@ -36,10 +35,10 @@ namespace UnitTests.Services
             var result = sut.GenerateCandidateIdentifier(exampleDbTable);
 
             // Assert
-            Assert.That(result, Does.Contain(expected));
+            Assert.Contains(expected, result);
         }
 
-        [Test]
+        [Fact]
         public void GeneratePascalCaseTableNameWithSchemaNameIssue988()
         {
             // Arrange
@@ -73,10 +72,10 @@ namespace UnitTests.Services
             var result = sut.GenerateCandidateIdentifier(exampleDbTable);
 
             // Assert
-            Assert.That(result, Does.Contain(expected));
+            Assert.Contains(expected, result);
         }
 
-        [Test]
+        [Fact]
         public void GeneratePascalCaseTableNameWithSchemaNameWithMoreThanTwoSchemas()
         {
             // Arrange
@@ -107,10 +106,10 @@ namespace UnitTests.Services
             var result = sut.GenerateCandidateIdentifier(exampleDbTable);
 
             // Assert
-            Assert.That(result, Does.Contain(expected));
+            Assert.Contains(expected, result);
         }
 
-        [Test]
+        [Fact]
         public void GeneratePascalCaseTableNameWithSchemaNameWithMoreThanTwoSchemasForTableCollection()
         {
             // Arrange
@@ -172,13 +171,13 @@ namespace UnitTests.Services
             }
 
             // Assert
-            Assert.That(results[0], Does.Contain(expected));
-            Assert.That(results[1], Does.Contain(expected2));
-            Assert.That(results[2], Does.Contain(expected3));
-            Assert.That(results[3], Does.Contain(expected4));
+            Assert.Contains(expected, results[0]);
+            Assert.Contains(expected2, results[1]);
+            Assert.Contains(expected3, results[2]);
+            Assert.Contains(expected4, results[3]);
         }
 
-        [Test]
+        [Fact]
         public void Issue354()
         {
             // Arrange
@@ -232,11 +231,11 @@ namespace UnitTests.Services
             }
 
             // Assert
-            Assert.That(results[1], Is.EqualTo("stg_Jobs").IgnoreCase);
-            Assert.That(results[0], Is.EqualTo("stg_DeliveryAddress").IgnoreCase);
+            Assert.Equal("stg_Jobs", results[1], ignoreCase: true);
+            Assert.Equal("stg_DeliveryAddress", results[0], ignoreCase: true);
         }
 
-        [Test]
+        [Fact]
         public void GeneratePascalCaseTableNameWithMoreThanTwoSchemasForTableCollection()
         {
             // Arrange
@@ -303,14 +302,14 @@ namespace UnitTests.Services
             }
 
             // Assert
-            Assert.That(results[0], Does.Contain(expected));
-            Assert.That(results[1], Does.Contain(expected2));
-            Assert.That(results[2], Does.Contain(expected3));
-            Assert.That(results[3], Does.Contain(expected4));
-            Assert.That(results[4], Does.Contain(expected5));
+            Assert.Contains(expected, results[0]);
+            Assert.Contains(expected2, results[1]);
+            Assert.Contains(expected3, results[2]);
+            Assert.Contains(expected4, results[3]);
+            Assert.Contains(expected5, results[4]);
         }
 
-        [Test]
+        [Fact]
         public void GenerateCustomTableNameFromJson()
         {
             // Arrange
@@ -343,10 +342,10 @@ namespace UnitTests.Services
             var result = sut.GenerateCandidateIdentifier(exampleDbTable);
 
             // Assert
-            Assert.That(result, Does.Contain(expected));
+            Assert.Contains(expected, result);
         }
 
-        [Test]
+        [Fact]
         public void GenerateCustomTableNameFromJsonWithTableCollection()
         {
             // Arrange
@@ -400,12 +399,12 @@ namespace UnitTests.Services
             }
 
             // Assert
-            Assert.That(result[0], Does.Contain(expected));
-            Assert.That(result[1], Does.Contain(expected1));
-            Assert.That(result[2], Does.Contain(expected2));
+            Assert.Contains(expected, result[0]);
+            Assert.Contains(expected1, result[1]);
+            Assert.Contains(expected2, result[2]);
         }
 
-        [Test]
+        [Fact]
         public void GenerateColumnNameFromJson()
         {
             // Arrange
@@ -451,10 +450,10 @@ namespace UnitTests.Services
             var actResult = sut.GenerateCandidateIdentifier(exampleColumn);
 
             // Assert
-            Assert.That(actResult, Does.Contain(expected));
+            Assert.Contains(expected, actResult);
         }
 
-        [Test]
+        [Fact]
         public void GenerateColumnNameInStandarNamingConvention()
         {
             // Arrange
@@ -500,10 +499,10 @@ namespace UnitTests.Services
             var actResult = sut.GenerateCandidateIdentifier(exampleColumn);
 
             // Assert
-            Assert.That(actResult, Does.Contain(expected));
+            Assert.Contains(expected, actResult);
         }
 
-        [Test]
+        [Fact]
         public void ChangeColumnNameToCustom()
         {
             // Arrange
@@ -587,14 +586,14 @@ namespace UnitTests.Services
             }
 
             // Assert
-            Assert.That(actResult[0], Does.Contain(expected));
-            Assert.That(actResult[1], Does.Contain(expected1));
+            Assert.Contains(expected, actResult[0]);
+            Assert.Contains(expected1, actResult[1]);
         }
 
         /// <summary>
         /// Testing the table renaming method using Regex.
         /// </summary>
-        [Test]
+        [Fact]
         public void GenerateCustomTableNameFromJsonUsingRegexRenaming()
         {
             // Arrange
@@ -622,13 +621,13 @@ namespace UnitTests.Services
             var result = sut.GenerateCandidateIdentifier(exampleDbTable);
 
             // Assert
-            Assert.That(result, Does.Contain(expected));
+            Assert.Contains(expected, result);
         }
 
         /// <summary>
         /// Testing the table renaming method using Regex.
         /// </summary>
-        [Test]
+        [Fact]
         public void GenerateCustomTableNameFromJsonUsingRegexRenamingIssue1440()
         {
             // Arrange
@@ -656,12 +655,12 @@ namespace UnitTests.Services
             var result = sut.GenerateCandidateIdentifier(exampleDbTable);
 
             // Assert
-            Assert.That(result, Does.Contain(expected));
+            Assert.Contains(expected, result);
         }
 
         /// Testing the table renaming method using Regex.
         /// </summary>
-        [Test]
+        [Fact]
         public void GenerateCustomTableNameFromJsonUsingRegexRenamingIssue1503()
         {
             // Arrange
@@ -689,12 +688,12 @@ namespace UnitTests.Services
             var result = sut.GenerateCandidateIdentifier(exampleDbTable);
 
             // Assert
-            Assert.That(result, Does.Contain(expected));
+            Assert.Contains(expected, result);
         }
 
         /// Testing the table renaming method using Regex.
         /// </summary>
-        [Test]
+        [Fact]
         public void GenerateCustomTableNameFromJsonUsingRegexRenamingIssue1503WithCasing()
         {
             // Arrange
@@ -722,10 +721,10 @@ namespace UnitTests.Services
             var result = sut.GenerateCandidateIdentifier(exampleDbTable);
 
             // Assert
-            Assert.That(result, Does.Contain(expected));
+            Assert.Contains(expected, result);
         }
 
-        [Test]
+        [Fact]
         public void GenerateCustomColumnNameUsingRegexRenamingIssue1478()
         {
             // Arrange
@@ -774,10 +773,10 @@ namespace UnitTests.Services
             var result = sut.GenerateCandidateIdentifier(exampleDbColumn);
 
             // Assert
-            Assert.That(result, Does.Contain(expected));
+            Assert.Contains(expected, result);
         }
 
-        [Test]
+        [Fact]
         public void GenerateCustomColumnNameUsingRegexRenamingIssue1478Preserve()
         {
             // Arrange
@@ -811,10 +810,10 @@ namespace UnitTests.Services
             var result = sut.GenerateCandidateIdentifier(exampleDbColumn);
 
             // Assert
-            Assert.That(result, Does.Contain(expected));
+            Assert.Contains(expected, result);
         }
 
-        [Test]
+        [Fact]
         public void GenerateCustomColumnNameUsingRegexRenamingIssue1503()
         {
             // Arrange
@@ -849,13 +848,13 @@ namespace UnitTests.Services
             var result = sut.GenerateCandidateIdentifier(exampleDbColumn);
 
             // Assert
-            Assert.That(result, Does.Contain(expected));
+            Assert.Contains(expected, result);
         }
 
         /// <summary>
         /// Testing the table renaming method using Regex.
         /// </summary>
-        [Test]
+        [Fact]
         public void GenerateCustomColumnNameUsingRegexRenamingIssue1486()
         {
             // Arrange
@@ -902,13 +901,13 @@ namespace UnitTests.Services
             var result = sut.GenerateCandidateIdentifier(exampleDbColumn);
 
             // Assert
-            Assert.That(result, Does.Contain(expected));
+            Assert.Contains(expected, result);
         }
 
         /// <summary>
         /// This is to guarantee that the renaming using regex does not overwrite the current table renaming method.
         /// </summary>
-        [Test]
+        [Fact]
         public void GenerateCustomTableNameFromJsonUsingRegexRenamingOverwritten()
         {
             // Arrange
@@ -944,13 +943,13 @@ namespace UnitTests.Services
             var result = sut.GenerateCandidateIdentifier(exampleDbTable);
 
             // Assert
-            Assert.That(result, Does.Contain(expected));
+            Assert.Contains(expected, result);
         }
 
         /// <summary>
         /// Testing the column renaming method using Regex.
         /// </summary>
-        [Test]
+        [Fact]
         public void GenerateCustomColumnNameFromJsonUsingRegexRenaming()
         {
             // Arrange
@@ -983,13 +982,13 @@ namespace UnitTests.Services
             var actResult = sut.GenerateCandidateIdentifier(exampleColumn);
 
             // Assert
-            Assert.That(actResult, Does.Contain(expected));
+            Assert.Contains(expected, actResult);
         }
 
         /// <summary>
         /// This is to guarantee that the renaming using regex does not overwrite the current column renaming method.
         /// </summary>
-        [Test]
+        [Fact]
         public void GenerateCustomColumnNameFromJsonUsingRegexRenamingOverwritten()
         {
             // Arrange
@@ -1037,7 +1036,7 @@ namespace UnitTests.Services
             var actResult = sut.GenerateCandidateIdentifier(exampleColumn);
 
             // Assert
-            Assert.That(actResult, Does.Contain(expected));
+            Assert.Contains(expected, actResult);
         }
 
         public abstract class NavigationBase

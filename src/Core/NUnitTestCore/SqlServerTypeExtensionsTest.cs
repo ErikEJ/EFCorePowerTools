@@ -1,13 +1,12 @@
 ﻿using System;
-using NUnit.Framework;
 using RevEng.Core.Routines.Extensions;
+using Xunit;
 
 namespace UnitTests
 {
-    [TestFixture]
     public class SqlServerTypeExtensionsTest
     {
-        [Test]
+        [Fact]
         public void CanParseTypes()
         {
             var typeNames = new string[]
@@ -58,24 +57,24 @@ namespace UnitTests
 
                     if (typeName == "date")
                     {
-                        Assert.That(res1, Is.EqualTo(typeof(DateTime?)));
+                        Assert.Equal(typeof(DateTime?), res1);
                     }
 
                     if (typeName == "time")
                     {
-                        Assert.That(res1, Is.EqualTo(typeof(TimeSpan?)));
+                        Assert.Equal(typeof(TimeSpan?), res1);
                     }
 
                     var res2 = SqlServerSqlTypeExtensions.GetClrType(typeName, false);
 
                     if (typeName == "date")
                     {
-                        Assert.That(res2, Is.EqualTo(typeof(DateTime)));
+                        Assert.Equal(typeof(DateTime), res2);
                     }
 
                     if (typeName == "time")
                     {
-                        Assert.That(res2, Is.EqualTo(typeof(TimeSpan)));
+                        Assert.Equal(typeof(TimeSpan), res2);
                     }
 
                     SqlServerSqlTypeExtensions.UseDateOnlyTimeOnly = true;
@@ -84,48 +83,47 @@ namespace UnitTests
 
                     if (typeName == "date")
                     {
-                        Assert.That(res3, Is.EqualTo(typeof(DateOnly?)));
+                        Assert.Equal(typeof(DateOnly?), res3);
                     }
 
                     if (typeName == "time")
                     {
-                        Assert.That(res3, Is.EqualTo(typeof(TimeOnly?)));
+                        Assert.Equal(typeof(TimeOnly?), res3);
                     }
 
                     var res4 = SqlServerSqlTypeExtensions.GetClrType(typeName, false);
 
                     if (typeName == "date")
                     {
-                        Assert.That(res4, Is.EqualTo(typeof(DateOnly)));
+                        Assert.Equal(typeof(DateOnly), res4);
                     }
 
                     if (typeName == "time")
                     {
-                        Assert.That(res4, Is.EqualTo(typeof(TimeOnly)));
+                        Assert.Equal(typeof(TimeOnly), res4);
                     }
                 }
                 catch
                 {
                     System.Diagnostics.Debug.WriteLine("problem type: " + typeName);
-                    Assert.Fail();
+                    throw;
                 }
             }
-
-            Assert.Pass();
         }
 
-        [TestCase("nvarchar", 100, 50)]
-        [TestCase("nchar", 20, 10)]
-        [TestCase("sysname", 256, 128)]
-        [TestCase("varchar", 50, 50)]
-        [TestCase("varbinary", 32, 32)]
-        [TestCase("nvarchar", -1, -1)]
-        [TestCase("nvarchar", null, null)]
+        [Theory]
+        [InlineData("nvarchar", 100, 50)]
+        [InlineData("nchar", 20, 10)]
+        [InlineData("sysname", 256, 128)]
+        [InlineData("varchar", 50, 50)]
+        [InlineData("varbinary", 32, 32)]
+        [InlineData("nvarchar", -1, -1)]
+        [InlineData("nvarchar", null, null)]
         public void NormalizeParameterLengthUsesCharacterLengthForUnicodeParameters(string storeType, int? length, int? expected)
         {
             var normalized = SqlServerSqlTypeExtensions.NormalizeParameterLength(storeType, length);
 
-            Assert.That(normalized, Is.EqualTo(expected));
+            Assert.Equal(expected, normalized);
         }
     }
 }

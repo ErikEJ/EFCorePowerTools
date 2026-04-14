@@ -9,7 +9,7 @@ using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using Microsoft.Data.SqlClient;
 using Microsoft.SqlServer.Dac;
-using NUnit.Framework;
+using Xunit;
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
@@ -18,18 +18,16 @@ using Testcontainers.MsSql;
 
 namespace IntegrationTests
 {
-    [TestFixture]
-    [NonParallelizable]
-    public class SqlServerStoredProcedureLiveDbIntegrationTests
+    public sealed class SqlServerStoredProcedureLiveDbFixture : IAsyncLifetime
     {
         private const string DatabaseName = "DockerPlayground";
         private const string SaPassword = "Password!123";
 
         private MsSqlContainer container;
-        private string databaseConnectionString;
 
-        [OneTimeSetUp]
-        public async Task OneTimeSetUp()
+        public string DatabaseConnectionString { get; private set; }
+
+        public async ValueTask InitializeAsync()
         {
             container = new MsSqlBuilder("mcr.microsoft.com/mssql/server:2022-latest")
                 .WithPassword(SaPassword)
@@ -37,7 +35,7 @@ namespace IntegrationTests
 
             await container.StartAsync();
 
-            var dacpacPath = GetDockerPlaygroundDacpacPath();
+            var dacpacPath = SqlServerStoredProcedureLiveDbIntegrationTests.GetDockerPlaygroundDacpacPath();
             DeployDacpac(dacpacPath);
 
             var connectionStringBuilder = new SqlConnectionStringBuilder(container.GetConnectionString())
@@ -47,11 +45,10 @@ namespace IntegrationTests
                 Encrypt = false,
             };
 
-            databaseConnectionString = connectionStringBuilder.ConnectionString;
+            DatabaseConnectionString = connectionStringBuilder.ConnectionString;
         }
 
-        [OneTimeTearDown]
-        public async Task OneTimeTearDown()
+        public async ValueTask DisposeAsync()
         {
             if (container != null)
             {
@@ -59,52 +56,85 @@ namespace IntegrationTests
             }
         }
 
-        [Test]
+        private void DeployDacpac(string dacpacPath)
+        {
+            var adminConnectionString = new SqlConnectionStringBuilder(container.GetConnectionString())
+            {
+                InitialCatalog = "master",
+                TrustServerCertificate = true,
+                Encrypt = false,
+            }.ConnectionString;
+
+            using var package = DacPackage.Load(dacpacPath);
+            var services = new DacServices(adminConnectionString);
+            services.Deploy(
+                package,
+                DatabaseName,
+                upgradeExisting: true,
+                options: new DacDeployOptions
+                {
+                    BlockOnPossibleDataLoss = false,
+                    CreateNewDatabase = true,
+                    CommandTimeout = 300,
+                });
+        }
+    }
+
+    public class SqlServerStoredProcedureLiveDbIntegrationTests : IClassFixture<SqlServerStoredProcedureLiveDbFixture>
+    {
+        private readonly SqlServerStoredProcedureLiveDbFixture fixture;
+
+        public SqlServerStoredProcedureLiveDbIntegrationTests(SqlServerStoredProcedureLiveDbFixture fixture)
+        {
+            this.fixture = fixture;
+        }
+
+        [Fact]
         public void LiveDbDiscoveryWithDefinitionFallbackRecoversObservedTempTableProcedures()
         {
             var model = CreateRoutineModel(discoverMultipleResultSets: true, useLegacyForLegacyProcedure: true);
 
-            Assert.That(model.Errors, Is.Empty);
+            Assert.Empty(model.Errors);
 
             AssertRoutineColumns(model, "StoGetSomeData", "SomeName", "SomeValue");
             AssertRoutineColumns(model, "StoGetSomeDataLegacyDiscovery", "OrderName", "OrderValue");
             AssertRoutineColumns(model, "StoGetSomeDataWithParameters", "CategoryId", "SearchTerm", "Amount");
         }
 
-        [Test]
+        [Fact]
         public void LiveDbDiscoveryWithDefinitionFallbackRecoversMultipleTempTableResultSets()
         {
             var model = CreateRoutineModel(discoverMultipleResultSets: true, useLegacyForLegacyProcedure: true);
             var routine = model.Routines.Single(r => r.Name == "StoGetSomeDataMultipleResults");
 
-            Assert.That(routine.SupportsMultipleResultSet, Is.True);
-            Assert.That(routine.Results, Has.Count.EqualTo(2));
-            Assert.That(routine.Results[0].Select(c => c.Name), Is.EqualTo(new[] { "CategoryId", "TotalCount" }));
-            Assert.That(routine.Results[1].Select(c => c.Name), Is.EqualTo(new[] { "CategoryId", "ItemName" }));
+            Assert.True(routine.SupportsMultipleResultSet);
+            Assert.Equal(2, routine.Results.Count);
+            Assert.Equal(new[] { "CategoryId", "TotalCount" }, routine.Results[0].Select(c => c.Name));
+            Assert.Equal(new[] { "CategoryId", "ItemName" }, routine.Results[1].Select(c => c.Name));
         }
 
-        [Test]
+        [Fact]
         public void LiveDbDiscoveryReturnsOnlyFirstResultSetWhenMultipleResultDiscoveryIsDisabled()
         {
             var model = CreateRoutineModel(discoverMultipleResultSets: false, useLegacyForLegacyProcedure: true);
             var routine = model.Routines.Single(r => r.Name == "StoGetSomeDataMultipleResults");
 
-            Assert.That(routine.SupportsMultipleResultSet, Is.False);
-            Assert.That(routine.Results, Has.Count.EqualTo(1));
-            Assert.That(routine.Results[0].Select(c => c.Name), Is.EqualTo(new[] { "CategoryId", "TotalCount" }));
+            Assert.False(routine.SupportsMultipleResultSet);
+            Assert.Single(routine.Results);
+            Assert.Equal(new[] { "CategoryId", "TotalCount" }, routine.Results[0].Select(c => c.Name));
         }
 
-        [Test]
+        [Fact]
         public void LiveDbDiscoveryNormalizesUnicodeParameterLengthFromBytesToCharacters()
         {
             var model = CreateRoutineModel(discoverMultipleResultSets: true, useLegacyForLegacyProcedure: true);
             var routine = model.Routines.Single(r => r.Name == "StoGetSomeDataWithParameters");
             var searchTerm = routine.Parameters.Single(p => p.Name == "SearchTerm");
 
-            Assert.That(searchTerm.Length, Is.EqualTo(50));
+            Assert.Equal(50, searchTerm.Length);
         }
 
-        [Test]
+        [Fact]
         public void LiveDbDiscoveryStillSucceedsForNonTempTableProcedure()
         {
             var model = CreateRoutineModel(
@@ -113,11 +143,11 @@ namespace IntegrationTests
                 useGlobalLegacyDiscovery: false,
                 modules: new[] { "[dbo].[StoGetSomeDataDirect]" });
 
-            Assert.That(model.Errors, Is.Empty);
+            Assert.Empty(model.Errors);
             AssertRoutineColumns(model, "StoGetSomeDataDirect", "SomeName", "SomeValue");
         }
 
-        [Test]
+        [Fact]
         public void LiveDbDiscoveryWithGlobalLegacySettingRecoversTempTableProcedure()
         {
             var model = CreateRoutineModel(
@@ -126,11 +156,11 @@ namespace IntegrationTests
                 useGlobalLegacyDiscovery: true,
                 modules: new[] { "[dbo].[StoGetSomeDataLegacyDiscovery]" });
 
-            Assert.That(model.Errors, Is.Empty);
+            Assert.Empty(model.Errors);
             AssertRoutineColumns(model, "StoGetSomeDataLegacyDiscovery", "OrderName", "OrderValue");
         }
 
-        [Test]
+        [Fact]
         public void LiveDbDiscoveryWithoutStoredProcedureResultSetFallbackFailsForObservedTempTableProcedures()
         {
             var model = CreateRoutineModel(
@@ -139,13 +169,15 @@ namespace IntegrationTests
                 useGlobalLegacyDiscovery: false,
                 useStoredProcedureResultSetFallback: false);
 
-            Assert.That(model.Errors, Is.EqualTo(new[]
-            {
-                "Unable to get result set shape for procedure 'dbo.StoGetSomeData'. Invalid object name '#OrderTable'..",
-                "Unable to get result set shape for procedure 'dbo.StoGetSomeDataLegacyDiscovery'. The metadata could not be determined because statement 'SELECT\n        t.OrderName,\n        t.OrderValue\n    FROM #OrderLegacyTable t' in procedure 'StoGetSomeDataLegacyDiscovery' uses a temp table..",
-                "Unable to get result set shape for procedure 'dbo.StoGetSomeDataMultipleResults'. Invalid object name '#OrderSummaryTable'..",
-                "Unable to get result set shape for procedure 'dbo.StoGetSomeDataWithParameters'. Invalid object name '#OrderSearchTable'..",
-            }));
+            Assert.Equal(
+                new[]
+                {
+                    "Unable to get result set shape for procedure 'dbo.StoGetSomeData'. Invalid object name '#OrderTable'..",
+                    "Unable to get result set shape for procedure 'dbo.StoGetSomeDataLegacyDiscovery'. The metadata could not be determined because statement 'SELECT\n        t.OrderName,\n        t.OrderValue\n    FROM #OrderLegacyTable t' in procedure 'StoGetSomeDataLegacyDiscovery' uses a temp table..",
+                    "Unable to get result set shape for procedure 'dbo.StoGetSomeDataMultipleResults'. Invalid object name '#OrderSummaryTable'..",
+                    "Unable to get result set shape for procedure 'dbo.StoGetSomeDataWithParameters'. Invalid object name '#OrderSearchTable'..",
+                },
+                model.Errors);
 
             foreach (var routineName in new[]
                      {
@@ -156,23 +188,23 @@ namespace IntegrationTests
                      })
             {
                 var routine = model.Routines.Single(r => r.Name == routineName);
-                Assert.That(routine.HasValidResultSet, Is.False, routineName);
+                Assert.False(routine.HasValidResultSet);
             }
 
-            Assert.That(model.Routines.Single(r => r.Name == "StoGetSomeDataDirect").HasValidResultSet, Is.True);
+            Assert.True(model.Routines.Single(r => r.Name == "StoGetSomeDataDirect").HasValidResultSet);
         }
 
-        [Test]
+        [Fact]
         public async Task EfcptCliNet8LiveDbSmokeTestCompletes()
         {
             var workingDirectory = CreateSmokeTestWorkingDirectory();
             try
             {
-                var stdout = await RunEfcptCliAsync(GetEfcpt8CliPath(), databaseConnectionString, workingDirectory);
+                var stdout = await RunEfcptCliAsync(GetEfcpt8CliPath(), fixture.DatabaseConnectionString, workingDirectory);
 
-                Assert.That(stdout, Does.Contain("Getting database objects..."));
-                Assert.That(stdout, Does.Contain("database objects discovered"));
-                Assert.That(stdout, Does.Contain("files generated"));
+                Assert.Contains("Getting database objects...", stdout);
+                Assert.Contains("database objects discovered", stdout);
+                Assert.Contains("files generated", stdout);
             }
             finally
             {
@@ -183,7 +215,7 @@ namespace IntegrationTests
             }
         }
 
-        [Test]
+        [Fact]
         public async Task EfcptCliLiveDbWithStoredProcedureResultSetFallbackDisabledShowsDiscoveryWarning()
         {
             var workingDirectory = CreateSmokeTestWorkingDirectory();
@@ -191,10 +223,10 @@ namespace IntegrationTests
             {
                 SetStoredProcedureResultSetFallback(workingDirectory, enabled: false);
 
-                var stdout = await RunEfcptCliAsync(GetEfcpt10CliPath(), databaseConnectionString, workingDirectory);
+                var stdout = await RunEfcptCliAsync(GetEfcpt10CliPath(), fixture.DatabaseConnectionString, workingDirectory);
                 const string expectedWarning = "warning: Unable to get result set shape for procedure 'dbo.StoGetSomeData'. Invalid object name '#OrderTable'..";
 
-                Assert.That(NormalizeConsoleOutput(stdout), Does.Contain(NormalizeConsoleOutput(expectedWarning)));
+                Assert.Contains(NormalizeConsoleOutput(expectedWarning), NormalizeConsoleOutput(stdout));
             }
             finally
             {
@@ -205,7 +237,7 @@ namespace IntegrationTests
             }
         }
 
-        [Test]
+        [Fact]
         public async Task EfcptCliNet10LiveDbSmokeTestGeneratesExpectedStoredProcedureOutput()
         {
             // This is a narrow end-to-end smoke test of the actual efcpt live-db path.
@@ -213,27 +245,27 @@ namespace IntegrationTests
             var workingDirectory = CreateSmokeTestWorkingDirectory();
             try
             {
-                var stdout = await RunEfcptCliAsync(GetEfcpt10CliPath(), databaseConnectionString, workingDirectory);
-                Assert.That(stdout, Does.Not.Contain("warning: Unable to get result set shape"));
+                var stdout = await RunEfcptCliAsync(GetEfcpt10CliPath(), fixture.DatabaseConnectionString, workingDirectory);
+                Assert.DoesNotContain("warning: Unable to get result set shape", stdout);
 
                 var modelsPath = Path.Combine(workingDirectory, "Models");
                 var proceduresPath = Path.Combine(modelsPath, "DockerPlaygroundContextProcedures.cs");
                 var resultPath = Path.Combine(modelsPath, "StoGetSomeDataResult.cs");
                 var legacyResultPath = Path.Combine(modelsPath, "StoGetSomeDataLegacyDiscoveryResult.cs");
 
-                Assert.That(File.Exists(proceduresPath), Is.True, proceduresPath);
-                Assert.That(File.Exists(resultPath), Is.True, resultPath);
-                Assert.That(File.Exists(legacyResultPath), Is.True, legacyResultPath);
+                Assert.True(File.Exists(proceduresPath), proceduresPath);
+                Assert.True(File.Exists(resultPath), resultPath);
+                Assert.True(File.Exists(legacyResultPath), legacyResultPath);
 
-                var procedures = await File.ReadAllTextAsync(proceduresPath);
-                var result = await File.ReadAllTextAsync(resultPath);
-                var legacyResult = await File.ReadAllTextAsync(legacyResultPath);
+                var procedures = await File.ReadAllTextAsync(proceduresPath, TestContext.Current.CancellationToken);
+                var result = await File.ReadAllTextAsync(resultPath, TestContext.Current.CancellationToken);
+                var legacyResult = await File.ReadAllTextAsync(legacyResultPath, TestContext.Current.CancellationToken);
 
-                Assert.That(procedures, Does.Contain("Size = 50"));
-                Assert.That(result, Does.Contain("SomeName"));
-                Assert.That(result, Does.Contain("SomeValue"));
-                Assert.That(legacyResult, Does.Contain("OrderName"));
-                Assert.That(legacyResult, Does.Contain("OrderValue"));
+                Assert.Contains("Size = 50", procedures);
+                Assert.Contains("SomeName", result);
+                Assert.Contains("SomeValue", result);
+                Assert.Contains("OrderName", legacyResult);
+                Assert.Contains("OrderValue", legacyResult);
             }
             finally
             {
@@ -244,7 +276,7 @@ namespace IntegrationTests
             }
         }
 
-        [Test]
+        [Fact]
         public async Task EfcptCliLiveDbGeneratedResultModelsMatchGoldenFiles()
         {
             // Keep this focused on the generated result models that were affected by the temp-table
@@ -253,8 +285,8 @@ namespace IntegrationTests
             var workingDirectory = CreateSmokeTestWorkingDirectory();
             try
             {
-                var stdout = await RunEfcptCliAsync(GetEfcpt10CliPath(), databaseConnectionString, workingDirectory);
-                Assert.That(stdout, Does.Not.Contain("warning: Unable to get result set shape"));
+                var stdout = await RunEfcptCliAsync(GetEfcpt10CliPath(), fixture.DatabaseConnectionString, workingDirectory);
+                Assert.DoesNotContain("warning: Unable to get result set shape", stdout);
 
                 var modelsPath = Path.Combine(workingDirectory, "Models");
                 var goldenFilesPath = Path.Combine(GetRepositoryRoot(), "src", "Core", "NUnitTestCore.Integration", "GoldenFiles");
@@ -281,7 +313,7 @@ namespace IntegrationTests
             }
         }
 
-        [Test]
+        [Fact]
         public async Task EfcptCliNet8DacpacSmokeTestCompletes()
         {
             // This guards the host-lifecycle regression where the net10 CLI stopped after
@@ -292,9 +324,9 @@ namespace IntegrationTests
                 var dacpacPath = GetDockerPlaygroundDacpacPath();
                 var stdout = await RunEfcptCliAsync(GetEfcpt8CliPath(), dacpacPath, workingDirectory);
 
-                Assert.That(stdout, Does.Contain("Getting database objects..."));
-                Assert.That(stdout, Does.Contain("database objects discovered"));
-                Assert.That(stdout, Does.Contain("files generated"));
+                Assert.Contains("Getting database objects...", stdout);
+                Assert.Contains("database objects discovered", stdout);
+                Assert.Contains("files generated", stdout);
             }
             finally
             {
@@ -305,7 +337,7 @@ namespace IntegrationTests
             }
         }
 
-        [Test]
+        [Fact]
         public void DacpacAndLiveDbPathsProduceMatchingSingleResultProcedureMetadata()
         {
             // This parity check stays intentionally narrow:
@@ -332,28 +364,28 @@ namespace IntegrationTests
                 Modules = modules,
             });
 
-            Assert.That(liveModel.Errors, Is.Empty);
-            Assert.That(dacpacModel.Errors, Is.Empty);
+            Assert.Empty(liveModel.Errors);
+            Assert.Empty(dacpacModel.Errors);
 
             var liveRoutines = liveModel.Routines.ToDictionary(r => r.Name);
             var dacpacRoutines = dacpacModel.Routines.ToDictionary(r => r.Name);
 
             foreach (var routineName in new[] { "StoGetSomeData", "StoGetSomeDataLegacyDiscovery", "StoGetSomeDataWithParameters" })
             {
-                Assert.That(dacpacRoutines.ContainsKey(routineName), Is.True, routineName);
-                Assert.That(liveRoutines.ContainsKey(routineName), Is.True, routineName);
+                Assert.True(dacpacRoutines.ContainsKey(routineName), routineName);
+                Assert.True(liveRoutines.ContainsKey(routineName), routineName);
 
                 var liveRoutine = liveRoutines[routineName];
                 var dacpacRoutine = dacpacRoutines[routineName];
 
-                Assert.That(dacpacRoutine.Results.Count, Is.EqualTo(liveRoutine.Results.Count), routineName);
-                Assert.That(dacpacRoutine.Results[0].Select(c => c.Name), Is.EqualTo(liveRoutine.Results[0].Select(c => c.Name)), routineName);
+                Assert.Equal(liveRoutine.Results.Count, dacpacRoutine.Results.Count);
+                Assert.Equal(liveRoutine.Results[0].Select(c => c.Name), dacpacRoutine.Results[0].Select(c => c.Name));
             }
 
             var liveSearchTerm = liveRoutines["StoGetSomeDataWithParameters"].Parameters.Single(p => p.Name == "SearchTerm");
             var dacpacSearchTerm = dacpacRoutines["StoGetSomeDataWithParameters"].Parameters.Single(p => p.Name == "SearchTerm");
 
-            Assert.That(dacpacSearchTerm.Length, Is.EqualTo(liveSearchTerm.Length));
+            Assert.Equal(liveSearchTerm.Length, dacpacSearchTerm.Length);
         }
 
         private RoutineModel CreateRoutineModel(
@@ -365,7 +397,7 @@ namespace IntegrationTests
         {
             var factory = new SqlServerStoredProcedureModelFactory();
 
-            return factory.Create(databaseConnectionString, new ModuleModelFactoryOptions
+            return factory.Create(fixture.DatabaseConnectionString, new ModuleModelFactoryOptions
             {
                 DiscoverMultipleResultSets = discoverMultipleResultSets,
                 FullModel = true,
@@ -389,12 +421,12 @@ namespace IntegrationTests
         {
             var routine = model.Routines.Single(r => r.Name == routineName);
 
-            Assert.That(routine.HasValidResultSet, Is.True);
-            Assert.That(routine.Results, Has.Count.GreaterThan(0));
-            Assert.That(routine.Results[0].Select(c => c.Name), Is.EqualTo(expectedColumnNames));
+            Assert.True(routine.HasValidResultSet);
+            Assert.True(routine.Results.Count > 0);
+            Assert.Equal(expectedColumnNames, routine.Results[0].Select(c => c.Name));
         }
 
-        private static string GetDockerPlaygroundDacpacPath()
+        internal static string GetDockerPlaygroundDacpacPath()
         {
             var dacpacPath = Path.Combine(GetRepositoryRoot(), "test", "ScaffoldingTester", "DockerPlayground", "bin", "Debug", "net10.0", "DockerPlayground.dacpac");
 
@@ -479,43 +511,20 @@ namespace IntegrationTests
             };
 
             using var process = Process.Start(startInfo);
-            Assert.That(process, Is.Not.Null);
+            Assert.NotNull(process);
 
             var stdout = await process.StandardOutput.ReadToEndAsync();
             var stderr = await process.StandardError.ReadToEndAsync();
-            await process.WaitForExitAsync();
+            await process.WaitForExitAsync(TestContext.Current.CancellationToken);
 
-            Assert.That(process.ExitCode, Is.EqualTo(0), $"efcpt failed.{Environment.NewLine}{stdout}{Environment.NewLine}{stderr}");
+            Assert.True(process.ExitCode == 0, $"efcpt failed.{Environment.NewLine}{stdout}{Environment.NewLine}{stderr}");
 
             return stdout;
         }
 
-        private void DeployDacpac(string dacpacPath)
-        {
-            var adminConnectionString = new SqlConnectionStringBuilder(container.GetConnectionString())
-            {
-                InitialCatalog = "master",
-                TrustServerCertificate = true,
-                Encrypt = false,
-            }.ConnectionString;
-
-            using var package = DacPackage.Load(dacpacPath);
-            var services = new DacServices(adminConnectionString);
-            services.Deploy(
-                package,
-                DatabaseName,
-                upgradeExisting: true,
-                options: new DacDeployOptions
-                {
-                    BlockOnPossibleDataLoss = false,
-                    CreateNewDatabase = true,
-                    CommandTimeout = 300,
-                });
-        }
-
         private static string GetRepositoryRoot()
         {
-            var current = new DirectoryInfo(TestContext.CurrentContext.TestDirectory);
+            var current = new DirectoryInfo(AppContext.BaseDirectory);
 
             while (current != null)
             {
@@ -532,13 +541,13 @@ namespace IntegrationTests
 
         private static void AssertGoldenFileMatch(string expectedPath, string actualPath)
         {
-            Assert.That(File.Exists(expectedPath), Is.True, expectedPath);
-            Assert.That(File.Exists(actualPath), Is.True, actualPath);
+            Assert.True(File.Exists(expectedPath), expectedPath);
+            Assert.True(File.Exists(actualPath), actualPath);
 
             var expected = NormalizeLineEndings(File.ReadAllText(expectedPath));
             var actual = NormalizeLineEndings(File.ReadAllText(actualPath));
 
-            Assert.That(actual, Is.EqualTo(expected), actualPath);
+            Assert.Equal(expected, actual);
         }
 
         private static string NormalizeLineEndings(string text)
