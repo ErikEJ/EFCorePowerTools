@@ -1,0 +1,124 @@
+# README
+
+This DockerPlayground allows us to quickly verify the results of:
+- live-db reverse engineering
+- dacpac reverse engineering
+
+This helps when wanting to quickly compare both of these paths as there are some minor differences between the two paths
+
+The repro procedures intentionally use named temp tables like `#OrderTable`, `#OrderSearchTable`, `#OrderSummaryTable`, and `#OrderLegacyTable` so the behavior is clearly about temp-table-backed procedures in general, not a special case for a table literally named `#Temp`.
+
+## Setup/Build
+
+1. First you must build the database project
+
+Run the following:
+
+```bash
+dotnet build
+```
+
+This will get you a dacpac at 'bin/Debug/net10.0/DockerPlayground.dacpac'
+
+### Setting up a containerized database
+
+**Local SQL Server 2022**
+
+This directory includes a `docker-compose.yml` to quickly spin up a SQL Server 2022 container locally.
+
+1. Run the following:
+
+```bash
+docker compose up -d
+```
+
+2. Publish this database project to the running container:
+
+```bash
+dotnet publish -t:PublishDatabase \
+  -p:TargetServerName=localhost \
+  -p:TargetPort=1433 \
+  -p:TargetDatabaseName=DockerPlayground \
+  -p:TargetUser=sa \
+  -p:TargetPassword="Password!"
+```
+
+3. (optional) connect to it using SQL authentication:
+
+Connection string:
+
+```text
+Server=localhost,1433;Initial Catalog=DockerPlayground;User ID=sa;Password=Password!;Encrypt=False;TrustServerCertificate=True
+```
+
+For tools that expect separate arguments, use:
+
+- Server: `localhost`
+- Port: `1433`
+- Database: `DockerPlayground`
+- Username: `sa`
+
+## Reverse Engineering
+
+### efcpt from a live database
+
+This is how we reverse engineer from the containerized database, what I'm calling the "live-db path"
+
+For `efcpt` CLI commands, run:
+
+```bash
+efcpt 'Server=localhost,1433;Initial Catalog=DockerPlayground;User ID=sa;Password=Password!;Encrypt=False;TrustServerCertificate=True' mssql
+```
+
+You can verify the output that will exist in the 'Models' directory
+
+The current harness includes these stored procedure scenarios:
+- `dbo.StoGetSomeData`: single result set via temp table
+- `dbo.StoGetSomeDataWithParameters`: parameterized temp-table procedure for result-shape and parameter-size checks
+- `dbo.StoGetSomeDataMultipleResults`: multiple result sets via temp tables
+- `dbo.StoGetSomeDataLegacyDiscovery`: temp-table procedure configured with `use-legacy-resultset-discovery`
+
+### efcpt from a dacpac
+
+This is how we reverse engineer from the dacpac, what I'm calling the "dacpac path"
+
+```bash
+efcpt 'bin/Debug/net10.0/DockerPlayground.dacpac' mssql
+```
+
+## Testing locally
+
+After you fix bugs within the EFCorePowerTools repo directly, you can run the following to test your changes
+
+
+### From dacpac
+
+```sh
+cd <repo-root>/test/ScaffoldingTester/DockerPlayground
+
+# NET 8
+dotnet run --project ../../../src/Core/efcpt.8/efcpt.8.csproj -- \
+  'bin/Debug/net10.0/DockerPlayground.dacpac' \
+  mssql
+
+# or NET 10
+dotnet run --project ../../../src/Core/efcpt.10/efcpt.10.csproj -- \
+  'bin/Debug/net10.0/DockerPlayground.dacpac' \
+  mssql
+```
+
+### From database
+
+```sh
+cd <repo-root>/test/ScaffoldingTester/DockerPlayground
+
+# NET 8
+dotnet run --project ../../../src/Core/efcpt.8/efcpt.8.csproj -- \
+  'Server=localhost,1433;Initial Catalog=DockerPlayground;User ID=sa;Password=Password!;Encrypt=False;TrustServerCertificate=True' \
+  mssql
+
+# or NET 10
+dotnet run --project ../../../src/Core/efcpt.10/efcpt.10.csproj -- \
+  'Server=localhost,1433;Initial Catalog=DockerPlayground;User ID=sa;Password=Password!;Encrypt=False;TrustServerCertificate=True' \
+  mssql
+```

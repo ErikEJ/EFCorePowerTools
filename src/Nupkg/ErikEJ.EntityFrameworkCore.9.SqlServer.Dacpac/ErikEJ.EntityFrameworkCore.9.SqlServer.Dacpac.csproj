@@ -38,6 +38,7 @@
     <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\Scaffolding\SqlServerDacpacDatabaseModelFactory.cs" Link="Scaffolding\SqlServerDacpacDatabaseModelFactory.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\Scaffolding\SqlServerDacpacDatabaseModelFactoryOptions.cs" Link="Scaffolding\SqlServerDacpacDatabaseModelFactoryOptions.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\Scaffolding\SqlServerDacpacStoredProcedureModelFactory.cs" Link="Scaffolding\SqlServerDacpacStoredProcedureModelFactory.cs" />
+    <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\Scaffolding\SqlServerStoredProcedureResultSetFactory.cs" Link="Scaffolding\SqlServerStoredProcedureResultSetFactory.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\Scaffolding\SqlServerDacpacFunctionModelFactory.cs" Link="Scaffolding\SqlServerDacpacFunctionModelFactory.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\SqlSharpener\AliasResolutionVisitor.cs" Link="SqlSharpener\AliasResolutionVisitor.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\SqlSharpener\DataType.cs" Link="SqlSharpener\DataType.cs" />

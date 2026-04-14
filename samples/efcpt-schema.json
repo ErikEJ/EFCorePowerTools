@@ -301,7 +301,8 @@
                 "use-t4",
                 "remove-defaultsql-from-bool-properties",
                 "soft-delete-obsolete-files",
-                "use-alternate-stored-procedure-resultset-discovery"
+                "use-alternate-stored-procedure-resultset-discovery",
+                "use-stored-procedure-resultset-fallback"
             ],
             "properties": {
                 "enable-on-configuring": {
@@ -422,6 +423,14 @@
                         false
                     ]
                 },
+                "use-stored-procedure-resultset-fallback": {
+                    "type": "boolean",
+                    "default": true,
+                    "title": "Use fallback result set discovery by reading the stored procedure definition from SQL Server system tables when metadata discovery fails",
+                    "examples": [
+                        true
+                    ]
+                },
                 "use-no-navigations-preview": {
                     "type": "boolean",
                     "default": false,
@@ -485,6 +494,7 @@
                 "soft-delete-obsolete-files": false,
                 "discover-multiple-stored-procedure-resultsets-preview": false,
                 "use-alternate-stored-procedure-resultset-discovery": false,
+                "use-stored-procedure-resultset-fallback": true,
                 "use-no-navigations-preview": false,
                 "merge-dacpacs": false,
                 "refresh-object-lists": true
@@ -726,6 +736,7 @@
             "soft-delete-obsolete-files": false,
             "discover-multiple-stored-procedure-resultsets-preview": false,
             "use-alternate-stored-procedure-resultset-discovery": false,
+            "use-stored-procedure-resultset-fallback": true,
             "refresh-object-lists": true
         },
         "names": {

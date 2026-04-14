@@ -113,5 +113,19 @@ namespace UnitTests
 
             Assert.Pass();
         }
+
+        [TestCase("nvarchar", 100, 50)]
+        [TestCase("nchar", 20, 10)]
+        [TestCase("sysname", 256, 128)]
+        [TestCase("varchar", 50, 50)]
+        [TestCase("varbinary", 32, 32)]
+        [TestCase("nvarchar", -1, -1)]
+        [TestCase("nvarchar", null, null)]
+        public void NormalizeParameterLengthUsesCharacterLengthForUnicodeParameters(string storeType, int? length, int? expected)
+        {
+            var normalized = SqlServerSqlTypeExtensions.NormalizeParameterLength(storeType, length);
+
+            Assert.That(normalized, Is.EqualTo(expected));
+        }
     }
 }
