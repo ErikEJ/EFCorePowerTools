@@ -1,23 +1,22 @@
-﻿using GOEddie.Dacpac.References;
-using NUnit.Framework;
+﻿using System;
+using GOEddie.Dacpac.References;
+using Xunit;
 
 namespace UnitTests
 {
-    [TestFixture]
     public class DacpacConsolidatorTest
     {
-        [Test]
-        [Ignore("Local only!")]
+        [Fact(Skip = "Local only!")]
         public void CanConsolidateIssue274()
         {
             // Act
             var result = DacpacConsolidator.Consolidate(@"C:\Users\Erik\Downloads\CompositeDatabase\CompositeDatabase\CompositeDatabase\bin\Debug\CompositeDatabase.dacpac");
 
             // Assert
-            Assert.That(result, Does.Contain("\\efpt-"));
+            Assert.Contains("\\efpt-", result);
         }
 
-        [Test]
+        [Fact]
         public void CanConsolidateWithoutReferencesIssue274()
         {
             // Arrange
@@ -27,12 +26,12 @@ namespace UnitTests
             var result = DacpacConsolidator.Consolidate(dacPath);
 
             // Assert
-            Assert.That(result, Is.EqualTo(dacPath));
+            Assert.Equal(dacPath, result);
         }
 
         private string TestPath(string file)
         {
-            return System.IO.Path.Combine(TestContext.CurrentContext.TestDirectory, "Dacpac", file);
+            return System.IO.Path.Combine(AppContext.BaseDirectory, "Dacpac", file);
         }
     }
 }

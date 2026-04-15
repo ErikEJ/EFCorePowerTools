@@ -4,22 +4,20 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Dgml;
-using NUnit.Framework;
+using Xunit;
 
 namespace UnitTests
 {
-    [TestFixture]
     public class DgmlTest
     {
         private string template;
 
-        [SetUp]
-        public void Setup()
+        public DgmlTest()
         {
             template = GetTemplate();
         }
 
-        [Test]
+        [Fact]
         public void ParseDebugViewSample1()
         {
             // Arrange
@@ -29,12 +27,12 @@ namespace UnitTests
             var result = DebugViewParser.Parse(debugView, "Test");
 
             // Assert
-            Assert.That(result.Nodes.Count, Is.EqualTo(110));
-            Assert.That(result.Links.Count, Is.EqualTo(122));
-            Assert.That(result.Links.Count(n => n.Contains("IsUnique=\"True\"")), Is.EqualTo(2));
+            Assert.Equal(110, result.Nodes.Count);
+            Assert.Equal(122, result.Links.Count);
+            Assert.Equal(2, result.Links.Count(n => n.Contains("IsUnique=\"True\"")));
         }
 
-        [Test]
+        [Fact]
         public void ParseDebugViewFkBug()
         {
             // Arrange
@@ -44,12 +42,12 @@ namespace UnitTests
             var result = DebugViewParser.Parse(debugView, "Test");
 
             // Assert
-            Assert.That(result.Nodes.Count, Is.EqualTo(129));
-            Assert.That(result.Links.Count, Is.EqualTo(141));
-            Assert.That(result.Links.Count(n => n.Contains("IsUnique=\"True\"")), Is.EqualTo(0));
+            Assert.Equal(129, result.Nodes.Count);
+            Assert.Equal(141, result.Links.Count);
+            Assert.Equal(0, result.Links.Count(n => n.Contains("IsUnique=\"True\"")));
         }
 
-        [Test]
+        [Fact]
         public void ParseDebugViewMultiColFk()
         {
             // Arrange
@@ -59,11 +57,11 @@ namespace UnitTests
             var result = DebugViewParser.Parse(debugView, "Test");
 
             // Assert
-            Assert.That(result.Nodes.Count, Is.EqualTo(160));
-            Assert.That(result.Links.Count, Is.EqualTo(172));
+            Assert.Equal(160, result.Nodes.Count);
+            Assert.Equal(172, result.Links.Count);
         }
 
-        [Test]
+        [Fact]
         public void ParseDebugViewIssue604()
         {
             // Arrange
@@ -73,140 +71,140 @@ namespace UnitTests
             var result = DebugViewParser.Parse(debugView, "Test");
 
             // Assert
-            Assert.That(result.Nodes.Count, Is.EqualTo(124));
-            Assert.That(result.Links.Count, Is.EqualTo(150));
+            Assert.Equal(124, result.Nodes.Count);
+            Assert.Equal(150, result.Links.Count);
         }
 
-        [Test]
+        [Fact]
         public void BuildChinook()
         {
             // Act
             var result = DgmlBuilder.Build(ReadAllText("ChinookContext.txt"), "test", template);
 
             // Assert
-            Assert.That(result, Is.Not.Null);
+            Assert.NotNull(result);
 
-            File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Chinook.dgml"), result, Encoding.UTF8);
+            File.WriteAllText(Path.Combine(AppContext.BaseDirectory, @"Chinook.dgml"), result, Encoding.UTF8);
         }
 
-        [Test]
+        [Fact]
         public void BuildSample1()
         {
             // Act
             var result = DgmlBuilder.Build(ReadAllText("Aw2014Person.txt"), "test", template);
 
             // Assert
-            Assert.That(result, Is.Not.Null);
+            Assert.NotNull(result);
 
-            File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Aw2014Person.dgml"), result, Encoding.UTF8);
+            File.WriteAllText(Path.Combine(AppContext.BaseDirectory, @"Aw2014Person.dgml"), result, Encoding.UTF8);
         }
 
-        [Test]
+        [Fact]
         public void BuildNorthwind()
         {
             // Act
             var result = DgmlBuilder.Build(ReadAllText("Northwind.txt"), "test", template);
 
             // Assert
-            Assert.That(result, Is.Not.Null);
+            Assert.NotNull(result);
 
-            File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"northwind.dgml"), result, Encoding.UTF8);
+            File.WriteAllText(Path.Combine(AppContext.BaseDirectory, @"northwind.dgml"), result, Encoding.UTF8);
         }
 
-        [Test]
+        [Fact]
         public void BuildPfizer()
         {
             // Act
             var result = DgmlBuilder.Build(ReadAllText("Pfizer.txt"), "test", template);
 
             // Assert
-            Assert.That(result, Is.Not.Null);
+            Assert.NotNull(result);
 
-            File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"pfizer.dgml"), result, Encoding.UTF8);
+            File.WriteAllText(Path.Combine(AppContext.BaseDirectory, @"pfizer.dgml"), result, Encoding.UTF8);
         }
 
-        [Test]
+        [Fact]
         public void BuildBNoFk()
         {
             // Act
             var result = DgmlBuilder.Build(ReadAllText("NoFk.txt"), "test", template);
 
             // Assert
-            Assert.That(result, Is.Not.Null);
+            Assert.NotNull(result);
 
-            File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, "nofk.dgml"), result, Encoding.UTF8);
+            File.WriteAllText(Path.Combine(AppContext.BaseDirectory, "nofk.dgml"), result, Encoding.UTF8);
         }
 
-        [Test]
+        [Fact]
         public void BuildSingleNav()
         {
             // Act
             var result = DgmlBuilder.Build(ReadAllText("SingleNav.txt"), "test", template);
 
             // Assert
-            Assert.That(result, Is.Not.Null);
+            Assert.NotNull(result);
 
-            File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"singlenav.dgml"), result, Encoding.UTF8);
+            File.WriteAllText(Path.Combine(AppContext.BaseDirectory, @"singlenav.dgml"), result, Encoding.UTF8);
         }
 
-        [Test]
+        [Fact]
         public void BuildSamurai()
         {
             // Act
             var result = DgmlBuilder.Build(ReadAllText("Samurai.txt"), "test", template);
 
             // Assert
-            Assert.That(result, Is.Not.Null);
+            Assert.NotNull(result);
 
-            File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Samurai.dgml"), result, Encoding.UTF8);
+            File.WriteAllText(Path.Combine(AppContext.BaseDirectory, @"Samurai.dgml"), result, Encoding.UTF8);
         }
 
-        [Test]
+        [Fact]
         public void BuildIssue604()
         {
             // Act
             var result = DgmlBuilder.Build(ReadAllText("Issue604.txt"), "test", template);
 
             // Assert
-            Assert.That(result, Is.Not.Null);
+            Assert.NotNull(result);
 
-            File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Issue604.dgml"), result, Encoding.UTF8);
+            File.WriteAllText(Path.Combine(AppContext.BaseDirectory, @"Issue604.dgml"), result, Encoding.UTF8);
         }
 
-        [Test]
+        [Fact]
         public void BuildIssue687()
         {
             // Act
             var result = DgmlBuilder.Build(ReadAllText("Issue687.txt"), "test", template);
 
             // Assert
-            Assert.That(result, Is.Not.Null);
+            Assert.NotNull(result);
 
-            File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Issue604.dgml"), result, Encoding.UTF8);
+            File.WriteAllText(Path.Combine(AppContext.BaseDirectory, @"Issue687.dgml"), result, Encoding.UTF8);
         }
 
-        [Test]
+        [Fact]
         public void BuildIdentity()
         {
             // Act
             var result = DgmlBuilder.Build(ReadAllText("Identity.txt"), "test", template);
 
             // Assert
-            Assert.That(result, Is.Not.Null);
+            Assert.NotNull(result);
 
-            File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"Identity.dgml"), result, Encoding.UTF8);
+            File.WriteAllText(Path.Combine(AppContext.BaseDirectory, @"Identity.dgml"), result, Encoding.UTF8);
         }
 
-        [Test]
+        [Fact]
         public void BuildLongView50()
         {
             // Act
             var result = DgmlBuilder.Build(ReadAllText("longview50.txt"), "test", template);
 
             // Assert
-            Assert.That(result, Is.Not.Null);
+            Assert.NotNull(result);
 
-            File.WriteAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, @"LongView50.dgml"), result, Encoding.UTF8);
+            File.WriteAllText(Path.Combine(AppContext.BaseDirectory, @"LongView50.dgml"), result, Encoding.UTF8);
         }
 
         private static string GetTemplate()
@@ -224,12 +222,12 @@ namespace UnitTests
 
         private string[] ReadAllLines(string file)
         {
-            return File.ReadAllLines(Path.Combine(TestContext.CurrentContext.TestDirectory, "Dgml", file));
+            return File.ReadAllLines(Path.Combine(AppContext.BaseDirectory, "Dgml", file));
         }
 
         private string ReadAllText(string file)
         {
-            return File.ReadAllText(Path.Combine(TestContext.CurrentContext.TestDirectory, "Dgml", file));
+            return File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "Dgml", file));
         }
     }
 }

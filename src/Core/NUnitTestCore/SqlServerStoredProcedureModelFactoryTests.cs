@@ -1,13 +1,12 @@
 using System.Linq;
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
-using NUnit.Framework;
+using Xunit;
 
 namespace UnitTests
 {
-    [TestFixture]
     public class SqlServerStoredProcedureResultSetFactoryTests
     {
-        [Test]
+        [Fact]
         public void CanParseResultSetFromProcedureDefinitionWithTempTable()
         {
             const string definition = @"
@@ -32,22 +31,22 @@ END;";
 
             var resultSets = SqlServerStoredProcedureResultSetFactory.CreateFromDefinition(definition, singleResult: true);
 
-            Assert.That(resultSets, Has.Count.EqualTo(1));
-            Assert.That(resultSets[0], Has.Count.EqualTo(2));
+            Assert.Single(resultSets);
+            Assert.Equal(2, resultSets[0].Count);
 
             var someName = resultSets[0].Single(c => c.Name == "SomeName");
             var someValue = resultSets[0].Single(c => c.Name == "SomeValue");
 
-            Assert.That(someName.StoreType, Is.EqualTo("nvarchar"));
-            Assert.That(someName.MaxLength, Is.EqualTo(100));
-            Assert.That(someName.Nullable, Is.True);
+            Assert.Equal("nvarchar", someName.StoreType);
+            Assert.Equal(100, someName.MaxLength);
+            Assert.True(someName.Nullable);
 
-            Assert.That(someValue.StoreType, Is.EqualTo("nvarchar"));
-            Assert.That(someValue.MaxLength, Is.EqualTo(100));
-            Assert.That(someValue.Nullable, Is.True);
+            Assert.Equal("nvarchar", someValue.StoreType);
+            Assert.Equal(100, someValue.MaxLength);
+            Assert.True(someValue.Nullable);
         }
 
-        [Test]
+        [Fact]
         public void CanParseResultSetFromProcedureDefinitionWithParameters()
         {
             const string definition = @"
@@ -74,27 +73,29 @@ END;";
 
             var resultSets = SqlServerStoredProcedureResultSetFactory.CreateFromDefinition(definition, singleResult: true);
 
-            Assert.That(resultSets, Has.Count.EqualTo(1));
-            Assert.That(resultSets[0], Has.Count.EqualTo(3));
+            Assert.Single(resultSets);
+            Assert.Equal(3, resultSets[0].Count);
 
             var categoryId = resultSets[0].Single(c => c.Name == "CategoryId");
             var searchTerm = resultSets[0].Single(c => c.Name == "SearchTerm");
             var amount = resultSets[0].Single(c => c.Name == "Amount");
 
-            Assert.That(categoryId.StoreType, Is.EqualTo("int"));
-            Assert.That(categoryId.Nullable, Is.False);
+            Assert.Equal("int", categoryId.StoreType);
+            Assert.False(categoryId.Nullable);
 
-            Assert.That(searchTerm.StoreType, Is.EqualTo("nvarchar"));
-            Assert.That(searchTerm.MaxLength, Is.EqualTo(50));
-            Assert.That(searchTerm.Nullable, Is.True);
+            Assert.Equal("nvarchar", searchTerm.StoreType);
+            Assert.Equal(50, searchTerm.MaxLength);
+            Assert.True(searchTerm.Nullable);
 
-            Assert.That(amount.StoreType, Is.EqualTo("decimal"));
-            Assert.That(amount.Precision, Is.EqualTo(10));
-            Assert.That(amount.Scale, Is.EqualTo(2));
-            Assert.That(amount.Nullable, Is.False);
+            Assert.Equal("decimal", amount.StoreType);
+            Assert.True(amount.Precision.HasValue);
+            Assert.Equal(10, amount.Precision.Value);
+            Assert.True(amount.Scale.HasValue);
+            Assert.Equal(2, amount.Scale.Value);
+            Assert.False(amount.Nullable);
         }
 
-        [Test]
+        [Fact]
         public void CanParseMultipleResultSetsFromProcedureDefinitionWithParameters()
         {
             const string definition = @"
@@ -129,18 +130,18 @@ END;";
 
             var resultSets = SqlServerStoredProcedureResultSetFactory.CreateFromDefinition(definition, singleResult: false);
 
-            Assert.That(resultSets, Has.Count.EqualTo(2));
+            Assert.Equal(2, resultSets.Count);
 
-            Assert.That(resultSets[0].Select(c => c.Name), Is.EqualTo(new[] { "CategoryId", "TotalCount" }));
-            Assert.That(resultSets[1].Select(c => c.Name), Is.EqualTo(new[] { "CategoryId", "ItemName" }));
+            Assert.Equal(new[] { "CategoryId", "TotalCount" }, resultSets[0].Select(c => c.Name));
+            Assert.Equal(new[] { "CategoryId", "ItemName" }, resultSets[1].Select(c => c.Name));
 
             var itemName = resultSets[1].Single(c => c.Name == "ItemName");
-            Assert.That(itemName.StoreType, Is.EqualTo("nvarchar"));
-            Assert.That(itemName.MaxLength, Is.EqualTo(100));
-            Assert.That(itemName.Nullable, Is.True);
+            Assert.Equal("nvarchar", itemName.StoreType);
+            Assert.Equal(100, itemName.MaxLength);
+            Assert.True(itemName.Nullable);
         }
 
-        [Test]
+        [Fact]
         public void CanParseSysnameColumnsFromProcedureDefinition()
         {
             const string definition = @"
@@ -161,14 +162,14 @@ END;";
 
             var resultSets = SqlServerStoredProcedureResultSetFactory.CreateFromDefinition(definition, singleResult: true);
 
-            Assert.That(resultSets, Has.Count.EqualTo(1));
-            Assert.That(resultSets[0], Has.Count.EqualTo(1));
+            Assert.Single(resultSets);
+            Assert.Single(resultSets[0]);
 
             var objectName = resultSets[0].Single(c => c.Name == "ObjectName");
 
-            Assert.That(objectName.StoreType, Is.EqualTo("nvarchar"));
-            Assert.That(objectName.MaxLength, Is.EqualTo(128));
-            Assert.That(objectName.Nullable, Is.False);
+            Assert.Equal("nvarchar", objectName.StoreType);
+            Assert.Equal(128, objectName.MaxLength);
+            Assert.False(objectName.Nullable);
         }
     }
 }

@@ -1,12 +1,11 @@
 using Microsoft.Data.SqlClient;
-using NUnit.Framework;
+using Xunit;
 
 namespace UnitTests;
 
-[TestFixture]
 public class SqlClientAzureDependencySmokeTest
 {
-    [Test]
+    [Fact]
     public void ActiveDirectoryAuthenticationProviderIsAvailableAtRuntime()
     {
         // SqlClient 7 moved Entra/Azure authentication support out of the core package.
@@ -14,11 +13,8 @@ public class SqlClientAzureDependencySmokeTest
         // so Entra auth modes remain available at runtime.
         var provider = new ActiveDirectoryAuthenticationProvider();
 
-        Assert.Multiple(() =>
-        {
-            Assert.That(provider.IsSupported(SqlAuthenticationMethod.ActiveDirectoryDefault), Is.True);
-            Assert.That(provider.IsSupported(SqlAuthenticationMethod.ActiveDirectoryManagedIdentity), Is.True);
-            Assert.That(provider.IsSupported(SqlAuthenticationMethod.ActiveDirectoryInteractive), Is.True);
-        });
+        Assert.True(provider.IsSupported(SqlAuthenticationMethod.ActiveDirectoryDefault));
+        Assert.True(provider.IsSupported(SqlAuthenticationMethod.ActiveDirectoryManagedIdentity));
+        Assert.True(provider.IsSupported(SqlAuthenticationMethod.ActiveDirectoryInteractive));
     }
 }
