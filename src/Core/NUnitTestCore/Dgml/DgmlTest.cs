@@ -180,7 +180,7 @@ namespace UnitTests
             // Assert
             Assert.NotNull(result);
 
-            File.WriteAllText(Path.Combine(AppContext.BaseDirectory, @"Issue604.dgml"), result, Encoding.UTF8);
+            File.WriteAllText(Path.Combine(AppContext.BaseDirectory, @"Issue687.dgml"), result, Encoding.UTF8);
         }
 
         [Fact]

@@ -88,8 +88,10 @@ END;";
             Assert.True(searchTerm.Nullable);
 
             Assert.Equal("decimal", amount.StoreType);
-            Assert.True(amount.Precision == 10);
-            Assert.True(amount.Scale == 2);
+            Assert.True(amount.Precision.HasValue);
+            Assert.Equal(10, amount.Precision.Value);
+            Assert.True(amount.Scale.HasValue);
+            Assert.Equal(2, amount.Scale.Value);
             Assert.False(amount.Nullable);
         }
 
