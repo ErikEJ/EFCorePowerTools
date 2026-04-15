@@ -418,7 +418,7 @@ GO
             Assert.Equal("DF_AWBuildVersion_ModifiedDate", column["Relational:DefaultConstraintName"]);
         }
 
-        [Fact(Skip = "TBD - need to investigate")]
+        [Fact]
         public void Issue2263SprocWithCte()
         {
             var factory = new SqlServerDacpacStoredProcedureModelFactory(
@@ -430,6 +430,21 @@ GO
 
             // Assert
             Assert.Single(dbModel.Routines);
+            Assert.Empty(dbModel.Errors);
+
+            var routine = dbModel.Routines.Single();
+
+            Assert.Equal("dbo", routine.Schema);
+            Assert.Equal("USP_Error", routine.Name);
+            Assert.True(routine.HasValidResultSet);
+            Assert.Single(routine.Results);
+            Assert.Single(routine.Results[0]);
+
+            var resultColumn = routine.Results[0].Single();
+
+            Assert.Equal("TestColumn", resultColumn.Name);
+            Assert.Equal("int", resultColumn.StoreType);
+            Assert.True(resultColumn.Nullable);
         }
 
         [Fact]

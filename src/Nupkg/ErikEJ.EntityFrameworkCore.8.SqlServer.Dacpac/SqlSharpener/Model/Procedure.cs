@@ -34,22 +34,24 @@ namespace SqlSharpener.Model
                 .Where(x => x.ObjectType.Name == "Column")
                 .ToList();
 
-            if (depends.Count() > 0)
+            var dynamicColumns = GetDynamicColumns(tSqlObject).ToList();
+
+            if (depends.Count() > 0 || dynamicColumns.Count > 0)
             {
                 var bodyColumnTypes = depends
                     .GroupBy(bd => string.Join(".", bd.Name.Parts))
                     .Select(grp => grp.First())
                     .ToDictionary(
                         key => string.Join(".", key.Name.Parts),
-                        val => new DataType
-                        {
-                            Map = DataTypeHelper.Instance.GetMap(TypeFormat.SqlServerDbType, val.GetReferenced(Dac.Column.DataType).FirstOrDefault()?.Name.Parts.Last()),
-                            Nullable = Dac.Column.Nullable.GetValue<bool>(val),
-                            Scale = (short?)Dac.Column.Scale.GetValue<int?>(val),
-                            Precision = (short?)Dac.Column.Precision.GetValue<int?>(val),
-                            MaxLength = Dac.Column.IsMax.GetValue<bool>(val) ? -1 : Dac.Column.Length.GetValue<int>(val),
-                        },
+                        CreateDataType,
                         StringComparer.InvariantCultureIgnoreCase);
+
+                foreach (var dynamicColumn in dynamicColumns)
+                {
+                    bodyColumnTypes.TryAdd(string.Join(".", dynamicColumn.Name.Parts), CreateDataType(dynamicColumn));
+                }
+
+                AddCommonTableExpressionColumnTypes(frag, bodyColumnTypes);
 
                 var unions = selectVisitor.Nodes.OfType<BinaryQueryExpression>().Select(bq => GetQueryFromUnion(bq)).Where(x => x != null);
                 var selects = selectVisitor.Nodes.OfType<QuerySpecification>().Concat(unions);
@@ -77,6 +79,86 @@ namespace SqlSharpener.Model
                 binaryQueryExpression = binaryQueryExpression.FirstQueryExpression as BinaryQueryExpression;
             }
             return binaryQueryExpression.FirstQueryExpression as QuerySpecification;
+        }
+
+        private static DataType CreateDataType(Dac.TSqlObject column)
+        {
+            var referencedColumn = column.GetReferenced().FirstOrDefault(x => x.ObjectType.Name == "Column");
+            var dataTypeSource = referencedColumn ?? column;
+            var sqlDataType = dataTypeSource.GetReferenced(Dac.Column.DataType).FirstOrDefault()?.Name.Parts.Last();
+            var map = DataTypeHelper.Instance.GetMap(TypeFormat.SqlServerDbType, sqlDataType);
+
+            if (map == null)
+            {
+                map = DataTypeHelper.Instance.GetMap(SqlSharpener.DataTypes.sql_variant);
+            }
+
+            return new DataType
+            {
+                Map = map,
+                Nullable = referencedColumn == null ? true : Dac.Column.Nullable.GetValue<bool>(referencedColumn),
+                Scale = (short?)Dac.Column.Scale.GetValue<int?>(referencedColumn ?? column),
+                Precision = (short?)Dac.Column.Precision.GetValue<int?>(referencedColumn ?? column),
+                MaxLength = Dac.Column.IsMax.GetValue<bool>(referencedColumn ?? column) ? -1 : Dac.Column.Length.GetValue<int>(referencedColumn ?? column),
+            };
+        }
+
+        private static IEnumerable<Dac.TSqlObject> GetDynamicColumns(Dac.TSqlObject tSqlObject)
+        {
+            foreach (var child in tSqlObject.GetChildren(Dac.DacQueryScopes.UserDefined))
+            {
+                foreach (var dynamicColumn in GetDynamicColumns(child))
+                {
+                    yield return dynamicColumn;
+                }
+            }
+
+            if (tSqlObject.ObjectType.Name == "Column")
+            {
+                yield return tSqlObject;
+            }
+        }
+
+        private static void AddCommonTableExpressionColumnTypes(TSqlFragment fragment, IDictionary<string, DataType> bodyColumnTypes)
+        {
+            var cteVisitor = new CommonTableExpressionVisitor();
+            fragment.Accept(cteVisitor);
+
+            foreach (var cte in cteVisitor.CommonTableExpressions)
+            {
+                if (cte.QueryExpression is not QuerySpecification querySpecification)
+                {
+                    continue;
+                }
+
+                var select = new Select(querySpecification, bodyColumnTypes);
+                foreach (var column in select.Columns.Where(c => c.DataTypes != null))
+                {
+                    bodyColumnTypes[$"{cte.ExpressionName.Value}.{column.Name}"] = new DataType
+                    {
+                        Map = column.DataTypes,
+                        Nullable = column.IsNullable,
+                        Precision = column.Precision,
+                        Scale = column.Scale,
+                        MaxLength = column.MaxLength,
+                    };
+                }
+            }
+        }
+
+        private sealed class CommonTableExpressionVisitor : TSqlFragmentVisitor
+        {
+            public List<CommonTableExpression> CommonTableExpressions { get; } = new List<CommonTableExpression>();
+
+            public override void Visit(SelectStatement node)
+            {
+                if (node.WithCtesAndXmlNamespaces?.CommonTableExpressions != null)
+                {
+                    CommonTableExpressions.AddRange(node.WithCtesAndXmlNamespaces.CommonTableExpressions);
+                }
+
+                base.Visit(node);
+            }
         }
     }
 }

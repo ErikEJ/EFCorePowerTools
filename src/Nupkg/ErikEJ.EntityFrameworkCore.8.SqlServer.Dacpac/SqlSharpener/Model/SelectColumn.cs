@@ -46,8 +46,16 @@ namespace SqlSharpener.Model
                     ? selectScalarExpression.ColumnName.Value
                     : identifiers.Last().Value;
 
-                var key = bodyColumnTypes.Keys.FirstOrDefault(x => x.EndsWith(fullColName, StringComparison.InvariantCultureIgnoreCase));
-                if (key == null) throw new InvalidOperationException("Could not find column within BodyDependencies: " + fullColName);
+                var key = bodyColumnTypes.Keys
+                    .Where(x => x.EndsWith(fullColName, StringComparison.InvariantCultureIgnoreCase))
+                    .OrderBy(x => x.Length)
+                    .FirstOrDefault();
+                if (key == null)
+                {
+                    this.DataTypes = DataTypeHelper.Instance.GetMap(SqlSharpener.DataTypes.sql_variant);
+                    this.IsNullable = true;
+                    return;
+                }
 
                 
                 bool outerJoined = false;

@@ -10,6 +10,7 @@
     "t4-template-path": null,
     "type": "all",
     "use-alternate-stored-procedure-resultset-discovery": false,
+    "use-stored-procedure-resultset-fallback": true,
     "use-data-annotations": false,
     "use-database-names": false,
     "use-database-names-for-routines": true,
@@ -50,6 +51,14 @@
     },
     {
       "name": "[dbo].[StoGetSomeDataDirect]"
+    },
+    {
+      "name": "[dbo].[USP_Error]"
+    }
+  ],
+  "tables": [
+    {
+      "name": "[dbo].[Abc]"
     }
   ],
   "type-mappings": {
