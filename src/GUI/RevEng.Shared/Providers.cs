@@ -167,6 +167,18 @@ namespace RevEng.Common
                     });
                 }
 
+                if (useHierarchyId)
+                {
+                    packages.Add(new NuGetPackage
+                    {
+                        PackageId = "Microsoft.EntityFrameworkCore.SqlServer.HierarchyId",
+                        Version = pkgVersion,
+                        DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
+                        IsMainProviderPackage = false,
+                        UseMethodName = "HierarchyId",
+                    });
+                }
+
                 if (useNodaTime)
                 {
                     switch (codeGenerationMode)
@@ -193,18 +205,6 @@ namespace RevEng.Common
                         DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
                         IsMainProviderPackage = false,
                         UseMethodName = "NodaTime",
-                    });
-                }
-
-                if (useHierarchyId)
-                {
-                    packages.Add(new NuGetPackage
-                    {
-                        PackageId = "Microsoft.EntityFrameworkCore.SqlServer.HierarchyId",
-                        Version = pkgVersion,
-                        DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
-                        IsMainProviderPackage = false,
-                        UseMethodName = "HierarchyId",
                     });
                 }
 
