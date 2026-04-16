@@ -133,13 +133,13 @@ namespace RevEng.Common
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.0.24";
+                        pkgVersion = "8.0.26";
                         break;
                     case CodeGenerationMode.EFCore9:
-                        pkgVersion = "9.0.14";
+                        pkgVersion = "9.0.15";
                         break;
                     case CodeGenerationMode.EFCore10:
-                        pkgVersion = "10.0.5";
+                        pkgVersion = "10.0.6";
                         break;
 
                     default:
@@ -164,6 +164,18 @@ namespace RevEng.Common
                         DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
                         IsMainProviderPackage = false,
                         UseMethodName = "NetTopologySuite",
+                    });
+                }
+
+                if (useHierarchyId)
+                {
+                    packages.Add(new NuGetPackage
+                    {
+                        PackageId = "Microsoft.EntityFrameworkCore.SqlServer.HierarchyId",
+                        Version = pkgVersion,
+                        DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
+                        IsMainProviderPackage = false,
+                        UseMethodName = "HierarchyId",
                     });
                 }
 
@@ -196,18 +208,6 @@ namespace RevEng.Common
                     });
                 }
 
-                if (useHierarchyId)
-                {
-                    packages.Add(new NuGetPackage
-                    {
-                        PackageId = "Microsoft.EntityFrameworkCore.SqlServer.HierarchyId",
-                        Version = pkgVersion,
-                        DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
-                        IsMainProviderPackage = false,
-                        UseMethodName = "HierarchyId",
-                    });
-                }
-
                 if (hasProcedures && discoverMultipleResultSets)
                 {
                     packages.Add(new NuGetPackage
@@ -227,15 +227,15 @@ namespace RevEng.Common
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.0.24";
+                        pkgVersion = "8.0.26";
                         break;
 
                     case CodeGenerationMode.EFCore9:
-                        pkgVersion = "9.0.14";
+                        pkgVersion = "9.0.15";
                         break;
 
                     case CodeGenerationMode.EFCore10:
-                        pkgVersion = "10.0.5";
+                        pkgVersion = "10.0.6";
                         break;
 
                     default: throw new NotImplementedException();
@@ -374,14 +374,14 @@ namespace RevEng.Common
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.23.26100";
+                        pkgVersion = "8.23.26200";
                         break;
                     case CodeGenerationMode.EFCore9:
-                        pkgVersion = "9.23.26100";
+                        pkgVersion = "9.23.26200";
                         break;
 
                     case CodeGenerationMode.EFCore10:
-                        pkgVersion = "10.23.26000";
+                        pkgVersion = "10.23.26200";
                         break;
 
                     default: throw new NotImplementedException();
