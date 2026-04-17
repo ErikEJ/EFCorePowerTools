@@ -171,13 +171,11 @@ namespace RevEng.Core
                     var sqliteProvider = new SqliteDesignTimeServices();
                     sqliteProvider.ConfigureDesignTimeServices(serviceCollection);
 
-#if !CORE100
                     if (options.UseNodaTime)
                     {
                         var nodaTime = new SqliteNodaTimeDesignTimeServices();
                         nodaTime.ConfigureDesignTimeServices(serviceCollection);
                     }
-#endif
                     break;
 
                 default:
