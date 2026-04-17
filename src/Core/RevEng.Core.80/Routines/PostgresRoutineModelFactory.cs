@@ -174,8 +174,8 @@ order by procedure_schema,
                             ? par["udt_name"].ToString()
                             : dataType,
                         Length = (par["character_maximum_length"] is DBNull) ? (int?)null : int.Parse(par["character_maximum_length"].ToString()!, CultureInfo.InvariantCulture),
-                        Precision = (par["numeric_precision"] is DBNull) ? (int?)null : int.Parse(par["Precision"].ToString()!, CultureInfo.InvariantCulture),
-                        Scale = (par["numeric_scale"] is DBNull) ? (int?)null : int.Parse(par["Scale"].ToString()!, CultureInfo.InvariantCulture),
+                        Precision = (par["numeric_precision"] is DBNull) ? (int?)null : int.Parse(par["numeric_precision"].ToString()!, CultureInfo.InvariantCulture),
+                        Scale = (par["numeric_scale"] is DBNull) ? (int?)null : int.Parse(par["numeric_scale"].ToString()!, CultureInfo.InvariantCulture),
                         Output = par["parameter_mode"].ToString() == "INOUT",
                         Nullable = true,
                     };
