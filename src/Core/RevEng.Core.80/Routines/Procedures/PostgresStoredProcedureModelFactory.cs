@@ -198,7 +198,7 @@ order by schema_name,
                     {
                         var name = names[i];
 
-                        if (name.StartsWith('"') && name.EndsWith('"'))
+                        if (name.Length >= 2 && name.StartsWith('"') && name.EndsWith('"'))
                         {
                             name = name.Substring(1, name.Length - 2);
                         }
@@ -210,6 +210,32 @@ order by schema_name,
                             Ordinal = i,
                             Nullable = true,
                         });
+                    }
+                }
+                else
+                {
+                    var returnType = row["return_type"].ToString();
+                    if (!string.IsNullOrEmpty(returnType) && returnType != "void")
+                    {
+                        var names = (string[])row["return_record_names"];
+                        var types = (string[])row["return_record_types"];
+                        for (var i = 0; i < names.Length; i++)
+                        {
+                            var name = names[i];
+
+                            if (name.Length >= 2 && name.StartsWith('"') && name.EndsWith('"'))
+                            {
+                                name = name.Substring(1, name.Length - 2);
+                            }
+
+                            list.Add(new ModuleResultElement
+                            {
+                                Name = name,
+                                StoreType = types[i],
+                                Ordinal = i,
+                                Nullable = true,
+                            });
+                        }
                     }
                 }
             }
