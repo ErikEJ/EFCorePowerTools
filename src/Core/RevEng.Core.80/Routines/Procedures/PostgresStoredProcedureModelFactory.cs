@@ -198,7 +198,7 @@ order by schema_name,
                     {
                         var name = names[i];
 
-                        if (name.StartsWith('"') && name.EndsWith('"'))
+                        if (name.Length >= 2 && name.StartsWith('"') && name.EndsWith('"'))
                         {
                             name = name.Substring(1, name.Length - 2);
                         }
@@ -223,7 +223,7 @@ order by schema_name,
                         {
                             var name = names[i];
 
-                            if (name.StartsWith('"') && name.EndsWith('"'))
+                            if (name.Length >= 2 && name.StartsWith('"') && name.EndsWith('"'))
                             {
                                 name = name.Substring(1, name.Length - 2);
                             }

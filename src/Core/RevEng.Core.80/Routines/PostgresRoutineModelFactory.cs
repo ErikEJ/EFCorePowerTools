@@ -164,14 +164,15 @@ order by procedure_schema,
                         continue;
                     }
 
+                    var dataType = par["data_type"].ToString();
                     var parameter = new ModuleParameter()
                     {
                         Name = par["parameter_name"].ToString(),
                         RoutineName = par["procedure_name"].ToString(),
                         RoutineSchema = par["procedure_schema"].ToString(),
-                        StoreType = par["data_type"].ToString() == "USER-DEFINED"
+                        StoreType = dataType == "USER-DEFINED"
                             ? par["udt_name"].ToString()
-                            : par["data_type"].ToString(),
+                            : dataType,
                         Length = (par["character_maximum_length"] is DBNull) ? (int?)null : int.Parse(par["character_maximum_length"].ToString()!, CultureInfo.InvariantCulture),
                         Precision = (par["numeric_precision"] is DBNull) ? (int?)null : int.Parse(par["Precision"].ToString()!, CultureInfo.InvariantCulture),
                         Scale = (par["numeric_scale"] is DBNull) ? (int?)null : int.Parse(par["Scale"].ToString()!, CultureInfo.InvariantCulture),
