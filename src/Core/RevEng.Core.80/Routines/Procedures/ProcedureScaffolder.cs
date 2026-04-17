@@ -53,6 +53,48 @@ namespace RevEng.Core.Routines.Procedures
 
             schemas = schemas ?? new List<string>();
 
+            var invalidRoutines = new List<Routine>();
+            foreach (var routine in model.Routines)
+            {
+                foreach (var parameter in routine.Parameters)
+                {
+                    try
+                    {
+                        typeMapper.GetClrType(parameter);
+                    }
+                    catch (Exception ex)
+                    {
+                        errors.Add($"Unable to scaffold \"{routine.Schema}\".\"{routine.Name}\": parameter '{parameter.Name}' has unsupported store type '{parameter.StoreType}'. {ex.Message}");
+                        invalidRoutines.Add(routine);
+                        break;
+                    }
+                }
+
+                if (invalidRoutines.Contains(routine))
+                {
+                    continue;
+                }
+
+                foreach (var resultElement in routine.Results.SelectMany(r => r))
+                {
+                    try
+                    {
+                        typeMapper.GetClrType(resultElement);
+                    }
+                    catch (Exception ex)
+                    {
+                        errors.Add($"Unable to scaffold \"{routine.Schema}\".\"{routine.Name}\": result column '{resultElement.Name}' has unsupported store type '{resultElement.StoreType}'. {ex.Message}");
+                        invalidRoutines.Add(routine);
+                        break;
+                    }
+                }
+            }
+
+            foreach (var routine in invalidRoutines)
+            {
+                model.Routines.Remove(routine);
+            }
+
             foreach (var routine in model.Routines.Where(r => string.IsNullOrEmpty(r.MappedType) && (!(r is Function f) || !f.IsScalar)))
             {
                 var i = 1;

@@ -133,6 +133,7 @@ select proc.specific_schema as procedure_schema,
        args.parameter_name,
        args.parameter_mode,
        args.data_type,
+       args.udt_name,
 	   args.character_maximum_length,
 	   args.numeric_precision,
 	   args.numeric_scale
@@ -158,12 +159,19 @@ order by procedure_schema,
             {
                 if (par != null)
                 {
+                    if (par["parameter_mode"] is DBNull)
+                    {
+                        continue;
+                    }
+
                     var parameter = new ModuleParameter()
                     {
                         Name = par["parameter_name"].ToString(),
                         RoutineName = par["procedure_name"].ToString(),
                         RoutineSchema = par["procedure_schema"].ToString(),
-                        StoreType = par["data_type"].ToString(),
+                        StoreType = par["data_type"].ToString() == "USER-DEFINED"
+                            ? par["udt_name"].ToString()
+                            : par["data_type"].ToString(),
                         Length = (par["character_maximum_length"] is DBNull) ? (int?)null : int.Parse(par["character_maximum_length"].ToString()!, CultureInfo.InvariantCulture),
                         Precision = (par["numeric_precision"] is DBNull) ? (int?)null : int.Parse(par["Precision"].ToString()!, CultureInfo.InvariantCulture),
                         Scale = (par["numeric_scale"] is DBNull) ? (int?)null : int.Parse(par["Scale"].ToString()!, CultureInfo.InvariantCulture),
