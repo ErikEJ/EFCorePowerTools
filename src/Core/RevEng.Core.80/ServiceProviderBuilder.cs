@@ -176,6 +176,7 @@ namespace RevEng.Core
                         var nodaTime = new SqliteNodaTimeDesignTimeServices();
                         nodaTime.ConfigureDesignTimeServices(serviceCollection);
                     }
+
                     break;
 
                 default:
