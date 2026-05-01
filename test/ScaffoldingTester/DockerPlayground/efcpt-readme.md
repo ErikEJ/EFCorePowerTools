@@ -9,6 +9,7 @@ Add these NuGet packages to your .csproj based on your selections:
 ```xml
 <ItemGroup>
   <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.6" />
+  <PackageReference Include="Dapper" Version="2.1.66" />
 </ItemGroup>
 ```
 

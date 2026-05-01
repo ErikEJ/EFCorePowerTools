@@ -9,6 +9,7 @@
     "soft-delete-obsolete-files": true,
     "t4-template-path": null,
     "type": "all",
+    "discover-multiple-stored-procedure-resultsets-preview": true,
     "use-alternate-stored-procedure-resultset-discovery": false,
     "use-stored-procedure-resultset-fallback": true,
     "use-data-annotations": false,

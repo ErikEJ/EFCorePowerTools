@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DockerPlayground.Models
 {
-    public partial class StoGetSomeDataMultipleResultsResult
+    public partial class StoGetSomeDataMultipleResultsResult1
     {
         public int CategoryId { get; set; }
         public int TotalCount { get; set; }

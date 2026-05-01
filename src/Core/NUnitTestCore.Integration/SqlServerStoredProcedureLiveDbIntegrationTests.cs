@@ -340,15 +340,13 @@ namespace IntegrationTests
         [Fact]
         public void DacpacAndLiveDbPathsProduceMatchingSingleResultProcedureMetadata()
         {
-            // This parity check stays intentionally narrow:
-            // - StoGetSomeDataMultipleResults is excluded because the current DACPAC path here only
-            //   models the first result set, while the live-db path in this test is exercising multi-result recovery.
             var modules = new[]
             {
                 "[dbo].[StoGetComputedExpressionShapes]",
                 "[dbo].[StoGetSomeData]",
                 "[dbo].[StoGetSomeDataDirect]",
                 "[dbo].[StoGetSomeDataLegacyDiscovery]",
+                "[dbo].[StoGetSomeDataMultipleResults]",
                 "[dbo].[StoGetSomeDataWithParameters]",
             };
 
@@ -370,7 +368,7 @@ namespace IntegrationTests
             var liveRoutines = liveModel.Routines.ToDictionary(r => r.Name);
             var dacpacRoutines = dacpacModel.Routines.ToDictionary(r => r.Name);
 
-            foreach (var routineName in new[] { "StoGetComputedExpressionShapes", "StoGetSomeData", "StoGetSomeDataDirect", "StoGetSomeDataLegacyDiscovery", "StoGetSomeDataWithParameters" })
+            foreach (var routineName in new[] { "StoGetComputedExpressionShapes", "StoGetSomeData", "StoGetSomeDataDirect", "StoGetSomeDataLegacyDiscovery", "StoGetSomeDataMultipleResults", "StoGetSomeDataWithParameters" })
             {
                 Assert.True(dacpacRoutines.ContainsKey(routineName), routineName);
                 Assert.True(liveRoutines.ContainsKey(routineName), routineName);
@@ -386,6 +384,43 @@ namespace IntegrationTests
             var dacpacSearchTerm = dacpacRoutines["StoGetSomeDataWithParameters"].Parameters.Single(p => p.Name == "SearchTerm");
 
             Assert.Equal(liveSearchTerm.Length, dacpacSearchTerm.Length);
+        }
+
+        [Fact]
+        public void DacpacDiscoveryWithMultipleResultSetsEnabledMatchesLiveDb()
+        {
+            var modules = new[]
+            {
+                "[dbo].[StoGetSomeDataMultipleResults]",
+            };
+
+            var liveModel = CreateRoutineModel(
+                discoverMultipleResultSets: true,
+                useLegacyForLegacyProcedure: true,
+                modules: modules);
+
+            var dacpacFactory = new SqlServerDacpacStoredProcedureModelFactory(new SqlServerDacpacDatabaseModelFactoryOptions());
+            var dacpacModel = dacpacFactory.Create(GetDockerPlaygroundDacpacPath(), new ModuleModelFactoryOptions
+            {
+                DiscoverMultipleResultSets = true,
+                FullModel = true,
+                Modules = modules,
+            });
+
+            Assert.Empty(liveModel.Errors);
+            Assert.Empty(dacpacModel.Errors);
+
+            var liveRoutine = liveModel.Routines.Single(r => r.Name == "StoGetSomeDataMultipleResults");
+            var dacpacRoutine = dacpacModel.Routines.Single(r => r.Name == "StoGetSomeDataMultipleResults");
+
+            Assert.True(liveRoutine.SupportsMultipleResultSet);
+            Assert.True(dacpacRoutine.SupportsMultipleResultSet);
+            Assert.Equal(liveRoutine.Results.Count, dacpacRoutine.Results.Count);
+
+            for (var i = 0; i < liveRoutine.Results.Count; i++)
+            {
+                Assert.Equal(liveRoutine.Results[i].Select(c => c.Name), dacpacRoutine.Results[i].Select(c => c.Name));
+            }
         }
 
         private RoutineModel CreateRoutineModel(
