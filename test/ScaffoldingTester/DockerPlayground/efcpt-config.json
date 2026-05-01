@@ -4,12 +4,13 @@
     "enable-on-configuring": false,
     "generate-mermaid-diagram": false,
     "merge-dacpacs": false,
-    "refresh-object-lists": true,
+    "refresh-object-lists": false,
     "remove-defaultsql-from-bool-properties": false,
     "soft-delete-obsolete-files": true,
     "t4-template-path": null,
     "type": "all",
     "use-alternate-stored-procedure-resultset-discovery": false,
+    "use-stored-procedure-resultset-fallback": true,
     "use-data-annotations": false,
     "use-database-names": false,
     "use-database-names-for-routines": true,
@@ -50,6 +51,9 @@
     },
     {
       "name": "[dbo].[StoGetSomeDataDirect]"
+    },
+    {
+      "name": "[dbo].[StoGetComputedExpressionShapes]"
     }
   ],
   "type-mappings": {

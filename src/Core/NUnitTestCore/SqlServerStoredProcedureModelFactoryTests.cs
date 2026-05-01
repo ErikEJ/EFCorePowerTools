@@ -171,5 +171,90 @@ END;";
             Assert.Equal(128, objectName.MaxLength);
             Assert.False(objectName.Nullable);
         }
+
+        [Fact]
+        public void CanParseDirectCastResultSetFromProcedureDefinition()
+        {
+            const string definition = @"
+CREATE PROCEDURE dbo.StoGetSomeDataDirect
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        CAST(N'Direct Name' AS NVARCHAR(100)) AS SomeName,
+        CONVERT(DECIMAL(10,2), 123.45) AS SomeValue;
+END;";
+
+            var resultSets = SqlServerStoredProcedureResultSetFactory.CreateFromDefinition(definition, singleResult: true);
+
+            Assert.Single(resultSets);
+            Assert.Equal(2, resultSets[0].Count);
+
+            var someName = resultSets[0].Single(c => c.Name == "SomeName");
+            var someValue = resultSets[0].Single(c => c.Name == "SomeValue");
+
+            Assert.Equal("nvarchar", someName.StoreType);
+            Assert.Equal(100, someName.MaxLength);
+            Assert.True(someName.Nullable);
+
+            Assert.Equal("decimal", someValue.StoreType);
+            Assert.True(someValue.Precision.HasValue);
+            Assert.Equal(10, someValue.Precision.Value);
+            Assert.True(someValue.Scale.HasValue);
+            Assert.Equal(2, someValue.Scale.Value);
+            Assert.True(someValue.Nullable);
+        }
+
+        [Fact]
+        public void CanParseExplicitlyTypedComputedResultSetFromProcedureDefinition()
+        {
+            const string definition = @"
+CREATE PROCEDURE dbo.StoGetComputedExpressionShapes
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        CAST(1 + 2 AS INT) AS ArithmeticValue,
+        CAST(CONCAT(N'a', N'b') AS NVARCHAR(20)) AS ConcatenatedText,
+        CAST(CASE WHEN 1 = 1 THEN N'yes' ELSE N'no' END AS NVARCHAR(3)) AS CaseText,
+        CAST(ISNULL(NULL, N'fallback') AS NVARCHAR(20)) AS IsNullText,
+        CAST(COALESCE(NULL, 0) AS INT) AS CoalesceValue,
+        CAST(GETDATE() AS DATETIME) AS CurrentDateTime,
+        CAST(NEWID() AS UNIQUEIDENTIFIER) AS GeneratedId,
+        CONVERT(VARCHAR(12), GETDATE(), 112) AS ConvertedDateText;
+END;";
+
+            var resultSets = SqlServerStoredProcedureResultSetFactory.CreateFromDefinition(definition, singleResult: true);
+
+            Assert.Single(resultSets);
+            Assert.Equal(
+                new[]
+                {
+                    "ArithmeticValue",
+                    "ConcatenatedText",
+                    "CaseText",
+                    "IsNullText",
+                    "CoalesceValue",
+                    "CurrentDateTime",
+                    "GeneratedId",
+                    "ConvertedDateText",
+                },
+                resultSets[0].Select(c => c.Name));
+
+            Assert.Equal("int", resultSets[0].Single(c => c.Name == "ArithmeticValue").StoreType);
+            Assert.Equal("nvarchar", resultSets[0].Single(c => c.Name == "ConcatenatedText").StoreType);
+            Assert.Equal(20, resultSets[0].Single(c => c.Name == "ConcatenatedText").MaxLength);
+            Assert.Equal("nvarchar", resultSets[0].Single(c => c.Name == "CaseText").StoreType);
+            Assert.Equal(3, resultSets[0].Single(c => c.Name == "CaseText").MaxLength);
+            Assert.Equal("nvarchar", resultSets[0].Single(c => c.Name == "IsNullText").StoreType);
+            Assert.Equal(20, resultSets[0].Single(c => c.Name == "IsNullText").MaxLength);
+            Assert.Equal("int", resultSets[0].Single(c => c.Name == "CoalesceValue").StoreType);
+            Assert.Equal("datetime", resultSets[0].Single(c => c.Name == "CurrentDateTime").StoreType);
+            Assert.Equal("uniqueidentifier", resultSets[0].Single(c => c.Name == "GeneratedId").StoreType);
+            Assert.Equal("varchar", resultSets[0].Single(c => c.Name == "ConvertedDateText").StoreType);
+            Assert.Equal(12, resultSets[0].Single(c => c.Name == "ConvertedDateText").MaxLength);
+        }
     }
 }

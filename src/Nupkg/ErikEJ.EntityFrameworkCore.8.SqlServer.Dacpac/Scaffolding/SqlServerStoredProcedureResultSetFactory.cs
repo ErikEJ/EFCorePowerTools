@@ -40,12 +40,12 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             var visitor = new ProcedureDefinitionVisitor();
             fragment.Accept(visitor);
 
-            if (visitor.TempTableTypes.Count == 0 || visitor.Selects.Count == 0)
+            if (visitor.Selects.Count == 0)
             {
                 return new List<List<ModuleResultElement>>();
             }
 
-            return CreateFromSelects(visitor.Selects.Select(select => new Select(select, visitor.TempTableTypes)), singleResult);
+            return CreateFromSelects(CreateSelects(visitor.Selects, visitor.TempTableTypes), singleResult);
         }
 
         /// <summary>
@@ -101,6 +101,25 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             }
 
             return result;
+        }
+
+        private static IEnumerable<Select> CreateSelects(IEnumerable<QuerySpecification> querySpecifications, IDictionary<string, DataType> bodyColumnTypes)
+        {
+            foreach (var querySpecification in querySpecifications)
+            {
+                Select select;
+
+                try
+                {
+                    select = new Select(querySpecification, bodyColumnTypes);
+                }
+                catch (InvalidOperationException)
+                {
+                    continue;
+                }
+
+                yield return select;
+            }
         }
 
         /// <summary>

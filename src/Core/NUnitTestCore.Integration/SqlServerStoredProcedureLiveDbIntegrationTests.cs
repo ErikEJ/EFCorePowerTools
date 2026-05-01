@@ -341,13 +341,13 @@ namespace IntegrationTests
         public void DacpacAndLiveDbPathsProduceMatchingSingleResultProcedureMetadata()
         {
             // This parity check stays intentionally narrow:
-            // - StoGetSomeDataDirect is excluded because the current DACPAC parser does not infer
-            //   result metadata from its direct literal SELECT shape, even though live-db metadata does.
             // - StoGetSomeDataMultipleResults is excluded because the current DACPAC path here only
             //   models the first result set, while the live-db path in this test is exercising multi-result recovery.
             var modules = new[]
             {
+                "[dbo].[StoGetComputedExpressionShapes]",
                 "[dbo].[StoGetSomeData]",
+                "[dbo].[StoGetSomeDataDirect]",
                 "[dbo].[StoGetSomeDataLegacyDiscovery]",
                 "[dbo].[StoGetSomeDataWithParameters]",
             };
@@ -370,7 +370,7 @@ namespace IntegrationTests
             var liveRoutines = liveModel.Routines.ToDictionary(r => r.Name);
             var dacpacRoutines = dacpacModel.Routines.ToDictionary(r => r.Name);
 
-            foreach (var routineName in new[] { "StoGetSomeData", "StoGetSomeDataLegacyDiscovery", "StoGetSomeDataWithParameters" })
+            foreach (var routineName in new[] { "StoGetComputedExpressionShapes", "StoGetSomeData", "StoGetSomeDataDirect", "StoGetSomeDataLegacyDiscovery", "StoGetSomeDataWithParameters" })
             {
                 Assert.True(dacpacRoutines.ContainsKey(routineName), routineName);
                 Assert.True(liveRoutines.ContainsKey(routineName), routineName);

@@ -174,7 +174,14 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
         private static List<List<ModuleResultElement>> GetStoredProcedureResultElements(TSqlProcedure proc)
         {
             var metaProc = new SqlSharpener.Model.Procedure(proc.Element);
-            return SqlServerStoredProcedureResultSetFactory.CreateFromSelects(metaProc.Selects, singleResult: true);
+            var resultSets = SqlServerStoredProcedureResultSetFactory.CreateFromSelects(metaProc.Selects, singleResult: true);
+
+            if (resultSets.Count > 0)
+            {
+                return resultSets;
+            }
+
+            return SqlServerStoredProcedureResultSetFactory.CreateFromDefinition(proc.Element.GetScript(), singleResult: true);
         }
     }
 }

@@ -81,7 +81,7 @@ namespace SqlSharpener.Model
                 this.Name = selectScalarExpression.ColumnName != null && selectScalarExpression.ColumnName.Value != null
                     ? selectScalarExpression.ColumnName.Value
                     : "Value";
-                this.DataTypes = DataTypeHelper.Instance.GetMap(TypeFormat.SqlServerDbType, convertCall.DataType.Name.BaseIdentifier.Value);
+                this.SetDataType(convertCall.DataType);
                 this.IsNullable = true;
             }
             else if (selectScalarExpression.Expression is CastCall)
@@ -90,7 +90,7 @@ namespace SqlSharpener.Model
                 this.Name = selectScalarExpression.ColumnName != null && selectScalarExpression.ColumnName.Value != null
                     ? selectScalarExpression.ColumnName.Value
                     : "Value";
-                this.DataTypes = DataTypeHelper.Instance.GetMap(TypeFormat.SqlServerDbType, castCall.DataType.Name.BaseIdentifier.Value);
+                this.SetDataType(castCall.DataType);
                 this.IsNullable = true;
             }
             else if (selectScalarExpression.Expression is IntegerLiteral)
@@ -167,6 +167,91 @@ namespace SqlSharpener.Model
                 }
             }
             return string.Join(".", list);
+        }
+
+        private void SetDataType(DataTypeReference dataType)
+        {
+            var storeType = GetStoreTypeName(dataType);
+
+            this.DataTypes = DataTypeHelper.Instance.GetMap(TypeFormat.SqlServerDbType, storeType);
+            this.MaxLength = GetMaxLength(dataType);
+            this.Precision = GetPrecision(dataType);
+            this.Scale = GetScale(dataType);
+        }
+
+        private static string GetStoreTypeName(DataTypeReference dataType)
+        {
+            var typeName = dataType switch
+            {
+                SqlDataTypeReference sqlDataTypeReference => sqlDataTypeReference.SqlDataTypeOption.ToString(),
+                UserDataTypeReference userDataTypeReference => userDataTypeReference.Name?.BaseIdentifier?.Value,
+                _ => null,
+            };
+
+            return typeName?.ToLowerInvariant() switch
+            {
+                "sysname" => "nvarchar",
+                var name => name,
+            };
+        }
+
+        private static int GetMaxLength(DataTypeReference dataType)
+        {
+            if (dataType is UserDataTypeReference userDataTypeReference
+                && string.Equals(userDataTypeReference.Name?.BaseIdentifier?.Value, "sysname", StringComparison.OrdinalIgnoreCase))
+            {
+                return 128;
+            }
+
+            if (dataType is not ParameterizedDataTypeReference parameterizedDataType || parameterizedDataType.Parameters.Count == 0)
+            {
+                return 0;
+            }
+
+            if (parameterizedDataType.Parameters[0].LiteralType == LiteralType.Max)
+            {
+                return -1;
+            }
+
+            if (parameterizedDataType.Parameters[0] is IntegerLiteral integerLiteral
+                && int.TryParse(integerLiteral.Value, out var value))
+            {
+                return value;
+            }
+
+            return 0;
+        }
+
+        private static short? GetPrecision(DataTypeReference dataType)
+        {
+            if (dataType is not ParameterizedDataTypeReference parameterizedDataType || parameterizedDataType.Parameters.Count == 0)
+            {
+                return null;
+            }
+
+            if (parameterizedDataType.Parameters[0] is IntegerLiteral integerLiteral
+                && short.TryParse(integerLiteral.Value, out var value))
+            {
+                return value;
+            }
+
+            return null;
+        }
+
+        private static short? GetScale(DataTypeReference dataType)
+        {
+            if (dataType is not ParameterizedDataTypeReference parameterizedDataType || parameterizedDataType.Parameters.Count < 2)
+            {
+                return null;
+            }
+
+            if (parameterizedDataType.Parameters[1] is IntegerLiteral integerLiteral
+                && short.TryParse(integerLiteral.Value, out var value))
+            {
+                return value;
+            }
+
+            return null;
         }
     }
 }

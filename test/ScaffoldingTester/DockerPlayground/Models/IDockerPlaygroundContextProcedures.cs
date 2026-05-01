@@ -13,8 +13,9 @@ namespace DockerPlayground.Models
 {
     public partial interface IDockerPlaygroundContextProcedures
     {
+        Task<List<StoGetComputedExpressionShapesResult>?> StoGetComputedExpressionShapesAsync(OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default);
         Task<List<StoGetSomeDataResult>?> StoGetSomeDataAsync(OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default);
-        Task<int> StoGetSomeDataDirectAsync(OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default);
+        Task<List<StoGetSomeDataDirectResult>?> StoGetSomeDataDirectAsync(OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default);
         Task<List<StoGetSomeDataLegacyDiscoveryResult>?> StoGetSomeDataLegacyDiscoveryAsync(OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default);
         Task<List<StoGetSomeDataMultipleResultsResult>?> StoGetSomeDataMultipleResultsAsync(int? categoryId, OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default);
         Task<List<StoGetSomeDataWithParametersResult>?> StoGetSomeDataWithParametersAsync(int? categoryId, string? searchTerm, decimal? amount, OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default);
