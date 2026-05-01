@@ -33,7 +33,7 @@ namespace SqlSharpener.Model
         /// <param name="bodyColumnTypes">The body column types.</param>
         /// <param name="tableAliases">The table aliases.</param>
         /// <param name="outerJoinedTables">The aliases or names of tables that were outer joined. Used to determine if a non-nulllable column could still be null.</param>
-        /// <exception cref="System.InvalidOperationException">Could not find column within BodyDependencies:  + fullColName</exception>
+        /// <exception cref="MissingBodyDependencyException">Could not find column within BodyDependencies.</exception>
         public SelectColumn(SelectScalarExpression selectScalarExpression, IDictionary<string, DataType> bodyColumnTypes, IDictionary<string, string> tableAliases, IEnumerable<string> outerJoinedTables)
         {
             if (selectScalarExpression.Expression is ColumnReferenceExpression)
@@ -47,7 +47,7 @@ namespace SqlSharpener.Model
                     : identifiers.Last().Value;
 
                 var key = bodyColumnTypes.Keys.FirstOrDefault(x => x.EndsWith(fullColName, StringComparison.InvariantCultureIgnoreCase));
-                if (key == null) throw new InvalidOperationException("Could not find column within BodyDependencies: " + fullColName);
+                if (key == null) throw new MissingBodyDependencyException(fullColName);
 
                 
                 bool outerJoined = false;
@@ -171,12 +171,73 @@ namespace SqlSharpener.Model
 
         private void SetDataType(DataTypeReference dataType)
         {
-            var storeType = GetStoreTypeName(dataType);
+            if (ScriptDomDataTypeHelper.TryCreateDataType(dataType, nullable: true, out var resolvedDataType))
+            {
+                this.DataTypes = resolvedDataType.Map;
+                this.MaxLength = resolvedDataType.MaxLength;
+                this.Precision = resolvedDataType.Precision;
+                this.Scale = resolvedDataType.Scale;
+            }
+        }
+    }
 
-            this.DataTypes = DataTypeHelper.Instance.GetMap(TypeFormat.SqlServerDbType, storeType);
-            this.MaxLength = GetMaxLength(dataType);
-            this.Precision = GetPrecision(dataType);
-            this.Scale = GetScale(dataType);
+    [Serializable]
+    public sealed class MissingBodyDependencyException : InvalidOperationException
+    {
+        public MissingBodyDependencyException(string columnName)
+            : base("Could not find column within BodyDependencies: " + columnName)
+        {
+        }
+    }
+
+    /// <summary>
+    /// Share parsing rules between:
+    /// SelectColumn for CAST / CONVERT
+    /// SqlServerStoredProcedureResultSetFactory for temp table column definitions
+    /// </summary>
+    internal static class ScriptDomDataTypeHelper
+    {
+        public static bool TryCreateDataType(ColumnDefinition column, out DataType dataType)
+        {
+            dataType = null;
+
+            if (column.DataType == null)
+            {
+                return false;
+            }
+
+            return TryCreateDataType(
+                column.DataType,
+                !column.Constraints.OfType<NullableConstraintDefinition>().Any(c => !c.Nullable),
+                out dataType);
+        }
+
+        public static bool TryCreateDataType(DataTypeReference dataTypeReference, bool nullable, out DataType dataType)
+        {
+            dataType = null;
+
+            var storeType = GetStoreTypeName(dataTypeReference);
+            if (string.IsNullOrWhiteSpace(storeType))
+            {
+                return false;
+            }
+
+            var typeMap = DataTypeHelper.Instance.GetMap(TypeFormat.SqlServerDbType, storeType);
+            if (typeMap == null)
+            {
+                return false;
+            }
+
+            dataType = new DataType
+            {
+                Map = typeMap,
+                Nullable = nullable,
+                MaxLength = GetMaxLength(dataTypeReference),
+                Precision = GetPrecision(dataTypeReference),
+                Scale = GetScale(dataTypeReference),
+            };
+
+            return true;
         }
 
         private static string GetStoreTypeName(DataTypeReference dataType)
