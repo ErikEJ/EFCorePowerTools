@@ -10,6 +10,6 @@ namespace DockerPlayground.Models
 {
     public partial class USP_ErrorResult
     {
-        public int? TestColumn { get; set; }
+        public int TestColumn { get; set; }
     }
 }

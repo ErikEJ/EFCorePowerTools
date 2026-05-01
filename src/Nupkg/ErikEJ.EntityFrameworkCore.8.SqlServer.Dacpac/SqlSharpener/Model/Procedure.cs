@@ -96,11 +96,32 @@ namespace SqlSharpener.Model
             return new DataType
             {
                 Map = map,
-                Nullable = referencedColumn == null ? true : Dac.Column.Nullable.GetValue<bool>(referencedColumn),
+                Nullable = GetNullable(dataTypeSource),
                 Scale = (short?)Dac.Column.Scale.GetValue<int?>(referencedColumn ?? column),
                 Precision = (short?)Dac.Column.Precision.GetValue<int?>(referencedColumn ?? column),
                 MaxLength = Dac.Column.IsMax.GetValue<bool>(referencedColumn ?? column) ? -1 : Dac.Column.Length.GetValue<int>(referencedColumn ?? column),
             };
+        }
+
+        private static bool GetNullable(Dac.TSqlObject column)
+        {
+            try
+            {
+                return Dac.Column.Nullable.GetValue<bool>(column);
+            }
+            catch (Exception ex) when (IsUnreadableDacPropertyException(ex))
+            {
+                // When DACFx does not expose nullability for this object, stay conservative.
+                return true;
+            }
+        }
+
+        private static bool IsUnreadableDacPropertyException(Exception ex)
+        {
+            // Keep the fallback scoped to DAC property-read failures.
+            return ex is InvalidOperationException
+                || ex is ArgumentException
+                || ex is Dac.DacModelException;
         }
 
         private static IEnumerable<Dac.TSqlObject> GetDynamicColumns(Dac.TSqlObject tSqlObject)

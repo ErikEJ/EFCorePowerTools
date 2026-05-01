@@ -11,4 +11,5 @@ BEGIN
 
     SELECT [TestColumn]
     FROM TempResult
-END
+END;
+GO

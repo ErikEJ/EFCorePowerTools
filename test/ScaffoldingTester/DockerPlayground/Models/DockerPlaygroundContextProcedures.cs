@@ -169,5 +169,25 @@ namespace DockerPlayground.Models
 
             return _;
         }
+
+        public virtual async Task<List<USP_ErrorResult>?> USP_ErrorAsync(OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default)
+        {
+            var parameterreturnValue = new SqlParameter
+            {
+                ParameterName = "returnValue",
+                Direction = System.Data.ParameterDirection.Output,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
+
+            var sqlParameters = new []
+            {
+                parameterreturnValue,
+            };
+            var _ = await _context.SqlQueryAsync<USP_ErrorResult>("EXEC @returnValue = [dbo].[USP_Error]", sqlParameters, cancellationToken);
+
+            returnValue?.SetValue(parameterreturnValue.Value);
+
+            return _;
+        }
     }
 }

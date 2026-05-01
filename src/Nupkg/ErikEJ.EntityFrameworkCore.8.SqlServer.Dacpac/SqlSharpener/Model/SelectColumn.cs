@@ -33,7 +33,6 @@ namespace SqlSharpener.Model
         /// <param name="bodyColumnTypes">The body column types.</param>
         /// <param name="tableAliases">The table aliases.</param>
         /// <param name="outerJoinedTables">The aliases or names of tables that were outer joined. Used to determine if a non-nulllable column could still be null.</param>
-        /// <exception cref="System.InvalidOperationException">Could not find column within BodyDependencies:  + fullColName</exception>
         public SelectColumn(SelectScalarExpression selectScalarExpression, IDictionary<string, DataType> bodyColumnTypes, IDictionary<string, string> tableAliases, IEnumerable<string> outerJoinedTables)
         {
             if (selectScalarExpression.Expression is ColumnReferenceExpression)

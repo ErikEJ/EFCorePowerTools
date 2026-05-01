@@ -13,8 +13,20 @@ public partial class DockerPlaygroundContext : DbContext
     {
     }
 
+    public virtual DbSet<Abc> Abcs { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Abc>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("Abc");
+
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            entity.Property(e => e.Name).HasMaxLength(64);
+        });
+
         OnModelCreatingPartial(modelBuilder);
     }
 

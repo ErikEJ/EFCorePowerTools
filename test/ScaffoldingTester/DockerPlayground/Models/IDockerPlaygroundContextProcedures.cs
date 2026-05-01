@@ -18,5 +18,6 @@ namespace DockerPlayground.Models
         Task<List<StoGetSomeDataLegacyDiscoveryResult>?> StoGetSomeDataLegacyDiscoveryAsync(OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default);
         Task<List<StoGetSomeDataMultipleResultsResult>?> StoGetSomeDataMultipleResultsAsync(int? categoryId, OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default);
         Task<List<StoGetSomeDataWithParametersResult>?> StoGetSomeDataWithParametersAsync(int? categoryId, string? searchTerm, decimal? amount, OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default);
+        Task<List<USP_ErrorResult>?> USP_ErrorAsync(OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default);
     }
 }

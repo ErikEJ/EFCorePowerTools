@@ -444,7 +444,7 @@ GO
 
             Assert.Equal("TestColumn", resultColumn.Name);
             Assert.Equal("int", resultColumn.StoreType);
-            Assert.True(resultColumn.Nullable);
+            Assert.False(resultColumn.Nullable);
         }
 
         [Fact]
