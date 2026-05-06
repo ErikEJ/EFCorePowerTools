@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.IO.Packaging;
 using System.Linq;
@@ -57,7 +57,7 @@ namespace GOEddie.Dacpac.References
 
                             if (!string.IsNullOrWhiteSpace(name) && !name.EndsWith(".xsd", StringComparison.OrdinalIgnoreCase))
                             {
-                                target.AddOrUpdateObjects(ast, name, new TSqlObjectOptions()); // WARNING throwing away ansi nulls and quoted identifiers!
+                                target.AddObjects(ast); // WARNING throwing away ansi nulls and quoted identifiers!
                             }
                         }
                     }

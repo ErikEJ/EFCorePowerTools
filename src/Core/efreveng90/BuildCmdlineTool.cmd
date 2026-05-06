@@ -47,6 +47,8 @@ rd bin\Release\net8.0\x64\publish\runtimes\unix /Q /S
 rd bin\Release\net8.0\x64\publish\runtimes\win-arm /Q /S
 rd bin\Release\net8.0\x64\publish\runtimes\win-x86 /Q /S
 
+del ..\..\GUI\lib\efreveng90.exe.zip
+
 "C:\Program Files\7-Zip\7z.exe" -mm=Deflate -mfb=258 -mpass=15 a efreveng90.exe.zip .\bin\Release\net8.0\x64\publish\*
 
 move /Y efreveng90.exe.zip ..\..\GUI\lib\
