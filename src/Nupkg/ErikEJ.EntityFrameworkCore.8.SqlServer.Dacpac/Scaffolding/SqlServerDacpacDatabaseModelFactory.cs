@@ -315,7 +315,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             var viewColumns = item.Element.GetChildren(DacQueryScopes.UserDefined);
 
             var matchingTableType = tableTypes.FirstOrDefault(tt => tt.Name.ToString() == item.Name.ToString()
-                                                                 && tt.Columns.All(ttc => viewColumns.Any(vc => vc.Name.ToString() == ttc.Name.ToString()))); // All Column Names of Table Type are also in View
+                                                                 && tt.Columns.All(ttc => viewColumns.Any(vc => vc.Name.Parts[vc.Name.Parts.Count - 1].ToString() == ttc.Name.Parts[ttc.Name.Parts.Count - 1].ToString()))); // All Column Names of Table Type are also in View
 
             foreach (var column in viewColumns)
             {
@@ -337,7 +337,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                         continue;
                     }
 
-                    var matchingColumn = matchingTableType.Columns.FirstOrDefault(c => c.Name.ToString() == col.Name.ToString());
+                    var matchingColumn = matchingTableType.Columns.FirstOrDefault(c => c.Name.Parts[c.Name.Parts.Count - 1].ToString() == col.Name.Parts[col.Name.Parts.Count - 1].ToString());
 
                     if (matchingColumn == null)
                     {
