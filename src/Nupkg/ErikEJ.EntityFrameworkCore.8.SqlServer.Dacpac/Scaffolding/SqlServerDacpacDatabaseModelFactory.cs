@@ -337,7 +337,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                         continue;
                     }
 
-                    var matchingColumn = matchingTableType.Columns.FirstOrDefault(c => c.Name.Parts[c.Name.Parts.Count - 1].ToString() == col.Name.Parts[c.Name.Parts.Count - 1].ToString());
+                    var matchingColumn = matchingTableType.Columns.FirstOrDefault(c => c.Name.Parts[c.Name.Parts.Count - 1].ToString() == col.Name.Parts[col.Name.Parts.Count - 1].ToString());
 
                     if (matchingColumn == null)
                     {
