@@ -72,6 +72,7 @@
     <Project Path="GUI/RevEng.Shared/RevEng.Common.csproj" />
   </Folder>
   <Folder Name="/Test/">
+    <Project Path="Core/NUnitTestCore.Integration/NUnitTestCore.Integration.csproj" />
     <Project Path="Core/NUnitTestCore/NUnitTestCore.csproj">
       <Build Solution="Release|*" Project="false" />
     </Project>
