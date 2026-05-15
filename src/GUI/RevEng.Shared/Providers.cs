@@ -192,7 +192,7 @@ namespace RevEng.Common
                             break;
 
                         case CodeGenerationMode.EFCore10:
-                            pkgVersion = "10.0.0";
+                            pkgVersion = "10.0.1";
                             break;
 
                         default: throw new NotImplementedException();
