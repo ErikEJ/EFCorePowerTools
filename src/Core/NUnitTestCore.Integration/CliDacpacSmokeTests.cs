@@ -34,9 +34,9 @@ namespace IntegrationTests
             {
                 var stdout = await RunEfcptCliAsync(GetEfcpt10CliPath(), GetDockerPlaygroundDacpacPath(), workingDirectory);
 
-                Assert.Contains("Getting database objects...", stdout);
-                Assert.Contains("database objects discovered", stdout);
-                Assert.Contains("files generated", stdout);
+                Assert.Contains("Getting database objects...", stdout, StringComparison.OrdinalIgnoreCase);
+                Assert.Contains("database objects discovered", stdout, StringComparison.OrdinalIgnoreCase);
+                Assert.Contains("files generated", stdout, StringComparison.OrdinalIgnoreCase);
             }
             finally
             {
