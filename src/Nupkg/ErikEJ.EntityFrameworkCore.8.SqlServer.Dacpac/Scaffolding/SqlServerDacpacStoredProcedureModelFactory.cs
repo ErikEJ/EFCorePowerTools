@@ -80,7 +80,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 #pragma warning disable CA1031 // Do not catch general exception types
                         try
                         {
-                            procedure.Results.AddRange(GetStoredProcedureResultElements(proc));
+                            procedure.Results.AddRange(GetStoredProcedureResultElements(proc, !options.DiscoverMultipleResultSets));
                         }
                         catch (Exception ex)
                         {
@@ -171,10 +171,10 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             return result;
         }
 
-        private static List<List<ModuleResultElement>> GetStoredProcedureResultElements(TSqlProcedure proc)
+        private static List<List<ModuleResultElement>> GetStoredProcedureResultElements(TSqlProcedure proc, bool singleResult)
         {
             var metaProc = new SqlSharpener.Model.Procedure(proc.Element);
-            return SqlServerStoredProcedureResultSetFactory.CreateFromSelects(metaProc.Selects, singleResult: true);
+            return SqlServerStoredProcedureResultSetFactory.CreateFromSelects(metaProc.Selects, singleResult);
         }
     }
 }

@@ -488,6 +488,31 @@ GO
             }
         }
 
+        [Fact]
+        public void DacpacDiscoverMultipleResultSetsOptionIsRespected()
+        {
+            var factory = new SqlServerDacpacStoredProcedureModelFactory(
+                new SqlServerDacpacDatabaseModelFactoryOptions { MergeDacpacs = false });
+            var module = new List<string> { "[dbo].[uspSearchCandidateResumes]" };
+
+            var singleResultModel = factory.Create(
+                TestPath("AdventureWorks2014.dacpac"),
+                new ModuleModelFactoryOptions { FullModel = true, Modules = module, DiscoverMultipleResultSets = false });
+
+            var multipleResultModel = factory.Create(
+                TestPath("AdventureWorks2014.dacpac"),
+                new ModuleModelFactoryOptions { FullModel = true, Modules = module, DiscoverMultipleResultSets = true });
+
+            var singleResultRoutine = singleResultModel.Routines.Single();
+            var multipleResultRoutine = multipleResultModel.Routines.Single();
+
+            Assert.Single(singleResultRoutine.Results);
+            Assert.Equal(4, multipleResultRoutine.Results.Count);
+
+            Assert.Equal(new[] { "JobCandidateID", "RANK" }, multipleResultRoutine.Results[0].Select(c => c.Name));
+            Assert.Equal(new[] { "JobCandidateID", "RANK" }, multipleResultRoutine.Results[1].Select(c => c.Name));
+        }
+
         private string TestPath(string file)
         {
             return Path.Combine(AppContext.BaseDirectory, "Dacpac", file);
