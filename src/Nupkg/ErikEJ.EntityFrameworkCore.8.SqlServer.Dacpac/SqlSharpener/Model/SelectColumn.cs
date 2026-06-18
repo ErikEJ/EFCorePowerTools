@@ -88,7 +88,7 @@ namespace SqlSharpener.Model
                 this.Name = selectScalarExpression.ColumnName != null && selectScalarExpression.ColumnName.Value != null
                     ? selectScalarExpression.ColumnName.Value
                     : "Value";
-                this.DataTypes = DataTypeHelper.Instance.GetMap(TypeFormat.SqlServerDbType, convertCall.DataType.Name.BaseIdentifier.Value);
+                this.DataTypes = DataTypeHelper.Instance.GetMap(TypeFormat.SqlServerDbType, GetDataTypeName(convertCall.DataType));
                 this.IsNullable = true;
             }
             else if (selectScalarExpression.Expression is CastCall)
@@ -97,7 +97,7 @@ namespace SqlSharpener.Model
                 this.Name = selectScalarExpression.ColumnName != null && selectScalarExpression.ColumnName.Value != null
                     ? selectScalarExpression.ColumnName.Value
                     : "Value";
-                this.DataTypes = DataTypeHelper.Instance.GetMap(TypeFormat.SqlServerDbType, castCall.DataType.Name.BaseIdentifier.Value);
+                this.DataTypes = DataTypeHelper.Instance.GetMap(TypeFormat.SqlServerDbType, GetDataTypeName(castCall.DataType));
                 this.IsNullable = true;
             }
             else if (selectScalarExpression.Expression is IntegerLiteral)
@@ -153,6 +153,20 @@ namespace SqlSharpener.Model
         public short? Precision { get; set; }
         public short? Scale { get; set; }
         public int MaxLength { get; set; }
+
+        /// <summary>
+        /// Resolves the SQL type name from a data type reference, normalizing to lowercase for consistent lookup.
+        /// Handles both built-in SQL types (SqlDataTypeReference) and user-defined types (UserDataTypeReference).
+        /// </summary>
+        private static string GetDataTypeName(DataTypeReference dataType)
+        {
+            if (dataType is SqlDataTypeReference sqlDataTypeReference)
+            {
+                return sqlDataTypeReference.SqlDataTypeOption.ToString().ToLowerInvariant();
+            }
+
+            return dataType?.Name?.BaseIdentifier?.Value?.ToLowerInvariant();
+        }
 
         /// <summary>
         /// Gets the fully qualified column name with any table aliases resolved.

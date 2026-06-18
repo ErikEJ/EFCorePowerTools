@@ -49,7 +49,45 @@ namespace SqlSharpener.Model
 
             var topInt = querySpecification.TopRowFilter != null ? querySpecification.TopRowFilter.Expression as IntegerLiteral : null;
             this.IsSingleRow = topInt != null && topInt.Value == "1" && querySpecification.TopRowFilter.Percent == false;
-            this.Columns = querySpecification.SelectElements.OfType<SelectScalarExpression>().Select(x => new SelectColumn(x, bodyColumnTypes, this.TableAliases, outerJoinedTables)).ToList();
+
+            var columns = querySpecification.SelectElements.OfType<SelectScalarExpression>()
+                .Select(x => new SelectColumn(x, bodyColumnTypes, this.TableAliases, outerJoinedTables))
+                .ToList();
+
+            // Handle wildcard SELECT expressions (e.g., SELECT t.* or SELECT *)
+            foreach (var starExpression in querySpecification.SelectElements.OfType<SelectStarExpression>())
+            {
+                var tableQualifier = starExpression.Qualifier?.Identifiers?.LastOrDefault()?.Value;
+                string resolvedTableName = null;
+
+                if (tableQualifier != null)
+                {
+                    if (!this.TableAliases.TryGetValue(tableQualifier, out resolvedTableName))
+                    {
+                        resolvedTableName = tableQualifier;
+                    }
+                }
+
+                var outerJoined = tableQualifier != null && outerJoinedTables.Contains(tableQualifier);
+
+                var matchingColumns = resolvedTableName != null
+                    ? bodyColumnTypes.Where(kv => kv.Key.StartsWith(resolvedTableName + ".", StringComparison.InvariantCultureIgnoreCase))
+                    : (IEnumerable<KeyValuePair<string, DataType>>)bodyColumnTypes;
+
+                foreach (var kv in matchingColumns)
+                {
+                    var colName = kv.Key.Split('.').Last();
+                    var bodyColumnType = kv.Value;
+                    columns.Add(new SelectColumn(colName, bodyColumnType.Map, bodyColumnType.Nullable || outerJoined)
+                    {
+                        Precision = bodyColumnType.Precision,
+                        Scale = bodyColumnType.Scale,
+                        MaxLength = bodyColumnType.MaxLength,
+                    });
+                }
+            }
+
+            this.Columns = columns;
         }
 
         /// <summary>
