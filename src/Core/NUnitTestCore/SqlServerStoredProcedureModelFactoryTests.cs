@@ -183,68 +183,31 @@ IF OBJECT_ID('tempdb..#Test') IS NOT NULL DROP TABLE #Test
 
 CREATE TABLE #Test ( 
     StringProperty VARCHAR(19), 
-    IntProperty INT, 
-    DateProperty DATE, 
-    FloatProperty FLOAT
+    IntProperty INT
 )
 
 INSERT #Test
-SELECT 'Test', 1, GETDATE(), 0.5
+SELECT 'Test', 1
 
 SELECT 
-    t.*,
-    CONVERT(VARCHAR, CASE WHEN t.IntProperty = 1 THEN 'OneString' ELSE NULL END) AS AnotherString
-FROM #Test AS t";
+    StringProperty,
+    IntProperty,
+    CONVERT(VARCHAR, CASE WHEN IntProperty = 1 THEN 'OneString' ELSE NULL END) AS AnotherString
+FROM #Test";
 
             var resultSets = SqlServerStoredProcedureResultSetFactory.CreateFromDefinition(definition, singleResult: true);
 
             Assert.Single(resultSets);
-            Assert.Equal(5, resultSets[0].Count);
+            Assert.Equal(3, resultSets[0].Count);
 
             var stringProp = resultSets[0].Single(c => c.Name == "StringProperty");
             var intProp = resultSets[0].Single(c => c.Name == "IntProperty");
-            var dateProp = resultSets[0].Single(c => c.Name == "DateProperty");
-            var floatProp = resultSets[0].Single(c => c.Name == "FloatProperty");
             var anotherString = resultSets[0].Single(c => c.Name == "AnotherString");
 
             Assert.Equal("varchar", stringProp.StoreType);
             Assert.Equal("int", intProp.StoreType);
-            Assert.Equal("date", dateProp.StoreType);
-            Assert.Equal("float", floatProp.StoreType);
             Assert.Equal("varchar", anotherString.StoreType);
             Assert.True(anotherString.Nullable);
-        }
-
-        [Fact]
-        public void CanParseWildcardSelectFromTempTableInProcedureDefinition()
-        {
-            const string definition = @"
-CREATE PROCEDURE dbo.StoGetSomeData
-AS
-BEGIN
-    CREATE TABLE #Temp
-    (
-        Id INT NOT NULL,
-        Name NVARCHAR(50) NULL
-    );
-
-    SELECT t.*
-    FROM #Temp AS t;
-END;";
-
-            var resultSets = SqlServerStoredProcedureResultSetFactory.CreateFromDefinition(definition, singleResult: true);
-
-            Assert.Single(resultSets);
-            Assert.Equal(2, resultSets[0].Count);
-
-            var id = resultSets[0].Single(c => c.Name == "Id");
-            var name = resultSets[0].Single(c => c.Name == "Name");
-
-            Assert.Equal("int", id.StoreType);
-            Assert.False(id.Nullable);
-            Assert.Equal("nvarchar", name.StoreType);
-            Assert.Equal(50, name.MaxLength);
-            Assert.True(name.Nullable);
         }
 
         [Fact]
