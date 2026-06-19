@@ -171,5 +171,74 @@ END;";
             Assert.Equal(128, objectName.MaxLength);
             Assert.False(objectName.Nullable);
         }
+
+        [Fact]
+        public void CanParseConvertExpressionColumnsFromProcedureDefinition()
+        {
+            const string definition = @"
+CREATE PROC sp_test_efpt
+AS
+
+IF OBJECT_ID('tempdb..#Test') IS NOT NULL DROP TABLE #Test
+
+CREATE TABLE #Test ( 
+    StringProperty VARCHAR(19), 
+    IntProperty INT
+)
+
+INSERT #Test
+SELECT 'Test', 1
+
+SELECT 
+    StringProperty,
+    IntProperty,
+    CONVERT(VARCHAR, CASE WHEN IntProperty = 1 THEN 'OneString' ELSE NULL END) AS AnotherString
+FROM #Test";
+
+            var resultSets = SqlServerStoredProcedureResultSetFactory.CreateFromDefinition(definition, singleResult: true);
+
+            Assert.Single(resultSets);
+            Assert.Equal(3, resultSets[0].Count);
+
+            var stringProp = resultSets[0].Single(c => c.Name == "StringProperty");
+            var intProp = resultSets[0].Single(c => c.Name == "IntProperty");
+            var anotherString = resultSets[0].Single(c => c.Name == "AnotherString");
+
+            Assert.Equal("varchar", stringProp.StoreType);
+            Assert.Equal("int", intProp.StoreType);
+            Assert.Equal("varchar", anotherString.StoreType);
+            Assert.True(anotherString.Nullable);
+        }
+
+        [Fact]
+        public void CanParseCastExpressionColumnFromProcedureDefinition()
+        {
+            const string definition = @"
+CREATE PROCEDURE dbo.StoGetSomeData
+AS
+BEGIN
+    CREATE TABLE #Temp
+    (
+        IntValue INT NOT NULL
+    );
+
+    SELECT
+        IntValue,
+        CAST(IntValue AS BIGINT) AS BigIntValue
+    FROM #Temp;
+END;";
+
+            var resultSets = SqlServerStoredProcedureResultSetFactory.CreateFromDefinition(definition, singleResult: true);
+
+            Assert.Single(resultSets);
+            Assert.Equal(2, resultSets[0].Count);
+
+            var intValue = resultSets[0].Single(c => c.Name == "IntValue");
+            var bigIntValue = resultSets[0].Single(c => c.Name == "BigIntValue");
+
+            Assert.Equal("int", intValue.StoreType);
+            Assert.Equal("bigint", bigIntValue.StoreType);
+            Assert.True(bigIntValue.Nullable);
+        }
     }
 }
