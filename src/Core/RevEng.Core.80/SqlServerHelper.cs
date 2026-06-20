@@ -13,6 +13,7 @@ namespace RevEng.Core
                 {
                     CommandTimeout = 300,
                     TrustServerCertificate = true,
+                    Encrypt = true,
                 };
                 return builder.ConnectionString;
             }
