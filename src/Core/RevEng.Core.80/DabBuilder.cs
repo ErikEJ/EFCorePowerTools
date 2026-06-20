@@ -26,7 +26,7 @@ namespace RevEng.Core
 
             options = dataApiBuilderCommandOptions;
 
-            options.ConnectionString = dataApiBuilderCommandOptions.ConnectionString.ApplyDatabaseType(dataApiBuilderCommandOptions.DatabaseType);
+            options.ConnectionString = dataApiBuilderCommandOptions.ConnectionString;
 
             var revEngOptions = new ReverseEngineerCommandOptions
             {
