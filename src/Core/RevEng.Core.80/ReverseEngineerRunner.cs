@@ -23,8 +23,6 @@ namespace RevEng.Core
             var serviceProvider = new ServiceCollection().AddEfpt(options, errors, warnings, info).BuildServiceProvider();
             var schemas = new List<string>();
 
-            options.ConnectionString = options.ConnectionString.ApplyDatabaseType(options.DatabaseType);
-
             if (options.DefaultDacpacSchema != null)
             {
                 schemas.Add(options.DefaultDacpacSchema);
