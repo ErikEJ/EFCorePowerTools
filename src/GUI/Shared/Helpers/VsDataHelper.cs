@@ -2,12 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Data.SqlClient;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.Common.Models;
+using Microsoft.Data.SqlClient;
 using Microsoft.VisualStudio.Data.Core;
 using Microsoft.VisualStudio.Data.Services;
 using RevEng.Common;
@@ -18,7 +18,6 @@ namespace EFCorePowerTools.Helpers
     {
         public static readonly HashSet<Guid> SupportedProviders = new HashSet<Guid>()
         {
-            new Guid(Resources.SqlServerDotNetProvider),
             new Guid(Resources.MicrosoftSqlServerDotNetProvider),
             new Guid(Resources.SQLiteProvider),
             new Guid(Resources.SQLitePrivateProvider),
@@ -31,21 +30,20 @@ namespace EFCorePowerTools.Helpers
 
         public static readonly HashSet<Guid> SqlServerProviders = new HashSet<Guid>()
         {
-            new Guid(Resources.SqlServerDotNetProvider),
             new Guid(Resources.MicrosoftSqlServerDotNetProvider),
         };
 
         public static string GetSavedConnectionName(string connectionString, DatabaseType dbType)
         {
-            if (dbType == DatabaseType.SQLServer
-                && connectionString.IndexOf(";Authentication=", StringComparison.OrdinalIgnoreCase) < 0
-                && connectionString.IndexOf("Command Timeout=", StringComparison.OrdinalIgnoreCase) < 0)
+            if (dbType == DatabaseType.SQLServer)
             {
                 return PathFromConnectionString(connectionString);
             }
 
-            var builder = new DbConnectionStringBuilder();
-            builder.ConnectionString = connectionString;
+            var builder = new DbConnectionStringBuilder
+            {
+                ConnectionString = connectionString,
+            };
 
             var result = string.Empty;
 
@@ -85,9 +83,7 @@ namespace EFCorePowerTools.Helpers
             dialog.AddSources((source, provider) => TryGetEntityFrameworkCoreProvider(provider));
 
             dialog.SelectedSource = new Guid("067ea0d9-ba62-43f7-9106-34930c60c528");
-            dialog.SelectedProvider = await IsDdexProviderInstalledAsync(new Guid(Resources.MicrosoftSqlServerDotNetProvider))
-                ? new Guid(Resources.MicrosoftSqlServerDotNetProvider)
-                : new Guid(Resources.SqlServerDotNetProvider);
+            dialog.SelectedProvider = new Guid(Resources.MicrosoftSqlServerDotNetProvider);
 
             var dialogResult = dialog.ShowDialog(connect: true);
 
@@ -150,22 +146,6 @@ namespace EFCorePowerTools.Helpers
             }
         }
 
-        internal static async System.Threading.Tasks.Task<bool> IsDdexProviderInstalledAsync(Guid id)
-        {
-            try
-            {
-                var providerManager = await VS.GetServiceAsync<IVsDataProviderManager, IVsDataProviderManager>();
-                return providerManager != null &&
-                    providerManager.Providers.TryGetValue(id, out IVsDataProvider _);
-            }
-            catch
-            {
-                // Ignored
-            }
-
-            return false;
-        }
-
         internal async Task<Dictionary<string, DatabaseConnectionModel>> GetDataConnectionsAsync(EFCorePowerToolsPackage package)
         {
             var credentialStore = new CredentialStore();
@@ -181,7 +161,6 @@ namespace EFCorePowerTools.Helpers
             Guid providerMysql = new Guid(Resources.MysqlVSProvider);
             Guid providerOracle = new Guid(Resources.OracleProvider);
             Guid providerFirebird = new Guid(Resources.FirebirdProvider);
-            Guid providerSqlServerDotNet = new Guid(Resources.SqlServerDotNetProvider);
             Guid providerMicrosoftSqlServerDotNet = new Guid(Resources.MicrosoftSqlServerDotNetProvider);
 
             try
@@ -210,8 +189,7 @@ namespace EFCorePowerTools.Helpers
                                 info.DatabaseType = DatabaseType.SQLite;
                             }
 
-                            if (objProviderGuid == providerSqlServerDotNet
-                                || objProviderGuid == providerMicrosoftSqlServerDotNet)
+                            if (objProviderGuid == providerMicrosoftSqlServerDotNet)
                             {
                                 info.DatabaseType = DatabaseType.SQLServer;
                             }
@@ -303,12 +281,6 @@ namespace EFCorePowerTools.Helpers
                     providerGuid = Resources.MicrosoftSQLiteProvider;
                 }
 
-                if (providerInvariant == "System.Data.SqlClient")
-                {
-                    dbType = DatabaseType.SQLServer;
-                    providerGuid = Resources.SqlServerDotNetProvider;
-                }
-
                 if (providerInvariant == "Microsoft.Data.SqlClient")
                 {
                     dbType = DatabaseType.SQLServer;
@@ -350,7 +322,7 @@ namespace EFCorePowerTools.Helpers
 
         private static string PathFromConnectionString(string connectionString)
         {
-            var builder = SqlConnectionStringBuilderHelper.GetBuilder(connectionString);
+            var builder = new SqlConnectionStringBuilder(connectionString);
 
             var database = builder.InitialCatalog;
             if (string.IsNullOrEmpty(database) && !string.IsNullOrEmpty(builder.AttachDBFilename))

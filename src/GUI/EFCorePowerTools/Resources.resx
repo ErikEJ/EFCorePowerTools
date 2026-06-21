@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -140,8 +140,5 @@
   </data>
   <data name="SQLiteProvider" xml:space="preserve">
     <value>0ebaab6e-ca80-4b4a-8ddf-cbe6bf058c70</value>
-  </data>
-  <data name="SqlServerDotNetProvider" xml:space="preserve">
-    <value>91510608-8809-4020-8897-fba057e22d54</value>
   </data>
 </root>
