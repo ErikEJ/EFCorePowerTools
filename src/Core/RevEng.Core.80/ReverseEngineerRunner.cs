@@ -487,7 +487,7 @@ namespace RevEng.Core
 
             RetryFileWrite(
                 file,
-                header + Environment.NewLine + text.Replace(";Command Timeout=300", string.Empty, StringComparison.OrdinalIgnoreCase).Replace(";Trust Server Certificate=True", string.Empty, StringComparison.OrdinalIgnoreCase).TrimEnd());
+                header + Environment.NewLine + text.TrimEnd());
         }
 
         private static void CleanUp(SavedModelFiles filePaths, List<string> entityTypeConfigurationPaths, string outputDir)
