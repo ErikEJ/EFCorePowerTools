@@ -290,7 +290,6 @@
     <Reference Include="Microsoft.ApplicationInsights, Version=2.17.0.146, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\lib\Microsoft.ApplicationInsights.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.TemplateWizardInterface" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -685,6 +684,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Data.Framework" Version="17.5.33428.388" />
     <PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.0.32112.339" />
+    <PackageReference Include="Microsoft.VisualStudio.TemplateWizardInterface" Version="17.0.31902.203" />
     <PackageReference Include="Microsoft.VSSDK.BuildTools">
       <Version>17.14.2094</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
