@@ -130,11 +130,14 @@ jobs:
         path: |
           *.vsix
 
-    - name: Publish to Open VSIX Gallery
+    - name: Publish EFCorePowerTools to Open VSIX Gallery
       if: github.ref == 'refs/heads/master' && github.repository_owner == 'erikej' && (github.event_name == 'push' ||  github.event_name == 'workflow_dispatch')
-      run: |
-        $ErrorActionPreference='Stop'
-        (new-object Net.WebClient).DownloadString("https://raw.githubusercontent.com/madskristensen/ExtensionScripts/master/AppVeyor/vsix.ps1") | iex
-        Vsix-PublishToGallery 
-      shell: pwsh
-      continue-on-error: false
+      uses: madskristensen/publish-vsixgallery@v1
+      with:
+        vsix-file: EFCorePowerTools-${{ env.VERSION }}.vsix
+
+    - name: Publish PowerToolsExtensionPack to Open VSIX Gallery
+      if: github.ref == 'refs/heads/master' && github.repository_owner == 'erikej' && (github.event_name == 'push' ||  github.event_name == 'workflow_dispatch')
+      uses: madskristensen/publish-vsixgallery@v1
+      with:
+        vsix-file: PowerToolsExtensionPack-${{ env.VERSION }}.vsix
