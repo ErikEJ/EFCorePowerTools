@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore.SqlServer.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.SqlServer.Dac.Extensions.Prototype;
 using Microsoft.SqlServer.Dac.Model;
+using ScriptDom = Microsoft.SqlServer.TransactSql.ScriptDom;
 
 [assembly: CLSCompliant(false)]
 
@@ -713,7 +714,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
         private static bool GetColumnIsNullable(TSqlColumn col)
         {
             var persistedNullable = col.PersistedNullable;
-            return persistedNullable ?? col.Nullable;
+            return persistedNullable ?? (col.Nullable && !ReturnsNonNullComputedValue(col.Expression));
         }
 
         private static IList<string> GetColumnDataTypeNameParts(TSqlColumn col)
@@ -741,35 +742,16 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             storeType = null;
             systemTypeName = null;
 
-            if (string.IsNullOrWhiteSpace(expression))
-            {
-                return false;
-            }
-
-            var parser = new Microsoft.SqlServer.TransactSql.ScriptDom.TSql160Parser(false);
-            using var reader = new StringReader($"SELECT {expression} AS [Value];");
-            var fragment = parser.Parse(reader, out var errors);
-
-            if (errors?.Count > 0 || fragment is not Microsoft.SqlServer.TransactSql.ScriptDom.TSqlScript script)
-            {
-                return false;
-            }
-
-            var select = script.Batches
-                .SelectMany(b => b.Statements.OfType<Microsoft.SqlServer.TransactSql.ScriptDom.SelectStatement>())
-                .Select(s => s.QueryExpression as Microsoft.SqlServer.TransactSql.ScriptDom.QuerySpecification)
-                .FirstOrDefault(q => q != null);
-
-            var scalar = select?.SelectElements.OfType<Microsoft.SqlServer.TransactSql.ScriptDom.SelectScalarExpression>().FirstOrDefault();
-            if (scalar?.Expression is Microsoft.SqlServer.TransactSql.ScriptDom.ConvertCall convertCall)
+            var scalarExpression = ParseScalarExpression(expression);
+            if (scalarExpression is ScriptDom.ConvertCall convertCall)
             {
                 systemTypeName = convertCall.DataType.Name.BaseIdentifier.Value;
             }
-            else if (scalar?.Expression is Microsoft.SqlServer.TransactSql.ScriptDom.CastCall castCall)
+            else if (scalarExpression is ScriptDom.CastCall castCall)
             {
                 systemTypeName = castCall.DataType.Name.BaseIdentifier.Value;
             }
-            else if (scalar?.Expression is Microsoft.SqlServer.TransactSql.ScriptDom.IntegerLiteral)
+            else if (scalarExpression is ScriptDom.IntegerLiteral)
             {
                 systemTypeName = "int";
             }
@@ -781,6 +763,83 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 
             storeType = GetStoreType(systemTypeName, -1, 0, 0);
             return true;
+        }
+
+        private static bool ReturnsNonNullComputedValue(string expression)
+        {
+            var scalarExpression = ParseScalarExpression(expression);
+            return scalarExpression is not null && ReturnsKnownNonNullValue(scalarExpression);
+        }
+
+        private static ScriptDom.ScalarExpression ParseScalarExpression(string expression)
+        {
+            if (string.IsNullOrWhiteSpace(expression))
+            {
+                return null;
+            }
+
+            var parser = new ScriptDom.TSql160Parser(false);
+            using var reader = new StringReader($"SELECT {expression} AS [Value];");
+            var fragment = parser.Parse(reader, out var errors);
+
+            if (errors?.Count > 0 || fragment is not ScriptDom.TSqlScript script)
+            {
+                return null;
+            }
+
+            return script.Batches
+                .SelectMany(b => b.Statements.OfType<ScriptDom.SelectStatement>())
+                .Select(s => s.QueryExpression as ScriptDom.QuerySpecification)
+                .FirstOrDefault(q => q != null)?
+                .SelectElements
+                .OfType<ScriptDom.SelectScalarExpression>()
+                .FirstOrDefault()?
+                .Expression;
+        }
+
+        private static bool ReturnsKnownNonNullValue(ScriptDom.ScalarExpression expression)
+        {
+            if (expression is ScriptDom.ParenthesisExpression parenthesisExpression)
+            {
+                return ReturnsKnownNonNullValue(parenthesisExpression.Expression);
+            }
+
+            if (expression is ScriptDom.NullLiteral)
+            {
+                return false;
+            }
+
+            if (expression is ScriptDom.Literal)
+            {
+                return true;
+            }
+
+            if (expression is ScriptDom.CastCall castCall)
+            {
+                return ReturnsKnownNonNullValue(castCall.Parameter);
+            }
+
+            if (expression is ScriptDom.ConvertCall convertCall)
+            {
+                return convertCall.Parameter is not null && ReturnsKnownNonNullValue(convertCall.Parameter);
+            }
+
+            if (expression is ScriptDom.CoalesceExpression coalesceExpression)
+            {
+                return coalesceExpression.Expressions.Count > 0
+                    && ReturnsKnownNonNullValue(coalesceExpression.Expressions[^1]);
+            }
+
+            if (expression is ScriptDom.FunctionCall functionCall
+                && functionCall.CallTarget is null
+                && (functionCall.FunctionName.Value.Equals("ISNULL", StringComparison.OrdinalIgnoreCase)
+                    || functionCall.FunctionName.Value.Equals("COALESCE", StringComparison.OrdinalIgnoreCase)))
+            {
+                return functionCall.Parameters.Count > 0
+                    && ReturnsKnownNonNullValue(functionCall.Parameters[^1]);
+            }
+
+            return false;
         }
 
         private void GetUniqueConstraints(TSqlTable table, DatabaseTable dbTable)

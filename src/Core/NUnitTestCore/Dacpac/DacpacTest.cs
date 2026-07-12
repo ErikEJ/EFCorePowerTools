@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding;
+using Microsoft.SqlServer.Dac;
+using Microsoft.SqlServer.Dac.Model;
 using Xunit;
 using RevEng.Core.Abstractions;
 
@@ -361,6 +363,40 @@ GO
             Assert.Contains(bin.ForeignKeys, fk => fk.Columns.Count == 2);
         }
 
+        [Theory]
+        [InlineData("ISNULL(CONVERT(bit, CASE [processing_status_id] WHEN 0 THEN 1 END), 0)", false)]
+        [InlineData("COALESCE(CONVERT(bit, CASE [processing_status_id] WHEN 0 THEN 1 END), 0)", false)]
+        [InlineData("COALESCE(CONVERT(bit, CASE [processing_status_id] WHEN 0 THEN 1 END), NULL)", true)]
+        public void Issue3451ComputedColumnNullabilityCanBeInferredFromExpression(string expression, bool expectedNullable)
+        {
+            var factory = new SqlServerDacpacDatabaseModelFactory();
+            var options = new DatabaseModelFactoryOptions(null, new List<string>());
+            var dacpacPath = BuildDacpac(
+                $"""
+                CREATE TABLE [dbo].[processing_status]
+                (
+                    [processing_status_id] int NOT NULL
+                        CONSTRAINT [pk_processing_status] PRIMARY KEY,
+                    [is_status_created] AS {expression}
+                );
+                """);
+
+            try
+            {
+                var dbModel = factory.Create(dacpacPath, options);
+                var table = dbModel.Tables.Single(t => t.Schema == "dbo" && t.Name == "processing_status");
+                var column = table.Columns.Single(c => c.Name == "is_status_created");
+
+                Assert.False(column.IsStored);
+                Assert.Equal("bit", column.StoreType);
+                Assert.Equal(expectedNullable, column.IsNullable);
+            }
+            finally
+            {
+                File.Delete(dacpacPath);
+            }
+        }
+
         [Fact]
         public void MultipleTriggersFromDacpacAreCaptured()
         {
@@ -511,6 +547,18 @@ GO
 
             Assert.Equal(new[] { "JobCandidateID", "RANK" }, multipleResultRoutine.Results[0].Select(c => c.Name));
             Assert.Equal(new[] { "JobCandidateID", "RANK" }, multipleResultRoutine.Results[1].Select(c => c.Name));
+        }
+
+        private static string BuildDacpac(string sql)
+        {
+            var path = Path.Combine(Path.GetTempPath(), $"dacpac-test-{Guid.NewGuid():N}.dacpac");
+
+            using var model = new TSqlModel(SqlServerVersion.Sql160, new TSqlModelOptions());
+            model.AddObjects(sql);
+
+            DacPackageExtensions.BuildPackage(path, model, new PackageMetadata { Name = "test" });
+
+            return path;
         }
 
         private string TestPath(string file)
