@@ -96,6 +96,13 @@ namespace RevEng.Core.Routines
                                 module.MappedType = options.MappedModules[key];
                             }
 
+if (options.ModulesGeneratingEmptyResultTypes != null
+    && (options.ModulesGeneratingEmptyResultTypes.TryGetValue(key, out var generateEmptyResultType)
+        || options.ModulesGeneratingEmptyResultTypes.TryGetValue(alternateKey, out generateEmptyResultType)))
+{
+    module.GenerateEmptyResultType = generateEmptyResultType;
+}
+
                             if (allParameters.TryGetValue($"[{module.Schema}].[{module.Name}]", out var moduleParameters))
                             {
                                 module.Parameters = moduleParameters;
@@ -122,7 +129,13 @@ namespace RevEng.Core.Routines
                                         new List<ModuleResultElement>(),
                                     };
 #pragma warning disable CA1308 // Normalize strings to uppercase
-                                    errors.Add($"Unable to get result set shape for {RoutineType.ToLower(CultureInfo.InvariantCulture)} '{module.Schema}.{module.Name}'. {ex.Message}.");
+var nl = Environment.NewLine;
+var errorMessage = $"Unable to get result set shape for {RoutineType.ToLower(CultureInfo.InvariantCulture)} '{module.Schema}.{module.Name}'. {ex.Message}.";
+errorMessage += $"{nl}  Suggestions:";
+errorMessage += $"{nl}  - Try alternate result set discovery method: set \"use-legacy-resultset-discovery\": true for this procedure in config";
+errorMessage += $"{nl}  - Set \"generate-empty-result-type\": true in config to generate an empty result class you can customize";
+errorMessage += $"{nl}  - Exclude this procedure from generation if it's not needed";
+errors.Add(errorMessage);
 #pragma warning restore CA1308 // Normalize strings to uppercase
                                 }
 #pragma warning restore CA1031 // Do not catch general exception types

@@ -11,6 +11,8 @@ namespace RevEng.Core.Abstractions
 #pragma warning disable CA2227 // Collection properties should be read only
         public IDictionary<string, string> MappedModules { get; set; }
 
+        public IDictionary<string, bool> ModulesGeneratingEmptyResultTypes { get; set; }
+
 #pragma warning restore CA2227 // Collection properties should be read only
         public bool FullModel { get; set; }
 

@@ -62,5 +62,11 @@ namespace RevEng.Common
         /// </summary>
         [DataMember(EmitDefaultValue = false)]
         public string MappedType { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to generate an empty result type for stored procedures when result set cannot be discovered.
+        /// </summary>
+        [DataMember(EmitDefaultValue = false)]
+        public bool GenerateEmptyResultType { get; set; }
     }
 }

@@ -126,15 +126,8 @@ namespace RevEng.Core.Routines.Procedures
 
                     if (procedure.HasValidResultSet && (procedure.Results.Count == 0 || procedure.Results[0].Count == 0))
                     {
-                        var asyncExec = fullExec;
-
-                        if (useNullableReferences)
-                        {
-                            asyncExec = asyncExec.Replace(" cancellationToken", " cancellationToken ?? CancellationToken.None", StringComparison.OrdinalIgnoreCase);
-                        }
-
                         Sb.AppendLine(useAsyncCalls
-                            ? $"var _ = await _context.Database.ExecuteSqlRawAsync({asyncExec});"
+                            ? $"var _ = await _context.Database.ExecuteSqlRawAsync({fullExec});"
                             : $"var _ = _context.Database.ExecuteSqlRaw({fullExec});");
                     }
                     else
@@ -194,10 +187,8 @@ namespace RevEng.Core.Routines.Procedures
                 returnType = $"List<{returnClass}>";
             }
 
-            if (useNullableReferences && !returnType.EndsWith('?'))
-            {
-                returnType += '?';
-            }
+            // Do not add nullable annotation to List<T> when nullable references are enabled
+            // The list itself is never null (empty list instead)
 
             returnType = useAsyncCalls ? $"Task<{returnType}>" : returnType;
 
@@ -214,12 +205,10 @@ namespace RevEng.Core.Routines.Procedures
                 line += $"{string.Join(", ", outParamStrings)}";
             }
 
-            var nullable = useNullableReferences ? "?" : string.Empty;
-
             var hasParams = paramStrings.Any() || outParams.Count > 0;
 
             line += useAsyncCalls
-                ? $"{(hasParams ? ", " : string.Empty)}CancellationToken{nullable} cancellationToken = default)"
+                ? $"{(hasParams ? ", " : string.Empty)}CancellationToken cancellationToken = default)"
                 : ")";
 
             return line;
