@@ -27,6 +27,9 @@ using Oracle.EntityFrameworkCore.Design.Internal;
 #if !CORE100
 using Pomelo.EntityFrameworkCore.MySql.Design.Internal;
 #endif
+#if CORE100
+using Microting.EntityFrameworkCore.MySql.Design.Internal;
+#endif
 using RevEng.Common;
 using RevEng.Core.Routines.Extensions;
 using SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime.Design;
@@ -142,7 +145,6 @@ namespace RevEng.Core
 #endif
                     break;
 
-#if !CORE100
                 case DatabaseType.Mysql:
                     var mysqlProvider = new MySqlDesignTimeServices();
                     mysqlProvider.ConfigureDesignTimeServices(serviceCollection);
@@ -154,7 +156,6 @@ namespace RevEng.Core
                     }
 
                     break;
-#endif
 
                 case DatabaseType.Firebird:
                     var firebirdProvider = new FbDesignTimeServices();

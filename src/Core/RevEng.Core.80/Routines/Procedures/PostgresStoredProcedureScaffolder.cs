@@ -81,7 +81,7 @@ namespace RevEng.Core.Routines.Procedures
                 returnClass = procedure.MappedType;
             }
 
-            var line = GenerateMethodSignature(procedure, outParams, paramStrings, outParamStrings, identifier, signatureOnly, useAsyncCalls, returnClass, useNullableReferences);
+            var line = GenerateMethodSignature(procedure, outParams, paramStrings, outParamStrings, identifier, signatureOnly, useAsyncCalls, returnClass);
 
             if (signatureOnly)
             {
@@ -174,8 +174,7 @@ namespace RevEng.Core.Routines.Procedures
             string identifier,
             bool signatureOnly,
             bool useAsyncCalls,
-            string returnClass,
-            bool useNullableReferences)
+            string returnClass)
         {
             string returnType;
             if (procedure.HasValidResultSet && (procedure.Results.Count == 0 || procedure.Results[0].Count == 0))
@@ -189,7 +188,6 @@ namespace RevEng.Core.Routines.Procedures
 
             // Do not add nullable annotation to List<T> when nullable references are enabled
             // The list itself is never null (empty list instead)
-
             returnType = useAsyncCalls ? $"Task<{returnType}>" : returnType;
 
             var lineStart = signatureOnly ? string.Empty : $"public virtual {(useAsyncCalls ? "async " : string.Empty)}";
