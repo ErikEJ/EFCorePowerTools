@@ -531,6 +531,10 @@ namespace RevEng.Common
                     new List<string> { "postgres", "postgresql" }
                 },
                 {
+                    "Pomelo.EntityFrameworkCore.MySql",
+                    new List<string> { "mysql" }
+                },
+                {
                     "Microting.EntityFrameworkCore.MySql",
                     new List<string> { "mysql" }
                 },
