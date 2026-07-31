@@ -88,6 +88,13 @@ namespace RevEng.Core.Routines.Procedures
                         break;
                     }
                 }
+
+                // When result set discovery failed and no empty result type will be generated,
+                // skip this routine entirely to avoid generating code that references a missing result class.
+                if (!routine.HasValidResultSet && !routine.GenerateEmptyResultType)
+                {
+                    invalidRoutines.Add(routine);
+                }
             }
 
             model.Routines.RemoveAll(r => invalidRoutines.Contains(r));
