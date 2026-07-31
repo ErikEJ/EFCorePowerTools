@@ -535,10 +535,6 @@ namespace RevEng.Common
                     new List<string> { "mysql" }
                 },
                 {
-                    "Microting.EntityFrameworkCore.MySql",
-                    new List<string> { "mysql" }
-                },
-                {
                     "Oracle.EntityFrameworkCore",
                     new List<string> { "oracle" }
                 },
