@@ -96,10 +96,12 @@ namespace RevEng.Core.Routines
                                 module.MappedType = options.MappedModules[key];
                             }
 
-                            if (options.ModulesGeneratingEmptyResultTypes?.ContainsKey(key) ?? false)
-                            {
-                                module.GenerateEmptyResultType = options.ModulesGeneratingEmptyResultTypes[key];
-                            }
+if (options.ModulesGeneratingEmptyResultTypes != null
+    && (options.ModulesGeneratingEmptyResultTypes.TryGetValue(key, out var generateEmptyResultType)
+        || options.ModulesGeneratingEmptyResultTypes.TryGetValue(alternateKey, out generateEmptyResultType)))
+{
+    module.GenerateEmptyResultType = generateEmptyResultType;
+}
 
                             if (allParameters.TryGetValue($"[{module.Schema}].[{module.Name}]", out var moduleParameters))
                             {
