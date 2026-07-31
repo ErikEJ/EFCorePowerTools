@@ -646,7 +646,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 options.ConnectionString = dbInfo.ConnectionString;
                 options.DatabaseType = dbInfo.DatabaseType;
 
-                options.Dacpac = await SqlProjHelper.BuildSqlProjectAsync(options.Dacpac);
+                options.Dacpac = await SqlProjHelper.BuildSqlProjectAsync(options.Dacpac, mustBuild: true);
                 if (string.IsNullOrEmpty(options.Dacpac))
                 {
                     VSHelper.ShowMessage(ReverseEngineerLocale.UnableToBuildSelectedDatabaseProject);
@@ -735,7 +735,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (!allowedVersions.Any())
             {
-                wizardArgs.StatusbarMessage = ".NET 5 and earlier is not supported.";
+                wizardArgs.StatusbarMessage = ".NET 7 and earlier is not supported.";
                 if (!wizardArgs.IsInvokedByWizard)
                 {
                     VSHelper.ShowError(wizardArgs.StatusbarMessage);

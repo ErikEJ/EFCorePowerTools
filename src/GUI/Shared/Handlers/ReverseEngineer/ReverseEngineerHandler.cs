@@ -567,7 +567,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             if (!allowedVersions.Any())
             {
-                VSHelper.ShowError($".NET 5 and earlier is not supported.");
+                VSHelper.ShowError($".NET 7 and earlier is not supported.");
                 return false;
             }
 

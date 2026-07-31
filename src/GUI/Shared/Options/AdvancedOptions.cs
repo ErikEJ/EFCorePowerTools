@@ -36,6 +36,12 @@ namespace EFCorePowerTools
         [DefaultValue(false)]
         public bool UseLegacyResultSetDiscovery { get; set; }
 
+        [Category("Reverse Engineering")]
+        [DisplayName(@"Use result set fallback")]
+        [Description("Try to infer stored procedure result sets from the stored procedure definition when live discovery fails")]
+        [DefaultValue(true)]
+        public bool UseStoredProcedureResultSetFallback { get; set; } = true;
+
         [Category("Other")]
         [DisplayName(@"Participate in Telemetry")]
         [Description("Help improve the EF Core Power Tools by providing anynonymous usage data and crash reports")]

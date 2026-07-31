@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Windows.Controls;
 using EFCorePowerTools.Common.Models;
@@ -58,12 +58,13 @@ namespace EFCorePowerTools.Dialogs
             switch (dbType)
             {
                 case DatabaseType.Mysql:
+#pragma warning disable S2068 // Credentials should not be hard-coded
                     txtSample.Text = "Server=myServerAddress;Database=myDataBase;Uid=myUsername;Pwd=myPassword;";
                     break;
                 case DatabaseType.Snowflake:
                     txtSample.Text = "ACCOUNT=<accountid>;DB=MYDATABASE;SCHEMA=MYSCHEMA;USER=MYUSERNAME;PASSWORD=myPassword";
                     break;
-
+#pragma warning restore S2068 // Credentials should not be hard-coded
                 default:
                     break;
             }

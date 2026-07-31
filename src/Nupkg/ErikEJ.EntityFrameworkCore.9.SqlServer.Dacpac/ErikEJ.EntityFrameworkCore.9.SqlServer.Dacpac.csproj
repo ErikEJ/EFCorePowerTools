@@ -3,12 +3,12 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <PackageId>ErikEJ.EntityFrameworkCore.SqlServer.Dacpac</PackageId>
-    <PackageVersion>9.0.3</PackageVersion>    
+    <PackageVersion>9.0.6</PackageVersion>    
     <NoWarn>$(NoWarn);EF1001</NoWarn>    
     <Authors>ErikEJ</Authors>
     <Description>Enables reverse engineering an EF Core model from a data-tier application package (DACPAC).</Description>
     <PackageProjectUrl>https://github.com/ErikEJ/EFCorePowerTools</PackageProjectUrl>
-    <PackageReleaseNotes>For EF Core 9.0 with DacFX 170.2</PackageReleaseNotes>
+    <PackageReleaseNotes>For EF Core 9.0 with DacFX 170.3</PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>DbContext;EntityFramework;SqlServer;DACPAC;EFCore;EntityFrameworkCore</PackageTags>
     <RootNamespace>ErikEJ.EntityFrameworkCore.SqlServer</RootNamespace>
@@ -38,6 +38,7 @@
     <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\Scaffolding\SqlServerDacpacDatabaseModelFactory.cs" Link="Scaffolding\SqlServerDacpacDatabaseModelFactory.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\Scaffolding\SqlServerDacpacDatabaseModelFactoryOptions.cs" Link="Scaffolding\SqlServerDacpacDatabaseModelFactoryOptions.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\Scaffolding\SqlServerDacpacStoredProcedureModelFactory.cs" Link="Scaffolding\SqlServerDacpacStoredProcedureModelFactory.cs" />
+    <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\Scaffolding\SqlServerStoredProcedureResultSetFactory.cs" Link="Scaffolding\SqlServerStoredProcedureResultSetFactory.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\Scaffolding\SqlServerDacpacFunctionModelFactory.cs" Link="Scaffolding\SqlServerDacpacFunctionModelFactory.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\SqlSharpener\AliasResolutionVisitor.cs" Link="SqlSharpener\AliasResolutionVisitor.cs" />
     <Compile Include="..\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\SqlSharpener\DataType.cs" Link="SqlSharpener\DataType.cs" />
@@ -54,7 +55,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="9.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.HierarchyId" Version="9.0.0" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="170.2.70" />
+    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="170.3.93" />
   </ItemGroup>
 
   <ItemGroup>

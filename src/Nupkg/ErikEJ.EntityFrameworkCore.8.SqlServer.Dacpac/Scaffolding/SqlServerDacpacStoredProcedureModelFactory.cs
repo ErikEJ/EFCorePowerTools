@@ -80,7 +80,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
 #pragma warning disable CA1031 // Do not catch general exception types
                         try
                         {
-                            procedure.Results.AddRange(GetStoredProcedureResultElements(proc));
+                            procedure.Results.AddRange(GetStoredProcedureResultElements(proc, !options.DiscoverMultipleResultSets));
                         }
                         catch (Exception ex)
                         {
@@ -106,6 +106,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             var result = new List<ModuleParameter>();
 
             string typeName = null;
+            string typeSchemaName = null;
 
             foreach (var parameter in proc.Parameters)
             {
@@ -133,7 +134,8 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 {
                     // parameter is a table type (TVP)
                     storeType = "structured";
-                    typeName = tableReference.Name.ToString();
+                    typeName = tableReference.Name.Parts[1];
+                    typeSchemaName = tableReference.Name.Parts[0];
                     tvpColumns = DacpacModelFactoryHelper.GetTvpColumns(tableReference);
                 }
 
@@ -149,6 +151,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     StoreType = storeType,
                     Nullable = true,
                     TypeName = typeName,
+                    TypeSchemaName = typeSchemaName,
                     TvpColumns = tvpColumns,
                 };
 
@@ -168,41 +171,10 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             return result;
         }
 
-        private static List<List<ModuleResultElement>> GetStoredProcedureResultElements(TSqlProcedure proc)
+        private static List<List<ModuleResultElement>> GetStoredProcedureResultElements(TSqlProcedure proc, bool singleResult)
         {
-            var list = new List<ModuleResultElement>();
-
             var metaProc = new SqlSharpener.Model.Procedure(proc.Element);
-
-            if (metaProc.Selects == null || !metaProc.Selects.Any())
-            {
-                return new List<List<ModuleResultElement>>();
-            }
-
-            int ordinal = 0;
-            foreach (var column in metaProc.Selects.First().Columns)
-            {
-                if (column.DataTypes != null)
-                {
-                    list.Add(new ModuleResultElement
-                    {
-                        Name = column.Name,
-                        Nullable = column.IsNullable,
-                        StoreType = column.DataTypes[SqlSharpener.TypeFormat.SqlServerDbType],
-                        Ordinal = ordinal++,
-                        MaxLength = column.MaxLength,
-                        Precision = column.Precision,
-                        Scale = column.Scale,
-                    });
-                }
-            }
-
-            var result = new List<List<ModuleResultElement>>
-            {
-                list,
-            };
-
-            return result;
+            return SqlServerStoredProcedureResultSetFactory.CreateFromSelects(metaProc.Selects, singleResult);
         }
     }
 }

@@ -133,13 +133,13 @@ namespace RevEng.Common
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.0.22";
+                        pkgVersion = "8.0.27";
                         break;
                     case CodeGenerationMode.EFCore9:
-                        pkgVersion = "9.0.11";
+                        pkgVersion = "9.0.16";
                         break;
                     case CodeGenerationMode.EFCore10:
-                        pkgVersion = "10.0.0";
+                        pkgVersion = "10.0.8";
                         break;
 
                     default:
@@ -167,6 +167,18 @@ namespace RevEng.Common
                     });
                 }
 
+                if (useHierarchyId)
+                {
+                    packages.Add(new NuGetPackage
+                    {
+                        PackageId = "Microsoft.EntityFrameworkCore.SqlServer.HierarchyId",
+                        Version = pkgVersion,
+                        DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
+                        IsMainProviderPackage = false,
+                        UseMethodName = "HierarchyId",
+                    });
+                }
+
                 if (useNodaTime)
                 {
                     switch (codeGenerationMode)
@@ -180,7 +192,7 @@ namespace RevEng.Common
                             break;
 
                         case CodeGenerationMode.EFCore10:
-                            pkgVersion = "10.0.0";
+                            pkgVersion = "10.0.1";
                             break;
 
                         default: throw new NotImplementedException();
@@ -193,18 +205,6 @@ namespace RevEng.Common
                         DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
                         IsMainProviderPackage = false,
                         UseMethodName = "NodaTime",
-                    });
-                }
-
-                if (useHierarchyId)
-                {
-                    packages.Add(new NuGetPackage
-                    {
-                        PackageId = "Microsoft.EntityFrameworkCore.SqlServer.HierarchyId",
-                        Version = pkgVersion,
-                        DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
-                        IsMainProviderPackage = false,
-                        UseMethodName = "HierarchyId",
                     });
                 }
 
@@ -227,15 +227,15 @@ namespace RevEng.Common
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.0.22";
+                        pkgVersion = "8.0.27";
                         break;
 
                     case CodeGenerationMode.EFCore9:
-                        pkgVersion = "9.0.11";
+                        pkgVersion = "9.0.16";
                         break;
 
                     case CodeGenerationMode.EFCore10:
-                        pkgVersion = "10.0.0";
+                        pkgVersion = "10.0.8";
                         break;
 
                     default: throw new NotImplementedException();
@@ -260,6 +260,10 @@ namespace RevEng.Common
 
                         case CodeGenerationMode.EFCore9:
                             pkgVersion = "9.1.0";
+                            break;
+
+                        case CodeGenerationMode.EFCore10:
+                            pkgVersion = "10.0.0";
                             break;
 
                         default: throw new NotImplementedException();
@@ -290,7 +294,7 @@ namespace RevEng.Common
                         break;
 
                     case CodeGenerationMode.EFCore10:
-                        pkgVersion = "10.0.0";
+                        pkgVersion = "10.0.1";
                         break;
 
                     default: throw new NotImplementedException();
@@ -374,14 +378,14 @@ namespace RevEng.Common
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.23.26000";
+                        pkgVersion = "8.23.26200";
                         break;
                     case CodeGenerationMode.EFCore9:
-                        pkgVersion = "9.23.26000";
+                        pkgVersion = "9.23.26200";
                         break;
 
                     case CodeGenerationMode.EFCore10:
-                        pkgVersion = "10.23.26000";
+                        pkgVersion = "10.23.26200";
                         break;
 
                     default: throw new NotImplementedException();
@@ -408,6 +412,10 @@ namespace RevEng.Common
 
                     case CodeGenerationMode.EFCore9:
                         pkgVersion = "12.0.0";
+                        break;
+
+                    case CodeGenerationMode.EFCore10:
+                        pkgVersion = "13.0.0";
                         break;
 
                     default: throw new NotImplementedException();

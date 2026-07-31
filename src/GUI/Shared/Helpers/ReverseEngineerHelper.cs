@@ -45,6 +45,9 @@ namespace EFCorePowerTools.Helpers
                     case CodeGenerationMode.EFCore9:
                         zipName = "CodeTemplates900.zip";
                         break;
+                    case CodeGenerationMode.EFCore10:
+                        zipName = "CodeTemplates1000.zip";
+                        break;
                     default:
                         throw new ArgumentException($"Unsupported code generation mode for templates: {codeGenerationMode}");
                 }
@@ -266,6 +269,8 @@ namespace EFCorePowerTools.Helpers
             {
                 list.Add(new TemplateTypeItem { Key = 2, Value = "C# - T4" });
                 list.Add(new TemplateTypeItem { Key = 4, Value = "C# - T4 (Split DbContext)" });
+                list.Add(new TemplateTypeItem { Key = 0, Value = "C# - Handlebars" });
+                list.Add(new TemplateTypeItem { Key = 1, Value = "TypeScript - Handlebars" });
                 list.Add(new TemplateTypeItem { Key = 3, Value = "C# - T4 (POCO)" });
             }
 

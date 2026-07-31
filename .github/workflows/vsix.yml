@@ -14,6 +14,10 @@ on:
     branches:
       - '*'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   id-token: write # This is required for the federated credential to work
 
@@ -26,9 +30,9 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
 
-    - uses: actions/setup-dotnet@v5
+    - uses: actions/setup-dotnet@v6
       with:
         dotnet-version: '10.0.x'
 
@@ -41,7 +45,7 @@ jobs:
       shell: pwsh
 
     - name: Restore
-      run: dotnet restore EFCorePowerTools.sln
+      run: dotnet restore EFCorePowerTools.slnx
       working-directory: src
 
     - name: Build reveng tools
@@ -58,41 +62,38 @@ jobs:
     - name: Extract and verify efreveng80.exe.zip file count
       shell: cmd
       run: |
-        mkdir vsix
         7z x src/GUI/lib/efreveng80.exe.zip -oefreveng80 -y
         dir /a:-d /s /b "efreveng80" | find /c ":\" > filecount.txt
-        findstr "166" filecount.txt
+        findstr "167" filecount.txt
 
     - name: Extract and verify efreveng90.exe.zip file count
       shell: cmd
       run: |
-          mkdir vsix
           7z x src/GUI/lib/efreveng90.exe.zip -oefreveng90 -y
           dir /a:-d /s /b "efreveng90" | find /c ":\" > filecount.txt
-          findstr "166" filecount.txt
+          findstr "167" filecount.txt
 
     - name: Extract and verify efreveng100.exe.zip file count
       shell: cmd
       run: |
-          mkdir vsix
           7z x src/GUI/lib/efreveng100.exe.zip -oefreveng100 -y
           dir /a:-d /s /b "efreveng100" | find /c ":\" > filecount.txt
-          findstr "141" filecount.txt
+          findstr "144" filecount.txt
 
     - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v2
+      uses: microsoft/setup-msbuild@v3
 
     - name: Build
-      run: msbuild EFCorePowerTools.sln /property:Configuration=Release /p:DeployExtension=false /p:ZipPackageCompressionLevel=normal /v:m
+      run: msbuild EFCorePowerTools.slnx /property:Configuration=Release /p:DeployExtension=false /p:ZipPackageCompressionLevel=normal /v:m
       working-directory: src
 
     - name: Extract and verify vsix file count
       shell: cmd
       run: |
-        mkdir vsix
+        if not exist vsix mkdir vsix
         7z x src/GUI/EFCorePowerTools/bin/Release/EFCorePowerTools.vsix -ovsix -y
         dir /a:-d /s /b "vsix" | find /c ":\" > filecount.txt
-        findstr "77" filecount.txt
+        findstr "113" filecount.txt
 
     - name: Move build output
       if: github.ref == 'refs/heads/master' && github.repository_owner == 'erikej' && (github.event_name == 'push' ||  github.event_name == 'workflow_dispatch')
@@ -102,7 +103,7 @@ jobs:
 
     - name: Azure CLI login with federated credential
       if: github.event_name != 'pull_request'
-      uses: azure/login@v2
+      uses: azure/login@v3
       with:
         client-id: ${{ secrets.AZURE_CLIENT_ID }}
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
@@ -123,17 +124,20 @@ jobs:
 
     - name: Publish artifacts
       if: github.ref == 'refs/heads/master' && github.repository_owner == 'erikej' && (github.event_name == 'push' ||  github.event_name == 'workflow_dispatch')
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       with:
         name: Artifacts
         path: |
           *.vsix
 
-    - name: Publish to Open VSIX Gallery
+    - name: Publish EFCorePowerTools to Open VSIX Gallery
       if: github.ref == 'refs/heads/master' && github.repository_owner == 'erikej' && (github.event_name == 'push' ||  github.event_name == 'workflow_dispatch')
-      run: |
-        $ErrorActionPreference='Stop'
-        (new-object Net.WebClient).DownloadString("https://raw.githubusercontent.com/madskristensen/ExtensionScripts/master/AppVeyor/vsix.ps1") | iex
-        Vsix-PublishToGallery 
-      shell: pwsh
-      continue-on-error: false
+      uses: madskristensen/publish-vsixgallery@v1
+      with:
+        vsix-file: EFCorePowerTools-${{ env.VERSION }}.vsix
+
+    - name: Publish PowerToolsExtensionPack to Open VSIX Gallery
+      if: github.ref == 'refs/heads/master' && github.repository_owner == 'erikej' && (github.event_name == 'push' ||  github.event_name == 'workflow_dispatch')
+      uses: madskristensen/publish-vsixgallery@v1
+      with:
+        vsix-file: PowerToolsExtensionPack-${{ env.VERSION }}.vsix

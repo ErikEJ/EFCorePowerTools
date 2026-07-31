@@ -1,26 +1,32 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding;
-using Microsoft.EntityFrameworkCore.SqlServer.Metadata.Internal;
-using NUnit.Framework;
+using Microsoft.SqlServer.Dac;
+using Microsoft.SqlServer.Dac.Model;
+using Xunit;
 using RevEng.Core.Abstractions;
 
 namespace UnitTests
 {
-    [TestFixture]
     public class DacpacTest
     {
+        private const string SqlServerSparseAnnotation = "SqlServer:Sparse";
+        private const string SqlServerIsTemporalAnnotation = "SqlServer:IsTemporal";
         private string dacpac;
+        private string dacpacDescending;
+        private string dacpacSparse;
         private string dacpacViews;
         private string dacpacQuirk;
 
-        [SetUp]
-        public void Setup()
+        public DacpacTest()
         {
             dacpacQuirk = TestPath("TestDb.dacpac");
             dacpac = TestPath("Chinook.dacpac");
+            dacpacDescending = TestPath("DescendingIndex.dacpac");
+            dacpacSparse = TestPath("SparseColumn.dacpac");
             dacpacViews = TestPath("ViewColumnTypesSqlProj.dacpac");
             #region Here Is the SQL used to create ViewColumnTypesSqlProj.dacpac
             /*
@@ -94,7 +100,7 @@ GO
             #endregion
         }
 
-        [Test]
+        [Fact]
         public void CanEnumerateTables()
         {
             // Arrange
@@ -105,10 +111,10 @@ GO
             var dbModel = factory.Create(dacpac, options);
 
             // Assert
-            Assert.AreEqual(11, dbModel.Tables.Count());
+            Assert.Equal(11, dbModel.Tables.Count());
         }
 
-        [Test]
+        [Fact]
         public void CanEnumerateViewColumns()
         {
             // Arrange
@@ -119,10 +125,10 @@ GO
             var dbModel = factory.Create(dacpacViews, options);
 
             // Assert
-            Assert.AreEqual(28, dbModel.Tables[0].Columns.Count());
+            Assert.Equal(28, dbModel.Tables[0].Columns.Count());
         }
 
-        [Test]
+        [Fact]
         public void CanEnumerateSelectedTables()
         {
             // Arrange
@@ -134,13 +140,13 @@ GO
             var dbModel = factory.Create(dacpac, options);
 
             // Assert
-            Assert.AreEqual(3, dbModel.Tables.Count());
-            Assert.AreEqual("Album", dbModel.Tables[0].Name);
-            Assert.AreEqual(1, dbModel.Tables[0].ForeignKeys.Count);
-            Assert.AreEqual(3, dbModel.Tables[0].Columns.Count);
+            Assert.Equal(3, dbModel.Tables.Count());
+            Assert.Equal("Album", dbModel.Tables[0].Name);
+            Assert.Single(dbModel.Tables[0].ForeignKeys);
+            Assert.Equal(3, dbModel.Tables[0].Columns.Count);
         }
 
-        [Test]
+        [Fact]
         public void CanEnumerateSelectedQuirkObjects()
         {
             // Arrange
@@ -152,17 +158,15 @@ GO
             var dbModel = factory.Create(dacpacQuirk, options);
 
             // Assert
-            Assert.AreEqual(2, dbModel.Tables.Count());
-
-            Assert.AreEqual("FilteredIndexTable", dbModel.Tables[1].Name);
-            Assert.AreEqual(0, dbModel.Tables[1].ForeignKeys.Count);
-            Assert.AreEqual(2, dbModel.Tables[1].Columns.Count);
-
-            Assert.AreEqual("DefaultComputedValues", dbModel.Tables[0].Name);
-            Assert.AreEqual(5, dbModel.Tables[0].Columns.Count);
+            Assert.Equal(2, dbModel.Tables.Count());
+            Assert.Equal("FilteredIndexTable", dbModel.Tables[1].Name);
+            Assert.Empty(dbModel.Tables[1].ForeignKeys);
+            Assert.Equal(2, dbModel.Tables[1].Columns.Count);
+            Assert.Equal("DefaultComputedValues", dbModel.Tables[0].Name);
+            Assert.Equal(6, dbModel.Tables[0].Columns.Count);
         }
 
-        [Test]
+        [Fact]
         public void CanEnumerateSelectedComputed()
         {
             // Arrange
@@ -174,13 +178,12 @@ GO
             var dbModel = factory.Create(dacpacQuirk, options);
 
             // Assert
-            Assert.AreEqual(1, dbModel.Tables.Count());
-
-            Assert.AreEqual("DefaultComputedValues", dbModel.Tables[0].Name);
-            Assert.AreEqual(5, dbModel.Tables[0].Columns.Count);
+            Assert.Single(dbModel.Tables);
+            Assert.Equal("DefaultComputedValues", dbModel.Tables[0].Name);
+            Assert.Equal(6, dbModel.Tables[0].Columns.Count);
         }
 
-        [Test]
+        [Fact]
         public void CanEnumerateTypeAlias()
         {
             // Arrange
@@ -192,16 +195,14 @@ GO
             var dbModel = factory.Create(dacpacQuirk, options);
 
             // Assert
-            Assert.AreEqual(1, dbModel.Tables.Count());
-
-            Assert.AreEqual("TypeAlias", dbModel.Tables[0].Name);
-            Assert.AreEqual(2, dbModel.Tables[0].Columns.Count);
-
-            Assert.AreEqual("nvarchar(max)", dbModel.Tables[0].Columns[1].StoreType);
+            Assert.Single(dbModel.Tables);
+            Assert.Equal("TypeAlias", dbModel.Tables[0].Name);
+            Assert.Equal(2, dbModel.Tables[0].Columns.Count);
+            Assert.Equal("nvarchar(max)", dbModel.Tables[0].Columns[1].StoreType);
         }
 
-        [Test]
-        public void CanHandleDefaultValues()
+        [Fact]
+        public void PreservesDefaultValueSql()
         {
             // Arrange
             var factory = new SqlServerDacpacDatabaseModelFactory();
@@ -212,12 +213,63 @@ GO
             var dbModel = factory.Create(dacpacQuirk, options);
 
             // Assert
-            Assert.AreEqual(1, dbModel.Tables.Count());
-            Assert.AreEqual(1, dbModel.Tables
-                .Count(t => t.Columns.Any(c => c.DefaultValueSql != null)));
+            Assert.Single(dbModel.Tables);
+            Assert.Equal(
+                new[]
+                {
+                    "OrderDate",
+                    "Freight1",
+                    "Freight2",
+                    "Freight3",
+                    "Freight4",
+                    "Freight5",
+                    "Freight6",
+                    "Freight7",
+                    "Freight8",
+                },
+                dbModel.Tables.Single().Columns
+                    .Where(c => c.DefaultValueSql != null)
+                    .Select(c => c.Name));
         }
 
-        [Test]
+        [Fact]
+        public void PreservesNumericClrDefaultConstraintSql()
+        {
+            var factory = new SqlServerDacpacDatabaseModelFactory();
+            var tables = new List<string> { "[dbo].[DefaultValues]" };
+            var options = new DatabaseModelFactoryOptions(tables, new List<string>());
+
+            var dbModel = factory.Create(dacpacQuirk, options);
+            var table = dbModel.Tables.Single(t => t.Name == "DefaultValues");
+
+            var freight2 = table.Columns.Single(c => c.Name == "Freight2");
+            var freight3 = table.Columns.Single(c => c.Name == "Freight3");
+            var freight4 = table.Columns.Single(c => c.Name == "Freight4");
+            var freight5 = table.Columns.Single(c => c.Name == "Freight5");
+            var freight6 = table.Columns.Single(c => c.Name == "Freight6");
+
+            Assert.Equal("0", freight2.DefaultValueSql);
+            Assert.Equal("0.0", freight3.DefaultValueSql);
+            Assert.Equal("0.0", freight4.DefaultValueSql);
+            Assert.Equal("0.0", freight5.DefaultValueSql);
+            Assert.Equal("0.0", freight6.DefaultValueSql);
+        }
+
+        [Fact]
+        public void CanCaptureSparseColumnAnnotation()
+        {
+            var factory = new SqlServerDacpacDatabaseModelFactory();
+            var tables = new List<string> { "[dbo].[Department]" };
+            var options = new DatabaseModelFactoryOptions(tables, new List<string>());
+
+            var dbModel = factory.Create(dacpacSparse, options);
+            var importToken = dbModel.Tables.Single().Columns.Single(c => c.Name == "ImportToken");
+
+            Assert.Single(dbModel.Tables);
+            Assert.NotNull(importToken.FindAnnotation(SqlServerSparseAnnotation));
+        }
+
+        [Fact]
         public void CanBuildAW2014()
         {
             // Arrange
@@ -228,10 +280,10 @@ GO
             var dbModel = factory.Create(TestPath("AdventureWorks2014.dacpac"), options);
 
             // Assert
-            Assert.AreEqual(91, dbModel.Tables.Count());
+            Assert.Equal(91, dbModel.Tables.Count());
         }
 
-        [Test]
+        [Fact]
         public void Issue208ComputedConstraint()
         {
             // Arrange
@@ -242,10 +294,10 @@ GO
             var dbModel = factory.Create(TestPath("Issue208.dacpac"), options);
 
             // Assert
-            Assert.AreEqual(1, dbModel.Tables.Count());
+            Assert.Single(dbModel.Tables);
         }
 
-        [Test]
+        [Fact]
         public void Issue210ComputedConstraintIsFK()
         {
             // Arrange
@@ -256,10 +308,10 @@ GO
             var dbModel = factory.Create(TestPath("Issue210.dacpac"), options);
 
             // Assert
-            Assert.AreEqual(2, dbModel.Tables.Count());
+            Assert.Equal(2, dbModel.Tables.Count());
         }
 
-        [Test]
+        [Fact]
         public void Issue1262ConsiderSchemaArgument()
         {
             var factory = new SqlServerDacpacDatabaseModelFactory();
@@ -269,11 +321,11 @@ GO
             var dbModel = factory.Create(TestPath("Issue1262.dacpac"), options);
 
             // Assert
-            Assert.AreEqual(1, dbModel.Tables.Count());
-            Assert.AreEqual("mat", dbModel.Tables.Single().Schema);
+            Assert.Single(dbModel.Tables);
+            Assert.Equal("mat", dbModel.Tables.Single().Schema);
         }
 
-        [Test]
+        [Fact]
         public void Issue1262BehaviourWithoutSchemaArgument()
         {
             var factory = new SqlServerDacpacDatabaseModelFactory();
@@ -283,14 +335,126 @@ GO
             var dbModel = factory.Create(TestPath("Issue1262.dacpac"), options);
 
             // Assert
-            Assert.AreEqual(2, dbModel.Tables.Count());
-            Assert.AreEqual(1, dbModel.Tables.Count(x => x.Schema == "mat"));
-            Assert.AreEqual(1, dbModel.Tables.Count(x => x.Schema == "mat2"));
+            Assert.Equal(2, dbModel.Tables.Count());
+            Assert.Equal(1, dbModel.Tables.Count(x => x.Schema == "mat"));
+            Assert.Equal(1, dbModel.Tables.Count(x => x.Schema == "mat2"));
         }
 
-        
-        [Test]
-        [Ignore("TBD - need to investigate")]
+        [Fact]
+        public void Issue3341PersistedComputedForeignKeys()
+        {
+            var factory = new SqlServerDacpacDatabaseModelFactory();
+            var options = new DatabaseModelFactoryOptions(null, new List<string>());
+
+            var dbModel = factory.Create(TestPath("Issue3341.dacpac"), options);
+
+            Assert.Equal(3, dbModel.Tables.Count());
+
+            var bin = dbModel.Tables.Single(t => t.Schema == "dbo" && t.Name == "Bin");
+            var inventoryNodeTypeCode = bin.Columns.Single(c => c.Name == "InventoryNodeTypeCode");
+
+            Assert.Equal("tinyint", inventoryNodeTypeCode.StoreType);
+            Assert.Contains("CONVERT", inventoryNodeTypeCode.ComputedColumnSql);
+            Assert.Contains("8", inventoryNodeTypeCode.ComputedColumnSql);
+            Assert.True(inventoryNodeTypeCode.IsStored);
+            Assert.False(inventoryNodeTypeCode.IsNullable);
+            Assert.Equal(2, bin.ForeignKeys.Count);
+            Assert.Contains(bin.ForeignKeys, fk => fk.Columns.Any(c => c.Name == "InventoryNodeTypeCode"));
+            Assert.Contains(bin.ForeignKeys, fk => fk.Columns.Count == 2);
+        }
+
+        [Theory]
+        [InlineData("ISNULL(CONVERT(bit, CASE [processing_status_id] WHEN 0 THEN 1 END), 0)", false)]
+        [InlineData("COALESCE(CONVERT(bit, CASE [processing_status_id] WHEN 0 THEN 1 END), 0)", false)]
+        [InlineData("COALESCE(CONVERT(bit, CASE [processing_status_id] WHEN 0 THEN 1 END), NULL)", true)]
+        public void Issue3451ComputedColumnNullabilityCanBeInferredFromExpression(string expression, bool expectedNullable)
+        {
+            var factory = new SqlServerDacpacDatabaseModelFactory();
+            var options = new DatabaseModelFactoryOptions(null, new List<string>());
+            var dacpacPath = BuildDacpac(
+                $"""
+                CREATE TABLE [dbo].[processing_status]
+                (
+                    [processing_status_id] int NOT NULL
+                        CONSTRAINT [pk_processing_status] PRIMARY KEY,
+                    [is_status_created] AS {expression}
+                );
+                """);
+
+            try
+            {
+                var dbModel = factory.Create(dacpacPath, options);
+                var table = dbModel.Tables.Single(t => t.Schema == "dbo" && t.Name == "processing_status");
+                var column = table.Columns.Single(c => c.Name == "is_status_created");
+
+                Assert.False(column.IsStored);
+                Assert.Equal("bit", column.StoreType);
+                Assert.Equal(expectedNullable, column.IsNullable);
+            }
+            finally
+            {
+                File.Delete(dacpacPath);
+            }
+        }
+
+        [Fact]
+        public void MultipleTriggersFromDacpacAreCaptured()
+        {
+            var factory = new SqlServerDacpacDatabaseModelFactory();
+            var options = new DatabaseModelFactoryOptions(null, new List<string>());
+
+            var dbModel = factory.Create(TestPath("AdventureWorks2014.dacpac"), options);
+            var table = dbModel.Tables.Single(t => t.Schema == "Production" && t.Name == "WorkOrder");
+
+            Assert.Equal(
+                new[] { "iWorkOrder", "uWorkOrder" }.OrderBy(x => x),
+                table.Triggers.Select(t => t.Name).OrderBy(x => x));
+        }
+
+        [Theory]
+        [InlineData(null, null)]
+        [InlineData("N'The location''s address'", "The location's address")]
+        [InlineData("'The location''s address'", "The location's address")]
+        [InlineData("N'Plain text'", "Plain text")]
+        [InlineData("'Plain text'", "Plain text")]
+        [InlineData("Plain text", "Plain text")]
+        [InlineData("N''''", "'")]
+        public void FixExtendedPropertyValueNormalizesSqlStringLiterals(string input, string expected)
+        {
+            var result = SqlServerDacpacDatabaseModelFactory.FixExtendedPropertyValue(input);
+
+            Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void DescendingIndexFromDacpacIsCaptured()
+        {
+            var factory = new SqlServerDacpacDatabaseModelFactory();
+            var options = new DatabaseModelFactoryOptions(null, new List<string>());
+
+            var dbModel = factory.Create(dacpacDescending, options);
+            var table = dbModel.Tables.Single(t => t.Schema == "support" && t.Name == "MessageFault");
+            var index = table.Indexes.Single(i => i.Name == "IX_support_MessageFault_MessageFaultStatusCode_FaultedTimestamp");
+
+            Assert.Equal(new[] { "MessageFaultStatusCode", "FaultedTimestamp" }, index.Columns.Select(c => c.Name));
+            Assert.Equal(new[] { false, true }, index.IsDescending);
+        }
+
+        [Fact]
+        public void ExplicitDefaultConstraintNameFromDacpacIsCaptured()
+        {
+            var factory = new SqlServerDacpacDatabaseModelFactory();
+            var options = new DatabaseModelFactoryOptions(null, new List<string>());
+
+            var dbModel = factory.Create(TestPath("AdventureWorks2014.dacpac"), options);
+            var table = dbModel.Tables.Single(t => t.Schema == "dbo" && t.Name == "AWBuildVersion");
+            var column = table.Columns.Single(c => c.Name == "ModifiedDate");
+
+            Assert.NotNull(column.DefaultValueSql);
+            Assert.Equal("DF_AWBuildVersion_ModifiedDate", column["Relational:DefaultConstraintName"]);
+        }
+
+        [Fact]
         public void Issue2263SprocWithCte()
         {
             var factory = new SqlServerDacpacStoredProcedureModelFactory(
@@ -301,11 +465,25 @@ GO
             var dbModel = factory.Create(TestPath("abc.dacpac"), options);
 
             // Assert
-            Assert.AreEqual(1, dbModel.Routines.Count());
+            Assert.Single(dbModel.Routines);
+            Assert.Empty(dbModel.Errors);
+
+            var routine = dbModel.Routines.Single();
+
+            Assert.Equal("dbo", routine.Schema);
+            Assert.Equal("USP_Error", routine.Name);
+            Assert.True(routine.HasValidResultSet);
+            Assert.Single(routine.Results);
+            Assert.Single(routine.Results[0]);
+
+            var resultColumn = routine.Results[0].Single();
+
+            Assert.Equal("TestColumn", resultColumn.Name);
+            Assert.Equal("int", resultColumn.StoreType);
+            Assert.False(resultColumn.Nullable);
         }
 
-        [Test]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "EF1001:Internal EF Core API usage.", Justification = "Test")]
+        [Fact]
         public void TemporalSupport()
         {
             var factory = new SqlServerDacpacDatabaseModelFactory();
@@ -315,11 +493,11 @@ GO
             var dbModel = factory.Create(TestPath("Temporal.dacpac"), options);
 
             // Assert
-            Assert.AreEqual(1, dbModel.Tables.Count());
-            Assert.NotNull(dbModel.Tables.Single().FindAnnotation(SqlServerAnnotationNames.IsTemporal));
+            Assert.Single(dbModel.Tables);
+            Assert.NotNull(dbModel.Tables.Single().FindAnnotation(SqlServerIsTemporalAnnotation));
         }
 
-        [Test]
+        [Fact]
         public void Issue2322TvpSprocParameters()
         {
             var factory = new SqlServerDacpacStoredProcedureModelFactory(
@@ -330,12 +508,13 @@ GO
             var dbModel = factory.Create(TestPath("TvpParams.dacpac"), options);
 
             // Assert
-            Assert.AreEqual(1, dbModel.Routines.Count);
-            Assert.AreEqual(2, dbModel.Routines[0].Parameters.Count);
-            Assert.AreEqual("[Constant].[NumberIDList]", dbModel.Routines[0].Parameters[0].TypeName);
-            Assert.AreEqual("structured", dbModel.Routines[0].Parameters[0].StoreType);
-            Assert.IsNotNull(dbModel.Routines[0].Parameters[0].TvpColumns);
-            Assert.Greater(dbModel.Routines[0].Parameters[0].TvpColumns.Count, 0);
+            Assert.Single(dbModel.Routines);
+            Assert.Equal(2, dbModel.Routines[0].Parameters.Count);
+            Assert.Equal("NumberIDList", dbModel.Routines[0].Parameters[0].TypeName);
+            Assert.Equal("Constant", dbModel.Routines[0].Parameters[0].TypeSchemaName);
+            Assert.Equal("structured", dbModel.Routines[0].Parameters[0].StoreType);
+            Assert.NotNull(dbModel.Routines[0].Parameters[0].TvpColumns);
+            Assert.True(dbModel.Routines[0].Parameters[0].TvpColumns.Count > 0);
             
             // Debug - print TVP columns
             System.Console.WriteLine($"TVP Columns count: {dbModel.Routines[0].Parameters[0].TvpColumns.Count}");
@@ -345,9 +524,46 @@ GO
             }
         }
 
+        [Fact]
+        public void DacpacDiscoverMultipleResultSetsOptionIsRespected()
+        {
+            var factory = new SqlServerDacpacStoredProcedureModelFactory(
+                new SqlServerDacpacDatabaseModelFactoryOptions { MergeDacpacs = false });
+            var module = new List<string> { "[dbo].[uspSearchCandidateResumes]" };
+
+            var singleResultModel = factory.Create(
+                TestPath("AdventureWorks2014.dacpac"),
+                new ModuleModelFactoryOptions { FullModel = true, Modules = module, DiscoverMultipleResultSets = false });
+
+            var multipleResultModel = factory.Create(
+                TestPath("AdventureWorks2014.dacpac"),
+                new ModuleModelFactoryOptions { FullModel = true, Modules = module, DiscoverMultipleResultSets = true });
+
+            var singleResultRoutine = singleResultModel.Routines.Single();
+            var multipleResultRoutine = multipleResultModel.Routines.Single();
+
+            Assert.Single(singleResultRoutine.Results);
+            Assert.Equal(4, multipleResultRoutine.Results.Count);
+
+            Assert.Equal(new[] { "JobCandidateID", "RANK" }, multipleResultRoutine.Results[0].Select(c => c.Name));
+            Assert.Equal(new[] { "JobCandidateID", "RANK" }, multipleResultRoutine.Results[1].Select(c => c.Name));
+        }
+
+        private static string BuildDacpac(string sql)
+        {
+            var path = Path.Combine(Path.GetTempPath(), $"dacpac-test-{Guid.NewGuid():N}.dacpac");
+
+            using var model = new TSqlModel(SqlServerVersion.Sql160, new TSqlModelOptions());
+            model.AddObjects(sql);
+
+            DacPackageExtensions.BuildPackage(path, model, new PackageMetadata { Name = "test" });
+
+            return path;
+        }
+
         private string TestPath(string file)
         {
-            return Path.Combine(TestContext.CurrentContext.TestDirectory, "Dacpac", file);
+            return Path.Combine(AppContext.BaseDirectory, "Dacpac", file);
         }
     }
 }

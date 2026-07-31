@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 #if !CORE100
 using EFCore.Snowflake.Design.Internal;
+#endif
 using EntityFrameworkCore.Scaffolding.Handlebars;
-#endif
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
-#if !CORE100
 using FirebirdSql.EntityFrameworkCore.Firebird.Design.Internal;
-#endif
 using Humanizer.Inflections;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
@@ -74,7 +72,6 @@ namespace RevEng.Core
                 serviceCollection.AddSingleton<ICandidateNamingService>(provider => new ReplacingCandidateNamingService(options.UsePrefixNavigationNaming, options.CustomReplacers, options.PreserveCasingWithRegex));
             }
 
-#if !CORE100
             if (options.UseHandleBars)
             {
                 serviceCollection.AddHandlebarsScaffolding(hbOptions =>
@@ -85,7 +82,6 @@ namespace RevEng.Core
                 serviceCollection.AddSingleton<ITemplateFileService>(provider
                     => new CustomTemplateFileService(options.OptionsPath));
             }
-#endif
 
             if (options.UseInflector || options.UseLegacyPluralizer)
             {
@@ -158,12 +154,13 @@ namespace RevEng.Core
                     }
 
                     break;
+#endif
 
                 case DatabaseType.Firebird:
                     var firebirdProvider = new FbDesignTimeServices();
                     firebirdProvider.ConfigureDesignTimeServices(serviceCollection);
                     break;
-
+#if !CORE100
                 case DatabaseType.Snowflake:
                     var snowflakeProvider = new SnowflakeDesignTimeServices();
                     snowflakeProvider.ConfigureDesignTimeServices(serviceCollection);
@@ -174,13 +171,12 @@ namespace RevEng.Core
                     var sqliteProvider = new SqliteDesignTimeServices();
                     sqliteProvider.ConfigureDesignTimeServices(serviceCollection);
 
-#if !CORE100
                     if (options.UseNodaTime)
                     {
                         var nodaTime = new SqliteNodaTimeDesignTimeServices();
                         nodaTime.ConfigureDesignTimeServices(serviceCollection);
                     }
-#endif
+
                     break;
 
                 default:

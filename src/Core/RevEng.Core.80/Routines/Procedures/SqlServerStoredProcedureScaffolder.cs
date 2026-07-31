@@ -63,8 +63,13 @@ namespace RevEng.Core.Routines.Procedures
                     // For structured (TVP) parameters, use strongly-typed IEnumerable if enabled
                     if (useTypedTvpParameters && p.GetSqlDbType() == SqlDbType.Structured && p.TvpColumns?.Count > 0)
                     {
-                        var tvpTypeName = Code.Identifier(ScaffoldHelper.CreateIdentifier(p.Name + "Type").Item1, capitalize: true);
+                        var tvpTypeName = Code.Identifier(ScaffoldHelper.CreateIdentifier(p.TypeName).Item1, capitalize: true);
                         type = $"IEnumerable<{tvpTypeName}>";
+                    }
+
+                    if (useNullableReferences && !type.EndsWith('?'))
+                    {
+                        type += '?';
                     }
 
                     return $"{type} {Code.Identifier(p.Name, capitalize: false)}";
@@ -418,12 +423,12 @@ namespace RevEng.Core.Routines.Procedures
 
                 if (sqlDbType == SqlDbType.Structured)
                 {
-                    Sb.AppendLine($"TypeName = \"{parameter.TypeName}\",");
+                    Sb.AppendLine($"TypeName = \"[{parameter.TypeSchemaName}].[{parameter.TypeName}]\",");
                 }
 
                 if (sqlDbType == SqlDbType.Udt)
                 {
-                    Sb.AppendLine($"UdtTypeName = \"{parameter.TypeName}\",");
+                    Sb.AppendLine($"UdtTypeName = \"[{parameter.TypeSchemaName}].[{parameter.TypeName}]\",");
                 }
             }
 

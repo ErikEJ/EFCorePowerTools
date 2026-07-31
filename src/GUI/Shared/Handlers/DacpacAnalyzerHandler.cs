@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -24,8 +24,7 @@ namespace EFCorePowerTools.Handlers
                 string dacpacPath;
                 if (isConnectionString)
                 {
-                    var builder = SqlConnectionStringBuilderHelper.GetBuilder(path);
-                    dacpacPath = builder.ConnectionString;
+                    dacpacPath = path;
                 }
                 else
                 {

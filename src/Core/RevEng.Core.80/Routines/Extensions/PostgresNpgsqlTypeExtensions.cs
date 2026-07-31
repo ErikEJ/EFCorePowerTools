@@ -120,6 +120,7 @@ namespace RevEng.Core.Routines.Extensions
                 case NpgsqlDbType.Jsonb:
                 case NpgsqlDbType.Xml:
                 case NpgsqlDbType.TsQuery:
+                case NpgsqlDbType.Citext:
                     return typeof(string);
 
                 case NpgsqlDbType.Date:

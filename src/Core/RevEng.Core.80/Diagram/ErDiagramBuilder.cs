@@ -18,8 +18,6 @@ namespace RevEng.Core.Diagram
         {
             dataApiBuilderOptions = dataApiBuilderCommandOptions;
 
-            dataApiBuilderOptions.ConnectionString = dataApiBuilderOptions.ConnectionString.ApplyDatabaseType(dataApiBuilderOptions.DatabaseType);
-
             var options = new ReverseEngineerCommandOptions
             {
                 DatabaseType = dataApiBuilderOptions.DatabaseType,

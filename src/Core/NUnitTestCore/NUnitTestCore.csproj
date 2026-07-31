@@ -12,7 +12,10 @@
     <None Remove="Chinook.dacpac" />
     <None Remove="ChinookContext.txt" />
     <None Remove="Dacpac\abc.dacpac" />
+    <None Remove="Dacpac\DescendingIndex.dacpac" />
     <None Remove="Dacpac\Issue1262.dacpac" />
+    <None Remove="Dacpac\Issue3341.dacpac" />
+    <None Remove="Dacpac\SparseColumn.dacpac" />
     <None Remove="Dacpac\Temporal.dacpac" />
     <None Remove="Dacpac\TvpParams.dacpac" />
     <None Remove="Identity.txt" />
@@ -33,10 +36,19 @@
     <Content Include="Dacpac\abc.dacpac">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Dacpac\DescendingIndex.dacpac">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Dacpac\AdventureWorks2014.dacpac">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Dacpac\Issue1262.dacpac">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dacpac\Issue3341.dacpac">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dacpac\SparseColumn.dacpac">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Dacpac\Temporal.dacpac">
@@ -95,11 +107,9 @@
     <EmbeddedResource Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.DgmlBuilder\template.dgml" Link="template.dgml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AutoFixture.NUnit3" Version="4.18.1" />
-    <PackageReference Include="FluentAssertions" Version="7.2.0" />
-    <PackageReference Include="nunit" Version="3.14.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.5.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5" />
+    <PackageReference Include="xunit.v3" Version="3.2.2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac.csproj" />

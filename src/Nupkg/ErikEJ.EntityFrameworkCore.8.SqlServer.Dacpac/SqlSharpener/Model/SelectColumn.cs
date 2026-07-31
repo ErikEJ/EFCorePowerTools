@@ -33,7 +33,6 @@ namespace SqlSharpener.Model
         /// <param name="bodyColumnTypes">The body column types.</param>
         /// <param name="tableAliases">The table aliases.</param>
         /// <param name="outerJoinedTables">The aliases or names of tables that were outer joined. Used to determine if a non-nulllable column could still be null.</param>
-        /// <exception cref="System.InvalidOperationException">Could not find column within BodyDependencies:  + fullColName</exception>
         public SelectColumn(SelectScalarExpression selectScalarExpression, IDictionary<string, DataType> bodyColumnTypes, IDictionary<string, string> tableAliases, IEnumerable<string> outerJoinedTables)
         {
             if (selectScalarExpression.Expression is ColumnReferenceExpression)
@@ -46,8 +45,16 @@ namespace SqlSharpener.Model
                     ? selectScalarExpression.ColumnName.Value
                     : identifiers.Last().Value;
 
-                var key = bodyColumnTypes.Keys.FirstOrDefault(x => x.EndsWith(fullColName, StringComparison.InvariantCultureIgnoreCase));
-                if (key == null) throw new InvalidOperationException("Could not find column within BodyDependencies: " + fullColName);
+                var key = bodyColumnTypes.Keys
+                    .Where(x => x.EndsWith(fullColName, StringComparison.InvariantCultureIgnoreCase))
+                    .OrderBy(x => x.Length)
+                    .FirstOrDefault();
+                if (key == null)
+                {
+                    this.DataTypes = DataTypeHelper.Instance.GetMap(SqlSharpener.DataTypes.sql_variant);
+                    this.IsNullable = true;
+                    return;
+                }
 
                 
                 bool outerJoined = false;
@@ -81,7 +88,7 @@ namespace SqlSharpener.Model
                 this.Name = selectScalarExpression.ColumnName != null && selectScalarExpression.ColumnName.Value != null
                     ? selectScalarExpression.ColumnName.Value
                     : "Value";
-                this.DataTypes = DataTypeHelper.Instance.GetMap(TypeFormat.SqlServerDbType, convertCall.DataType.Name.BaseIdentifier.Value);
+                this.DataTypes = DataTypeHelper.Instance.GetMap(TypeFormat.SqlServerDbType, GetDataTypeName(convertCall.DataType));
                 this.IsNullable = true;
             }
             else if (selectScalarExpression.Expression is CastCall)
@@ -90,7 +97,7 @@ namespace SqlSharpener.Model
                 this.Name = selectScalarExpression.ColumnName != null && selectScalarExpression.ColumnName.Value != null
                     ? selectScalarExpression.ColumnName.Value
                     : "Value";
-                this.DataTypes = DataTypeHelper.Instance.GetMap(TypeFormat.SqlServerDbType, castCall.DataType.Name.BaseIdentifier.Value);
+                this.DataTypes = DataTypeHelper.Instance.GetMap(TypeFormat.SqlServerDbType, GetDataTypeName(castCall.DataType));
                 this.IsNullable = true;
             }
             else if (selectScalarExpression.Expression is IntegerLiteral)
@@ -146,6 +153,20 @@ namespace SqlSharpener.Model
         public short? Precision { get; set; }
         public short? Scale { get; set; }
         public int MaxLength { get; set; }
+
+        /// <summary>
+        /// Resolves the SQL type name from a data type reference, normalizing to lowercase for consistent lookup.
+        /// Handles both built-in SQL types (SqlDataTypeReference) and user-defined types (UserDataTypeReference).
+        /// </summary>
+        private static string GetDataTypeName(DataTypeReference dataType)
+        {
+            if (dataType is SqlDataTypeReference sqlDataTypeReference)
+            {
+                return sqlDataTypeReference.SqlDataTypeOption.ToString().ToLowerInvariant();
+            }
+
+            return dataType?.Name?.BaseIdentifier?.Value?.ToLowerInvariant();
+        }
 
         /// <summary>
         /// Gets the fully qualified column name with any table aliases resolved.

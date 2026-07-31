@@ -38,6 +38,8 @@ rd bin\Release\net10.0\x64\publish\runtimes\win-x86 /Q /S
 rd bin\Release\net10.0\x64\publish\BuildHost-net472 /Q /S
 rd bin\Release\net10.0\x64\publish\BuildHost-netcore /Q /S
 
+del ..\..\GUI\lib\efreveng100.exe.zip
+
 "C:\Program Files\7-Zip\7z.exe" -mm=Deflate -mfb=258 -mpass=15 a efreveng100.exe.zip .\bin\Release\net10.0\x64\publish\*
 
 move /Y efreveng100.exe.zip ..\..\GUI\lib\

@@ -20,7 +20,7 @@ internal static class RegisterDependentServices
         var reverseOptions = new ReverseEngineerCommandOptions
         {
             DatabaseType = databaseType,
-            ConnectionString = scaffoldOptions.ConnectionString.ApplyDatabaseType(databaseType),
+            ConnectionString = scaffoldOptions.ConnectionString,
         };
 
         if (scaffoldOptions.ConfigFile != null && scaffoldOptions.ConfigFile.Exists)

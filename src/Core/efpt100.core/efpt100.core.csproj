@@ -21,6 +21,7 @@
   </ItemGroup>
 
    <ItemGroup>
+    <!-- Need to stay on 10.0.0, as this .dll is loaded with the users own project, and we do not want to enforce higher versions. -->
      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0" />
    </ItemGroup>
 

@@ -103,12 +103,13 @@ namespace EFCorePowerTools
 
                 if (exception != null)
                 {
-                    await VS.StatusBar.ShowMessageAsync(SharedLocale.AnErrorOccurred);
+                    await VS.MessageBox.ShowErrorAsync(SharedLocale.AnErrorOccurred);
                     await exception.Demystify().LogAsync(messageBuilder.ToString());
                 }
                 else
                 {
-                    await exception.LogAsync(messageBuilder.ToString());
+                    var ex = new Exception(messageBuilder.ToString());
+                    await ex.LogAsync();
                 }
             });
         }

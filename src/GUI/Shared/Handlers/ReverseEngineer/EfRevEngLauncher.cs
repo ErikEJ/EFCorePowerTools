@@ -112,6 +112,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 OptionsPath = options.OptionsPath,
                 MergeDacpacs = AdvancedOptions.Instance.MergeDacpacs,
                 UseLegacyResultSetDiscovery = AdvancedOptions.Instance.UseLegacyResultSetDiscovery,
+                UseStoredProcedureResultSetFallback = AdvancedOptions.Instance.UseStoredProcedureResultSetFallback,
                 UseAsyncCalls = options.UseAsyncStoredProcedureCalls,
                 PreserveCasingWithRegex = options.PreserveCasingWithRegex,
                 UseDateOnlyTimeOnly = options.UseDateOnlyTimeOnly,

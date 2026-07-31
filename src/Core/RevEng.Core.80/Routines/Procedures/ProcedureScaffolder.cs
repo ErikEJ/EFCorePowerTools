@@ -53,6 +53,45 @@ namespace RevEng.Core.Routines.Procedures
 
             schemas = schemas ?? new List<string>();
 
+            var invalidRoutines = new HashSet<Routine>();
+            foreach (var routine in model.Routines)
+            {
+                foreach (var parameter in routine.Parameters)
+                {
+                    try
+                    {
+                        typeMapper.GetClrType(parameter);
+                    }
+                    catch (ArgumentException ex)
+                    {
+                        errors.Add($"Unable to scaffold \"{routine.Schema}\".\"{routine.Name}\": parameter '{parameter.Name}' has unsupported store type '{parameter.StoreType}'. {ex.Message}");
+                        invalidRoutines.Add(routine);
+                        break;
+                    }
+                }
+
+                if (invalidRoutines.Contains(routine))
+                {
+                    continue;
+                }
+
+                foreach (var resultElement in routine.Results.SelectMany(r => r))
+                {
+                    try
+                    {
+                        typeMapper.GetClrType(resultElement);
+                    }
+                    catch (ArgumentException ex)
+                    {
+                        errors.Add($"Unable to scaffold \"{routine.Schema}\".\"{routine.Name}\": result column '{resultElement.Name}' has unsupported store type '{resultElement.StoreType}'. {ex.Message}");
+                        invalidRoutines.Add(routine);
+                        break;
+                    }
+                }
+            }
+
+            model.Routines.RemoveAll(r => invalidRoutines.Contains(r));
+
             foreach (var routine in model.Routines.Where(r => string.IsNullOrEmpty(r.MappedType) && (!(r is Function f) || !f.IsScalar)))
             {
                 var i = 1;
@@ -110,7 +149,7 @@ namespace RevEng.Core.Routines.Procedures
                 {
                     if (tvpParameter.TvpColumns?.Count > 0)
                     {
-                        var typeName = Code.Identifier(ScaffoldHelper.CreateIdentifier(tvpParameter.Name + "Type").Item1, capitalize: true);
+                        var typeName = Code.Identifier(ScaffoldHelper.CreateIdentifier(tvpParameter.TypeName).Item1, capitalize: true);
 
                         var classContent = scaffolder.WriteResultClass(tvpParameter.TvpColumns, scaffolderOptions, typeName, routine.Schema);
 

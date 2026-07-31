@@ -20,6 +20,8 @@ namespace RevEng.Core.Abstractions
 
         public bool UseLegacyResultSetDiscovery { get; set; }
 
+        public bool UseStoredProcedureResultSetFallback { get; set; } = true;
+
         public bool UseDateOnlyTimeOnly { get; set; }
     }
 }

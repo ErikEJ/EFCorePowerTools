@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ErikEJ.EFCorePowerTools.Services;
+using Microsoft.Extensions.Hosting;
 using RevEng.Common;
 using RevEng.Common.Cli;
 using RevEng.Core;
@@ -19,6 +20,7 @@ namespace ErikEJ.EFCorePowerTools.HostedServices;
 internal sealed class ScaffoldHostedService : HostedService
 {
     private readonly IFileSystem fileSystem;
+    private readonly IHostApplicationLifetime hostApplicationLifetime;
     private readonly ReverseEngineerCommandOptions reverseEngineerCommandOptions;
     private readonly ScaffoldOptions scaffoldOptions;
     private readonly TableListBuilder tableListBuilder;
@@ -26,11 +28,13 @@ internal sealed class ScaffoldHostedService : HostedService
     public ScaffoldHostedService(
         TableListBuilder tableListBuilder,
         IFileSystem fileSystem,
+        IHostApplicationLifetime hostApplicationLifetime,
         ScaffoldOptions scaffoldOptions,
         ReverseEngineerCommandOptions reverseEngineerCommandOptions)
     {
         this.tableListBuilder = tableListBuilder;
         this.fileSystem = fileSystem;
+        this.hostApplicationLifetime = hostApplicationLifetime;
         this.scaffoldOptions = scaffoldOptions;
         this.reverseEngineerCommandOptions = reverseEngineerCommandOptions;
     }
@@ -39,95 +43,102 @@ internal sealed class ScaffoldHostedService : HostedService
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
     {
-        var sw = Stopwatch.StartNew();
-        var tableModels = GetTablesAndViews();
-        GetProcedures(tableModels);
-        GetFunctions(tableModels);
-        sw.Stop();
+        try
+        {
+            var sw = Stopwatch.StartNew();
+            var tableModels = GetTablesAndViews();
+            GetProcedures(tableModels);
+            GetFunctions(tableModels);
+            sw.Stop();
 
-        DisplayService.MarkupLine();
-        DisplayService.MarkupLine($"{tableModels.Count} database objects discovered in {sw.Elapsed.TotalSeconds:0.0} seconds", Color.Default);
+            DisplayService.MarkupLine();
+            DisplayService.MarkupLine($"{tableModels.Count} database objects discovered in {sw.Elapsed.TotalSeconds:0.0} seconds", Color.Default);
 
-        if (!CliConfigMapper.TryGetCliConfig(
-                scaffoldOptions.ConfigFile.FullName,
+            if (!CliConfigMapper.TryGetCliConfig(
+                    scaffoldOptions.ConfigFile.FullName,
+                    scaffoldOptions.ConnectionString,
+                    reverseEngineerCommandOptions.DatabaseType,
+                    tableModels,
+                    Constants.CodeGeneration,
+                    out var config,
+                    out var configWarnings))
+            {
+                Environment.ExitCode = 1;
+                return;
+            }
+
+            GenerateMermaidContent(config.CodeGeneration.GenerateMermaidDiagram);
+
+            var commandOptions = config.ToCommandOptions(
                 scaffoldOptions.ConnectionString,
                 reverseEngineerCommandOptions.DatabaseType,
-                tableModels,
-                Constants.CodeGeneration,
-                out var config,
-                out var configWarnings))
-        {
-            Environment.ExitCode = 1;
-            return;
-        }
-
-        GenerateMermaidContent(config.CodeGeneration.GenerateMermaidDiagram);
-
-        var commandOptions = config.ToCommandOptions(
-            scaffoldOptions.ConnectionString,
-            reverseEngineerCommandOptions.DatabaseType,
-            scaffoldOptions.Output ?? Directory.GetCurrentDirectory(),
-            scaffoldOptions.IsDacpac,
-            scaffoldOptions.ConfigFile.FullName,
-            scaffoldOptions.RenamingFile.FullName);
-        DisplayService.MarkupLine();
+                scaffoldOptions.Output ?? Directory.GetCurrentDirectory(),
+                scaffoldOptions.IsDacpac,
+                scaffoldOptions.ConfigFile.FullName,
+                scaffoldOptions.RenamingFile.FullName);
+            DisplayService.MarkupLine();
 
 #pragma warning disable S2589 // Boolean expressions should not be gratuitous
 #pragma warning disable S2583 // Conditionally executed code should be reachable
-        if ((commandOptions.UseT4 || commandOptions.UseT4Split) && Constants.Version > 6)
-        {
-            var t4Result = T4Helper.DropT4Templates(commandOptions.T4TemplatePath ?? commandOptions.ProjectPath, Constants.CodeGeneration, commandOptions.UseT4Split);
-            if (!string.IsNullOrEmpty(t4Result))
+            if ((commandOptions.UseT4 || commandOptions.UseT4Split) && Constants.Version > 6)
             {
-                DisplayService.MarkupLine(t4Result, Color.Default);
+                var t4Result = T4Helper.DropT4Templates(commandOptions.T4TemplatePath ?? commandOptions.ProjectPath, Constants.CodeGeneration, commandOptions.UseT4Split);
+                if (!string.IsNullOrEmpty(t4Result))
+                {
+                    DisplayService.MarkupLine(t4Result, Color.Default);
+                }
             }
-        }
 #pragma warning restore S2583 // Conditionally executed code should be reachable
 #pragma warning restore S2589 // Boolean expressions should not be gratuitous
 
-        sw = Stopwatch.StartNew();
-        var result = DisplayService.Wait(
-            "Generating EF Core DbContext and entity classes...",
-            () => ReverseEngineerRunner.GenerateFiles(commandOptions)) ?? new ReverseEngineerResult();
-        sw.Stop();
-        DisplayService.MarkupLine(
-            $"{result.EntityTypeFilePaths.Count + result.ContextConfigurationFilePaths.Count + 1} files generated in {sw.Elapsed.TotalSeconds:0.0} seconds",
-            Color.Default);
-        DisplayService.MarkupLine();
+            sw = Stopwatch.StartNew();
+            var result = DisplayService.Wait(
+                "Generating EF Core DbContext and entity classes...",
+                () => ReverseEngineerRunner.GenerateFiles(commandOptions)) ?? new ReverseEngineerResult();
+            sw.Stop();
+            DisplayService.MarkupLine(
+                $"{result.EntityTypeFilePaths.Count + result.ContextConfigurationFilePaths.Count + 1} files generated in {sw.Elapsed.TotalSeconds:0.0} seconds",
+                Color.Default);
+            DisplayService.MarkupLine();
 
-        var paths = GetPaths(result);
-        ShowPaths(paths);
+            var paths = GetPaths(result);
+            ShowPaths(paths);
 
-        if (scaffoldOptions.Verbose)
-        {
-            var files = GetFileNames(result);
-            foreach (var file in files)
+            if (scaffoldOptions.Verbose)
             {
-                DisplayService.MarkupLine(
-                    () => DisplayService.Markup("file:", Color.Green),
-                    () => DisplayService.Markup(file, Decoration.Bold));
+                var files = GetFileNames(result);
+                foreach (var file in files)
+                {
+                    DisplayService.MarkupLine(
+                        () => DisplayService.Markup("file:", Color.Green),
+                        () => DisplayService.Markup(file, Decoration.Bold));
+                }
             }
+
+            DisplayService.MarkupLine();
+
+            result.EntityWarnings.AddRange(configWarnings);
+
+            ShowErrors(result);
+            ShowWarnings(result);
+
+            var redactedConnectionString = "The_Connection_String_You_Supplied_With_The_Reverse_Engineering_Command";
+
+            var readmePath = Providers.CreateReadme(commandOptions, Constants.CodeGeneration, redactedConnectionString);
+            var fileUri = new Uri(new Uri("file://"), readmePath);
+
+            DisplayService.MarkupLine();
+            DisplayService.MarkupLine(
+                "Thank you for using EF Core Power Tools, please open the readme file for next steps:", Color.Cyan1);
+            DisplayService.MarkupLine($"{fileUri}", Color.Blue, DisplayService.Link);
+            DisplayService.MarkupLine();
+
+            Environment.ExitCode = 0;
         }
-
-        DisplayService.MarkupLine();
-
-        result.EntityWarnings.AddRange(configWarnings);
-
-        ShowErrors(result);
-        ShowWarnings(result);
-
-        var redactedConnectionString = "The_Connection_String_You_Supplied_With_The_Reverse_Engineering_Command";
-
-        var readmePath = Providers.CreateReadme(commandOptions, Constants.CodeGeneration, redactedConnectionString);
-        var fileUri = new Uri(new Uri("file://"), readmePath);
-
-        DisplayService.MarkupLine();
-        DisplayService.MarkupLine(
-            "Thank you for using EF Core Power Tools, please open the readme file for next steps:", Color.Cyan1);
-        DisplayService.MarkupLine($"{fileUri}", Color.Blue, DisplayService.Link);
-        DisplayService.MarkupLine();
-
-        Environment.ExitCode = 0;
+        finally
+        {
+            hostApplicationLifetime.StopApplication();
+        }
     }
 
     private static void ShowPaths(List<string> paths)

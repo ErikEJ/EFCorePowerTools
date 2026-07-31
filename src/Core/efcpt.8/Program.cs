@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Abstractions;
@@ -52,16 +52,18 @@ internal static class Program
                     options.RenamingFile = options.RenamingFile ?? new FileInfo(fileSystem.Path.GetFullPath(Constants.RenamingFileName));
 
                     DisplayHeader(options);
-                    var hostBuilder = new HostBuilder();
-                    await hostBuilder.Configure()
+                    using var host = new HostBuilder()
+                        .Configure()
                         .RegisterServices(fileSystem, options)
-                        .StartAsync()
+                        .Build();
+                    await host.RunAsync()
                         .ConfigureAwait(false);
+
+                    await PackageService.CheckForPackageUpdateAsync().ConfigureAwait(false);
+
                     return Environment.ExitCode;
                 },
                 async _ => await DisplayHelpAsync(parserResult).ConfigureAwait(false));
-
-        await PackageService.CheckForPackageUpdateAsync().ConfigureAwait(false);
 
         return await result.ConfigureAwait(false);
     }
@@ -111,8 +113,8 @@ internal static class Program
         Console.WriteLine(HelpText.AutoBuild(parserResult, h =>
         {
             h.AddPostOptionsLine("SAMPLES:");
-            h.AddPostOptionsLine(@"  efcpt ""Data Source=.;Initial Catalog=Chinook;User=sa;Pwd=123""");
-            h.AddPostOptionsLine(@"  efcpt ""/temp/mydb.dacpac"" mssql");
+            h.AddPostOptionsLine(@"  efcpt ""Data Source=.;Initial Catalog=Chinook;User=myuser;""");
+            h.AddPostOptionsLine(@"  efcpt ""/temp/mydb.dacpac""");
             h.AddPostOptionsLine(@"  efcpt ""Server=my.database.windows.net;Authentication=Active Directory Default;Database=myddb;User Id=user@domain.com;"" mssql");
             return h;
         }));

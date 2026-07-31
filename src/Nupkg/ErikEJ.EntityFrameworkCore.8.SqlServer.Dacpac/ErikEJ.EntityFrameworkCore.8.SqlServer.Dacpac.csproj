@@ -3,12 +3,12 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <PackageId>ErikEJ.EntityFrameworkCore.SqlServer.Dacpac</PackageId>
-    <PackageVersion>8.0.11</PackageVersion>    
+    <PackageVersion>8.0.14</PackageVersion>    
     <NoWarn>$(NoWarn);EF1001</NoWarn>    
     <Authors>ErikEJ</Authors>
     <Description>Enables reverse engineering an EF Core model from a data-tier application package (DACPAC).</Description>
     <PackageProjectUrl>https://github.com/ErikEJ/EFCorePowerTools</PackageProjectUrl>
-    <PackageReleaseNotes>For EF Core 8.0 with DacFX 170.2</PackageReleaseNotes>
+    <PackageReleaseNotes>For EF Core 8.0 with DacFX 170.3</PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>DbContext;EntityFramework;SqlServer;DACPAC;EFCore;EntityFrameworkCore</PackageTags>
     <RootNamespace>ErikEJ.EntityFrameworkCore.SqlServer</RootNamespace>
@@ -30,7 +30,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.HierarchyId" Version="8.0.0" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="170.2.70" />
+    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="170.3.93" />
   </ItemGroup>
 
   <ItemGroup>

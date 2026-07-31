@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Contracts.EventArgs;
@@ -10,7 +12,6 @@ using EFCorePowerTools.Contracts.Wizard;
 using EFCorePowerTools.Locales;
 using EFCorePowerTools.Messages;
 using EFCorePowerTools.ViewModels;
-using Microsoft.VisualStudio.Shell;
 using RevEng.Common;
 
 namespace EFCorePowerTools.Wizard
@@ -118,11 +119,28 @@ namespace EFCorePowerTools.Wizard
             };
 
             InitializeComponent();
-
-            Loaded += (s, e) => OnPageVisible(s, null);
+            Loaded += Wiz1_PickServerDatabaseDialog_Loaded;
         }
 
-        protected override void OnPageVisible(object sender, StatusbarEventArgs e)
+        private void Wiz1_PickServerDatabaseDialog_Loaded(object sender, RoutedEventArgs e)
+        {
+            _ = OnLoadedAsync(sender);
+        }
+
+        private async Task OnLoadedAsync(object sender)
+        {
+            try
+            {
+                await OnPageVisibleAsync(sender, null);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                Statusbar.Status.ShowStatus();
+            }
+        }
+
+        protected override async Task OnPageVisibleAsync(object sender, StatusbarEventArgs e)
         {
             var viewModel = wizardViewModel;
             IsPageLoaded = viewModel.IsPage1Initialized;
@@ -131,15 +149,13 @@ namespace EFCorePowerTools.Wizard
             {
                 Statusbar.Status.ShowStatus(ReverseEngineerLocale.GettingReadyToConnect, 100);
 
-                ThreadHelper.JoinableTaskFactory.Run(async () =>
+                await InvokeWithErrorHandlingAsync(async () =>
                 {
-                    await InvokeWithErrorHandlingAsync(async () =>
-                    {
-                        viewModel.WizardEventArgs.PickServerDatabaseDialog = this;
-                        await wizardViewModel.Bll.ReverseEngineerCodeFirstAsync(null, viewModel.WizardEventArgs);
-                        return true;
-                    });
+                    viewModel.WizardEventArgs.PickServerDatabaseDialog = this;
+                    await wizardViewModel.Bll.ReverseEngineerCodeFirstAsync(null, viewModel.WizardEventArgs);
+                    return true;
                 });
+
                 foreach (var option in viewModel.WizardEventArgs.Configurations.Where(option => !wizardViewModel.Configurations.Any(o => o.DisplayName == option.DisplayName)))
                 {
                     wizardViewModel.Configurations.Add(option);

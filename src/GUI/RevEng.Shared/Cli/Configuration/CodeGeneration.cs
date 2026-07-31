@@ -46,59 +46,63 @@ namespace RevEng.Common.Cli.Configuration
         public bool UseAlternateStoredProcedureResultsetDiscovery { get; set; }
 
         [JsonPropertyOrder(110)]
+        [JsonPropertyName("use-stored-procedure-resultset-fallback")]
+        public bool UseStoredProcedureResultSetFallback { get; set; } = true;
+
+        [JsonPropertyOrder(120)]
         [JsonPropertyName("use-data-annotations")]
         public bool UseDataAnnotations { get; set; }
 
-        [JsonPropertyOrder(120)]
+        [JsonPropertyOrder(130)]
         [JsonPropertyName("use-database-names")]
         public bool UseDatabaseNames { get; set; }
 
-        [JsonPropertyOrder(125)]
+        [JsonPropertyOrder(135)]
         [JsonPropertyName("use-database-names-for-routines")]
         public bool UseDatabaseNamesForRoutines { get; set; } = true;
 
-        [JsonPropertyOrder(130)]
+        [JsonPropertyOrder(140)]
         [JsonPropertyName("use-decimal-data-annotation-for-sproc-results")]
         public bool UseDecimalDataAnnotation { get; set; } = true;
 
-        [JsonPropertyOrder(140)]
+        [JsonPropertyOrder(150)]
         [JsonPropertyName("use-inflector")]
         public bool UseInflector { get; set; } = true;
 
-        [JsonPropertyOrder(150)]
+        [JsonPropertyOrder(160)]
         [JsonPropertyName("use-internal-access-modifiers-for-sprocs-and-functions")]
         public bool UseInternalAccessModifiersForSprocsAndFunctions { get; set; }
 
-        [JsonPropertyOrder(160)]
+        [JsonPropertyOrder(170)]
         [JsonPropertyName("use-legacy-inflector")]
         public bool UseLegacyInflector { get; set; }
 
-        [JsonPropertyOrder(170)]
+        [JsonPropertyOrder(180)]
         [JsonPropertyName("use-many-to-many-entity")]
         public bool UseManyToManyEntity { get; set; }
 
-        [JsonPropertyOrder(180)]
+        [JsonPropertyOrder(190)]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [JsonPropertyName("use-no-navigations-preview")]
         public bool UseNoNavigationsPreview { get; set; }
 
-        [JsonPropertyOrder(190)]
+        [JsonPropertyOrder(200)]
         [JsonPropertyName("use-nullable-reference-types")]
         public bool UseNullableReferenceTypes { get; set; } = true;
 
-        [JsonPropertyOrder(200)]
+        [JsonPropertyOrder(210)]
         [JsonPropertyName("use-prefix-navigation-naming")]
         public bool UsePrefixNavigationNaming { get; set; }
 
-        [JsonPropertyOrder(210)]
+        [JsonPropertyOrder(220)]
         [JsonPropertyName("use-typed-tvp-parameters")]
         public bool UseTypedTvpParameters { get; set; } = true;
 
-        [JsonPropertyOrder(220)]
+        [JsonPropertyOrder(230)]
         [JsonPropertyName("use-t4")]
         public bool UseT4 { get; set; }
 
-        [JsonPropertyOrder(230)]
+        [JsonPropertyOrder(240)]
         [JsonPropertyName("use-t4-split")]
         public bool UseT4Split { get; set; }
     }

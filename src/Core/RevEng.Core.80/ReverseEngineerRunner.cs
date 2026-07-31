@@ -23,8 +23,6 @@ namespace RevEng.Core
             var serviceProvider = new ServiceCollection().AddEfpt(options, errors, warnings, info).BuildServiceProvider();
             var schemas = new List<string>();
 
-            options.ConnectionString = options.ConnectionString.ApplyDatabaseType(options.DatabaseType);
-
             if (options.DefaultDacpacSchema != null)
             {
                 schemas.Add(options.DefaultDacpacSchema);
@@ -489,7 +487,7 @@ namespace RevEng.Core
 
             RetryFileWrite(
                 file,
-                header + Environment.NewLine + text.Replace(";Command Timeout=300", string.Empty, StringComparison.OrdinalIgnoreCase).Replace(";Trust Server Certificate=True", string.Empty, StringComparison.OrdinalIgnoreCase).TrimEnd());
+                header + Environment.NewLine + text.TrimEnd());
         }
 
         private static void CleanUp(SavedModelFiles filePaths, List<string> entityTypeConfigurationPaths, string outputDir)
@@ -534,7 +532,7 @@ namespace RevEng.Core
             }
         }
 
-        private static void TryRemoveFile(string codeFile)
+        public static void TryRemoveFile(string codeFile)
         {
             string firstLine;
             using (var reader = new StreamReader(codeFile, Encoding.UTF8))
@@ -549,10 +547,24 @@ namespace RevEng.Core
                 {
                     if (File.Exists(codeFile))
                     {
-                        Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(
-                            codeFile,
-                            Microsoft.VisualBasic.FileIO.UIOption.OnlyErrorDialogs,
-                            Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin);
+                        try
+                        {
+                            if (OperatingSystem.IsWindows())
+                            {
+                                Microsoft.VisualBasic.FileIO.FileSystem.DeleteFile(
+                                    codeFile,
+                                    Microsoft.VisualBasic.FileIO.UIOption.OnlyErrorDialogs,
+                                    Microsoft.VisualBasic.FileIO.RecycleOption.SendToRecycleBin);
+                            }
+                            else
+                            {
+                                File.Delete(codeFile);
+                            }
+                        }
+                        catch when (File.Exists(codeFile))
+                        {
+                            File.Delete(codeFile);
+                        }
                     }
                 }
                 catch

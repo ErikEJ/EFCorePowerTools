@@ -38,7 +38,7 @@ ORDER BY ROUTINE_NAME;";
             return GetRoutines(connectionString, options);
         }
 
-        protected override List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection, Routine module, bool multipleResults, bool useLegacyResultSetDiscovery)
+        protected override List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection, Routine module, bool multipleResults, bool useLegacyResultSetDiscovery, bool useStoredProcedureResultSetFallback)
         {
             ArgumentNullException.ThrowIfNull(module);
 

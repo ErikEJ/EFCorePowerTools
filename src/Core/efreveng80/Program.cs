@@ -46,7 +46,7 @@ namespace EfReveng
 
                         var reverseEngineerCommandOptions = new ReverseEngineerCommandOptions
                         {
-                            ConnectionString = args[2].ApplyDatabaseType((DatabaseType)dbTypeInt),
+                            ConnectionString = args[2],
                             DatabaseType = (DatabaseType)dbTypeInt,
                             MergeDacpacs = mergeDacpacs,
                         };

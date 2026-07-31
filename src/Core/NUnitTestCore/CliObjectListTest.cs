@@ -1,32 +1,29 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
-using NUnit.Framework;
-//using NUnit.Framework.Legacy;
+using Xunit;
 using RevEng.Common;
 using RevEng.Common.Cli;
 using RevEng.Common.Cli.Configuration;
 
 namespace UnitTests
 {
-    [TestFixture]
     public class CliObjectListTest
     {
+        private readonly string cliTestDirectory = Path.Combine(AppContext.BaseDirectory, "CliObjectListTests");
 
-        private readonly string cliTestDirectory =
-            Path.Combine(TestContext.CurrentContext.TestDirectory, "CliObjectListTests");
-
-        [SetUp]
-        public void Setup()
+        public CliObjectListTest()
         {
-
             if (!Directory.Exists(cliTestDirectory))
+            {
                 Directory.CreateDirectory(cliTestDirectory);
+            }
         }
 
-        [Test]
+        [Fact]
         public void CanGetConfig()
         {
             var config = GetConfig();
@@ -34,11 +31,22 @@ namespace UnitTests
             var result = CliConfigMapper.BuildObjectList(config);
 
             Assert.NotNull(result);
-            
-            Assert.AreEqual(6, result.Count);
+            Assert.Equal(7, result.Count);
+            Assert.Contains(result, x => x.Name == "[dbo].[Users]");
+            Assert.Contains(result, x => x.Name == "[other].[Accounts]");
+            Assert.Contains(result, x => x.Name == "[dbo].[Extras]");
+            Assert.Contains(result, x => x.Name == "[dbo].[Actors]");
+            Assert.Contains(result, x => x.Name == "[dbo].[Directors]");
+            Assert.Contains(result, x => x.Name == "[dbo].[UsersView]");
+            Assert.Contains(result, x => x.Name == "TestProcedure");
+
+            var testProcedure = result.Single(x => x.Name == "TestProcedure");
+
+            Assert.True(testProcedure.UseLegacyResultSetDiscovery);
+            Assert.Equal("MyNamespace.MyType", testProcedure.MappedType);
         }
 
-        [Test]
+        [Fact]
         public void CanUseGobalFilter()
         {
             var config = GetConfig();
@@ -49,12 +57,11 @@ namespace UnitTests
             var result = CliConfigMapper.BuildObjectList(config);
 
             Assert.NotNull(result);
-
-            Assert.AreEqual(result.Count, 1);
-            Assert.IsTrue(result[0].Name.StartsWith("Dummy"));
+            Assert.Equal(2, result.Count);
+            Assert.StartsWith("Dummy", result[0].Name);
         }
 
-        [Test]
+        [Fact]
         public void CanAddStartsWithFilter()
         {
             var config = GetConfig();
@@ -64,11 +71,10 @@ namespace UnitTests
             var result = CliConfigMapper.BuildObjectList(config);
 
             Assert.NotNull(result);
-
-            Assert.AreEqual(2, result.Count);
+            Assert.Equal(3, result.Count);
         }
 
-        [Test]
+        [Fact]
         public void CanAddStartsWithFilter2()
         {
             var config = GetConfig();
@@ -78,11 +84,10 @@ namespace UnitTests
             var result = CliConfigMapper.BuildObjectList(config);
 
             Assert.NotNull(result);
-
-            Assert.AreEqual(5, result.Count);
+            Assert.Equal(6, result.Count);
         }
 
-        [Test]
+        [Fact]
         public void CanAddStartsWithFilterAndExplicitInclude()
         {
             var config = GetConfig();
@@ -94,11 +99,10 @@ namespace UnitTests
             var result = CliConfigMapper.BuildObjectList(config);
 
             Assert.NotNull(result);
-
-            Assert.AreEqual(3, result.Count);
+            Assert.Equal(4, result.Count);
         }
 
-        [Test]
+        [Fact]
         public void MultipleExclusionWildcardExcludes()
         {
             var config = GetConfig();
@@ -110,11 +114,10 @@ namespace UnitTests
             var result = CliConfigMapper.BuildObjectList(config);
 
             Assert.NotNull(result);
-
-            Assert.AreEqual(3, result.Count);
+            Assert.Equal(4, result.Count);
         }
 
-        [Test]
+        [Fact]
         public void CanAddEndsWithFilter()
         {
             var config = GetConfig();
@@ -124,11 +127,10 @@ namespace UnitTests
             var result = CliConfigMapper.BuildObjectList(config);
 
             Assert.NotNull(result);
-
-            Assert.AreEqual(4, result.Count);
+            Assert.Equal(5, result.Count);
         }
 
-        [Test]
+        [Fact]
         public void CanAddEndsWithFilterAndExplicitInclude()
         {
             var config = GetConfig();
@@ -140,11 +142,10 @@ namespace UnitTests
             var result = CliConfigMapper.BuildObjectList(config);
 
             Assert.NotNull(result);
-
-            Assert.AreEqual(4, result.Count);
+            Assert.Equal(5, result.Count);
         }
 
-        [Test]
+        [Fact]
         public void CanAddContainsFilter()
         {
             var config = GetConfig();
@@ -154,11 +155,10 @@ namespace UnitTests
             var result = CliConfigMapper.BuildObjectList(config);
 
             Assert.NotNull(result);
-
-            Assert.AreEqual(4, result.Count);
+            Assert.Equal(5, result.Count);
         }
 
-        [Test]
+        [Fact]
         public void CanAddContainsFilterAndExplicitInclude()
         {
             var config = GetConfig();
@@ -170,14 +170,14 @@ namespace UnitTests
             var result = CliConfigMapper.BuildObjectList(config);
 
             Assert.NotNull(result);
-
-            Assert.AreEqual(5, result.Count);
+            Assert.Equal(6, result.Count);
         }
 
-        [Test]
+        [Fact]
         public void TryGetCliConfigWithExistingFileReturnsExpectedConfig()
         {
             var config = GetConfig();
+            config.CodeGeneration.UseStoredProcedureResultSetFallback = false;
 
             var testPath = TestPath("test.efpcli.json");
             try
@@ -191,16 +191,15 @@ namespace UnitTests
                     out List<string> warnings);
 
                 Assert.True(fetchedConfigSuccess);
-
                 Assert.NotNull(resultConfig);
-
-                Assert.True(config.Tables.Count == resultConfig.Tables.Count);
+                Assert.Equal(config.Tables.Count, resultConfig.Tables.Count);
+                Assert.False(resultConfig.CodeGeneration.UseStoredProcedureResultSetFallback);
 
                 for (var i = 0; i < config.Tables.Count; i++)
                 {
-                    Assert.AreEqual(config.Tables[i].Name, resultConfig.Tables[i].Name);
-                    Assert.AreEqual(config.Tables[i].Exclude, resultConfig.Tables[i].Exclude);
-                    Assert.AreEqual(config.Tables[i].ExclusionWildcard, resultConfig.Tables[i].ExclusionWildcard);
+                    Assert.Equal(config.Tables[i].Name, resultConfig.Tables[i].Name);
+                    Assert.Equal(config.Tables[i].Exclude, resultConfig.Tables[i].Exclude);
+                    Assert.Equal(config.Tables[i].ExclusionWildcard, resultConfig.Tables[i].ExclusionWildcard);
                 }
             }
             finally
@@ -209,7 +208,7 @@ namespace UnitTests
             }
         }
 
-        [Test]
+        [Fact]
         public void TryGetCliConfigWithExcludedColumnsReturns()
         {
             var config = GetConfig();
@@ -249,25 +248,23 @@ namespace UnitTests
                     out List<string> warnings);
 
                 Assert.True(fetchedConfigSuccess);
-
                 Assert.NotNull(resultConfig);
-
-                Assert.True(config.Tables.Count == resultConfig.Tables.Count);
+                Assert.Equal(config.Tables.Count, resultConfig.Tables.Count);
 
                 for (var i = 0; i < config.Tables.Count; i++)
                 {
-                    Assert.AreEqual(config.Tables[i].Name, resultConfig.Tables[i].Name);
-                    Assert.AreEqual(config.Tables[i].Exclude, resultConfig.Tables[i].Exclude);
-                    Assert.AreEqual(config.Tables[i].ExclusionWildcard, resultConfig.Tables[i].ExclusionWildcard);
+                    Assert.Equal(config.Tables[i].Name, resultConfig.Tables[i].Name);
+                    Assert.Equal(config.Tables[i].Exclude, resultConfig.Tables[i].Exclude);
+                    Assert.Equal(config.Tables[i].ExclusionWildcard, resultConfig.Tables[i].ExclusionWildcard);
                 }
 
-                Assert.True(warnings.Count == 4);
-                Assert.True(resultConfig.Tables[0].ExcludedColumns.Count == 3);
-                Assert.True(resultConfig.Tables[0].ExcludedColumns[0] == "UserId");
-                Assert.True(resultConfig.Views[0].ExcludedColumns.Count == 3);
-                Assert.True(resultConfig.Views[0].ExcludedColumns[0] == "UserId");
-                Assert.IsNull(resultConfig.Functions[0].ExcludedColumns);
-                Assert.IsNull(resultConfig.StoredProcedures[0].ExcludedColumns);
+                Assert.Equal(4, warnings.Count);
+                Assert.Equal(3, resultConfig.Tables[0].ExcludedColumns.Count);
+                Assert.Equal("UserId", resultConfig.Tables[0].ExcludedColumns[0]);
+                Assert.Equal(3, resultConfig.Views[0].ExcludedColumns.Count);
+                Assert.Equal("UserId", resultConfig.Views[0].ExcludedColumns[0]);
+                Assert.Null(resultConfig.Functions[0].ExcludedColumns);
+                Assert.Null(resultConfig.StoredProcedures[0].ExcludedColumns);
             }
             finally
             {
@@ -358,6 +355,15 @@ namespace UnitTests
                     new View()
                     {
                         Name = "[dbo].[UsersView]"
+                    }
+                },
+                StoredProcedures = new List<StoredProcedure>()
+                {
+                    new StoredProcedure()
+                    {
+                        Name = "TestProcedure",
+                        UseLegacyResultsetDiscovery = true,
+                        MappedType = "MyNamespace.MyType",
                     }
                 }
             };

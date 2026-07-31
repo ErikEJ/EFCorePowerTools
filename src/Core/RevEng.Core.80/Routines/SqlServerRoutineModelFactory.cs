@@ -18,8 +18,21 @@ namespace RevEng.Core.Routines
         public string RoutineType { get; set; }
 
 #pragma warning disable CA1716 // Identifiers should not match keywords
-        protected abstract List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection, Routine module, bool multipleResults, bool useLegacyResultSetDiscovery);
+        protected abstract List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection, Routine module, bool multipleResults, bool useLegacyResultSetDiscovery, bool useStoredProcedureResultSetFallback);
 #pragma warning restore CA1716 // Identifiers should not match keywords
+
+        public static bool ShouldUseLegacyResultSetDiscovery(ModuleModelFactoryOptions options, Routine module)
+        {
+            ArgumentNullException.ThrowIfNull(options);
+            ArgumentNullException.ThrowIfNull(module);
+
+            if (options.UseLegacyResultSetDiscovery)
+            {
+                return true;
+            }
+
+            return options.ModulesUsingLegacyDiscovery?.Contains($"[{module.Schema}].[{module.Name}]") ?? false;
+        }
 
         protected RoutineModel GetRoutines(string connectionString, ModuleModelFactoryOptions options)
         {
@@ -103,13 +116,8 @@ namespace RevEng.Core.Routines
 #pragma warning disable CA1031 // Do not catch general exception types
                                 try
                                 {
-                                    var forceLegacy = options.UseLegacyResultSetDiscovery;
-                                    if (!forceLegacy)
-                                    {
-                                        forceLegacy = options.ModulesUsingLegacyDiscovery?.Contains($"[{module.Schema}].[{module.Name}]") ?? false;
-                                    }
-
-                                    module.Results.AddRange(GetResultElementLists(connection, module, options.DiscoverMultipleResultSets, forceLegacy));
+                                    var forceLegacy = ShouldUseLegacyResultSetDiscovery(options, module);
+                                    module.Results.AddRange(GetResultElementLists(connection, module, options.DiscoverMultipleResultSets, forceLegacy, options.UseStoredProcedureResultSetFallback));
                                 }
                                 catch (Exception ex)
                                 {
@@ -202,13 +210,14 @@ SELECT
     'Scale'   = CAST(OdbcScale(p.system_type_id, p.scale) AS INT),  
     'Order'  = CAST(parameter_id AS INT),  
     p.is_output AS output,
-    'TypeName' = QUOTENAME(SCHEMA_NAME(t.schema_id)) + '.' + QUOTENAME(TYPE_NAME(p.user_type_id)),
-	'TypeSchema' = t.schema_id,
-	'TypeId' = p.user_type_id,
+    'TypeName' = TYPE_NAME(p.user_type_id),
+    'TypeSchemaName' = SCHEMA_NAME(t.schema_id),
+    'TypeSchema' = t.schema_id,
+    'TypeId' = p.user_type_id,
     'RoutineName' = OBJECT_NAME(p.object_id),
     'RoutineSchema' = OBJECT_SCHEMA_NAME(p.object_id)
     from sys.parameters p
-	LEFT JOIN sys.table_types t ON t.user_type_id = p.user_type_id
+    LEFT JOIN sys.table_types t ON t.user_type_id = p.user_type_id
     ORDER BY p.object_id, p.parameter_id;";
 
             if (GetVersion(connection) == "Microsoft SQL Kusto")
@@ -227,9 +236,10 @@ SELECT
         'Scale'   = CAST(p.scale AS INT),  
         'Order'  = CAST(p.parameter_id AS INT),  
         p.is_output AS output,
-        'TypeName' = QUOTENAME(s.name) + '.' + QUOTENAME(tu.name),
-	    'TypeSchema' = tu.schema_id,
-	    'TypeId' = p.user_type_id,
+        'TypeName' = tu.name,
+        'TypeSchemaName' = s.name,
+        'TypeSchema' = tu.schema_id,
+        'TypeId' = p.user_type_id,
         'RoutineName' = o.name,
         'RoutineSchema' = s.name
         from sys.parameters p
@@ -264,12 +274,15 @@ SELECT
                         RoutineName = par["RoutineName"].ToString(),
                         RoutineSchema = par["RoutineSchema"].ToString(),
                         StoreType = par["Type"].ToString(),
-                        Length = (par["Length"] is DBNull) ? (int?)null : int.Parse(par["Length"].ToString()!, CultureInfo.InvariantCulture),
+                        Length = SqlServerSqlTypeExtensions.NormalizeParameterLength(
+                            par["Type"].ToString(),
+                            (par["Length"] is DBNull) ? (int?)null : int.Parse(par["Length"].ToString()!, CultureInfo.InvariantCulture)),
                         Precision = (par["Precision"] is DBNull) ? (int?)null : int.Parse(par["Precision"].ToString()!, CultureInfo.InvariantCulture),
                         Scale = (par["Scale"] is DBNull) ? (int?)null : int.Parse(par["Scale"].ToString()!, CultureInfo.InvariantCulture),
                         Output = (bool)par["output"],
                         Nullable = true,
                         TypeName = (par["TypeName"] is DBNull) ? par["Type"].ToString() : par["TypeName"].ToString(),
+                        TypeSchemaName = (par["TypeSchemaName"] is DBNull) ? null : par["TypeSchemaName"].ToString(),
                         TypeId = (par["TypeId"] is DBNull) ? (int?)null : int.Parse(par["TypeId"].ToString()!, CultureInfo.InvariantCulture),
                         TypeSchema = (par["TypeSchema"] is DBNull) ? (int?)null : int.Parse(par["TypeSchema"].ToString()!, CultureInfo.InvariantCulture),
                     };

@@ -20,6 +20,8 @@ namespace RevEng.Core.Abstractions.Metadata
 
         public string TypeName { get; set; }
 
+        public string TypeSchemaName { get; set; }
+
         public int? TypeId { get; set; }
 
         public int? TypeSchema { get; set; }

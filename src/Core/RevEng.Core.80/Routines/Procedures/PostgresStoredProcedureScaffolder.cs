@@ -103,7 +103,7 @@ namespace RevEng.Core.Routines.Procedures
                         GenerateParameterVar(parameter);
                     }
 
-                    Sb.AppendLine("var npgsqlParameters = new []");
+                    Sb.AppendLine("var npgsqlParameters = new object[]");
                     Sb.AppendLine("{");
                     using (Sb.Indent())
                     {
@@ -205,9 +205,11 @@ namespace RevEng.Core.Routines.Procedures
                 line += $"{string.Join(", ", outParamStrings)}";
             }
 
-            var nullable = useNullableReferences ? "?" : string.Empty;
+            var hasParams = paramStrings.Any() || outParams.Count > 0;
 
-            line += useAsyncCalls ? $", CancellationToken cancellationToken = default)" : ")";
+            line += useAsyncCalls
+                ? $"{(hasParams ? ", " : string.Empty)}CancellationToken cancellationToken = default)"
+                : ")";
 
             return line;
         }
