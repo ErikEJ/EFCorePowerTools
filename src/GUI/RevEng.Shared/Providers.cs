@@ -35,6 +35,9 @@ namespace RevEng.Common
                 case "Pomelo.EntityFrameworkCore.MySql":
                     return DatabaseType.Mysql;
 
+                case "Microting.EntityFrameworkCore.MySql":
+                    return DatabaseType.Mysql;
+
                 case "Oracle.EntityFrameworkCore":
                     return DatabaseType.Oracle;
 
@@ -337,6 +340,7 @@ namespace RevEng.Common
             if (databaseType == DatabaseType.Mysql)
             {
                 var pkgVersion = string.Empty;
+                var prefix = "Pomelo";
                 switch (codeGenerationMode)
                 {
                     case CodeGenerationMode.EFCore8:
@@ -344,7 +348,12 @@ namespace RevEng.Common
                         break;
 
                     case CodeGenerationMode.EFCore9:
-                        pkgVersion = "9.0.0";
+                        pkgVersion = "9.0.8";
+                        break;
+
+                    case CodeGenerationMode.EFCore10:
+                        pkgVersion = "10.0.10";
+                        prefix = "Microting";
                         break;
 
                     default: throw new NotImplementedException();
@@ -352,7 +361,7 @@ namespace RevEng.Common
 
                 packages.Add(new NuGetPackage
                 {
-                    PackageId = "Pomelo.EntityFrameworkCore.MySql",
+                    PackageId = prefix + ".EntityFrameworkCore.MySql",
                     Version = pkgVersion,
                     DatabaseTypes = new List<DatabaseType> { databaseType },
                     IsMainProviderPackage = true,
@@ -363,7 +372,7 @@ namespace RevEng.Common
                 {
                     packages.Add(new NuGetPackage
                     {
-                        PackageId = "Pomelo.EntityFrameworkCore.MySql.NetTopologySuite",
+                        PackageId = prefix + ".EntityFrameworkCore.MySql.NetTopologySuite",
                         Version = pkgVersion,
                         DatabaseTypes = new List<DatabaseType> { databaseType },
                         IsMainProviderPackage = false,
