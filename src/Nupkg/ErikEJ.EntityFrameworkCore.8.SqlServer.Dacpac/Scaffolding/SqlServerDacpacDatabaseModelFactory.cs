@@ -176,7 +176,16 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     Schema = view.Name.Parts[0],
                 };
 
-                GetViewColumns(view, dbView, typeAliases, tableTypes);
+                GetViewColumns(view, dbView, typeAliases, tableTypes, model);
+
+                var description = model.GetObjects<TSqlExtendedProperty>(DacQueryScopes.UserDefined)
+                    .Where(p => p.Name.Parts.Count == 4)
+                    .Where(p => p.Name.Parts[0] == "SqlView")
+                    .Where(p => p.Name.Parts[1] == dbView.Schema)
+                    .Where(p => p.Name.Parts[2] == dbView.Name)
+                    .FirstOrDefault(p => p.Name.Parts[3] == "MS_Description");
+
+                dbView.Comment = FixExtendedPropertyValue(description?.Value);
 
                 dbModel.Tables.Add(dbView);
             }
@@ -311,7 +320,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             }
         }
 
-        private static void GetViewColumns(TSqlView item, DatabaseView dbTable, Dictionary<string, (string StoreType, string TypeName)> typeAliases, IEnumerable<TSqlTableType> tableTypes)
+        private static void GetViewColumns(TSqlView item, DatabaseView dbTable, Dictionary<string, (string StoreType, string TypeName)> typeAliases, IEnumerable<TSqlTableType> tableTypes, TSqlTypedModel model)
         {
             var viewColumns = item.Element.GetChildren(DacQueryScopes.UserDefined);
 
@@ -370,6 +379,16 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     IsNullable = col.Nullable,
                     StoreType = storeType,
                 };
+
+                var description = model.GetObjects<TSqlExtendedProperty>(DacQueryScopes.UserDefined)
+                    .Where(p => p.Name.Parts.Count == 5)
+                    .Where(p => p.Name.Parts[0] == "SqlColumn")
+                    .Where(p => p.Name.Parts[1] == dbTable.Schema)
+                    .Where(p => p.Name.Parts[2] == dbTable.Name)
+                    .Where(p => p.Name.Parts[3] == dbColumn.Name)
+                    .FirstOrDefault(p => p.Name.Parts[4] == "MS_Description");
+
+                dbColumn.Comment = FixExtendedPropertyValue(description?.Value);
 
                 dbTable.Columns.Add(dbColumn);
             }
