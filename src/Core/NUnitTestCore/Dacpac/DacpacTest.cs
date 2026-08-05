@@ -129,6 +129,62 @@ GO
         }
 
         [Fact]
+        public void ViewDescriptionsAreCaptured()
+        {
+            var factory = new SqlServerDacpacDatabaseModelFactory();
+            var options = new DatabaseModelFactoryOptions(null, new List<string>());
+            var dacpacPath = BuildDacpac(
+                """
+                CREATE TABLE [dbo].[Base]
+                (
+                    [Id] int NOT NULL CONSTRAINT [PK_Base] PRIMARY KEY,
+                    [Name] nvarchar(100)
+                )
+                """,
+                """
+                CREATE VIEW [dbo].[ViewWithDescription]
+                AS
+                    SELECT [Id], [Name]
+                    FROM [dbo].[Base]
+                """,
+                """
+                EXEC sp_addextendedproperty
+                    @name = N'MS_Description',
+                    @value = N'View description',
+                    @level0type = N'SCHEMA',
+                    @level0name = N'dbo',
+                    @level1type = N'VIEW',
+                    @level1name = N'ViewWithDescription'
+                """,
+                """
+                EXEC sp_addextendedproperty
+                    @name = N'MS_Description',
+                    @value = N'Column description',
+                    @level0type = N'SCHEMA',
+                    @level0name = N'dbo',
+                    @level1type = N'VIEW',
+                    @level1name = N'ViewWithDescription',
+                    @level2type = N'COLUMN',
+                    @level2name = N'Name'
+                """);
+
+            try
+            {
+                var dbModel = factory.Create(dacpacPath, options);
+                var view = dbModel.Tables.Single(t => t.Schema == "dbo" && t.Name == "ViewWithDescription");
+
+                Assert.Equal("View description", view.Comment);
+
+                var nameColumn = view.Columns.Single(c => c.Name == "Name");
+                Assert.Equal("Column description", nameColumn.Comment);
+            }
+            finally
+            {
+                File.Delete(dacpacPath);
+            }
+        }
+
+        [Fact]
         public void CanEnumerateSelectedTables()
         {
             // Arrange
@@ -549,12 +605,15 @@ GO
             Assert.Equal(new[] { "JobCandidateID", "RANK" }, multipleResultRoutine.Results[1].Select(c => c.Name));
         }
 
-        private static string BuildDacpac(string sql)
+        private static string BuildDacpac(params string[] sqlScripts)
         {
             var path = Path.Combine(Path.GetTempPath(), $"dacpac-test-{Guid.NewGuid():N}.dacpac");
 
             using var model = new TSqlModel(SqlServerVersion.Sql160, new TSqlModelOptions());
-            model.AddObjects(sql);
+            foreach (var sql in sqlScripts)
+            {
+                model.AddObjects(sql);
+            }
 
             DacPackageExtensions.BuildPackage(path, model, new PackageMetadata { Name = "test" });
 
