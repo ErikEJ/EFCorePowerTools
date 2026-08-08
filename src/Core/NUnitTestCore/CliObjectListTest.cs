@@ -44,6 +44,25 @@ namespace UnitTests
 
             Assert.True(testProcedure.UseLegacyResultSetDiscovery);
             Assert.Equal("MyNamespace.MyType", testProcedure.MappedType);
+            Assert.True(testProcedure.GenerateEmptyResultType);
+        }
+
+        [Fact]
+        public void ToCommandOptionsMapsGenerateEmptyResultTypeForStoredProcedure()
+        {
+            var config = GetConfig();
+            var configPath = TestPath("test.efcpt-config.json");
+
+            var commandOptions = config.ToCommandOptions(
+                "Server=.;Database=TestDb;Trusted_Connection=True;",
+                DatabaseType.SQLServer,
+                cliTestDirectory,
+                isDacpac: false,
+                configPath,
+                "efpt.renaming.json");
+
+            var testProcedure = commandOptions.Tables.Single(x => x.ObjectType == ObjectType.Procedure && x.Name == "TestProcedure");
+            Assert.True(testProcedure.GenerateEmptyResultType);
         }
 
         [Fact]
@@ -364,6 +383,7 @@ namespace UnitTests
                         Name = "TestProcedure",
                         UseLegacyResultsetDiscovery = true,
                         MappedType = "MyNamespace.MyType",
+                        GenerateEmptyResultType = true,
                     }
                 }
             };

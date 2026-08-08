@@ -279,6 +279,7 @@ namespace RevEng.Common.Cli
                     var spConfig = entities.Cast<StoredProcedure>().Single(e => e.Name == model.Name);
                     model.UseLegacyResultSetDiscovery = spConfig.UseLegacyResultsetDiscovery;
                     model.MappedType = spConfig.MappedType;
+                    model.GenerateEmptyResultType = spConfig.GenerateEmptyResultType;
                 }
             }
 
