@@ -280,7 +280,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 mappedTypes = options.Tables?
                     .Where(t => !string.IsNullOrEmpty(t.MappedType) && t.ObjectType == ObjectType.Procedure)
                     .Select(m => new { m.Name, m.MappedType }).ToDictionary(m => m.Name, m => m.MappedType) ?? new Dictionary<string, string>();
-generateEmptyResultTypeObjects = options.Tables?.Where(t => t.ObjectType == ObjectType.Procedure && t.GenerateEmptyResultType).Select(t => t.Name).ToList() ?? new List<string>();
+                generateEmptyResultTypeObjects = options.Tables?.Where(t => t.ObjectType == ObjectType.Procedure && t.GenerateEmptyResultType).Select(t => t.Name).ToList() ?? new List<string>();
 
                 options.ProjectPath = Path.GetDirectoryName(project.FullPath);
                 options.OptionsPath = Path.GetDirectoryName(optionsPath);
