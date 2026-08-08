@@ -1021,7 +1021,7 @@ generateEmptyResultTypeObjects = options.Tables?.Where(t => t.ObjectType == Obje
                         table.MappedType = mappedTypes[table.Name];
                     }
 
-                    if (generateEmptyResultTypeObjects.Contains(table.Name))
+                    if (table.ObjectType == ObjectType.Procedure && generateEmptyResultTypeObjects.Contains(table.Name))
                     {
                         table.GenerateEmptyResultType = true;
                     }
