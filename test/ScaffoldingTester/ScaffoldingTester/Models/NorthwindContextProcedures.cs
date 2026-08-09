@@ -44,7 +44,7 @@ namespace ScaffoldingTester.Models
             _context = context;
         }
 
-        public virtual async Task<List<CustOrderHistResult>> CustOrderHistAsync(string? customerID, OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default)
+        public virtual async Task<List<CustOrderHistResult>> CustOrderHistAsync(string? customerID, OutputParameter<int>? returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -58,20 +58,20 @@ namespace ScaffoldingTester.Models
                 new SqlParameter
                 {
                     ParameterName = "CustomerID",
-                    Size = 10,
+                    Size = 5,
                     Value = customerID ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.NChar,
                 },
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryToListAsync<CustOrderHistResult>("EXEC @returnValue = [dbo].[CustOrderHist] @CustomerID = @CustomerID", sqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<CustOrderHistResult>("EXEC @returnValue = [dbo].[CustOrderHist] @CustomerID = @CustomerID", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 
             return _;
         }
 
-        public virtual async Task<List<CustOrdersDetailResult>> CustOrdersDetailAsync(int? orderID, OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default)
+        public virtual async Task<List<CustOrdersDetailResult>> CustOrdersDetailAsync(int? orderID, OutputParameter<int>? returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -90,14 +90,14 @@ namespace ScaffoldingTester.Models
                 },
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryToListAsync<CustOrdersDetailResult>("EXEC @returnValue = [dbo].[CustOrdersDetail] @OrderID = @OrderID", sqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<CustOrdersDetailResult>("EXEC @returnValue = [dbo].[CustOrdersDetail] @OrderID = @OrderID", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 
             return _;
         }
 
-        public virtual async Task<List<CustOrdersOrdersResult>> CustOrdersOrdersAsync(string? customerID, OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default)
+        public virtual async Task<List<CustOrdersOrdersResult>> CustOrdersOrdersAsync(string? customerID, OutputParameter<int>? returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -111,20 +111,20 @@ namespace ScaffoldingTester.Models
                 new SqlParameter
                 {
                     ParameterName = "CustomerID",
-                    Size = 10,
+                    Size = 5,
                     Value = customerID ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.NChar,
                 },
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryToListAsync<CustOrdersOrdersResult>("EXEC @returnValue = [dbo].[CustOrdersOrders] @CustomerID = @CustomerID", sqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<CustOrdersOrdersResult>("EXEC @returnValue = [dbo].[CustOrdersOrders] @CustomerID = @CustomerID", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 
             return _;
         }
 
-        public virtual async Task<List<EmployeeSalesbyCountryResult>> EmployeeSalesbyCountryAsync(DateTime? beginning_Date, DateTime? ending_Date, OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default)
+        public virtual async Task<List<EmployeeSalesbyCountryResult>> EmployeeSalesbyCountryAsync(DateTime? beginning_Date, DateTime? ending_Date, OutputParameter<int>? returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -149,14 +149,14 @@ namespace ScaffoldingTester.Models
                 },
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryToListAsync<EmployeeSalesbyCountryResult>("EXEC @returnValue = [dbo].[Employee Sales by Country] @Beginning_Date = @Beginning_Date, @Ending_Date = @Ending_Date", sqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<EmployeeSalesbyCountryResult>("EXEC @returnValue = [dbo].[Employee Sales by Country] @Beginning_Date = @Beginning_Date, @Ending_Date = @Ending_Date", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 
             return _;
         }
 
-        public virtual async Task<List<MultiSetResult>> MultiSetAsync(DateTime? year, decimal? productValue, OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default)
+        public virtual async Task<List<MultiSetResult>> MultiSetAsync(DateTime? year, decimal? productValue, OutputParameter<int>? returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -184,59 +184,14 @@ namespace ScaffoldingTester.Models
                 },
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryToListAsync<MultiSetResult>("EXEC @returnValue = [dbo].[MultiSet] @Year = @Year, @ProductValue = @ProductValue", sqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<MultiSetResult>("EXEC @returnValue = [dbo].[MultiSet] @Year = @Year, @ProductValue = @ProductValue", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 
             return _;
         }
 
-        public virtual async Task<List<OutputScenariosResult>> OutputScenariosAsync(short? year, OutputParameter<int?> productCount, OutputParameter<string> description, OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default)
-        {
-            var parameterProductCount = new SqlParameter
-            {
-                ParameterName = "ProductCount",
-                Direction = System.Data.ParameterDirection.InputOutput,
-                Value = productCount?._value ?? Convert.DBNull,
-                SqlDbType = System.Data.SqlDbType.Int,
-            };
-            var parameterDescription = new SqlParameter
-            {
-                ParameterName = "Description",
-                Size = 100,
-                Direction = System.Data.ParameterDirection.InputOutput,
-                Value = description?._value ?? Convert.DBNull,
-                SqlDbType = System.Data.SqlDbType.NVarChar,
-            };
-            var parameterreturnValue = new SqlParameter
-            {
-                ParameterName = "returnValue",
-                Direction = System.Data.ParameterDirection.Output,
-                SqlDbType = System.Data.SqlDbType.Int,
-            };
-
-            var sqlParameters = new []
-            {
-                new SqlParameter
-                {
-                    ParameterName = "Year",
-                    Value = year ?? Convert.DBNull,
-                    SqlDbType = System.Data.SqlDbType.SmallInt,
-                },
-                parameterProductCount,
-                parameterDescription,
-                parameterreturnValue,
-            };
-            var _ = await _context.SqlQueryToListAsync<OutputScenariosResult>("EXEC @returnValue = [dbo].[OutputScenarios] @Year = @Year, @ProductCount = @ProductCount OUTPUT, @Description = @Description OUTPUT", sqlParameters, cancellationToken);
-
-            productCount?.SetValue(parameterProductCount.Value);
-            description?.SetValue(parameterDescription.Value);
-            returnValue?.SetValue(parameterreturnValue.Value);
-
-            return _;
-        }
-
-        public virtual async Task<List<SalesbyYearResult>> SalesbyYearAsync(DateTime? beginning_Date, DateTime? ending_Date, OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default)
+        public virtual async Task<List<SalesbyYearResult>> SalesbyYearAsync(DateTime? beginning_Date, DateTime? ending_Date, OutputParameter<int>? returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -261,14 +216,14 @@ namespace ScaffoldingTester.Models
                 },
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryToListAsync<SalesbyYearResult>("EXEC @returnValue = [dbo].[Sales by Year] @Beginning_Date = @Beginning_Date, @Ending_Date = @Ending_Date", sqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<SalesbyYearResult>("EXEC @returnValue = [dbo].[Sales by Year] @Beginning_Date = @Beginning_Date, @Ending_Date = @Ending_Date", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 
             return _;
         }
 
-        public virtual async Task<List<SalesByCategoryResult>> SalesByCategoryAsync(string? categoryName, string? ordYear, OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default)
+        public virtual async Task<List<SalesByCategoryResult>> SalesByCategoryAsync(string? categoryName, string? ordYear, OutputParameter<int>? returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -282,27 +237,27 @@ namespace ScaffoldingTester.Models
                 new SqlParameter
                 {
                     ParameterName = "CategoryName",
-                    Size = 30,
+                    Size = 15,
                     Value = categoryName ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.NVarChar,
                 },
                 new SqlParameter
                 {
                     ParameterName = "OrdYear",
-                    Size = 8,
+                    Size = 4,
                     Value = ordYear ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.NVarChar,
                 },
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryToListAsync<SalesByCategoryResult>("EXEC @returnValue = [dbo].[SalesByCategory] @CategoryName = @CategoryName, @OrdYear = @OrdYear", sqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<SalesByCategoryResult>("EXEC @returnValue = [dbo].[SalesByCategory] @CategoryName = @CategoryName, @OrdYear = @OrdYear", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 
             return _;
         }
 
-        public virtual async Task<List<SpecialTypesResult>> SpecialTypesAsync(byte[]? parents, byte[]? geo, byte[]? geom, OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default)
+        public virtual async Task<List<SpecialTypesResult>> SpecialTypesAsync(byte[]? parents, byte[]? geo, byte[]? geom, OutputParameter<int>? returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -318,32 +273,32 @@ namespace ScaffoldingTester.Models
                     ParameterName = "Parents",
                     Value = parents ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.Udt,
-                    UdtTypeName = "hierarchyid",
+                    UdtTypeName = "[].[hierarchyid]",
                 },
                 new SqlParameter
                 {
                     ParameterName = "geo",
                     Value = geo ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.Udt,
-                    UdtTypeName = "geography",
+                    UdtTypeName = "[].[geography]",
                 },
                 new SqlParameter
                 {
                     ParameterName = "geom",
                     Value = geom ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.Udt,
-                    UdtTypeName = "geometry",
+                    UdtTypeName = "[].[geometry]",
                 },
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryToListAsync<SpecialTypesResult>("EXEC @returnValue = [dbo].[SpecialTypes] @Parents = @Parents, @geo = @geo, @geom = @geom", sqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<SpecialTypesResult>("EXEC @returnValue = [dbo].[SpecialTypes] @Parents = @Parents, @geo = @geo, @geom = @geom", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 
             return _;
         }
 
-        public virtual async Task<List<TenMostExpensiveProductsResult>> TenMostExpensiveProductsAsync(OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default)
+        public virtual async Task<List<TenMostExpensiveProductsResult>> TenMostExpensiveProductsAsync(OutputParameter<int>? returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
             {
@@ -356,7 +311,7 @@ namespace ScaffoldingTester.Models
             {
                 parameterreturnValue,
             };
-            var _ = await _context.SqlQueryToListAsync<TenMostExpensiveProductsResult>("EXEC @returnValue = [dbo].[Ten Most Expensive Products]", sqlParameters, cancellationToken);
+            var _ = await _context.SqlQueryAsync<TenMostExpensiveProductsResult>("EXEC @returnValue = [dbo].[Ten Most Expensive Products]", sqlParameters, cancellationToken);
 
             returnValue?.SetValue(parameterreturnValue.Value);
 

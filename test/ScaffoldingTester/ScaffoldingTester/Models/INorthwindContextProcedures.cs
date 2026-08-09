@@ -14,15 +14,14 @@ namespace ScaffoldingTester.Models
 {
     public partial interface INorthwindContextProcedures
     {
-        Task<List<CustOrderHistResult>> CustOrderHistAsync(string? customerID, OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default);
-        Task<List<CustOrdersDetailResult>> CustOrdersDetailAsync(int? orderID, OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default);
-        Task<List<CustOrdersOrdersResult>> CustOrdersOrdersAsync(string? customerID, OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default);
-        Task<List<EmployeeSalesbyCountryResult>> EmployeeSalesbyCountryAsync(DateTime? beginning_Date, DateTime? ending_Date, OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default);
-        Task<List<MultiSetResult>> MultiSetAsync(DateTime? year, decimal? productValue, OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default);
-        Task<List<OutputScenariosResult>> OutputScenariosAsync(short? year, OutputParameter<int?> productCount, OutputParameter<string> description, OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default);
-        Task<List<SalesbyYearResult>> SalesbyYearAsync(DateTime? beginning_Date, DateTime? ending_Date, OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default);
-        Task<List<SalesByCategoryResult>> SalesByCategoryAsync(string? categoryName, string? ordYear, OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default);
-        Task<List<SpecialTypesResult>> SpecialTypesAsync(byte[]? parents, byte[]? geo, byte[]? geom, OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default);
-        Task<List<TenMostExpensiveProductsResult>> TenMostExpensiveProductsAsync(OutputParameter<int>? returnValue = null, CancellationToken? cancellationToken = default);
+        Task<List<CustOrderHistResult>> CustOrderHistAsync(string? customerID, OutputParameter<int>? returnValue = null, CancellationToken cancellationToken = default);
+        Task<List<CustOrdersDetailResult>> CustOrdersDetailAsync(int? orderID, OutputParameter<int>? returnValue = null, CancellationToken cancellationToken = default);
+        Task<List<CustOrdersOrdersResult>> CustOrdersOrdersAsync(string? customerID, OutputParameter<int>? returnValue = null, CancellationToken cancellationToken = default);
+        Task<List<EmployeeSalesbyCountryResult>> EmployeeSalesbyCountryAsync(DateTime? beginning_Date, DateTime? ending_Date, OutputParameter<int>? returnValue = null, CancellationToken cancellationToken = default);
+        Task<List<MultiSetResult>> MultiSetAsync(DateTime? year, decimal? productValue, OutputParameter<int>? returnValue = null, CancellationToken cancellationToken = default);
+        Task<List<SalesbyYearResult>> SalesbyYearAsync(DateTime? beginning_Date, DateTime? ending_Date, OutputParameter<int>? returnValue = null, CancellationToken cancellationToken = default);
+        Task<List<SalesByCategoryResult>> SalesByCategoryAsync(string? categoryName, string? ordYear, OutputParameter<int>? returnValue = null, CancellationToken cancellationToken = default);
+        Task<List<SpecialTypesResult>> SpecialTypesAsync(byte[]? parents, byte[]? geo, byte[]? geom, OutputParameter<int>? returnValue = null, CancellationToken cancellationToken = default);
+        Task<List<TenMostExpensiveProductsResult>> TenMostExpensiveProductsAsync(OutputParameter<int>? returnValue = null, CancellationToken cancellationToken = default);
     }
 }

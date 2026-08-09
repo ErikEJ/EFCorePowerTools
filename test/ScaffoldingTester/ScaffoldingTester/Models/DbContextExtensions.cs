@@ -14,32 +14,12 @@ namespace ScaffoldingTester.Models
 {
     public static class DbContextExtensions
     {
-        [Obsolete("This method is obsolete and will be removed in the future.  Use SqlQueryToListAsync<T> instead when returning results.  Use dbContext.Database.ExecuteSqlRawAsync for calls with no results.")]
-        public static async Task<List<T>?> SqlQueryAsync<T>(this DbContext db, string sql, object[]? parameters = null, CancellationToken? cancellationToken = default)
+        public static async Task<List<T>> SqlQueryAsync<T>(this DbContext db, string sql, object[]? parameters = null, CancellationToken cancellationToken = default)
            where T : class
-        {
-            parameters ??= Array.Empty<object>();
-            cancellationToken ??= CancellationToken.None;
-
-            if (typeof(T).GetProperties().Any())
-            {
-                return await db.Database
-                    .SqlQueryRaw<T>(sql, parameters)
-                    .ToListAsync(cancellationToken.Value);
-            }
-            else
-            {
-                await db.Database.ExecuteSqlRawAsync(sql, parameters, cancellationToken);
-                return default;
-            }
-        }
-        
-        public static async Task<List<T>> SqlQueryToListAsync<T>(this DbContext db, string sql, object[]? parameters = null, CancellationToken? cancellationToken = default)
-            where T : class
         {
             return await db.Database
                 .SqlQueryRaw<T>(sql, parameters ?? Array.Empty<object>())
-                .ToListAsync(cancellationToken ?? CancellationToken.None);
+                .ToListAsync(cancellationToken);
         }
     }
 
