@@ -273,21 +273,21 @@ namespace ScaffoldingTester.Models
                     ParameterName = "Parents",
                     Value = parents ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.Udt,
-                    UdtTypeName = "[].[hierarchyid]",
+                    UdtTypeName = "hierarchyid",
                 },
                 new SqlParameter
                 {
                     ParameterName = "geo",
                     Value = geo ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.Udt,
-                    UdtTypeName = "[].[geography]",
+                    UdtTypeName = "geography",
                 },
                 new SqlParameter
                 {
                     ParameterName = "geom",
                     Value = geom ?? Convert.DBNull,
                     SqlDbType = System.Data.SqlDbType.Udt,
-                    UdtTypeName = "[].[geometry]",
+                    UdtTypeName = "geometry",
                 },
                 parameterreturnValue,
             };
