@@ -428,7 +428,9 @@ namespace RevEng.Core.Routines.Procedures
 
                 if (sqlDbType == SqlDbType.Udt)
                 {
-                    Sb.AppendLine($"UdtTypeName = \"[{parameter.TypeSchemaName}].[{parameter.TypeName}]\",");
+                    Sb.AppendLine(string.IsNullOrWhiteSpace(parameter.TypeSchemaName)
+                        ? $"UdtTypeName = \"{parameter.TypeName}\","
+                        : $"UdtTypeName = \"[{parameter.TypeSchemaName}].[{parameter.TypeName}]\",");
                 }
             }
 
