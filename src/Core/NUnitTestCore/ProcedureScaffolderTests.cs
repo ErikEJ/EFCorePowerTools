@@ -52,6 +52,24 @@ namespace UnitTests
             Assert.Contains("TestProcedure", result.ContextFile.Code);
         }
 
+        [Fact]
+        public void ScaffoldModel_WhenUdtParameterHasNoSchema_UsesPlainUdtTypeName()
+        {
+            var scaffolder = CreateScaffolder();
+            var model = new RoutineModel
+            {
+                Routines = new List<Routine> { CreateProcedureWithUdtParameter() },
+                Errors = new List<string>(),
+            };
+            var errors = new List<string>();
+            var schemas = new List<string>();
+
+            var result = scaffolder.ScaffoldModel(model, CreateScaffolderOptions(), schemas, ref errors);
+
+            Assert.Contains("UdtTypeName = \"hierarchyid\"", result.ContextFile.Code);
+            Assert.DoesNotContain("UdtTypeName = \"[].[hierarchyid]\"", result.ContextFile.Code);
+        }
+
         private static SqlServerStoredProcedureScaffolder CreateScaffolder()
         {
             var services = new ServiceCollection();
@@ -87,6 +105,47 @@ namespace UnitTests
                 Nullable = false,
                 IsReturnValue = true,
             });
+            return procedure;
+        }
+
+        private static Procedure CreateProcedureWithUdtParameter()
+        {
+            var procedure = new Procedure
+            {
+                Schema = "dbo",
+                Name = "TestProcedure",
+                HasValidResultSet = true,
+                Results = new List<List<ModuleResultElement>>
+                {
+                    new()
+                    {
+                        new ModuleResultElement
+                        {
+                            Name = "ResultValue",
+                            StoreType = "int",
+                            Nullable = false,
+                        },
+                    },
+                },
+            };
+            procedure.Parameters.Add(new ModuleParameter
+            {
+                Name = "parents",
+                StoreType = "hierarchyid",
+                Output = false,
+                Nullable = true,
+                TypeName = "hierarchyid",
+                TypeSchemaName = null,
+            });
+            procedure.Parameters.Add(new ModuleParameter
+            {
+                Name = "returnValue",
+                StoreType = "int",
+                Output = true,
+                Nullable = false,
+                IsReturnValue = true,
+            });
+
             return procedure;
         }
 

@@ -4,22 +4,24 @@
    "ContextNamespace": null,
    "FilterSchemas": false,
    "IncludeConnectionString": false,
-   "MinimumProductVersion": "2.6.1093",
+   "IrregularWords": null,
+   "MinimumProductVersion": "2.6.1672",
    "ModelNamespace": null,
    "OutputContextPath": null,
    "OutputPath": "Models",
+   "PluralRules": null,
    "PreserveCasingWithRegex": true,
    "ProjectRootNamespace": "ScaffoldingTester",
    "Schemas": null,
    "SelectedHandlebarsLanguage": 0,
    "SelectedToBeGenerated": 0,
+   "SingularRules": null,
    "T4TemplatePath": null,
    "Tables": [
-    {
-      "Name": "[dbo].[Categories]",
-      "Name": "[dbo].[Categories]",
-      "ObjectType": 0
-    },
+      {
+         "Name": "[dbo].[Categories]",
+         "ObjectType": 0
+      },
       {
          "Name": "[dbo].[CustomerCustomerDemo]",
          "ObjectType": 0
@@ -219,5 +221,6 @@
    "UseSchemaNamespaces": false,
    "UseSpatial": true,
    "UseT4": false,
-   "UseT4Split": false
+   "UseT4Split": false,
+   "UseTypedTvpParameters": true
 }
