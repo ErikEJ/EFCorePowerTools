@@ -306,8 +306,7 @@ public partial class NorthwindContext : DbContext
                 .HasColumnName("CustomerID");
             entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
             entity.Property(e => e.Freight)
-                .HasDefaultValue(0m)
-                .HasAnnotation("Relational:DefaultConstraintName", "DF_Orders_Freight")
+                .HasDefaultValue(0m, "DF_Orders_Freight")
                 .HasColumnType("money");
             entity.Property(e => e.OrderDate).HasColumnType("datetime");
             entity.Property(e => e.RequiredDate).HasColumnType("datetime");
@@ -348,13 +347,8 @@ public partial class NorthwindContext : DbContext
 
             entity.Property(e => e.OrderId).HasColumnName("OrderID");
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
-            entity.Property(e => e.Discount).HasAnnotation("Relational:DefaultConstraintName", "DF_Order_Details_Discount");
-            entity.Property(e => e.Quantity)
-                .HasDefaultValue((short)1)
-                .HasAnnotation("Relational:DefaultConstraintName", "DF_Order_Details_Quantity");
-            entity.Property(e => e.UnitPrice)
-                .HasAnnotation("Relational:DefaultConstraintName", "DF_Order_Details_UnitPrice")
-                .HasColumnType("money");
+            entity.Property(e => e.Quantity).HasDefaultValue((short)1, "DF_Order_Details_Quantity");
+            entity.Property(e => e.UnitPrice).HasColumnType("money");
 
             entity.HasOne(d => d.Order).WithMany(p => p.OrderDetails)
                 .HasForeignKey(d => d.OrderId)
@@ -434,25 +428,16 @@ public partial class NorthwindContext : DbContext
 
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
             entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
-            entity.Property(e => e.Discontinued)
-                .HasDefaultValue(false)
-                .HasAnnotation("Relational:DefaultConstraintName", "DF_Products_Discontinued");
+            entity.Property(e => e.Discontinued).HasDefaultValue(false, "DF_Products_Discontinued");
             entity.Property(e => e.ProductName).HasMaxLength(40);
             entity.Property(e => e.QuantityPerUnit).HasMaxLength(20);
-            entity.Property(e => e.ReorderLevel)
-                .HasDefaultValue((short)0)
-                .HasAnnotation("Relational:DefaultConstraintName", "DF_Products_ReorderLevel");
+            entity.Property(e => e.ReorderLevel).HasDefaultValue((short)0, "DF_Products_ReorderLevel");
             entity.Property(e => e.SupplierId).HasColumnName("SupplierID");
             entity.Property(e => e.UnitPrice)
-                .HasDefaultValue(0m)
-                .HasAnnotation("Relational:DefaultConstraintName", "DF_Products_UnitPrice")
+                .HasDefaultValue(0m, "DF_Products_UnitPrice")
                 .HasColumnType("money");
-            entity.Property(e => e.UnitsInStock)
-                .HasDefaultValue((short)0)
-                .HasAnnotation("Relational:DefaultConstraintName", "DF_Products_UnitsInStock");
-            entity.Property(e => e.UnitsOnOrder)
-                .HasDefaultValue((short)0)
-                .HasAnnotation("Relational:DefaultConstraintName", "DF_Products_UnitsOnOrder");
+            entity.Property(e => e.UnitsInStock).HasDefaultValue((short)0, "DF_Products_UnitsInStock");
+            entity.Property(e => e.UnitsOnOrder).HasDefaultValue((short)0, "DF_Products_UnitsOnOrder");
 
             entity.HasOne(d => d.Category).WithMany(p => p.Products)
                 .HasForeignKey(d => d.CategoryId)
