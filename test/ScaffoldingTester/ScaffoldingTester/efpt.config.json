@@ -1,11 +1,11 @@
 ﻿{
-   "CodeGenerationMode": 4,
+   "CodeGenerationMode": 6,
    "ContextClassName": "NorthwindContext",
    "ContextNamespace": null,
    "FilterSchemas": false,
    "IncludeConnectionString": false,
    "IrregularWords": null,
-   "MinimumProductVersion": "2.6.1672",
+   "MinimumProductVersion": "2.6.1676",
    "ModelNamespace": null,
    "OutputContextPath": null,
    "OutputPath": "Models",

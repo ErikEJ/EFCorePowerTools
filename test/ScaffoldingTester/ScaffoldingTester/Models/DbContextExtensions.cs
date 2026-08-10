@@ -17,8 +17,10 @@ namespace ScaffoldingTester.Models
         public static async Task<List<T>> SqlQueryAsync<T>(this DbContext db, string sql, object[]? parameters = null, CancellationToken cancellationToken = default)
            where T : class
         {
+            parameters ??= Array.Empty<object>();
+
             return await db.Database
-                .SqlQueryRaw<T>(sql, parameters ?? Array.Empty<object>())
+                .SqlQueryRaw<T>(sql, parameters)
                 .ToListAsync(cancellationToken);
         }
     }
