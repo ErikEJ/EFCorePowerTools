@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
@@ -164,12 +164,6 @@ ORDER BY ROUTINE_NAME;";
                 }
             }
 
-            // If the result set only contains un-named columns
-            if (dtResult.Rows.Count == unnamedColumnCount)
-            {
-                throw new InvalidOperationException($"Only un-named result columns in procedure");
-            }
-
             if (unnamedColumnCount > 0)
             {
                 module.UnnamedColumnCount += unnamedColumnCount;
@@ -275,12 +269,6 @@ ORDER BY ROUTINE_NAME;";
                             MaxLength = (int)row["ColumnSize"],
                         });
                     }
-                }
-
-                // If the result set only contains un-named columns
-                if (schemaTable.Rows.Count > 0 && schemaTable.Rows.Count == unnamedColumnCount)
-                {
-                    throw new InvalidOperationException("Only un-named result columns in procedure");
                 }
 
                 if (unnamedColumnCount > 0)
