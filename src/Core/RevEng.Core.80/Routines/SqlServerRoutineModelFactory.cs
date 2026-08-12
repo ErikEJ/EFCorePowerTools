@@ -167,7 +167,17 @@ namespace RevEng.Core.Routines
 
                             if (module.UnnamedColumnCount > 0)
                             {
-                                errors.Add($"{RoutineType} '{module.Schema}.{module.Name}' has {module.UnnamedColumnCount} un-named columns.");
+                                errors.Add($"{RoutineType} '{module.Schema}.{module.Name}' has {module.UnnamedColumnCount} unnamed columns.");
+
+                                if (module.Results.Count > 0)
+                                {
+                                    var resultElementCount = module.Results.Sum(r => r.Count);
+
+                                    if (resultElementCount <= module.UnnamedColumnCount)
+                                    {
+                                        errors.Add($"All result columns are unnamed for {RoutineType} '{module.Schema}.{module.Name}'.");
+                                    }
+                                }
                             }
 
                             if (dupesFound)
