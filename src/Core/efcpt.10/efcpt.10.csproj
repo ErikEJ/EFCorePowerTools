@@ -20,6 +20,7 @@
     <PackageReleaseNotes>For EF Core 10</PackageReleaseNotes>
     <PackageTags>Entity Framework Core entity-framework-core EF Data O/RM EntityFramework EntityFrameworkCore EFCore</PackageTags>
     <TargetFramework>net10.0</TargetFramework>
+    <RollForward>Major</RollForward>
   </PropertyGroup>
 
   <PropertyGroup>

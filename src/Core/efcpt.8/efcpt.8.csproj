@@ -20,6 +20,7 @@
     <PackageTags>Entity Framework Core entity-framework-core EF Data O/RM EntityFramework EntityFrameworkCore EFCore</PackageTags>
     <PackageReleaseNotes>For EF Core 8</PackageReleaseNotes>
     <TargetFramework>net8.0</TargetFramework>
+    <RollForward>Major</RollForward>
   </PropertyGroup>
 
   <PropertyGroup>
