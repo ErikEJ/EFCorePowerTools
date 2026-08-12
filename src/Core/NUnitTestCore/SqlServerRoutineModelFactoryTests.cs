@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Routines;
@@ -83,6 +84,53 @@ namespace UnitTests
             var result = SqlServerStoredProcedureModelFactory.ShouldTryDefinitionFallback(errorNumber, message);
 
             Assert.Equal(expected, result);
+        }
+
+        [Fact]
+        public void AddUnnamedColumnErrorsAddsAllUnnamedMessageWhenAllResultColumnsAreUnnamed()
+        {
+            var errors = new List<string>();
+            var module = new Procedure
+            {
+                Schema = "dbo",
+                Name = "StoGetSomeData",
+                UnnamedColumnCount = 2,
+                Results =
+                [
+                    [new ModuleResultElement(), new ModuleResultElement()],
+                ],
+            };
+
+            SqlServerRoutineModelFactory.AddUnnamedColumnErrors(errors, "PROCEDURE", module);
+
+            Assert.Equal(
+            [
+                "PROCEDURE 'dbo.StoGetSomeData' has 2 unnamed columns.",
+                "All result columns are unnamed for PROCEDURE 'dbo.StoGetSomeData'.",
+            ], errors);
+        }
+
+        [Fact]
+        public void AddUnnamedColumnErrorsDoesNotAddAllUnnamedMessageWhenNamedResultColumnsRemain()
+        {
+            var errors = new List<string>();
+            var module = new Procedure
+            {
+                Schema = "dbo",
+                Name = "StoGetSomeData",
+                UnnamedColumnCount = 1,
+                Results =
+                [
+                    [new ModuleResultElement(), new ModuleResultElement()],
+                ],
+            };
+
+            SqlServerRoutineModelFactory.AddUnnamedColumnErrors(errors, "PROCEDURE", module);
+
+            Assert.Equal(
+            [
+                "PROCEDURE 'dbo.StoGetSomeData' has 1 unnamed columns.",
+            ], errors);
         }
     }
 }

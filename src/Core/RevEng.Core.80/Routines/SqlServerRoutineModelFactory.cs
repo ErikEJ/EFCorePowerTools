@@ -34,6 +34,24 @@ namespace RevEng.Core.Routines
             return options.ModulesUsingLegacyDiscovery?.Contains($"[{module.Schema}].[{module.Name}]") ?? false;
         }
 
+        internal static void AddUnnamedColumnErrors(List<string> errors, string routineType, Routine module)
+        {
+            if (module.UnnamedColumnCount > 0)
+            {
+                errors.Add($"{routineType} '{module.Schema}.{module.Name}' has {module.UnnamedColumnCount} unnamed columns.");
+
+                if (module.Results.Count > 0)
+                {
+                    var resultElementCount = module.Results.Sum(r => r.Count);
+
+                    if (resultElementCount <= module.UnnamedColumnCount)
+                    {
+                        errors.Add($"All result columns are unnamed for {routineType} '{module.Schema}.{module.Name}'.");
+                    }
+                }
+            }
+        }
+
         protected RoutineModel GetRoutines(string connectionString, ModuleModelFactoryOptions options)
         {
             ArgumentNullException.ThrowIfNull(options);
@@ -165,20 +183,7 @@ namespace RevEng.Core.Routines
                                 }
                             }
 
-                            if (module.UnnamedColumnCount > 0)
-                            {
-                                errors.Add($"{RoutineType} '{module.Schema}.{module.Name}' has {module.UnnamedColumnCount} unnamed columns.");
-
-                                if (module.Results.Count > 0)
-                                {
-                                    var resultElementCount = module.Results.Sum(r => r.Count);
-
-                                    if (resultElementCount <= module.UnnamedColumnCount)
-                                    {
-                                        errors.Add($"All result columns are unnamed for {RoutineType} '{module.Schema}.{module.Name}'.");
-                                    }
-                                }
-                            }
+                            AddUnnamedColumnErrors(errors, RoutineType, module);
 
                             if (dupesFound)
                             {
