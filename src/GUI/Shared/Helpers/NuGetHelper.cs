@@ -1,4 +1,3 @@
-﻿using System;
 using System.Diagnostics;
 using Community.VisualStudio.Toolkit;
 using NuGet.Versioning;
@@ -17,7 +16,9 @@ namespace EFCorePowerTools.Helpers
 
             var startInfo = new ProcessStartInfo
             {
+#pragma warning disable S4036 // OS commands should not rely on PATH resolution
                 FileName = "dotnet",
+#pragma warning restore S4036 // OS commands should not rely on PATH resolution
                 Arguments = args,
             };
 

@@ -115,14 +115,17 @@ ORDER BY ROUTINE_NAME;";
             using var dtResult = new DataTable();
             var list = new List<ModuleResultElement>();
 
-            var sql = $"exec dbo.sp_describe_first_result_set N'[{module.Schema}].[{module.Name}]';";
+            var escapedSchema = module.Schema.Replace("]", "]]", StringComparison.Ordinal);
+            var escapedName = module.Name.Replace("]", "]]", StringComparison.Ordinal);
+            const string sql = "exec dbo.sp_describe_first_result_set @tsql = @statement;";
 
-#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
+            using var command = new SqlCommand(sql, connection);
+            command.Parameters.AddWithValue("@statement", $"[{escapedSchema}].[{escapedName}]");
+
             using var adapter = new SqlDataAdapter
             {
-                SelectCommand = new SqlCommand(sql, connection),
+                SelectCommand = command,
             };
-#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
 
             adapter.Fill(dtResult);
 
@@ -183,10 +186,9 @@ ORDER BY ROUTINE_NAME;";
         private static SqlCommand CreateStoredProcedureCommand(SqlConnection connection, Routine module)
         {
             var sqlCommand = connection.CreateCommand();
-
-#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
-            sqlCommand.CommandText = $"[{module.Schema}].[{module.Name}]";
-#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
+            var escapedSchema = module.Schema.Replace("]", "]]", StringComparison.Ordinal);
+            var escapedName = module.Name.Replace("]", "]]", StringComparison.Ordinal);
+            sqlCommand.CommandText = string.Concat("[", escapedSchema, "].[", escapedName, "]");
             sqlCommand.CommandType = CommandType.StoredProcedure;
 
             AddStoredProcedureParameters(sqlCommand, module, connection);

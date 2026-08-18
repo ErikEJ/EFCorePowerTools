@@ -38,17 +38,9 @@ namespace RevEng.Core.Routines
         {
             if (module.UnnamedColumnCount > 0)
             {
-                errors.Add($"{routineType} '{module.Schema}.{module.Name}' has {module.UnnamedColumnCount} unnamed columns.");
+                var resultElementCount = module.Results.Sum(r => r.Count);
 
-                if (module.Results.Count > 0)
-                {
-                    var resultElementCount = module.Results.Sum(r => r.Count);
-
-                    if (resultElementCount <= module.UnnamedColumnCount)
-                    {
-                        errors.Add($"All result columns are unnamed for {routineType} '{module.Schema}.{module.Name}'.");
-                    }
-                }
+                errors.Add($"{routineType} '{module.Schema}.{module.Name}' has {module.UnnamedColumnCount} unnamed columns out of {resultElementCount}.");
             }
         }
 
@@ -355,10 +347,12 @@ ORDER BY TT.user_type_id, SC.column_id;";
 
             using var dtTvpColumns = new DataTable();
 #pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
+#pragma warning disable S2077 // SQL queries should not be dynamically formatted
             using var tvpAdapter = new SqlDataAdapter
             {
                 SelectCommand = new SqlCommand(tvpColumnsSql, connection),
             };
+#pragma warning restore S2077 // SQL queries should not be dynamically formatted
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
 
             tvpAdapter.Fill(dtTvpColumns);

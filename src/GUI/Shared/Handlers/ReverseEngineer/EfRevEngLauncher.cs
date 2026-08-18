@@ -232,11 +232,13 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             var launchPath = DropNetCoreFiles();
 
+#pragma warning disable S4036 // OS commands should not rely on PATH resolution
             var startInfo = new ProcessStartInfo
             {
                 FileName = "dotnet",
                 Arguments = $"\"{launchPath}\" {arguments}",
             };
+#pragma warning restore S4036 // OS commands should not rely on PATH resolution
             return startInfo;
         }
 
@@ -249,7 +251,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
 
             var startInfo = new ProcessStartInfo
             {
+#pragma warning disable S4036 // OS commands should not rely on PATH resolution
                 FileName = "dotnet",
+#pragma warning restore S4036 // OS commands should not rely on PATH resolution
                 Arguments = $"\"{launchPath}\" \"{path}\"",
             };
 
@@ -271,7 +275,9 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         {
             var startInfo = new ProcessStartInfo
             {
+#pragma warning disable S4036 // OS commands should not rely on PATH resolution
                 FileName = "dotnet",
+
                 Arguments = "--list-runtimes",
             };
 

@@ -219,11 +219,15 @@ public class PatchedSqlServerDatabaseModelFactory : IDatabaseModelFactory
         {
             using var command = connection.CreateCommand();
             command.CommandText =
-                $"""
+                """
 SELECT compatibility_level
 FROM sys.databases
-WHERE name = '{connection.Database}'
+WHERE name = @databaseName
 """;
+            var databaseNameParameter = command.CreateParameter();
+            databaseNameParameter.ParameterName = "@databaseName";
+            databaseNameParameter.Value = connection.Database;
+            command.Parameters.Add(databaseNameParameter);
 
             var result = command.ExecuteScalar();
             return result != null ? Convert.ToByte(result) : (byte)0;
@@ -240,11 +244,15 @@ WHERE name = '{connection.Database}'
         {
             using var command = connection.CreateCommand();
             command.CommandText =
-                $"""
+                """
 SELECT collation_name
 FROM sys.databases
-WHERE name = '{connection.Database}';
+WHERE name = @databaseName;
 """;
+            var databaseNameParameter = command.CreateParameter();
+            databaseNameParameter.ParameterName = "@databaseName";
+            databaseNameParameter.Value = connection.Database;
+            command.Parameters.Add(databaseNameParameter);
 
             return command.ExecuteScalar() as string;
         }
@@ -1315,6 +1323,7 @@ OPTION (MERGE JOIN);";
     private void GetForeignKeys(DbConnection connection, IReadOnlyList<DatabaseTable> tables, string tableFilter)
     {
         using var command = connection.CreateCommand();
+#pragma warning disable S2077 // SQL queries should not be dynamically formatted
         command.CommandText =
             $"""
 SELECT
@@ -1336,6 +1345,7 @@ WHERE {tableFilter}
 ORDER BY [table_schema], [table_name], [f].[name], [fc].[constraint_column_id] 
 OPTION (MERGE JOIN);
 """;
+#pragma warning restore S2077 // SQL queries should not be dynamically formatted
 
         using var reader = command.ExecuteReader();
         var tableForeignKeyGroups = reader.Cast<DbDataRecord>()
@@ -1500,6 +1510,7 @@ OPTION (MERGE JOIN);
     private void GetTriggers(DbConnection connection, IReadOnlyList<DatabaseTable> tables, string tableFilter)
     {
         using var command = connection.CreateCommand();
+#pragma warning disable S2077 // SQL queries should not be dynamically formatted
         command.CommandText =
             $"""
 SELECT
@@ -1511,6 +1522,7 @@ JOIN [sys].[tables] AS [t] ON [tr].[parent_id] = [t].[object_id]
 WHERE {tableFilter}
 ORDER BY [table_schema], [table_name], [tr].[name];
 """;
+#pragma warning restore S2077 // SQL queries should not be dynamically formatted
 
         using var reader = command.ExecuteReader();
         var tableGroups = reader.Cast<DbDataRecord>()

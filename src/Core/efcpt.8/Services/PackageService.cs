@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -15,8 +15,13 @@ internal static class PackageService
 {
     public static NuGetVersion CurrentPackageVersion()
     {
-        return new NuGetVersion(Assembly.GetEntryAssembly()!.GetCustomAttribute<AssemblyInformationalVersionAttribute>()!
-            .InformationalVersion);
+        var informationalVersion = Assembly.GetEntryAssembly()?
+            .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?
+            .InformationalVersion;
+
+        return NuGetVersion.TryParse(informationalVersion, out var version)
+            ? version
+            : new NuGetVersion(0, 0, 0);
     }
 
     public static async Task CheckForPackageUpdateAsync()

@@ -105,8 +105,7 @@ namespace UnitTests
 
             Assert.Equal(
             [
-                "PROCEDURE 'dbo.StoGetSomeData' has 2 unnamed columns.",
-                "All result columns are unnamed for PROCEDURE 'dbo.StoGetSomeData'.",
+                "PROCEDURE 'dbo.StoGetSomeData' has 2 unnamed columns out of 2."
             ], errors);
         }
 
@@ -129,7 +128,7 @@ namespace UnitTests
 
             Assert.Equal(
             [
-                "PROCEDURE 'dbo.StoGetSomeData' has 1 unnamed columns.",
+                "PROCEDURE 'dbo.StoGetSomeData' has 1 unnamed columns out of 2.",
             ], errors);
         }
     }

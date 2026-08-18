@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Linq;
 using Spectre.Console;
@@ -32,13 +32,13 @@ internal static class DisplayService
 
     public static void MarkupLine(params Func<string>[] messages)
     {
-        if (messages?.Length < 1)
+        if (messages is null || messages.Length < 1)
         {
             AnsiConsole.WriteLine();
             return;
         }
 
-        AnsiConsole.MarkupLine(string.Join(' ', messages!.Select(func => func())));
+        AnsiConsole.MarkupLine(string.Join(' ', messages.Select(func => func())));
     }
 
     public static string Markup<TEnum>(string message, TEnum decoration)
