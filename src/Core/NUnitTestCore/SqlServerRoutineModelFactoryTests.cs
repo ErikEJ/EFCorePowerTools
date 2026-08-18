@@ -129,7 +129,7 @@ namespace UnitTests
 
             Assert.Equal(
             [
-                "PROCEDURE 'dbo.StoGetSomeData' has 1 unnamed columns.",
+                "PROCEDURE 'dbo.StoGetSomeData' has 1 unnamed columns out of 2.",
             ], errors);
         }
     }
