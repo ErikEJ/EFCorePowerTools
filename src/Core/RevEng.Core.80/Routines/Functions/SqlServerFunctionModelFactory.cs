@@ -45,7 +45,7 @@ ORDER BY ROUTINE_NAME;";
             using var dtResult = new DataTable();
             var list = new List<ModuleResultElement>();
 
-            var sql = $@"
+            const string sql = @"
 SELECT 
     c.name,
     COALESCE(ts.name, tu.name) AS type_name,
@@ -59,16 +59,16 @@ inner join sys.types tu ON c.user_type_id = tu.user_type_id
 inner join sys.objects AS o on o.object_id = c.object_id
 inner JOIN sys.schemas AS s ON o.schema_id = s.schema_id
 LEFT JOIN sys.types ts ON tu.system_type_id = ts.user_type_id
-where o.name = '{module.Name}' and s.name = '{module.Schema}';";
+where o.name = @moduleName and s.name = @moduleSchema;";
 
-#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
-#pragma warning disable S2077 // SQL queries should not be dynamically formatted
+            using var command = new SqlCommand(sql, connection);
+            command.Parameters.AddWithValue("@moduleName", module.Name);
+            command.Parameters.AddWithValue("@moduleSchema", module.Schema);
+
             using var adapter = new SqlDataAdapter
             {
-                SelectCommand = new SqlCommand(sql, connection),
+                SelectCommand = command,
             };
-#pragma warning restore S2077 // SQL queries should not be dynamically formatted
-#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
 
             adapter.Fill(dtResult);
 

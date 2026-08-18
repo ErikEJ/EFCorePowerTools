@@ -115,16 +115,17 @@ ORDER BY ROUTINE_NAME;";
             using var dtResult = new DataTable();
             var list = new List<ModuleResultElement>();
 
-            var sql = $"exec dbo.sp_describe_first_result_set N'[{module.Schema}].[{module.Name}]';";
+            var escapedSchema = module.Schema.Replace("]", "]]", StringComparison.Ordinal);
+            var escapedName = module.Name.Replace("]", "]]", StringComparison.Ordinal);
+            const string sql = "exec dbo.sp_describe_first_result_set @tsql = @statement;";
 
-#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
-#pragma warning disable S2077 // SQL queries should not be dynamically formatted
+            using var command = new SqlCommand(sql, connection);
+            command.Parameters.AddWithValue("@statement", $"[{escapedSchema}].[{escapedName}]");
+
             using var adapter = new SqlDataAdapter
             {
-                SelectCommand = new SqlCommand(sql, connection),
+                SelectCommand = command,
             };
-#pragma warning restore S2077 // SQL queries should not be dynamically formatted
-#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
 
             adapter.Fill(dtResult);
 

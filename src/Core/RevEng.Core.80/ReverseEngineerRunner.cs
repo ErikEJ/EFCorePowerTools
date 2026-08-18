@@ -83,11 +83,11 @@ namespace RevEng.Core
             SavedModelFiles procedurePaths = null;
             SavedModelFiles functionPaths = null;
 
-            var scaffolder = serviceProvider.GetService<IReverseEngineerScaffolder>();
+            var scaffolder = serviceProvider.GetRequiredService<IReverseEngineerScaffolder>();
 
             try
             {
-                SavedModelFiles filePaths = scaffolder!.GenerateDbContext(options, schemas, outputContextDir, modelNamespace, contextNamespace, options.ProjectPath, options.OutputPath, options.ProjectRootNamespace);
+                SavedModelFiles filePaths = scaffolder.GenerateDbContext(options, schemas, outputContextDir, modelNamespace, contextNamespace, options.ProjectPath, options.OutputPath, options.ProjectRootNamespace);
 
                 if (options.UseT4 || options.UseT4Split)
                 {

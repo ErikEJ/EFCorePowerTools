@@ -32,7 +32,7 @@ internal static class DisplayService
 
     public static void MarkupLine(params Func<string>[] messages)
     {
-        if (messages?.Length < 1)
+        if (messages is null || messages.Length < 1)
         {
             AnsiConsole.WriteLine();
             return;
