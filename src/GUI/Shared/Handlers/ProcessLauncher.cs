@@ -205,7 +205,9 @@ namespace EFCorePowerTools.Handlers
             dotNetParams.Append($"\"{efptPath}\" ");
 
             startInfo.WorkingDirectory = Path.GetDirectoryName(outputPath);
+#pragma warning disable S4036 // OS commands should not rely on PATH resolution
             startInfo.FileName = "dotnet";
+#pragma warning restore S4036 // OS commands should not rely on PATH resolution
             startInfo.Arguments = dotNetParams.ToString() + " " + startInfo.Arguments;
 
             try

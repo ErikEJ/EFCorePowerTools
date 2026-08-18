@@ -35,7 +35,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             var path = Path.GetDirectoryName(configPath);
 
             var proc = new Process();
-            proc.StartInfo.FileName = "cmd";
+            proc.StartInfo.FileName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "cmd.exe");
             proc.StartInfo.Arguments = $" /k \"cd /d {path} && dab start\"";
             proc.Start();
         }
