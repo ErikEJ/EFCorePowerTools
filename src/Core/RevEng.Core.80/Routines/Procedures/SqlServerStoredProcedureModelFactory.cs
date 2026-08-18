@@ -186,12 +186,9 @@ ORDER BY ROUTINE_NAME;";
         private static SqlCommand CreateStoredProcedureCommand(SqlConnection connection, Routine module)
         {
             var sqlCommand = connection.CreateCommand();
-
-#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
-#pragma warning disable S2077 // SQL queries should not be dynamically formatted
-            sqlCommand.CommandText = $"[{module.Schema}].[{module.Name}]";
-#pragma warning restore S2077 // SQL queries should not be dynamically formatted
-#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
+            var escapedSchema = module.Schema.Replace("]", "]]", StringComparison.Ordinal);
+            var escapedName = module.Name.Replace("]", "]]", StringComparison.Ordinal);
+            sqlCommand.CommandText = string.Concat("[", escapedSchema, "].[", escapedName, "]");
             sqlCommand.CommandType = CommandType.StoredProcedure;
 
             AddStoredProcedureParameters(sqlCommand, module, connection);

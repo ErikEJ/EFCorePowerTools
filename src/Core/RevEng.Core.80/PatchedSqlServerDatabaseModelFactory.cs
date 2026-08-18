@@ -1510,6 +1510,7 @@ OPTION (MERGE JOIN);
     private void GetTriggers(DbConnection connection, IReadOnlyList<DatabaseTable> tables, string tableFilter)
     {
         using var command = connection.CreateCommand();
+#pragma warning disable S2077 // SQL queries should not be dynamically formatted
         command.CommandText =
             $"""
 SELECT
@@ -1521,6 +1522,7 @@ JOIN [sys].[tables] AS [t] ON [tr].[parent_id] = [t].[object_id]
 WHERE {tableFilter}
 ORDER BY [table_schema], [table_name], [tr].[name];
 """;
+#pragma warning restore S2077 // SQL queries should not be dynamically formatted
 
         using var reader = command.ExecuteReader();
         var tableGroups = reader.Cast<DbDataRecord>()
