@@ -59,7 +59,7 @@ namespace RevEng.Core
 
             const string statementsInnerBlockPattern = @"(?<=modelBuilder\.Entity<(?<EntityName>.*?)>\((?<EntityParameterName>.*?)\s*=>\s*\{).*?(?=\s{2,}\}\);)";
 
-            var statementsBlockMatches = Regex.Matches(source, statementsInnerBlockPattern, RegexOptions.Multiline | RegexOptions.Singleline)
+            var statementsBlockMatches = Regex.Matches(source, statementsInnerBlockPattern, RegexOptions.Multiline | RegexOptions.Singleline, TimeSpan.FromSeconds(3))
                 .Cast<Match>()
                 .Where(m => !m.Value.StartsWith(
                     @"

@@ -355,10 +355,12 @@ ORDER BY TT.user_type_id, SC.column_id;";
 
             using var dtTvpColumns = new DataTable();
 #pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
+#pragma warning disable S2077 // SQL queries should not be dynamically formatted
             using var tvpAdapter = new SqlDataAdapter
             {
                 SelectCommand = new SqlCommand(tvpColumnsSql, connection),
             };
+#pragma warning restore S2077 // SQL queries should not be dynamically formatted
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
 
             tvpAdapter.Fill(dtTvpColumns);

@@ -218,12 +218,14 @@ public class PatchedSqlServerDatabaseModelFactory : IDatabaseModelFactory
         static byte GetCompatibilityLevel(DbConnection connection)
         {
             using var command = connection.CreateCommand();
+#pragma warning disable S2077 // SQL queries should not be dynamically formatted
             command.CommandText =
                 $"""
 SELECT compatibility_level
 FROM sys.databases
 WHERE name = '{connection.Database}'
 """;
+#pragma warning restore S2077 // SQL queries should not be dynamically formatted
 
             var result = command.ExecuteScalar();
             return result != null ? Convert.ToByte(result) : (byte)0;
@@ -239,12 +241,14 @@ WHERE name = '{connection.Database}'
         static string? GetDatabaseCollation(DbConnection connection)
         {
             using var command = connection.CreateCommand();
+#pragma warning disable S2077 // SQL queries should not be dynamically formatted
             command.CommandText =
                 $"""
 SELECT collation_name
 FROM sys.databases
 WHERE name = '{connection.Database}';
 """;
+#pragma warning restore S2077 // SQL queries should not be dynamically formatted
 
             return command.ExecuteScalar() as string;
         }
@@ -1315,6 +1319,7 @@ OPTION (MERGE JOIN);";
     private void GetForeignKeys(DbConnection connection, IReadOnlyList<DatabaseTable> tables, string tableFilter)
     {
         using var command = connection.CreateCommand();
+#pragma warning disable S2077 // SQL queries should not be dynamically formatted
         command.CommandText =
             $"""
 SELECT

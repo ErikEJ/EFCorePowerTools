@@ -93,7 +93,7 @@ namespace RevEng.Core
                 {
                     foreach (var paths in GetAlternateCodeTemplatePaths(options.ProjectPath))
                     {
-                        scaffolder!.GenerateDbContext(options, schemas, paths.Path, modelNamespace, contextNamespace, paths.Path, paths.OutputPath, options.ProjectRootNamespace);
+                        scaffolder.GenerateDbContext(options, schemas, paths.Path, modelNamespace, contextNamespace, paths.Path, paths.OutputPath, options.ProjectRootNamespace);
                     }
                 }
 

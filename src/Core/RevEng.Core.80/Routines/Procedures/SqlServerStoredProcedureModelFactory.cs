@@ -118,10 +118,12 @@ ORDER BY ROUTINE_NAME;";
             var sql = $"exec dbo.sp_describe_first_result_set N'[{module.Schema}].[{module.Name}]';";
 
 #pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
+#pragma warning disable S2077 // SQL queries should not be dynamically formatted
             using var adapter = new SqlDataAdapter
             {
                 SelectCommand = new SqlCommand(sql, connection),
             };
+#pragma warning restore S2077 // SQL queries should not be dynamically formatted
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
 
             adapter.Fill(dtResult);
@@ -185,7 +187,9 @@ ORDER BY ROUTINE_NAME;";
             var sqlCommand = connection.CreateCommand();
 
 #pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
+#pragma warning disable S2077 // SQL queries should not be dynamically formatted
             sqlCommand.CommandText = $"[{module.Schema}].[{module.Name}]";
+#pragma warning restore S2077 // SQL queries should not be dynamically formatted
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
             sqlCommand.CommandType = CommandType.StoredProcedure;
 

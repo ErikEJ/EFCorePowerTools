@@ -251,7 +251,7 @@ namespace RevEng.Core
 
             if (scaffoldedModel.ContextFile != null)
             {
-                contextPath = Path.GetFullPath(Path.Combine(outputDir, scaffoldedModel.ContextFile!.Path));
+                contextPath = Path.GetFullPath(Path.Combine(outputDir, scaffoldedModel.ContextFile.Path));
                 Directory.CreateDirectory(Path.GetDirectoryName(contextPath)!);
                 File.WriteAllText(contextPath, scaffoldedModel.ContextFile.Code, Encoding.UTF8);
             }
@@ -420,7 +420,7 @@ namespace RevEng.Core
             }
 
             var originalLastUsing = codeLines.Last(l => l.StartsWith(usingKeyWord, StringComparison.Ordinal));
-            var regexStartsWithNameSpace = new Regex(Regex.Escape(namespaceKeyWord));
+            var regexStartsWithNameSpace = new Regex(Regex.Escape(namespaceKeyWord), RegexOptions.None, TimeSpan.FromSeconds(3));
             var newUsings = new StringBuilder(originalLastUsing);
             newUsings.AppendLine();
             foreach (var schema in schemas.Where(s => s != entityTypeSchemaWithSuffix).OrderBy(s => s))

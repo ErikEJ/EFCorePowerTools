@@ -15,7 +15,9 @@ namespace SqlSharpener.Model
         /// </summary>
         /// <param name="name">The name of the table.</param>
         /// <param name="columns">The columns.</param>
+#pragma warning disable S5766 // Serializable objects should validate data during deserialization
         public Table(string name, IEnumerable<Column> columns)
+#pragma warning restore S5766 // Serializable objects should validate data during deserialization
         {
             this.Name = name;
             this.Columns = columns ?? new List<Column>();
@@ -25,7 +27,9 @@ namespace SqlSharpener.Model
         /// Initializes a new instance of the <see cref="Table" /> class.
         /// </summary>
         /// <param name="tSqlObject">The TSqlObject representing the table.</param>
+#pragma warning disable S5766 // Serializable objects should validate data during deserialization
         public Table(Dac.TSqlObject tSqlObject)
+#pragma warning restore S5766 // Serializable objects should validate data during deserialization
         {
             ArgumentNullException.ThrowIfNull(tSqlObject);
 

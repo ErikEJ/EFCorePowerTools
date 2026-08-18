@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
@@ -62,10 +62,12 @@ LEFT JOIN sys.types ts ON tu.system_type_id = ts.user_type_id
 where o.name = '{module.Name}' and s.name = '{module.Schema}';";
 
 #pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
+#pragma warning disable S2077 // SQL queries should not be dynamically formatted
             using var adapter = new SqlDataAdapter
             {
                 SelectCommand = new SqlCommand(sql, connection),
             };
+#pragma warning restore S2077 // SQL queries should not be dynamically formatted
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
 
             adapter.Fill(dtResult);
