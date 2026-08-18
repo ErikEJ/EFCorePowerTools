@@ -38,17 +38,9 @@ namespace RevEng.Core.Routines
         {
             if (module.UnnamedColumnCount > 0)
             {
-                errors.Add($"{routineType} '{module.Schema}.{module.Name}' has {module.UnnamedColumnCount} unnamed columns.");
+                var resultElementCount = module.Results.Sum(r => r.Count);
 
-                if (module.Results.Count > 0)
-                {
-                    var resultElementCount = module.Results.Sum(r => r.Count);
-
-                    if (resultElementCount <= module.UnnamedColumnCount)
-                    {
-                        errors.Add($"All result columns are unnamed for {routineType} '{module.Schema}.{module.Name}'.");
-                    }
-                }
+                errors.Add($"{routineType} '{module.Schema}.{module.Name}' has {module.UnnamedColumnCount} unnamed columns out of {resultElementCount}.");
             }
         }
 
