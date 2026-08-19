@@ -192,7 +192,7 @@ internal sealed class ScaffoldHostedService : HostedService
             .Distinct()).ToList();
         paths = paths.Concat(result.EntityTypeFilePaths.Select(p => fileSystem.Path.GetDirectoryName(p)).Distinct())
             .ToList();
-        return paths.Where(p => !string.IsNullOrEmpty(p)).Distinct().ToList()!;
+        return paths.Where(p => !string.IsNullOrEmpty(p)).Select(p => p!).Distinct().ToList();
     }
 
     private void GenerateMermaidContent(bool generate)
