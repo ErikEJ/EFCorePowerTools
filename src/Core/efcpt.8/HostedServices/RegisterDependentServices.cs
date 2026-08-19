@@ -30,7 +30,7 @@ internal static class RegisterDependentServices
             {
                 var file = fileSystem.File.ReadAllText(scaffoldOptions.ConfigFile.FullName, Encoding.UTF8);
                 var cliConfig = JsonSerializer.Deserialize<CliConfig>(file);
-                reverseOptions.MergeDacpacs = cliConfig.CodeGeneration.MergeDacpacs;
+                reverseOptions.MergeDacpacs = cliConfig?.CodeGeneration.MergeDacpacs ?? false;
             }
             catch (Exception ex)
             {

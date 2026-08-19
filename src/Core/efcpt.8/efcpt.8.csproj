@@ -21,6 +21,7 @@
     <PackageReleaseNotes>For EF Core 8</PackageReleaseNotes>
     <TargetFramework>net8.0</TargetFramework>
     <RollForward>Major</RollForward>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup>

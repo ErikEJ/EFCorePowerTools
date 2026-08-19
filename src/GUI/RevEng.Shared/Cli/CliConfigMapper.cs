@@ -134,7 +134,7 @@ namespace RevEng.Common.Cli
 
         public static bool TryGetCliConfig(string fullPath, string connectionString, DatabaseType databaseType, List<TableModel> objects, CodeGenerationMode codeGenerationMode, out CliConfig config, out List<string> warnings)
         {
-            var cliConfigExists = File.Exists(fullPath);
+            var cliConfigExists = fullPath != null && File.Exists(fullPath);
             if (cliConfigExists)
             {
                 config = JsonSerializer.Deserialize<CliConfig>(File.ReadAllText(fullPath, Encoding.UTF8));
