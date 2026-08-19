@@ -38,7 +38,7 @@ namespace RevEng.Core.Routines
         {
             if (module.UnnamedColumnCount > 0)
             {
-                var resultElementCount = module.Results.Sum(r => r.Count);
+                var resultElementCount = module.Results.Sum(r => r.Count) + module.UnnamedColumnCount;
 
                 errors.Add($"{routineType} '{module.Schema}.{module.Name}' has {module.UnnamedColumnCount} unnamed columns out of {resultElementCount}.");
             }
