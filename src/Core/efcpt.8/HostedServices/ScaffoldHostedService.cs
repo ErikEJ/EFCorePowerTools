@@ -55,7 +55,7 @@ internal sealed class ScaffoldHostedService : HostedService
             DisplayService.MarkupLine($"{tableModels.Count} database objects discovered in {sw.Elapsed.TotalSeconds:0.0} seconds", Color.Default);
 
             if (!CliConfigMapper.TryGetCliConfig(
-                    scaffoldOptions.ConfigFile?.FullName,
+                    scaffoldOptions.ConfigFile!.FullName,
                     scaffoldOptions.ConnectionString,
                     reverseEngineerCommandOptions.DatabaseType,
                     tableModels,
