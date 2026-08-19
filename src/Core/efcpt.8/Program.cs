@@ -104,7 +104,7 @@ internal static class Program
         DisplayService.MarkupLine();
         DisplayService.MarkupLine(
             () => DisplayService.Markup("config file:", Color.Green),
-            () => DisplayService.Markup(options.ConfigFile.FullName, Decoration.Bold));
+            () => DisplayService.Markup(options.ConfigFile?.FullName ?? "N/A", Decoration.Bold));
         DisplayService.MarkupLine();
     }
 

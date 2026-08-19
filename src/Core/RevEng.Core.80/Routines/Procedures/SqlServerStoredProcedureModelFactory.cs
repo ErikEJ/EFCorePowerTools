@@ -188,7 +188,11 @@ ORDER BY ROUTINE_NAME;";
             var sqlCommand = connection.CreateCommand();
             var escapedSchema = module.Schema.Replace("]", "]]", StringComparison.Ordinal);
             var escapedName = module.Name.Replace("]", "]]", StringComparison.Ordinal);
+#pragma warning disable S2077 // SQL queries should not be dynamically formatted
+#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
             sqlCommand.CommandText = string.Concat("[", escapedSchema, "].[", escapedName, "]");
+#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
+#pragma warning restore S2077 // SQL queries should not be dynamically formatted
             sqlCommand.CommandType = CommandType.StoredProcedure;
 
             AddStoredProcedureParameters(sqlCommand, module, connection);

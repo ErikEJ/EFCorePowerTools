@@ -20,7 +20,7 @@ internal static class DisplayService
                 .Color(Color.Aqua));
     }
 
-    public static void MarkupLine(string message, Color color, Func<string, string> format)
+    public static void MarkupLine(string message, Color color, Func<string, string>? format)
     {
         AnsiConsole.MarkupLine($"[{color}]{format?.Invoke(message) ?? message}[/]");
     }
@@ -52,9 +52,9 @@ internal static class DisplayService
         AnsiConsole.MarkupLineInterpolated(CultureInfo.InvariantCulture, $"[red]error: {message}[/]");
     }
 
-    public static T Wait<T>(string message, Func<T> doFunc)
+    public static T? Wait<T>(string message, Func<T> doFunc)
     {
-        T result = default;
+        T? result = default;
         AnsiConsole.Status()
             .Start(message, ctx =>
             {

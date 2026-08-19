@@ -55,7 +55,7 @@ internal sealed class ScaffoldHostedService : HostedService
             DisplayService.MarkupLine($"{tableModels.Count} database objects discovered in {sw.Elapsed.TotalSeconds:0.0} seconds", Color.Default);
 
             if (!CliConfigMapper.TryGetCliConfig(
-                    scaffoldOptions.ConfigFile.FullName,
+                    scaffoldOptions.ConfigFile!.FullName,
                     scaffoldOptions.ConnectionString,
                     reverseEngineerCommandOptions.DatabaseType,
                     tableModels,
@@ -74,8 +74,8 @@ internal sealed class ScaffoldHostedService : HostedService
                 reverseEngineerCommandOptions.DatabaseType,
                 scaffoldOptions.Output ?? Directory.GetCurrentDirectory(),
                 scaffoldOptions.IsDacpac,
-                scaffoldOptions.ConfigFile.FullName,
-                scaffoldOptions.RenamingFile.FullName);
+                scaffoldOptions.ConfigFile?.FullName,
+                scaffoldOptions.RenamingFile?.FullName);
             DisplayService.MarkupLine();
 
 #pragma warning disable S2589 // Boolean expressions should not be gratuitous
@@ -187,12 +187,12 @@ internal sealed class ScaffoldHostedService : HostedService
 
     private List<string> GetPaths(ReverseEngineerResult result)
     {
-        var paths = new List<string> { Path.GetDirectoryName(result.ContextFilePath) };
+        var paths = new List<string?> { Path.GetDirectoryName(result.ContextFilePath) };
         paths = paths.Concat(result.ContextConfigurationFilePaths.Select(p => fileSystem.Path.GetDirectoryName(p))
             .Distinct()).ToList();
         paths = paths.Concat(result.EntityTypeFilePaths.Select(p => fileSystem.Path.GetDirectoryName(p)).Distinct())
             .ToList();
-        return paths;
+        return paths.Where(p => !string.IsNullOrEmpty(p)).Select(p => p!).Distinct().ToList();
     }
 
     private void GenerateMermaidContent(bool generate)

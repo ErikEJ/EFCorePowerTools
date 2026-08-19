@@ -35,6 +35,11 @@ internal static class PackageService
             var repository = Repository.Factory.GetCoreV3("https://api.nuget.org/v3/index.json");
             var resource = await repository.GetResourceAsync<PackageMetadataResource>().ConfigureAwait(false);
 
+            if (resource == null)
+            {
+                return;
+            }
+
             var packages = await resource.GetMetadataAsync(
                 "ErikEJ.EFCorePowerTools.Cli",
                 includePrerelease: false,
@@ -44,6 +49,12 @@ internal static class PackageService
                 cancellationToken).ConfigureAwait(false);
 
             var latestVersion = packages.Where(v => v.Identity.Version.Major == Constants.Version).Select(v => v.Identity.Version).MaxBy(v => v);
+
+            if (latestVersion == null)
+            {
+                return;
+            }
+
             if (latestVersion > CurrentPackageVersion())
             {
                 DisplayService.MarkupLine("You are not using the latest version of the tool, please update to get the latest bug fixes, features and support", Color.Yellow);
