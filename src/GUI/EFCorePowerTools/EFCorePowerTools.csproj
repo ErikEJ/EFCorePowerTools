@@ -197,7 +197,7 @@
       <Link>efpt100.exe.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="msbuild.sdk.sqlproj.templates.3.3.0.nupkg">
+    <Content Include="msbuild.sdk.sqlproj.templates.4.3.0.nupkg">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <None Include="Westwind.WPF.Statusbar\LICENSE.md" />
