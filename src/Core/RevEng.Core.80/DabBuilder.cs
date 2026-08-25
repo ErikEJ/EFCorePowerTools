@@ -72,6 +72,8 @@ namespace RevEng.Core
                     break;
                 case DatabaseType.Firebird:
                     break;
+                case DatabaseType.DB2:
+                    break;
                 default:
                     break;
             }

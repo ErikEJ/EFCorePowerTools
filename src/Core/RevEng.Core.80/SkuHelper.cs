@@ -73,6 +73,8 @@ FROM sys.databases WHERE name = @p1;";
                     break;
                 case DatabaseType.Firebird:
                     break;
+                case DatabaseType.DB2:
+                    break;
                 default:
                     break;
             }

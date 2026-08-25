@@ -47,6 +47,9 @@ namespace RevEng.Common
                 case "EFCore.Snowflake":
                     return DatabaseType.Snowflake;
 
+                case "IBM.EntityFrameworkCore":
+                    return DatabaseType.DB2;
+
                 default:
                     return DatabaseType.Undefined;
             }
@@ -74,6 +77,8 @@ namespace RevEng.Common
                     return "firebird";
                 case DatabaseType.Snowflake:
                     return "snowflake";
+                case DatabaseType.DB2:
+                    return "db2";
                 default:
                     return "Undefined";
             }
@@ -466,6 +471,36 @@ namespace RevEng.Common
                 });
             }
 
+            if (databaseType == DatabaseType.DB2)
+            {
+                var pkgVersion = string.Empty;
+                switch (codeGenerationMode)
+                {
+                    case CodeGenerationMode.EFCore8:
+                        pkgVersion = "8.0.0.400";
+                        break;
+
+                    case CodeGenerationMode.EFCore9:
+                        pkgVersion = "9.0.0.400";
+                        break;
+
+                    case CodeGenerationMode.EFCore10:
+                        pkgVersion = "10.0.0.100";
+                        break;
+
+                    default: throw new NotImplementedException();
+                }
+
+                packages.Add(new NuGetPackage
+                {
+                    PackageId = "IBM.EntityFrameworkCore",
+                    Version = pkgVersion,
+                    DatabaseTypes = new List<DatabaseType> { databaseType },
+                    IsMainProviderPackage = true,
+                    UseMethodName = "DB2",
+                });
+            }
+
             return packages;
         }
 
@@ -545,6 +580,10 @@ namespace RevEng.Common
                 {
                     "EFCore.Snowflake",
                     new List<string> { "snowflake" }
+                },
+                {
+                    "IBM.EntityFrameworkCore",
+                    new List<string> { "db2" }
                 },
             };
         }
