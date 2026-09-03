@@ -124,7 +124,7 @@ internal sealed class ScaffoldHostedService : HostedService
 
             var redactedConnectionString = "The_Connection_String_You_Supplied_With_The_Reverse_Engineering_Command";
 
-            var readmePath = Providers.CreateReadme(commandOptions, Constants.CodeGeneration, redactedConnectionString);
+            var readmePath = Providers.CreateReadme(commandOptions, Constants.CodeGeneration, redactedConnectionString, GetFileNames(result));
             var fileUri = new Uri(new Uri("file://"), readmePath);
 
             DisplayService.MarkupLine();

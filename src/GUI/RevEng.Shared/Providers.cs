@@ -90,7 +90,7 @@ namespace RevEng.Common
             };
         }
 
-        public static string CreateReadme(ReverseEngineerCommandOptions commandOptions, CodeGenerationMode codeGenerationMode, string redactedConnectionString)
+        public static string CreateReadme(ReverseEngineerCommandOptions commandOptions, CodeGenerationMode codeGenerationMode, string redactedConnectionString, IEnumerable<string> generatedFilePaths = null)
         {
             if (commandOptions == null)
             {
@@ -112,6 +112,8 @@ namespace RevEng.Common
                 commandOptions.Tables?.Exists(t => t.ObjectType == ObjectType.Procedure) ?? false,
                 codeGenerationMode);
 
+            AddGeneratedCodePackages(packages, commandOptions.DatabaseType, generatedFilePaths);
+
             var readmeName = "efcpt-readme.md";
 
             var template = File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), readmeName), Encoding.UTF8);
@@ -127,6 +129,9 @@ namespace RevEng.Common
 
         public static List<NuGetPackage> GetNeededPackages(DatabaseType databaseType, bool useSpatial, bool useNodaTime, bool useDateOnlyTimeOnly, bool useHierarchyId, bool discoverMultipleResultSets, bool hasProcedures, CodeGenerationMode codeGenerationMode)
         {
+            _ = discoverMultipleResultSets;
+            _ = hasProcedures;
+
             // Update versions here when adding provider and other updates
             var packages = new List<NuGetPackage>();
 
@@ -211,17 +216,6 @@ namespace RevEng.Common
                     });
                 }
 
-                if (hasProcedures && discoverMultipleResultSets)
-                {
-                    packages.Add(new NuGetPackage
-                    {
-                        PackageId = "Dapper",
-                        Version = "2.1.66",
-                        DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
-                        IsMainProviderPackage = false,
-                        UseMethodName = null,
-                    });
-                }
             }
 
             if (databaseType == DatabaseType.SQLite)
@@ -467,6 +461,41 @@ namespace RevEng.Common
             }
 
             return packages;
+        }
+
+        public static void AddGeneratedCodePackages(List<NuGetPackage> packages, DatabaseType databaseType, IEnumerable<string> generatedFilePaths)
+        {
+            ArgumentNullException.ThrowIfNull(packages);
+
+            if ((databaseType != DatabaseType.SQLServer && databaseType != DatabaseType.SQLServerDacpac)
+                || generatedFilePaths == null
+                || packages.Any(p => p.PackageId == "Dapper"))
+            {
+                return;
+            }
+
+            foreach (var filePath in generatedFilePaths.Where(p => !string.IsNullOrWhiteSpace(p) && File.Exists(p)))
+            {
+                if (!File.ReadAllText(filePath, Encoding.UTF8).Contains("using Dapper", StringComparison.Ordinal))
+                {
+                    continue;
+                }
+
+                packages.Add(CreateDapperPackage());
+                return;
+            }
+        }
+
+        private static NuGetPackage CreateDapperPackage()
+        {
+            return new NuGetPackage
+            {
+                PackageId = "Dapper",
+                Version = "2.1.66",
+                DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
+                IsMainProviderPackage = false,
+                UseMethodName = null,
+            };
         }
 
         private static string GetReadMeText(ReverseEngineerCommandOptions options, string content, List<NuGetPackage> packages, string redactedConnectionString)

@@ -161,7 +161,7 @@ namespace EFCorePowerTools.Extensions
             return Path.Combine(renamingPath, navigationsFile ? efptRenamingNavJson : efptRenamingJson);
         }
 
-        public static async Task<List<NuGetPackage>> GetNeededPackagesAsync(this Project project, ReverseEngineerOptions options)
+        public static async Task<List<NuGetPackage>> GetNeededPackagesAsync(this Project project, ReverseEngineerOptions options, ReverseEngineerResult reverseEngineerResult = null)
         {
             var neededPackages = Providers.GetNeededPackages(
                 options.DatabaseType,
@@ -172,6 +172,11 @@ namespace EFCorePowerTools.Extensions
                 AdvancedOptions.Instance.DiscoverMultipleResultSets,
                 options.Tables?.Exists(t => t.ObjectType == ObjectType.Procedure) ?? false,
                 options.CodeGenerationMode);
+
+            if (reverseEngineerResult != null)
+            {
+                Providers.AddGeneratedCodePackages(neededPackages, options.DatabaseType, GetGeneratedFilePaths(reverseEngineerResult));
+            }
 
             await IsInstalledAsync(project, neededPackages);
 
@@ -420,6 +425,21 @@ namespace EFCorePowerTools.Extensions
                         }
                     }
                 }
+            }
+        }
+
+        private static IEnumerable<string> GetGeneratedFilePaths(ReverseEngineerResult reverseEngineerResult)
+        {
+            yield return reverseEngineerResult.ContextFilePath;
+
+            foreach (var path in reverseEngineerResult.ContextConfigurationFilePaths)
+            {
+                yield return path;
+            }
+
+            foreach (var path in reverseEngineerResult.EntityTypeFilePaths)
+            {
+                yield return path;
             }
         }
 

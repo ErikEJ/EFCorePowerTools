@@ -280,7 +280,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     missingProviderPackage = null;
                 }
 
-                await GenerateFilesAsync(project, options, missingProviderPackage, onlyGenerate, neededPackages);
+                await GenerateFilesAsync(project, options, missingProviderPackage, onlyGenerate, neededPackages, forceEdit);
 
                 var postRunFile = Path.Combine(Path.GetDirectoryName(optionsPath), "efpt.postrun.cmd");
                 if (File.Exists(postRunFile))
@@ -303,7 +303,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
         }
 
-        private static async Task InstallNuGetPackagesAsync(Project project, bool onlyGenerate, ReverseEngineerOptions options, bool forceEdit)
+        private static async Task InstallNuGetPackagesAsync(Project project, bool onlyGenerate, ReverseEngineerOptions options, bool forceEdit, List<NuGetPackage> packages = null)
         {
             var nuGetHelper = new NuGetHelper();
 
@@ -311,7 +311,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 && (!onlyGenerate || forceEdit)
                 && (await project.IsNet80OrHigherAsync()))
             {
-                var packages = await project.GetNeededPackagesAsync(options);
+                packages ??= await project.GetNeededPackagesAsync(options);
 
                 var packagesToInstall = packages.Where(p => p.DatabaseTypes.Contains(options.DatabaseType) && !p.Installed).ToList();
 
@@ -329,7 +329,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
         }
 
-        private static async System.Threading.Tasks.Task GenerateFilesAsync(Project project, ReverseEngineerOptions options, string missingProviderPackage, bool onlyGenerate, List<NuGetPackage> packages)
+        private static async System.Threading.Tasks.Task GenerateFilesAsync(Project project, ReverseEngineerOptions options, string missingProviderPackage, bool onlyGenerate, List<NuGetPackage> packages, bool forceEdit)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -355,6 +355,10 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 2, 4);
 
             var revEngResult = await EfRevEngLauncher.LaunchExternalRunnerAsync(options, options.CodeGenerationMode);
+
+            packages = await project.GetNeededPackagesAsync(options, revEngResult);
+            options.InstallNuGetPackage = packages.Exists(p => p.DatabaseTypes.Contains(options.DatabaseType) && !p.Installed);
+            await InstallNuGetPackagesAsync(project, onlyGenerate, options, forceEdit, packages);
 
             await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 3, 4);
 

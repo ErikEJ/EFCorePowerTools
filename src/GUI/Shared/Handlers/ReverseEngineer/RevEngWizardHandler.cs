@@ -405,7 +405,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                     missingProviderPackage = null;
                 }
 
-                await GenerateFilesAsync(project, options, missingProviderPackage, onlyGenerate, neededPackages, true);
+                await GenerateFilesAsync(project, options, missingProviderPackage, onlyGenerate, neededPackages, true, forceEdit);
 
                 var postRunFile = Path.Combine(Path.GetDirectoryName(optionsPath), "efpt.postrun.cmd");
                 if (File.Exists(postRunFile))
@@ -429,7 +429,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         }
 
 #pragma warning disable SA1204 // Static elements should appear before instance elements
-        public static async Task InstallNuGetPackagesAsync(Project project, bool onlyGenerate, ReverseEngineerOptions options, bool forceEdit, WizardEventArgs wizardArgs = null)
+        public static async Task InstallNuGetPackagesAsync(Project project, bool onlyGenerate, ReverseEngineerOptions options, bool forceEdit, WizardEventArgs wizardArgs = null, List<NuGetPackage> packages = null)
 #pragma warning restore SA1204 // Static elements should appear before instance elements
         {
             var nuGetHelper = new NuGetHelper();
@@ -438,7 +438,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 && (!onlyGenerate || forceEdit)
                 && (await project.IsNet80OrHigherAsync() || await project.IsNetStandardAsync()))
             {
-                var packages = await project.GetNeededPackagesAsync(options);
+                packages ??= await project.GetNeededPackagesAsync(options);
 
                 var packagesToInstall = packages.Where(p => p.DatabaseTypes.Contains(options.DatabaseType) && !p.Installed).ToList();
 
@@ -460,7 +460,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         }
 
         // Note: invoked by page 3 of the wizard (Wiz3_EfCoreModelDialog)
-        public async System.Threading.Tasks.Task<string> GenerateFilesAsync(Project project, ReverseEngineerOptions options, string missingProviderPackage, bool onlyGenerate, List<NuGetPackage> packages, bool isCalledByWizard = false)
+        public async System.Threading.Tasks.Task<string> GenerateFilesAsync(Project project, ReverseEngineerOptions options, string missingProviderPackage, bool onlyGenerate, List<NuGetPackage> packages, bool isCalledByWizard = false, bool forceEdit = false)
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -492,6 +492,10 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             }
 
             var revEngResult = await EfRevEngLauncher.LaunchExternalRunnerAsync(options, options.CodeGenerationMode);
+
+            packages = await project.GetNeededPackagesAsync(options, revEngResult);
+            options.InstallNuGetPackage = packages.Exists(p => p.DatabaseTypes.Contains(options.DatabaseType) && !p.Installed);
+            await InstallNuGetPackagesAsync(project, onlyGenerate, options, forceEdit, packages: packages);
 
             if (!isCalledByWizard)
             {
