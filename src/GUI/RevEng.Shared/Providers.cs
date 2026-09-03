@@ -465,7 +465,10 @@ namespace RevEng.Common
 
         public static void AddGeneratedCodePackages(List<NuGetPackage> packages, DatabaseType databaseType, IEnumerable<string> generatedFilePaths)
         {
-            ArgumentNullException.ThrowIfNull(packages);
+            if (packages == null)
+            {
+                throw new ArgumentNullException(nameof(packages));
+            }
 
             if ((databaseType != DatabaseType.SQLServer && databaseType != DatabaseType.SQLServerDacpac)
                 || generatedFilePaths == null
