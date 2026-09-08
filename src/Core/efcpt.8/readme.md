@@ -46,25 +46,6 @@ The provider name (`mssql`) may not be required, as an attempt is made to resolv
 
 A configuration file `efcpt-config.json` is created in the output folder, and you can open this file in your editor to modify the default options. If your editor supports it (for example VS Code), it will provide syntax guidance for the file. For reference there is a fully populated sample file [here](https://github.com/ErikEJ/EFCorePowerTools/blob/master/samples/efcpt-config.json).
 
-### Excluding PostgreSQL indexes
-
-Use `excludedIndexes` on a table to omit specific PostgreSQL indexes from the scaffolded model:
-
-```json
-"tables": [
-  {
-    "name": "public.child",
-    "excludedIndexes": ["uq_child_active_parent"]
-  }
-]
-```
-
-Use the exact schema-qualified table name from the generated configuration and exact index names (case-sensitive, no wildcards). Unknown names are ignored. In Visual Studio's `efpt.config.json`, the corresponding table settings are `Name` and `ExcludedIndexes`.
-
-This can work around [EF Core #11298](https://github.com/dotnet/efcore/issues/11298): a partial unique index on foreign-key columns can incorrectly cause a one-to-one relationship to be scaffolded. Exclusions are applied before relationship inference. Foreign keys, columns, primary keys, and unique constraints are retained unless excluded by other settings; other unique indexes or keys can still imply a one-to-one relationship. Unlisted indexes are unchanged; filtered indexes are not automatically excluded.
-
-The database index is not dropped or modified and continues to enforce uniqueness. Its mapping is omitted from the generated EF model, so review the consequences before using that model for migrations or database creation. Existing SQL Server index-exclusion behavior is unchanged.
-
 ### Updating to new configuration
 
 After updating the `efcpt-config.json`, you will need to run the `efcpt` CLI command from above once again in order to update the generated code.
