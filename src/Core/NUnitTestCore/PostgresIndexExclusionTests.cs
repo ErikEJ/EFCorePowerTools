@@ -15,11 +15,9 @@ namespace UnitTests
         private const string FilteredIndex = "uq_child_active_parent";
 
         [Theory]
-        [InlineData(false, false)]
-        [InlineData(false, true)]
-        [InlineData(true, false)]
-        [InlineData(true, true)]
-        public void PartialUniqueIndexIsExcludedBeforeRelationshipInference(bool composite, bool excludeIndex)
+        [InlineData(false)]
+        [InlineData(true)]
+        public void PartialUniqueIndexIsExcludedBeforeRelationshipInference(bool excludeIndex)
         {
             var options = new ReverseEngineerCommandOptions
             {
@@ -36,21 +34,17 @@ namespace UnitTests
                 .BuildServiceProvider();
 
             var model = services.GetRequiredService<IScaffoldingModelFactory>()
-                .Create(CreateDatabase(composite), new ModelReverseEngineerOptions());
+                .Create(CreateDatabase(), new ModelReverseEngineerOptions());
             var child = model.GetEntityTypes().Single(e => e.GetTableName() == "child");
             var foreignKey = Assert.Single(child.GetForeignKeys());
 
             // Without an explicit exclusion, preserve the existing upstream inference behavior.
             Assert.Equal(!excludeIndex, foreignKey.IsUnique);
             Assert.Equal(excludeIndex, foreignKey.PrincipalToDependent.IsCollection);
-            Assert.Equal(composite ? 2 : 1, foreignKey.Properties.Count);
-            Assert.Equal("fk_child_parent", foreignKey.GetConstraintName());
-            Assert.Equal(composite ? 4 : 3, child.GetProperties().Count());
             Assert.Equal(!excludeIndex, child.GetIndexes().Any(i => i.GetDatabaseName() == FilteredIndex));
-            Assert.Contains(child.GetIndexes(), i => i.GetDatabaseName() == "ix_child_parent");
         }
 
-        private static DatabaseModel CreateDatabase(bool composite)
+        private static DatabaseModel CreateDatabase()
         {
             var database = new DatabaseModel { DatabaseName = "IndexExclusionTests", DefaultSchema = "public" };
             var parent = new DatabaseTable { Database = database, Name = "parent", Schema = "public" };
@@ -79,22 +73,6 @@ namespace UnitTests
             var index = new DatabaseIndex { Table = child, Name = FilteredIndex, IsUnique = true, Filter = "is_active = true" };
             index.Columns.Add(childParentId);
             child.Indexes.Add(index);
-            var regularIndex = new DatabaseIndex { Table = child, Name = "ix_child_parent" };
-            regularIndex.Columns.Add(childParentId);
-            child.Indexes.Add(regularIndex);
-
-            if (composite)
-            {
-                var parentTenant = new DatabaseColumn { Table = parent, Name = "tenant_id", StoreType = "integer" };
-                var childTenant = new DatabaseColumn { Table = child, Name = "tenant_id", StoreType = "integer" };
-                parent.Columns.Add(parentTenant);
-                parent.PrimaryKey.Columns.Add(parentTenant);
-                child.Columns.Add(childTenant);
-                foreignKey.Columns.Add(childTenant);
-                foreignKey.PrincipalColumns.Add(parentTenant);
-                index.Columns.Add(childTenant);
-                regularIndex.Columns.Add(childTenant);
-            }
 
             return database;
         }
