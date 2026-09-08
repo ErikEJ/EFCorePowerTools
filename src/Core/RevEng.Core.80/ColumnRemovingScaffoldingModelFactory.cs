@@ -44,6 +44,22 @@ namespace RevEng.Core
                     : $"{table.Schema}.{table.Name}";
             }
 
+            // PostgreSQL identifiers are case-sensitive; keep the existing column lookup behavior below.
+            var excludedIndexNames = databaseType == DatabaseType.Npgsql
+                ? tables.Find(c => c.Name.Equals(name, StringComparison.Ordinal))?.ExcludedIndexes
+                : null;
+            if (excludedIndexNames != null)
+            {
+                // Remove indexes before relationship inference, which treats partial unique indexes as one-to-one.
+                var excludedIndexes = table.Indexes
+                    .Where(index => excludedIndexNames.Contains(index.Name, StringComparer.Ordinal))
+                    .ToList();
+                foreach (var index in excludedIndexes)
+                {
+                    table.Indexes.Remove(index);
+                }
+            }
+
             var excludedColumns = new List<DatabaseColumn>();
             var tableDefinition = tables.Find(c => c.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
             if (tableDefinition?.ExcludedColumns != null)
