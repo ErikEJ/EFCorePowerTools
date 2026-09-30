@@ -233,11 +233,16 @@ public class PatchedSqlServerDatabaseModelFactory : IDatabaseModelFactory
             {
                 using var command = connection.CreateCommand();
                 command.CommandText =
-                    $"""
+                    """
 SELECT CASE WHEN EXISTS (
     SELECT 1 FROM [sys].[all_columns]
-    WHERE [object_id] = OBJECT_ID(N'sys.columns') AND [name] = N'{columnName}') THEN 1 ELSE 0 END;
+    WHERE [object_id] = OBJECT_ID(N'sys.columns') AND [name] = @columnName) THEN 1 ELSE 0 END;
 """;
+                var columnNameParameter = command.CreateParameter();
+                columnNameParameter.ParameterName = "@columnName";
+                columnNameParameter.Value = columnName;
+                command.Parameters.Add(columnNameParameter);
+
                 var result = command.ExecuteScalar();
                 return result != null && Convert.ToInt32(result) == 1;
             }
