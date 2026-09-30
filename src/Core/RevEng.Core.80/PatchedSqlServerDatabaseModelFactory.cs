@@ -83,6 +83,7 @@ public class PatchedSqlServerDatabaseModelFactory : IDatabaseModelFactory
 
     private byte? _compatibilityLevel;
     private EngineEdition? _engineEdition;
+    private bool _supportsVectorDimensions;
     private string? _version;
     private DataverseModelFactoryExtension? _dataverse;
 
@@ -142,6 +143,7 @@ public class PatchedSqlServerDatabaseModelFactory : IDatabaseModelFactory
             _compatibilityLevel = GetCompatibilityLevel(connection);
             _engineEdition = GetEngineEdition(connection);
             _version = GetVersion(connection);
+            _supportsVectorDimensions = GetSupportsVectorDimensions(connection);
 
             databaseModel.DatabaseName = connection.Database;
             databaseModel.DefaultSchema = GetDefaultSchema(connection);
@@ -192,6 +194,7 @@ public class PatchedSqlServerDatabaseModelFactory : IDatabaseModelFactory
         {
             _compatibilityLevel = null;
             _engineEdition = null;
+            _supportsVectorDimensions = false;
 
             if (!connectionStartedOpen)
             {
@@ -213,6 +216,26 @@ public class PatchedSqlServerDatabaseModelFactory : IDatabaseModelFactory
             command.CommandText = "SELECT @@VERSION;";
             var result = command.ExecuteScalar();
             return result as string;
+        }
+
+        static bool GetSupportsVectorDimensions(DbConnection connection)
+        {
+            try
+            {
+                using var command = connection.CreateCommand();
+                command.CommandText =
+                    """
+SELECT CASE WHEN EXISTS (
+    SELECT 1 FROM [sys].[all_columns]
+    WHERE [object_id] = OBJECT_ID(N'sys.columns') AND [name] = N'vector_dimensions') THEN 1 ELSE 0 END;
+""";
+                var result = command.ExecuteScalar();
+                return result != null && Convert.ToInt32(result) == 1;
+            }
+            catch (DbException)
+            {
+                return false;
+            }
         }
 
         static byte GetCompatibilityLevel(DbConnection connection)
@@ -759,7 +782,7 @@ SELECT
     CAST([c].[max_length] AS int) AS [max_length],
     CAST([c].[precision] AS int) AS [precision],
     CAST([c].[scale] AS int) AS [scale],
-    {(_compatibilityLevel is >= 170 ? "[c].[vector_dimensions]" : "NULL as [vector_dimensions]")},
+    {(_supportsVectorDimensions ? "[c].[vector_dimensions]" : "NULL as [vector_dimensions]")},
     [c].[is_nullable],
     [c].[is_identity],
     [dc].[definition] AS [default_sql],
@@ -1038,6 +1061,12 @@ LEFT JOIN [sys].[default_constraints] AS [dc] ON [c].[object_id] = [dc].[parent_
             case "decimal" or "numeric":
                 return $"{dataTypeName}({precision}, {scale})";
             case "vector":
+                // vector_dimensions may not be available, derive from the storage size (8 byte header + 4 bytes per float32 element)
+                if (vectorDimensions <= 0 && maxLength > 8)
+                {
+                    vectorDimensions = (maxLength - 8) / 4;
+                }
+
                 return $"vector({vectorDimensions})";
         }
 
