@@ -454,6 +454,39 @@ GO
         }
 
         [Fact]
+        public void VectorColumnIsScaffoldedWithDimension()
+        {
+            var factory = new SqlServerDacpacDatabaseModelFactory();
+            var options = new DatabaseModelFactoryOptions(null, new List<string>());
+            var dacpacPath = BuildDacpac(
+                SqlServerVersion.Sql170,
+                """
+                CREATE TABLE [dbo].[SdrSearch]
+                (
+                    [SdrId]     INT           NOT NULL PRIMARY KEY,
+                    [Embedding] VECTOR (1536) NULL
+                );
+                """);
+
+            try
+            {
+                var dbModel = factory.Create(dacpacPath, options);
+                var table = dbModel.Tables.Single(t => t.Schema == "dbo" && t.Name == "SdrSearch");
+
+                Assert.Equal(2, table.Columns.Count());
+
+                var embedding = table.Columns.Single(c => c.Name == "Embedding");
+
+                Assert.Equal("vector(1536)", embedding.StoreType);
+                Assert.True(embedding.IsNullable);
+            }
+            finally
+            {
+                File.Delete(dacpacPath);
+            }
+        }
+
+        [Fact]
         public void MultipleTriggersFromDacpacAreCaptured()
         {
             var factory = new SqlServerDacpacDatabaseModelFactory();
@@ -607,9 +640,14 @@ GO
 
         private static string BuildDacpac(params string[] sqlScripts)
         {
+            return BuildDacpac(SqlServerVersion.Sql160, sqlScripts);
+        }
+
+        private static string BuildDacpac(SqlServerVersion version, params string[] sqlScripts)
+        {
             var path = Path.Combine(Path.GetTempPath(), $"dacpac-test-{Guid.NewGuid():N}.dacpac");
 
-            using var model = new TSqlModel(SqlServerVersion.Sql160, new TSqlModelOptions());
+            using var model = new TSqlModel(version, new TSqlModelOptions());
             foreach (var sql in sqlScripts)
             {
                 model.AddObjects(sql);
