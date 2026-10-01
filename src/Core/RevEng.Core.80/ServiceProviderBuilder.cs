@@ -8,6 +8,7 @@ using EntityFrameworkCore.Scaffolding.Handlebars;
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
 using FirebirdSql.EntityFrameworkCore.Firebird.Design.Internal;
 using Humanizer.Inflections;
+using IBM.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Design.Internal;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -178,6 +179,11 @@ namespace RevEng.Core
                         nodaTime.ConfigureDesignTimeServices(serviceCollection);
                     }
 
+                    break;
+
+                case DatabaseType.DB2:
+                    var db2Provider = new Db2DesignTimeServices();
+                    db2Provider.ConfigureDesignTimeServices(serviceCollection);
                     break;
 
                 default:

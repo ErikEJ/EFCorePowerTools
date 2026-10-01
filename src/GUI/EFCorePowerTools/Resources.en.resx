@@ -141,4 +141,7 @@
   <data name="SQLiteProvider" xml:space="preserve">
     <value>0ebaab6e-ca80-4b4a-8ddf-cbe6bf058c70</value>
   </data>
+  <data name="DB2Provider" xml:space="preserve">
+    <value>9d8c88c6-df88-4b8a-ab73-ca75034649cc</value>
+  </data>
 </root>
