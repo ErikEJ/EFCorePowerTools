@@ -801,9 +801,9 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     }
                 }
             }
-            catch (InvalidDataException)
+            catch (Exception ex) when (ex is InvalidDataException or IOException or System.Xml.XmlException)
             {
-                // Not a readable zip package, nothing to extract.
+                // Not a readable zip package, or model.xml could not be parsed; nothing to extract.
             }
 
             return dimensions;
