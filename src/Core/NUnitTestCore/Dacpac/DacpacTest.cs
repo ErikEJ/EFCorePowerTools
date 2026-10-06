@@ -597,7 +597,7 @@ GO
 
             // Assert
             Assert.Single(dbModel.Tables);
-            Assert.NotNull(dbModel.Tables.Single().Columns.Single(c => c.Name == "Embedding"));
+            Assert.Equal("vector(1536)", dbModel.Tables.Single().Columns.Single(c => c.Name == "Embedding").StoreType);
         }
 
         [Fact]

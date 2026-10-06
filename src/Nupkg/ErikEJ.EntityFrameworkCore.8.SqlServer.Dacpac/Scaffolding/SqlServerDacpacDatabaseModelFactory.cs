@@ -5,7 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Xml.Linq;
+using System.Xml;
 using GOEddie.Dacpac.References;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
@@ -409,11 +409,6 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 return "nvarchar(128)";
             }
 
-            if (dataTypeName == "vector")
-            {
-                return $"vector({maxLength})";
-            }
-
             if (dataTypeName == "decimal"
                 || dataTypeName == "numeric")
             {
@@ -655,7 +650,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                     if (vectorColumnDimensions.TryGetValue(col.Name.ToString(), out var vectorDimension))
                     {
                         systemTypeName = "vector";
-                        storeType = GetStoreType(systemTypeName, vectorDimension, col.Precision, col.Scale);
+                        storeType = $"vector({vectorDimension})";
                     }
                     else if (!TryInferStoreTypeFromExpression(col.Expression, out storeType, out systemTypeName))
                     {
@@ -766,36 +761,54 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 }
 
                 using var stream = entry.Open();
-                var document = XDocument.Load(stream);
-                var ns = document.Root?.GetDefaultNamespace() ?? XNamespace.None;
-
-                foreach (var columnElement in document.Descendants(ns + "Element")
-                    .Where(e => (string)e.Attribute("Type") == "SqlSimpleColumn"))
+                using var reader = XmlReader.Create(stream, new XmlReaderSettings
                 {
-                    var columnName = (string)columnElement.Attribute("Name");
+                    DtdProcessing = DtdProcessing.Prohibit,
+                    XmlResolver = null,
+                });
+
+                while (reader.Read())
+                {
+                    if (reader.NodeType != XmlNodeType.Element
+                        || reader.LocalName != "Element"
+                        || reader.GetAttribute("Type") != "SqlSimpleColumn")
+                    {
+                        continue;
+                    }
+
+                    var columnName = reader.GetAttribute("Name");
                     if (string.IsNullOrEmpty(columnName))
                     {
                         continue;
                     }
 
-                    var vectorTypeSpecifier = columnElement
-                        .Elements(ns + "Relationship")
-                        .Where(r => (string)r.Attribute("Name") == "TypeSpecifier")
-                        .Elements(ns + "Entry")
-                        .Elements(ns + "Element")
-                        .FirstOrDefault(e => (string)e.Attribute("Type") == "SqlVectorTypeSpecifier");
-
-                    if (vectorTypeSpecifier == null)
+                    using var columnReader = reader.ReadSubtree();
+                    var vectorTypeSpecifierDepth = -1;
+                    string dimensionValue = null;
+                    while (columnReader.Read())
                     {
-                        continue;
+                        if (columnReader.NodeType == XmlNodeType.Element
+                            && columnReader.LocalName == "Element"
+                            && columnReader.GetAttribute("Type") == "SqlVectorTypeSpecifier")
+                        {
+                            vectorTypeSpecifierDepth = columnReader.Depth;
+                        }
+                        else if (columnReader.NodeType == XmlNodeType.EndElement
+                            && columnReader.Depth == vectorTypeSpecifierDepth)
+                        {
+                            vectorTypeSpecifierDepth = -1;
+                        }
+                        else if (vectorTypeSpecifierDepth >= 0
+                            && columnReader.NodeType == XmlNodeType.Element
+                            && columnReader.LocalName == "Property"
+                            && columnReader.GetAttribute("Name") == "Dimension")
+                        {
+                            dimensionValue = columnReader.GetAttribute("Value");
+                        }
                     }
 
-                    var dimensionValue = vectorTypeSpecifier
-                        .Elements(ns + "Property")
-                        .FirstOrDefault(p => (string)p.Attribute("Name") == "Dimension")
-                        ?.Attribute("Value")?.Value;
-
-                    if (int.TryParse(dimensionValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out var dimension))
+                    if (int.TryParse(dimensionValue, NumberStyles.Integer, CultureInfo.InvariantCulture, out var dimension)
+                        && dimension > 0)
                     {
                         dimensions[columnName] = dimension;
                     }
