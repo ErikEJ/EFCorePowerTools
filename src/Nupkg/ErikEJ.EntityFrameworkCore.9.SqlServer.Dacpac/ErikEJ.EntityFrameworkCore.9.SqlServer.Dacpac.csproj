@@ -55,7 +55,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="9.0.19" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.HierarchyId" Version="9.0.19" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="170.4.83" />
+    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="170.5.96" />
   </ItemGroup>
 
   <ItemGroup>
