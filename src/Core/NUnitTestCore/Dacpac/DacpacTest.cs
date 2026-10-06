@@ -554,6 +554,20 @@ GO
         }
 
         [Fact]
+        public void VectorSupport()
+        {
+            var factory = new SqlServerDacpacDatabaseModelFactory();
+            var options = new DatabaseModelFactoryOptions(null, new List<string>());
+
+            // Act
+            var dbModel = factory.Create(TestPath("Vector.dacpac"), options);
+
+            // Assert
+            Assert.Single(dbModel.Tables);
+            Assert.NotNull(dbModel.Tables.Single().Columns.Single(c => c.Name == "Embedding"));
+        }
+
+        [Fact]
         public void Issue2322TvpSprocParameters()
         {
             var factory = new SqlServerDacpacStoredProcedureModelFactory(

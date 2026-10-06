@@ -24,7 +24,7 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
         private static readonly HashSet<string> DateTimePrecisionTypes = ["datetimeoffset", "datetime2", "time"];
 
         private static readonly HashSet<string> MaxLengthRequiredTypes
-            = new HashSet<string> { "binary", "varbinary", "char", "varchar", "nchar", "nvarchar" };
+            = new HashSet<string> { "binary", "varbinary", "char", "varchar", "nchar", "nvarchar", "vector" };
 
         private readonly SqlServerDacpacDatabaseModelFactoryOptions dacpacOptions;
 
