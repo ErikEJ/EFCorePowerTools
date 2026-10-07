@@ -88,7 +88,8 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
                 connectionString = DacpacConsolidator.Consolidate(connectionString);
             }
 
-            var sqlModel = new TSqlModel(connectionString);
+            using var sqlModel = new TSqlModel(connectionString);
+
             using var model = new TSqlTypedModel(sqlModel);
 
             var typeAliases = GetTypeAliases(model);
