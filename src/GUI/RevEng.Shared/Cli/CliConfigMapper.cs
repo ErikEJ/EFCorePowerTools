@@ -102,6 +102,7 @@ namespace RevEng.Common.Cli
                 UseDatabaseNamesForRoutines = config.CodeGeneration.UseDatabaseNamesForRoutines,
                 UseInternalAccessModifiersForSprocsAndFunctions = config.CodeGeneration.UseInternalAccessModifiersForSprocsAndFunctions,
                 UseTypedTvpParameters = config.CodeGeneration.UseTypedTvpParameters,
+                FileLineEndingStyle = config.CodeGeneration.FileLineEndings,
 
                 UseNoObjectFilter = false, // There are multiple options in the CLI to support this
 

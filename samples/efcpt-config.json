@@ -41,6 +41,7 @@
   "code-generation":
   { 
      "enable-on-configuring": false,
+     "file-line-endings": "native",
      "type": "all",
      "use-database-names": false,
      "use-data-annotations": false,

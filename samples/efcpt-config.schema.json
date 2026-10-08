@@ -188,6 +188,12 @@
           "type": "boolean",
           "title": "Add OnConfiguring method to the DbContext"
         },
+        "file-line-endings": {
+          "default": "native",
+          "enum": [ "lf", "crlf", "native" ],
+          "type": "string",
+          "title": "Line ending style for generated files"
+        },
         "type": {
           "default": "all",
           "enum": [ "all", "dbcontext", "entities" ],

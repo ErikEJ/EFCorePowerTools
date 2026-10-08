@@ -3,6 +3,7 @@
   "code-generation": {
     "enable-on-configuring": false,
     "generate-mermaid-diagram": false,
+    "file-line-endings": "lf",
     "merge-dacpacs": false,
     "refresh-object-lists": false,
     "remove-defaultsql-from-bool-properties": false,

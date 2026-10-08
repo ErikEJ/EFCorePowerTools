@@ -8,7 +8,7 @@ namespace RevEng.Core.Routines.Functions
 {
     public class NotImplementedFunctionScaffolder : IFunctionScaffolder
     {
-        public SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue, bool useAsyncCalls, bool useInternalAccessModifier, bool useNullableReferences)
+        public SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue, bool useAsyncCalls, bool useInternalAccessModifier, bool useNullableReferences, string fileLineEndingStyle)
         {
             throw new NotSupportedException();
         }
