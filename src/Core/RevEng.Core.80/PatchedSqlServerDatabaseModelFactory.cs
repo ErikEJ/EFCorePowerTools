@@ -1082,11 +1082,16 @@ LEFT JOIN [sys].[default_constraints] AS [dc] ON [c].[object_id] = [dc].[parent_
                 // If vector_base_type is also unavailable, the element size cannot be established, so don't guess.
                 if (vectorDimensions <= 0 && maxLength > 8 && vectorBaseType is int baseType)
                 {
-                    var elementSize = baseType == 1 ? 2 : 4;
-                    vectorDimensions = (maxLength - 8) / elementSize;
+                    var elementSize = baseType switch
+                    {
+                        1 => 2,
+                        _ => 4
+                    };
+
+                    vectorDimensions = Math.Max(0, (maxLength - 8) / elementSize);
                 }
 
-                return $"vector({vectorDimensions})";
+                return $"vector({Math.Max(0, vectorDimensions)})";
         }
 
         if (DateTimePrecisionTypes.Contains(dataTypeName)
