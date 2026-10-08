@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
+using Microsoft.EntityFrameworkCore.SqlServer.Scaffolding.Internal;
 using RevEng.Core;
 using Xunit;
 
@@ -68,6 +69,19 @@ namespace UnitTests
             var result = InvokePrivateStaticMethod("GetDescriptionParameter", input);
 
             // Assert
+            Assert.Equal(expected, result);
+        }
+
+        [Theory]
+        [InlineData(0, 8, 0, "vector(0)")]
+        [InlineData(0, 32, 1, "vector(12)")]
+        [InlineData(0, 40, 0, "vector(8)")]
+        [InlineData(12, 40, 0, "vector(12)")]
+        public void GetStoreType_ShouldDeriveVectorDimensionsFromStorageLength(int vectorDimensions, int maxLength, int vectorBaseType, string expected)
+        {
+            var method = typeof(PatchedSqlServerDatabaseModelFactory).GetMethod("GetStoreType", BindingFlags.NonPublic | BindingFlags.Static);
+            var result = (string)method!.Invoke(null, new object[] { "vector", maxLength, 0, 0, vectorDimensions, vectorBaseType })!;
+
             Assert.Equal(expected, result);
         }
 
