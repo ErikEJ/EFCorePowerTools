@@ -248,9 +248,10 @@ namespace RevEng.Core
         }
 
         private static SavedModelFiles Save(
-           ScaffoldedModel scaffoldedModel,
-           string outputDir,
-           string fileLineEndingStyle, string fileEncoding = null)
+            ScaffoldedModel scaffoldedModel,
+            string outputDir,
+            string fileLineEndingStyle,
+            string fileEncoding = null)
         {
             Directory.CreateDirectory(outputDir);
 
