@@ -83,8 +83,6 @@ public class PatchedSqlServerDatabaseModelFactory : IDatabaseModelFactory
 
     private byte? _compatibilityLevel;
     private EngineEdition? _engineEdition;
-    private bool _supportsVectorDimensions;
-    private bool _supportsVectorBaseType;
     private string? _version;
     private DataverseModelFactoryExtension? _dataverse;
 
@@ -144,8 +142,6 @@ public class PatchedSqlServerDatabaseModelFactory : IDatabaseModelFactory
             _compatibilityLevel = GetCompatibilityLevel(connection);
             _engineEdition = GetEngineEdition(connection);
             _version = GetVersion(connection);
-            _supportsVectorDimensions = GetSupportsVectorDimensions(connection);
-            _supportsVectorBaseType = GetSupportsVectorBaseType(connection);
 
             databaseModel.DatabaseName = connection.Database;
             databaseModel.DefaultSchema = GetDefaultSchema(connection);
@@ -196,8 +192,6 @@ public class PatchedSqlServerDatabaseModelFactory : IDatabaseModelFactory
         {
             _compatibilityLevel = null;
             _engineEdition = null;
-            _supportsVectorDimensions = false;
-            _supportsVectorBaseType = false;
 
             if (!connectionStartedOpen)
             {
@@ -219,37 +213,6 @@ public class PatchedSqlServerDatabaseModelFactory : IDatabaseModelFactory
             command.CommandText = "SELECT @@VERSION;";
             var result = command.ExecuteScalar();
             return result as string;
-        }
-
-        static bool GetSupportsVectorDimensions(DbConnection connection)
-            => ColumnExists(connection, "vector_dimensions");
-
-        static bool GetSupportsVectorBaseType(DbConnection connection)
-            => ColumnExists(connection, "vector_base_type");
-
-        static bool ColumnExists(DbConnection connection, string columnName)
-        {
-            try
-            {
-                using var command = connection.CreateCommand();
-                command.CommandText =
-                    """
-SELECT CASE WHEN EXISTS (
-    SELECT 1 FROM [sys].[all_columns]
-    WHERE [object_id] = OBJECT_ID(N'sys.columns') AND [name] = @columnName) THEN 1 ELSE 0 END;
-""";
-                var columnNameParameter = command.CreateParameter();
-                columnNameParameter.ParameterName = "@columnName";
-                columnNameParameter.Value = columnName;
-                command.Parameters.Add(columnNameParameter);
-
-                var result = command.ExecuteScalar();
-                return result != null && Convert.ToInt32(result) == 1;
-            }
-            catch (DbException)
-            {
-                return false;
-            }
         }
 
         static byte GetCompatibilityLevel(DbConnection connection)
@@ -454,7 +417,7 @@ WHERE [t].[is_user_defined] = 1 OR [t].[system_type_id] <> [t].[user_type_id];
             var precision = reader.GetValueOrDefault<int>("precision");
             var scale = reader.GetValueOrDefault<int>("scale");
 
-            var storeType = GetStoreType(systemType, maxLength, precision, scale, vectorDimensions: 0, vectorBaseType: null);
+            var storeType = GetStoreType(systemType, maxLength, precision, scale, vectorDimensions: 0);
 
             _logger.TypeAliasFound(DisplayName(schema, userType), storeType);
 
@@ -531,7 +494,7 @@ WHERE "
                 storeType = value.storeType;
             }
 
-            storeType = GetStoreType(storeType, maxLength: 0, precision, scale, vectorDimensions: 0, vectorBaseType: null);
+            storeType = GetStoreType(storeType, maxLength: 0, precision, scale, vectorDimensions: 0);
 
             _logger.SequenceFound(DisplayName(schema, name), storeType, cyclic, incrementBy, startValue, minValue, maxValue);
 
@@ -783,6 +746,10 @@ AND [v].[is_date_correlation_view] = 0
         IReadOnlyDictionary<string, (string storeType, string typeName)> typeAliases,
         string? databaseCollation)
     {
+        // The vector type is available under all database compatibility levels, so check whether the server knows
+        // the type rather than checking the compatibility level.
+        var supportsVectorType = typeAliases.ContainsKey("[sys].[vector]");
+
         using var command = connection.CreateCommand();
         var builder = new StringBuilder(
             $"""
@@ -796,8 +763,7 @@ SELECT
     CAST([c].[max_length] AS int) AS [max_length],
     CAST([c].[precision] AS int) AS [precision],
     CAST([c].[scale] AS int) AS [scale],
-    {(_supportsVectorDimensions ? "[c].[vector_dimensions]" : "NULL as [vector_dimensions]")},
-    {(_supportsVectorBaseType ? "CAST([c].[vector_base_type] AS int) AS [vector_base_type]" : "NULL as [vector_base_type]")},
+    {(supportsVectorType ? "[c].[vector_dimensions]" : "NULL as [vector_dimensions]")},
     [c].[is_nullable],
     [c].[is_identity],
     [dc].[definition] AS [default_sql],
@@ -868,7 +834,6 @@ LEFT JOIN [sys].[default_constraints] AS [dc] ON [c].[object_id] = [dc].[parent_
                 var precision = dataRecord.GetValueOrDefault<int>("precision");
                 var scale = dataRecord.GetValueOrDefault<int>("scale");
                 var vectorDimensions = dataRecord.GetValueOrDefault<int>("vector_dimensions");
-                var vectorBaseType = dataRecord.GetValueOrDefault<int?>("vector_base_type");
                 var nullable = dataRecord.GetValueOrDefault<bool>("is_nullable");
                 var isIdentity = dataRecord.GetValueOrDefault<bool>("is_identity");
                 var defaultValueSql = dataRecord.GetValueOrDefault<string>("default_sql");
@@ -915,7 +880,7 @@ LEFT JOIN [sys].[default_constraints] AS [dc] ON [c].[object_id] = [dc].[parent_
                 }
                 else
                 {
-                    storeType = GetStoreType(dataTypeName, maxLength, precision, scale, vectorDimensions, vectorBaseType);
+                    storeType = GetStoreType(dataTypeName, maxLength, precision, scale, vectorDimensions);
                     systemTypeName = dataTypeName;
                 }
 
@@ -1068,7 +1033,7 @@ LEFT JOIN [sys].[default_constraints] AS [dc] ON [c].[object_id] = [dc].[parent_
         }
     }
 
-    private static string GetStoreType(string dataTypeName, int maxLength, int precision, int scale, int vectorDimensions, int? vectorBaseType)
+    private static string GetStoreType(string dataTypeName, int maxLength, int precision, int scale, int vectorDimensions)
     {
         switch (dataTypeName)
         {
@@ -1077,15 +1042,6 @@ LEFT JOIN [sys].[default_constraints] AS [dc] ON [c].[object_id] = [dc].[parent_
             case "decimal" or "numeric":
                 return $"{dataTypeName}({precision}, {scale})";
             case "vector":
-                // vector_dimensions may not be available, derive from the storage size (8 byte header + N bytes per element,
-                // where N depends on vector_base_type: 0 = float32 (4 bytes), 1 = float16 (2 bytes)).
-                // If vector_base_type is also unavailable, the element size cannot be established, so don't guess.
-                if (vectorDimensions <= 0 && maxLength > 8 && vectorBaseType is int baseType)
-                {
-                    var elementSize = baseType == 1 ? 2 : 4;
-                    vectorDimensions = (maxLength - 8) / elementSize;
-                }
-
                 return $"vector({vectorDimensions})";
         }
 
