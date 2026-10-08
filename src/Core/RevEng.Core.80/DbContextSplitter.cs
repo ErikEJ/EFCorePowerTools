@@ -13,7 +13,7 @@ namespace RevEng.Core
     public static class DbContextSplitter
     {
         // Adapted from https://github.com/lauxjpn/DbContextOnModelCreatingSplitter
-        public static List<string> Split(string dbContextPath, string configNamespace, bool supportNullable, string dbContextName)
+        public static List<string> Split(string dbContextPath, string configNamespace, bool supportNullable, string dbContextName, string fileLineEndingStyle)
         {
             ArgumentNullException.ThrowIfNull(dbContextPath);
 
@@ -118,7 +118,7 @@ namespace RevEng.Core
 
                 var configurationFilePath = Path.Combine(configurationsDirectoryPath, $"{entityName}Configuration.cs");
 
-                ReverseEngineerRunner.RetryFileWrite(configurationFilePath, configurationContents);
+                ReverseEngineerRunner.RetryFileWrite(configurationFilePath, configurationContents, fileLineEndingStyle);
 
                 result.Add(configurationFilePath);
 
@@ -129,7 +129,7 @@ namespace RevEng.Core
 
             var finalSource = BuildDbContext(configurationNamespace, configurationLines, File.ReadAllLines(dbContextFilePath, Encoding.UTF8));
 
-            ReverseEngineerRunner.RetryFileWrite(dbContextFilePath, finalSource);
+            ReverseEngineerRunner.RetryFileWrite(dbContextFilePath, finalSource, fileLineEndingStyle);
 
             return result;
         }

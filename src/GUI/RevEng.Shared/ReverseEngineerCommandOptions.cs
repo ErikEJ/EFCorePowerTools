@@ -116,5 +116,7 @@ namespace RevEng.Common
         public bool UseInternalAccessModifiersForSprocsAndFunctions { get; set; }
 
         public bool UseTypedTvpParameters { get; set; }
+
+        public string FileLineEndingStyle { get; set; } = "native";
     }
 }

@@ -121,16 +121,16 @@ namespace RevEng.Core
                             }
                         }
 
-                        RetryFileWrite(filePaths.ContextFile, dbContextLines);
+                        RetryFileWrite(filePaths.ContextFile, dbContextLines, options.FileLineEndingStyle);
                     }
 
-                    RemoveFragments(filePaths.ContextFile, options.ContextClassName, options.IncludeConnectionString, options.UseNoDefaultConstructor);
+                    RemoveFragments(filePaths.ContextFile, options.ContextClassName, options.IncludeConnectionString, options.UseNoDefaultConstructor, options.FileLineEndingStyle);
                     if (!options.UseHandleBars && !options.UseT4 && !options.UseT4Split)
                     {
-                        PostProcess(filePaths.ContextFile, options.UseNullableReferences);
+                        PostProcess(filePaths.ContextFile, options.UseNullableReferences, options.FileLineEndingStyle);
                     }
 
-                    entityTypeConfigurationPaths = SplitDbContext(filePaths.ContextFile, options.UseDbContextSplitting, contextNamespace, options.UseNullableReferences, options.ContextClassName);
+                    entityTypeConfigurationPaths = SplitDbContext(filePaths.ContextFile, options.UseDbContextSplitting, contextNamespace, options.UseNullableReferences, options.ContextClassName, options.FileLineEndingStyle);
 
                     if (options.UseT4Split)
                     {
@@ -147,7 +147,7 @@ namespace RevEng.Core
                 {
                     foreach (var file in filePaths.AdditionalFiles)
                     {
-                        PostProcess(file, options.UseNullableReferences);
+                        PostProcess(file, options.UseNullableReferences, options.FileLineEndingStyle);
                     }
                 }
 
@@ -234,11 +234,14 @@ namespace RevEng.Core
 
         public static void RetryFileWrite(string path, List<string> finalLines)
         {
+            ArgumentNullException.ThrowIfNull(path);
+            ArgumentNullException.ThrowIfNull(finalLines);
+
             for (int i = 1; i <= 4; ++i)
             {
                 try
                 {
-                    File.WriteAllLines(path, finalLines, Encoding.UTF8);
+                    WriteLines(path, finalLines, null);
                     break;
                 }
                 catch (IOException) when (i <= 3)
@@ -254,13 +257,102 @@ namespace RevEng.Core
             {
                 try
                 {
-                    File.WriteAllText(path, finalText, Encoding.UTF8);
+                    File.WriteAllText(path, NormalizeLineEndings(finalText, null), Encoding.UTF8);
                     break;
                 }
                 catch (IOException) when (i <= 3)
                 {
                     Thread.Sleep(500);
                 }
+            }
+        }
+
+        public static void RetryFileWrite(string path, List<string> finalLines, string lineEndingStyle)
+        {
+            ArgumentNullException.ThrowIfNull(path);
+            ArgumentNullException.ThrowIfNull(finalLines);
+
+            for (int i = 1; i <= 4; ++i)
+            {
+                try
+                {
+                    WriteLines(path, finalLines, lineEndingStyle);
+
+                    break;
+                }
+                catch (IOException) when (i <= 3)
+                {
+                    Thread.Sleep(500);
+                }
+            }
+        }
+
+        public static void RetryFileWrite(string path, string finalText, string lineEndingStyle)
+        {
+            for (int i = 1; i <= 4; ++i)
+            {
+                try
+                {
+                    File.WriteAllText(path, NormalizeLineEndings(finalText, lineEndingStyle), Encoding.UTF8);
+                    break;
+                }
+                catch (IOException) when (i <= 3)
+                {
+                    Thread.Sleep(500);
+                }
+            }
+        }
+
+        public static string NormalizeLineEndings(string text, string lineEndingStyle)
+        {
+            ArgumentNullException.ThrowIfNull(text);
+
+            var normalized = text
+                .Replace("\r\n", "\n", StringComparison.Ordinal)
+                .Replace("\r", "\n", StringComparison.Ordinal);
+
+            return normalized.Replace("\n", GetConfiguredLineEnding(lineEndingStyle), StringComparison.Ordinal);
+        }
+
+        public static bool IsSupportedLineEndingStyle(string lineEndingStyle)
+        {
+            return string.IsNullOrWhiteSpace(lineEndingStyle)
+                || lineEndingStyle.Equals("native", StringComparison.OrdinalIgnoreCase)
+                || lineEndingStyle.Equals("lf", StringComparison.OrdinalIgnoreCase)
+                || lineEndingStyle.Equals("crlf", StringComparison.OrdinalIgnoreCase);
+        }
+
+        public static string GetConfiguredLineEnding(string lineEndingStyle)
+        {
+            if (string.IsNullOrWhiteSpace(lineEndingStyle)
+                || lineEndingStyle.Equals("native", StringComparison.OrdinalIgnoreCase))
+            {
+                return Environment.NewLine;
+            }
+
+            if (lineEndingStyle.Equals("lf", StringComparison.OrdinalIgnoreCase))
+            {
+                return "\n";
+            }
+
+            if (lineEndingStyle.Equals("crlf", StringComparison.OrdinalIgnoreCase))
+            {
+                return "\r\n";
+            }
+
+            throw new ArgumentOutOfRangeException(nameof(lineEndingStyle), lineEndingStyle, "Unsupported line ending style.");
+        }
+
+        private static void WriteLines(string path, IEnumerable<string> lines, string lineEndingStyle)
+        {
+            using var streamWriter = new StreamWriter(path, false, Encoding.UTF8)
+            {
+                NewLine = GetConfiguredLineEnding(lineEndingStyle),
+            };
+
+            foreach (var line in lines)
+            {
+                streamWriter.WriteLine(line);
             }
         }
 
@@ -320,6 +412,12 @@ namespace RevEng.Core
                 warnings.Add("UseInternalAccessModifiersForSprocsAndFunctions is set to true, but UseT4 or UseT4Split are not true.  This will result in conflicting access modifiers for the partial DBContext class.  This option is intended for when the T4 templates have been used and are setting the DBContext class to internal rather than public.  UseInternalAccessModifiersForSprocsAndFunctions will be reset to false to ensure a valid DBContext is generated.");
                 options.UseInternalAccessModifiersForSprocsAndFunctions = false;
             }
+
+            if (!IsSupportedLineEndingStyle(options.FileLineEndingStyle))
+            {
+                warnings.Add($"FileLineEndingStyle '{options.FileLineEndingStyle}' is invalid. Supported values are 'native', 'lf', or 'crlf'. The native platform line ending will be used.");
+                options.FileLineEndingStyle = "native";
+            }
         }
 
         private static SavedModelFiles CreateCleanupPaths(SavedModelFiles procedurePaths, SavedModelFiles functionPaths, SavedModelFiles filePaths)
@@ -347,14 +445,14 @@ namespace RevEng.Core
             return cleanUpPaths;
         }
 
-        private static List<string> SplitDbContext(string contextFile, bool useDbContextSplitting, string contextNamespace, bool supportNullable, string dbContextName)
+        private static List<string> SplitDbContext(string contextFile, bool useDbContextSplitting, string contextNamespace, bool supportNullable, string dbContextName, string fileLineEndingStyle)
         {
             if (!useDbContextSplitting)
             {
                 return new List<string>();
             }
 
-            return DbContextSplitter.Split(contextFile, contextNamespace, supportNullable, dbContextName);
+            return DbContextSplitter.Split(contextFile, contextNamespace, supportNullable, dbContextName, fileLineEndingStyle);
         }
 
         // If we didn't split, we might have used EntityTypeConfiguration.t4.  In that case, <ModelName>Configuration.cs files were generated.
@@ -405,7 +503,7 @@ namespace RevEng.Core
             return movedFiles;
         }
 
-        private static void RemoveFragments(string contextFile, string contextName, bool includeConnectionString, bool removeDefaultConstructor)
+        private static void RemoveFragments(string contextFile, string contextName, bool includeConnectionString, bool removeDefaultConstructor, string fileLineEndingStyle)
         {
             if (string.IsNullOrEmpty(contextFile))
             {
@@ -462,10 +560,10 @@ namespace RevEng.Core
                 i++;
             }
 
-            RetryFileWrite(contextFile, finalLines);
+            RetryFileWrite(contextFile, finalLines, fileLineEndingStyle);
         }
 
-        private static void PostProcess(string file, bool useNullable)
+        private static void PostProcess(string file, bool useNullable, string fileLineEndingStyle = null)
         {
             if (string.IsNullOrEmpty(file))
             {
@@ -476,18 +574,19 @@ namespace RevEng.Core
 
             if (useNullable)
             {
-                header = $"{header}{Environment.NewLine}#nullable enable";
+                header = $"{header}\n#nullable enable";
             }
             else
             {
-                header = $"{header}{Environment.NewLine}#nullable disable";
+                header = $"{header}\n#nullable disable";
             }
 
             var text = File.ReadAllText(file, Encoding.UTF8);
 
             RetryFileWrite(
                 file,
-                header + Environment.NewLine + text.TrimEnd());
+                header + "\n" + text.TrimEnd(),
+                fileLineEndingStyle);
         }
 
         private static void CleanUp(SavedModelFiles filePaths, List<string> entityTypeConfigurationPaths, string outputDir)
