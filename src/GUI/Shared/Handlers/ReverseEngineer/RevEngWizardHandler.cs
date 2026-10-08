@@ -903,6 +903,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 UseManyToManyEntity = options.UseManyToManyEntity,
                 UseDateOnlyTimeOnly = options.UseDateOnlyTimeOnly,
                 UseSchemaNamespaces = options.UseSchemaNamespaces,
+                FileLineEndingStyle = options.FileLineEndingStyle,
+                FileEncoding = options.FileEncoding,
                 T4TemplatePath = options.T4TemplatePath,
             };
 
@@ -981,6 +983,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
             options.UseManyToManyEntity = modelingOptionsResult.UseManyToManyEntity;
             options.UseDateOnlyTimeOnly = modelingOptionsResult.UseDateOnlyTimeOnly;
             options.UseSchemaNamespaces = modelingOptionsResult.UseSchemaNamespaces;
+            options.FileLineEndingStyle = modelingOptionsResult.FileLineEndingStyle;
+            options.FileEncoding = modelingOptionsResult.FileEncoding;
             options.T4TemplatePath = modelingOptionsResult.T4TemplatePath;
 
             return true;

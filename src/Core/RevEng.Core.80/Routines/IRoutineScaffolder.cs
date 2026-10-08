@@ -7,7 +7,7 @@ namespace RevEng.Core.Routines
 {
     public interface IRoutineScaffolder
     {
-        SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue, bool useAsyncCalls, bool useInternalAccessModifier, bool useNullableReferences, string fileLineEndingStyle);
+        SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue, bool useAsyncCalls, bool useInternalAccessModifier, bool useNullableReferences, string fileLineEndingStyle, string fileEncoding = null);
 
         ScaffoldedModel ScaffoldModel(RoutineModel model, ModuleScaffolderOptions scaffolderOptions, List<string> schemas, ref List<string> errors);
     }

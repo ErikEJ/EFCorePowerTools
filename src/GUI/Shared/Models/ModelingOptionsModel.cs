@@ -40,8 +40,40 @@ namespace EFCorePowerTools.Common.Models
         private bool useDateOnlyTimeOnly;
         private bool useSchemaNamespaces;
         private string t4Templatepath;
+        private string fileLineEndingStyle = "native";
+        private string fileEncoding = "utf-8-bom";
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public string FileLineEndingStyle
+        {
+            get => fileLineEndingStyle;
+            set
+            {
+                if (value == fileLineEndingStyle)
+                {
+                    return;
+                }
+
+                fileLineEndingStyle = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string FileEncoding
+        {
+            get => fileEncoding;
+            set
+            {
+                if (value == fileEncoding)
+                {
+                    return;
+                }
+
+                fileEncoding = value;
+                OnPropertyChanged();
+            }
+        }
 
         public bool UseDataAnnotations
         {

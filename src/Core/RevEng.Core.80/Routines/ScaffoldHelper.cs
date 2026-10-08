@@ -96,7 +96,7 @@ namespace RevEng.Core.Routines
             "while",
         };
 
-        public static SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue, bool useAsyncCalls, string fileLineEndingStyle)
+        public static SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue, bool useAsyncCalls, string fileLineEndingStyle, string fileEncoding = null)
         {
             ArgumentNullException.ThrowIfNull(scaffoldedModel);
 
@@ -107,7 +107,7 @@ namespace RevEng.Core.Routines
             if (path != null)
             {
                 Directory.CreateDirectory(path);
-                ReverseEngineerRunner.RetryFileWrite(contextPath, scaffoldedModel.ContextFile.Code, fileLineEndingStyle);
+                ReverseEngineerRunner.RetryFileWrite(contextPath, scaffoldedModel.ContextFile.Code, fileLineEndingStyle, fileEncoding);
             }
 
             var additionalFiles = new List<string>();
@@ -119,7 +119,7 @@ namespace RevEng.Core.Routines
                 if (addpath != null)
                 {
                     Directory.CreateDirectory(addpath);
-                    ReverseEngineerRunner.RetryFileWrite(additionalFilePath, entityTypeFile.Code, fileLineEndingStyle);
+                    ReverseEngineerRunner.RetryFileWrite(additionalFilePath, entityTypeFile.Code, fileLineEndingStyle, fileEncoding);
                     additionalFiles.Add(additionalFilePath);
                 }
             }

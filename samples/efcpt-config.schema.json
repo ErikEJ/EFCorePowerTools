@@ -188,6 +188,12 @@
           "type": "boolean",
           "title": "Add OnConfiguring method to the DbContext"
         },
+        "file-encoding": {
+          "default": "utf-8-bom",
+          "enum": [ "utf-8", "utf-8-bom" ],
+          "type": "string",
+          "title": "Encoding for generated files (utf-8 omits the BOM)"
+        },
         "file-line-endings": {
           "default": "native",
           "enum": [ "lf", "crlf", "native" ],

@@ -50,6 +50,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
+        <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="650">
         <StackPanel Margin="5"
                     Orientation="Vertical">
             <GroupBox Header="{x:Static locale:ReverseEngineerLocale.CodeGeneration}" >
@@ -118,20 +119,34 @@
                     Style="{StaticResource TextInputStyle}"
                     Text="{Binding Model.T4TemplatePath, Mode=TwoWay}"/>
 
+                    <dw:LiveTextBlock Text="Generated file line endings" />
+                    <ComboBox SelectedValue="{Binding Model.FileLineEndingStyle, Mode=TwoWay}"
+                              SelectedValuePath="Tag" Margin="0,2,0,8" TabIndex="14">
+                        <ComboBoxItem Content="Native (operating system default)" Tag="native" />
+                        <ComboBoxItem Content="LF (Unix)" Tag="lf" />
+                        <ComboBoxItem Content="CRLF (Windows)" Tag="crlf" />
+                    </ComboBox>
+                    <dw:LiveTextBlock Text="Generated file encoding" />
+                    <ComboBox SelectedValue="{Binding Model.FileEncoding, Mode=TwoWay}"
+                              SelectedValuePath="Tag" Margin="0,2,0,8" TabIndex="15">
+                        <ComboBoxItem Content="UTF-8 with BOM" Tag="utf-8-bom" />
+                        <ComboBoxItem Content="UTF-8 without BOM" Tag="utf-8" />
+                    </ComboBox>
+
                     <CheckBox Content="{x:Static locale:ReverseEngineerLocale.SplitDbContextIntoConfigurationClasses}"
                           IsChecked="{Binding Model.UseDbContextSplitting}"
                           Style="{StaticResource MarginCheckBlockStyle}"
-                          TabIndex="14" />
+                          TabIndex="16" />
                     
                     <CheckBox Content="{x:Static locale:ReverseEngineerLocale.UseSchemaFolders}"
                       IsChecked="{Binding Model.UseSchemaFolders}"
                       Style="{StaticResource MarginCheckBlockStyle}"
-                      TabIndex="15" />
+                      TabIndex="17" />
                     
                     <CheckBox Content="{x:Static locale:ReverseEngineerLocale.UseSchemaNamespaces}"
                         IsChecked="{Binding Model.UseSchemaNamespaces}"
                         Style="{StaticResource MarginCheckBlockStyle}"
-                        TabIndex="16" />
+                        TabIndex="18" />
                 </StackPanel>
 
             </GroupBox>
@@ -171,6 +186,8 @@
             </GroupBox>
 
         </StackPanel>
+
+        </ScrollViewer>
 
         <StackPanel Grid.Row="1"
                     Style="{StaticResource ButtonRowStyle}">

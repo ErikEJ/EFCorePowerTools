@@ -45,6 +45,8 @@ namespace EFCorePowerTools.ViewModels
             Model.OutputContextPath = presets.OutputContextPath;
             Model.ModelNamespace = presets.ModelNamespace;
             Model.UseSchemaNamespaces = presets.UseSchemaNamespaces;
+            Model.FileLineEndingStyle = presets.FileLineEndingStyle;
+            Model.FileEncoding = presets.FileEncoding;
             Model.T4TemplatePath = presets.T4TemplatePath;
         }
 

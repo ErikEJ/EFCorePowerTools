@@ -46,6 +46,32 @@ The provider name (`mssql`) may not be required, as an attempt is made to resolv
 
 A configuration file `efcpt-config.json` is created in the output folder, and you can open this file in your editor to modify the default options. If your editor supports it (for example VS Code), it will provide syntax guidance for the file. For reference there is a fully populated sample file [here](https://github.com/ErikEJ/EFCorePowerTools/blob/master/samples/efcpt-config.json).
 
+### Generated file line endings and encoding
+
+To generate LF files encoded as UTF-8 without a byte order mark (BOM), add these settings to `efcpt-config.json`:
+
+```json
+{
+  "code-generation": {
+    "file-line-endings": "lf",
+    "file-encoding": "utf-8"
+  }
+}
+```
+
+`file-line-endings` accepts `native`, `lf`, or `crlf`. `file-encoding` accepts `utf-8` (without BOM) or `utf-8-bom`. Omitting the settings preserves native platform line endings and UTF-8 with BOM. Unsupported values produce a warning and fall back to these defaults.
+
+The settings apply to generated entities, DbContexts, split configurations, routine files, the generated README, and the optional Mermaid diagram. They also apply to code generated from T4 and Handlebars templates; the input templates themselves are unchanged.
+
+In the Visual Studio extension, select **Advanced → File Layout → Generated file line endings / Generated file encoding**. The choices are saved in `efpt.config.json` as `FileLineEndingStyle` and `FileEncoding`:
+
+```json
+{
+  "FileLineEndingStyle": "lf",
+  "FileEncoding": "utf-8"
+}
+```
+
 ### Updating to new configuration
 
 After updating the `efcpt-config.json`, you will need to run the `efcpt` CLI command from above once again in order to update the generated code.

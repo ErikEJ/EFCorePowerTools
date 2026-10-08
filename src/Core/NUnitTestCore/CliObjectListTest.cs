@@ -24,6 +24,14 @@ namespace UnitTests
         }
 
         [Fact]
+        public void MissingFileFormatSettingsKeepExistingDefaults()
+        {
+            var config = JsonSerializer.Deserialize<CliConfig>("{\"code-generation\":{}}");
+            Assert.Equal("native", config.CodeGeneration.FileLineEndings);
+            Assert.Equal("utf-8-bom", config.CodeGeneration.FileEncoding);
+        }
+
+        [Fact]
         public void CanGetConfig()
         {
             var config = GetConfig();
@@ -198,6 +206,7 @@ namespace UnitTests
             var config = GetConfig();
             config.CodeGeneration.UseStoredProcedureResultSetFallback = false;
             config.CodeGeneration.FileLineEndings = "crlf";
+            config.CodeGeneration.FileEncoding = "utf-8";
 
             var testPath = TestPath("test.efpcli.json");
             try
@@ -215,6 +224,7 @@ namespace UnitTests
                 Assert.Equal(config.Tables.Count, resultConfig.Tables.Count);
                 Assert.False(resultConfig.CodeGeneration.UseStoredProcedureResultSetFallback);
                 Assert.Equal("crlf", resultConfig.CodeGeneration.FileLineEndings);
+                Assert.Equal("utf-8", resultConfig.CodeGeneration.FileEncoding);
 
                 for (var i = 0; i < config.Tables.Count; i++)
                 {
@@ -234,6 +244,7 @@ namespace UnitTests
         {
             var config = GetConfig();
             config.CodeGeneration.FileLineEndings = "lf";
+            config.CodeGeneration.FileEncoding = "utf-8";
             config.Names.DbContextName = "TestContext";
 
             var commandOptions = config.ToCommandOptions(
@@ -245,6 +256,7 @@ namespace UnitTests
                 TestPath("efpt.renaming.json"));
 
             Assert.Equal("lf", commandOptions.FileLineEndingStyle);
+            Assert.Equal("utf-8", commandOptions.FileEncoding);
         }
 
         [Fact]

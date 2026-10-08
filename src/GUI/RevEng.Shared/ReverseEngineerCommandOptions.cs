@@ -118,5 +118,7 @@ namespace RevEng.Common
         public bool UseTypedTvpParameters { get; set; }
 
         public string FileLineEndingStyle { get; set; } = "native";
+
+        public string FileEncoding { get; set; } = "utf-8-bom";
     }
 }

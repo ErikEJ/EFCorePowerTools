@@ -3,6 +3,7 @@
   "code-generation": {
     "enable-on-configuring": false,
     "generate-mermaid-diagram": false,
+    "file-encoding": "utf-8",
     "file-line-endings": "lf",
     "merge-dacpacs": false,
     "refresh-object-lists": false,

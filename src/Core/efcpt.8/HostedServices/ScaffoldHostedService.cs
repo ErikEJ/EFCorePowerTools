@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ErikEJ.EFCorePowerTools.Services;
@@ -67,8 +66,6 @@ internal sealed class ScaffoldHostedService : HostedService
                 return;
             }
 
-            GenerateMermaidContent(config.CodeGeneration.GenerateMermaidDiagram);
-
             var commandOptions = config.ToCommandOptions(
                 scaffoldOptions.ConnectionString,
                 reverseEngineerCommandOptions.DatabaseType,
@@ -76,6 +73,8 @@ internal sealed class ScaffoldHostedService : HostedService
                 scaffoldOptions.IsDacpac,
                 scaffoldOptions.ConfigFile?.FullName,
                 scaffoldOptions.RenamingFile?.FullName);
+            GeneratedFileWriter.ValidateOptions(commandOptions, configWarnings);
+            GenerateMermaidContent(config.CodeGeneration.GenerateMermaidDiagram, commandOptions);
             DisplayService.MarkupLine();
 
 #pragma warning disable S2589 // Boolean expressions should not be gratuitous
@@ -195,7 +194,7 @@ internal sealed class ScaffoldHostedService : HostedService
         return paths.Where(p => !string.IsNullOrEmpty(p)).Select(p => p!).Distinct().ToList();
     }
 
-    private void GenerateMermaidContent(bool generate)
+    private void GenerateMermaidContent(bool generate, ReverseEngineerCommandOptions commandOptions)
     {
         if (!generate)
         {
@@ -206,7 +205,7 @@ internal sealed class ScaffoldHostedService : HostedService
 
         var file = fileSystem.Path.Combine(scaffoldOptions.Output ?? Directory.GetCurrentDirectory(), "dbdiagram.md");
 
-        File.WriteAllText(file, content, Encoding.UTF8);
+        GeneratedFileWriter.WriteAllText(file, content, commandOptions.FileLineEndingStyle, commandOptions.FileEncoding);
         DisplayService.MarkupLine();
         DisplayService.MarkupLine("db diagram:", Color.Green);
         var fileUri = new Uri(new Uri("file://"), file);

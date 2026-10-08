@@ -143,6 +143,8 @@ namespace EFCorePowerTools.ViewModels
             Model.UseManyToManyEntity = presets.UseManyToManyEntity;
             Model.UseDateOnlyTimeOnly = presets.UseDateOnlyTimeOnly;
             Model.UseSchemaNamespaces = presets.UseSchemaNamespaces;
+            Model.FileLineEndingStyle = presets.FileLineEndingStyle;
+            Model.FileEncoding = presets.FileEncoding;
             Model.T4TemplatePath = presets.T4TemplatePath;
 
             Title = string.Format(ReverseEngineerLocale.GenerateEFCoreModelInProject, Model.ProjectName);
@@ -226,6 +228,8 @@ namespace EFCorePowerTools.ViewModels
             Model.OutputContextPath = advancedModelingOptionsResult.Payload.OutputContextPath;
             Model.ModelNamespace = advancedModelingOptionsResult.Payload.ModelNamespace;
             Model.UseSchemaNamespaces = advancedModelingOptionsResult.Payload.UseSchemaNamespaces;
+            Model.FileLineEndingStyle = advancedModelingOptionsResult.Payload.FileLineEndingStyle;
+            Model.FileEncoding = advancedModelingOptionsResult.Payload.FileEncoding;
             Model.T4TemplatePath = advancedModelingOptionsResult.Payload.T4TemplatePath;
         }
     }

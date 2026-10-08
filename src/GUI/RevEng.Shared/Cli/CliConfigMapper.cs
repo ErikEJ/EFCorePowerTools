@@ -103,6 +103,7 @@ namespace RevEng.Common.Cli
                 UseInternalAccessModifiersForSprocsAndFunctions = config.CodeGeneration.UseInternalAccessModifiersForSprocsAndFunctions,
                 UseTypedTvpParameters = config.CodeGeneration.UseTypedTvpParameters,
                 FileLineEndingStyle = config.CodeGeneration.FileLineEndings,
+                FileEncoding = config.CodeGeneration.FileEncoding,
 
                 UseNoObjectFilter = false, // There are multiple options in the CLI to support this
 

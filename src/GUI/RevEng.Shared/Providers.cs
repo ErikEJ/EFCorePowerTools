@@ -120,7 +120,7 @@ namespace RevEng.Common
 
             var readmePath = Path.Combine(commandOptions.ProjectPath, readmeName);
 
-            File.WriteAllText(readmePath, finalText, Encoding.UTF8);
+            GeneratedFileWriter.WriteAllText(readmePath, finalText, commandOptions.FileLineEndingStyle, commandOptions.FileEncoding);
 
             return readmePath;
         }

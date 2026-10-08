@@ -41,6 +41,7 @@
   "code-generation":
   { 
      "enable-on-configuring": false,
+     "file-encoding": "utf-8-bom",
      "file-line-endings": "native",
      "type": "all",
      "use-database-names": false,

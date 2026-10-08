@@ -124,5 +124,9 @@ namespace RevEng.Common
         public string MinimumProductVersion { get; set; }
 
         public bool UseTypedTvpParameters { get; set; } = true;
+
+        public string FileLineEndingStyle { get; set; } = "native";
+
+        public string FileEncoding { get; set; } = "utf-8-bom";
     }
 }

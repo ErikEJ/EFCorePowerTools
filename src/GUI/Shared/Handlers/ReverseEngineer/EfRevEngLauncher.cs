@@ -117,6 +117,8 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
                 PreserveCasingWithRegex = options.PreserveCasingWithRegex,
                 UseDateOnlyTimeOnly = options.UseDateOnlyTimeOnly,
                 UseSchemaNamespaces = options.UseSchemaNamespaces,
+                FileLineEndingStyle = options.FileLineEndingStyle,
+                FileEncoding = options.FileEncoding,
                 UseDecimalDataAnnotation = options.UseDecimalDataAnnotationForSprocResult,
                 UsePrefixNavigationNaming = options.UsePrefixNavigationNaming,
                 UseDatabaseNamesForRoutines = options.UseDatabaseNamesForRoutines,
