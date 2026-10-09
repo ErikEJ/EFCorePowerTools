@@ -232,41 +232,6 @@ namespace RevEng.Core
             return string.Join(".", parts);
         }
 
-        public static void RetryFileWrite(string path, List<string> finalLines)
-        {
-            ArgumentNullException.ThrowIfNull(path);
-            ArgumentNullException.ThrowIfNull(finalLines);
-
-            for (int i = 1; i <= 4; ++i)
-            {
-                try
-                {
-                    WriteLines(path, finalLines, null);
-                    break;
-                }
-                catch (IOException) when (i <= 3)
-                {
-                    Thread.Sleep(500);
-                }
-            }
-        }
-
-        public static void RetryFileWrite(string path, string finalText)
-        {
-            for (int i = 1; i <= 4; ++i)
-            {
-                try
-                {
-                    File.WriteAllText(path, NormalizeLineEndings(finalText, null), Encoding.UTF8);
-                    break;
-                }
-                catch (IOException) when (i <= 3)
-                {
-                    Thread.Sleep(500);
-                }
-            }
-        }
-
         public static void RetryFileWrite(string path, List<string> finalLines, string lineEndingStyle)
         {
             ArgumentNullException.ThrowIfNull(path);
