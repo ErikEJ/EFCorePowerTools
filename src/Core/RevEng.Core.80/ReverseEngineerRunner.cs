@@ -536,21 +536,22 @@ namespace RevEng.Core
             }
 
             var header = PathHelper.Header;
+            var lineEnding = GetConfiguredLineEnding(fileLineEndingStyle);
 
             if (useNullable)
             {
-                header = $"{header}\n#nullable enable";
+                header = $"{header}{lineEnding}#nullable enable";
             }
             else
             {
-                header = $"{header}\n#nullable disable";
+                header = $"{header}{lineEnding}#nullable disable";
             }
 
             var text = File.ReadAllText(file, Encoding.UTF8);
 
             RetryFileWrite(
                 file,
-                header + "\n" + text.TrimEnd(),
+                header + lineEnding + text.TrimEnd(),
                 fileLineEndingStyle);
         }
 
