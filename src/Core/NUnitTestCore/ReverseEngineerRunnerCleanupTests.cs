@@ -64,6 +64,26 @@ namespace NUnitTestCore
         }
 
         [Fact]
+        public void RetryFileWritePreservesExistingFileWhenLineEndingStyleIsUnsupported()
+        {
+            var codeFile = CreateTestFile("existing contents\r\n");
+
+            try
+            {
+                var originalBytes = File.ReadAllBytes(codeFile);
+
+                Assert.Throws<ArgumentOutOfRangeException>(() =>
+                    ReverseEngineerRunner.RetryFileWrite(codeFile, new System.Collections.Generic.List<string> { "replacement" }, "unsupported"));
+
+                Assert.Equal(originalBytes, File.ReadAllBytes(codeFile));
+            }
+            finally
+            {
+                RemoveIfExists(codeFile);
+            }
+        }
+
+        [Fact]
         public void RetryFileWriteUsesCrLfLineEndings()
         {
             var codeFile = CreateTestFile(string.Empty);

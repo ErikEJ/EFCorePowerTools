@@ -310,9 +310,10 @@ namespace RevEng.Core
 
         private static void WriteLines(string path, IEnumerable<string> lines, string lineEndingStyle)
         {
+            var lineEnding = GetConfiguredLineEnding(lineEndingStyle);
             using var streamWriter = new StreamWriter(path, false, Encoding.UTF8)
             {
-                NewLine = GetConfiguredLineEnding(lineEndingStyle),
+                NewLine = lineEnding,
             };
 
             foreach (var line in lines)
