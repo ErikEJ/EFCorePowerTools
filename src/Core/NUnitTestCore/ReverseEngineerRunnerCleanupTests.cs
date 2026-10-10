@@ -154,6 +154,7 @@ namespace NUnitTestCore
                 WriteWithCharset(codeFile, charset, writeLines);
 
                 Assert.Equal(new byte[] { 0xEF, 0xBB, 0xBF }, File.ReadAllBytes(codeFile)[..3]);
+                Assert.Equal("caf\u00e9\n\u4e2d\u6587\n", File.ReadAllText(codeFile, Encoding.UTF8));
             }
             finally
             {
@@ -174,7 +175,7 @@ namespace NUnitTestCore
             {
                 WriteWithCharset(codeFile, charset, writeLines);
 
-                Assert.Equal(Encoding.ASCII.GetBytes("line1\nline2\n"), File.ReadAllBytes(codeFile));
+                Assert.Equal(Encoding.UTF8.GetBytes("caf\u00e9\n\u4e2d\u6587\n"), File.ReadAllBytes(codeFile));
             }
             finally
             {
@@ -209,11 +210,11 @@ namespace NUnitTestCore
 
             if (writeLines)
             {
-                ReverseEngineerRunner.RetryFileWrite(codeFile, new System.Collections.Generic.List<string> { "line1", "line2" }, fileFormat);
+                ReverseEngineerRunner.RetryFileWrite(codeFile, new System.Collections.Generic.List<string> { "caf\u00e9", "\u4e2d\u6587" }, fileFormat);
             }
             else
             {
-                ReverseEngineerRunner.RetryFileWrite(codeFile, "line1\nline2\n", fileFormat);
+                ReverseEngineerRunner.RetryFileWrite(codeFile, "caf\u00e9\n\u4e2d\u6587\n", fileFormat);
             }
         }
 

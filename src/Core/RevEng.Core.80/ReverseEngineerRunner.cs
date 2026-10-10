@@ -13,9 +13,6 @@ namespace RevEng.Core
 {
     public static class ReverseEngineerRunner
     {
-        private static readonly Encoding Utf8WithBom = new UTF8Encoding(encoderShouldEmitUTF8Identifier: true);
-        private static readonly Encoding Utf8WithoutBom = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false);
-
         public static ReverseEngineerResult GenerateFiles(ReverseEngineerCommandOptions options)
         {
             ArgumentNullException.ThrowIfNull(options);
@@ -328,12 +325,12 @@ namespace RevEng.Core
             if (string.IsNullOrWhiteSpace(charset)
                 || charset.Equals("utf-8-bom", StringComparison.OrdinalIgnoreCase))
             {
-                return Utf8WithBom;
+                return Encoding.UTF8;
             }
 
             if (charset.Equals("utf-8", StringComparison.OrdinalIgnoreCase))
             {
-                return Utf8WithoutBom;
+                return Encoding.Default;
             }
 
             throw new ArgumentOutOfRangeException(nameof(charset), charset, "Unsupported charset.");
