@@ -90,7 +90,7 @@ namespace RevEng.Common
             };
         }
 
-        public static string CreateReadme(ReverseEngineerCommandOptions commandOptions, CodeGenerationMode codeGenerationMode, string redactedConnectionString, Encoding encoding)
+        public static string GetReadmeContent(ReverseEngineerCommandOptions commandOptions, CodeGenerationMode codeGenerationMode, string redactedConnectionString)
         {
             if (commandOptions == null)
             {
@@ -116,13 +116,7 @@ namespace RevEng.Common
 
             var template = File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), readmeName), Encoding.UTF8);
 
-            var finalText = GetReadMeText(commandOptions, template, packages, redactedConnectionString);
-
-            var readmePath = Path.Combine(commandOptions.ProjectPath, readmeName);
-
-            File.WriteAllText(readmePath, finalText, encoding);
-
-            return readmePath;
+            return GetReadMeText(commandOptions, template, packages, redactedConnectionString);
         }
 
         public static List<NuGetPackage> GetNeededPackages(DatabaseType databaseType, bool useSpatial, bool useNodaTime, bool useDateOnlyTimeOnly, bool useHierarchyId, bool discoverMultipleResultSets, bool hasProcedures, CodeGenerationMode codeGenerationMode)

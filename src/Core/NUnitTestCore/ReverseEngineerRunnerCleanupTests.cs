@@ -139,6 +139,41 @@ namespace NUnitTestCore
         }
 
         [Theory]
+        [InlineData("lf", "utf-8")]
+        [InlineData("crlf", "utf-8")]
+        [InlineData("native", "utf-8")]
+        [InlineData("lf", "utf-8-bom")]
+        [InlineData("crlf", "utf-8-bom")]
+        [InlineData("native", "utf-8-bom")]
+        public void RetryFileWriteNormalizesMixedMarkdownLineEndings(string lineEndingStyle, string charset)
+        {
+            var codeFile = CreateTestFile(string.Empty);
+
+            try
+            {
+                ReverseEngineerRunner.RetryFileWrite(
+                    codeFile,
+                    "# caf\u00e9\r\n\r\n```xml\n<PackageReference />\r```\n",
+                    new GeneratedFileFormat(lineEndingStyle, charset));
+
+                var lineEnding = lineEndingStyle switch
+                {
+                    "lf" => "\n",
+                    "crlf" => "\r\n",
+                    _ => Environment.NewLine,
+                };
+                var expectedText = string.Join(lineEnding, "# caf\u00e9", string.Empty, "```xml", "<PackageReference />", "```", string.Empty);
+                var expectedBytes = Encoding.UTF8.GetBytes((charset == "utf-8-bom" ? "\uFEFF" : string.Empty) + expectedText);
+
+                Assert.Equal(expectedBytes, File.ReadAllBytes(codeFile));
+            }
+            finally
+            {
+                RemoveIfExists(codeFile);
+            }
+        }
+
+        [Theory]
         [InlineData(null, true)]
         [InlineData(null, false)]
         [InlineData("utf-8-bom", true)]
