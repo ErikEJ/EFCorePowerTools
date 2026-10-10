@@ -188,6 +188,12 @@
           "type": "boolean",
           "title": "Add OnConfiguring method to the DbContext"
         },
+        "file-charset": {
+          "default": "utf-8-bom",
+          "enum": [ "utf-8-bom", "utf-8" ],
+          "type": "string",
+          "title": "Character set for generated files"
+        },
         "file-line-endings": {
           "default": "native",
           "enum": [ "lf", "crlf", "native" ],

@@ -21,11 +21,11 @@ namespace RevEng.Core.Routines.Procedures
             ProviderUsing = "using Npgsql";
         }
 
-        public new SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue, bool useAsyncCalls, bool useInternalAccessModifier, bool useNullableReferences, string fileLineEndingStyle)
+        public new SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue, bool useAsyncCalls, bool useInternalAccessModifier, bool useNullableReferences, GeneratedFileFormat fileFormat)
         {
             ArgumentNullException.ThrowIfNull(scaffoldedModel);
 
-            var files = base.Save(scaffoldedModel, outputDir, nameSpaceValue, useAsyncCalls, useInternalAccessModifier, useNullableReferences, fileLineEndingStyle);
+            var files = base.Save(scaffoldedModel, outputDir, nameSpaceValue, useAsyncCalls, useInternalAccessModifier, useNullableReferences, fileFormat);
             var accessModifier = useInternalAccessModifier ? "internal" : "public";
 
             var contextDir = Path.GetDirectoryName(Path.Combine(outputDir, scaffoldedModel.ContextFile.Path));
@@ -39,7 +39,7 @@ namespace RevEng.Core.Routines.Procedures
                     .Replace("#ACCESSMODIFIER#", accessModifier, StringComparison.OrdinalIgnoreCase)
                     .Replace("#NULLABLE#", useNullableReferences ? "?" : string.Empty, StringComparison.OrdinalIgnoreCase)
                     .Replace("#NULLABLEENABLE#", useNullableReferences ? "enable" : "disable", StringComparison.OrdinalIgnoreCase),
-                fileLineEndingStyle);
+                fileFormat);
             files.AdditionalFiles.Add(dbContextExtensionsPath);
 
             return files;

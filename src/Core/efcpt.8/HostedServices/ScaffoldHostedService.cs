@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ErikEJ.EFCorePowerTools.Services;
@@ -67,7 +66,9 @@ internal sealed class ScaffoldHostedService : HostedService
                 return;
             }
 
-            GenerateMermaidContent(config.CodeGeneration.GenerateMermaidDiagram);
+            GenerateMermaidContent(
+                config.CodeGeneration.GenerateMermaidDiagram,
+                new GeneratedFileFormat(config.CodeGeneration.FileLineEndings, config.CodeGeneration.FileCharset));
 
             var commandOptions = config.ToCommandOptions(
                 scaffoldOptions.ConnectionString,
@@ -124,7 +125,12 @@ internal sealed class ScaffoldHostedService : HostedService
 
             var redactedConnectionString = "The_Connection_String_You_Supplied_With_The_Reverse_Engineering_Command";
 
-            var readmePath = Providers.CreateReadme(commandOptions, Constants.CodeGeneration, redactedConnectionString);
+            var readmeContent = Providers.GetReadmeContent(
+                commandOptions,
+                Constants.CodeGeneration,
+                redactedConnectionString);
+            var readmePath = Path.Combine(commandOptions.ProjectPath, "efcpt-readme.md");
+            ReverseEngineerRunner.RetryFileWrite(readmePath, readmeContent, GeneratedFileFormat.From(commandOptions));
             var fileUri = new Uri(new Uri("file://"), readmePath);
 
             DisplayService.MarkupLine();
@@ -195,18 +201,23 @@ internal sealed class ScaffoldHostedService : HostedService
         return paths.Where(p => !string.IsNullOrEmpty(p)).Select(p => p!).Distinct().ToList();
     }
 
-    private void GenerateMermaidContent(bool generate)
+    private void GenerateMermaidContent(bool generate, GeneratedFileFormat fileFormat)
     {
         if (!generate)
         {
             return;
         }
 
+        // Options are validated later, so use defaults for unsupported values until warnings are reported.
+        var validatedFormat = new GeneratedFileFormat(
+            ReverseEngineerRunner.IsSupportedLineEndingStyle(fileFormat.LineEndingStyle) ? fileFormat.LineEndingStyle : "native",
+            ReverseEngineerRunner.IsSupportedCharset(fileFormat.Charset) ? fileFormat.Charset : "utf-8-bom");
+
         var content = tableListBuilder.GetMermaidDiagram();
 
         var file = fileSystem.Path.Combine(scaffoldOptions.Output ?? Directory.GetCurrentDirectory(), "dbdiagram.md");
 
-        File.WriteAllText(file, content, Encoding.UTF8);
+        ReverseEngineerRunner.RetryFileWrite(file, content, validatedFormat);
         DisplayService.MarkupLine();
         DisplayService.MarkupLine("db diagram:", Color.Green);
         var fileUri = new Uri(new Uri("file://"), file);

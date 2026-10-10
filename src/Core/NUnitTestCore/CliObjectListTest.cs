@@ -198,6 +198,7 @@ namespace UnitTests
             var config = GetConfig();
             config.CodeGeneration.UseStoredProcedureResultSetFallback = false;
             config.CodeGeneration.FileLineEndings = "crlf";
+            config.CodeGeneration.FileCharset = "utf-8";
 
             var testPath = TestPath("test.efpcli.json");
             try
@@ -215,6 +216,7 @@ namespace UnitTests
                 Assert.Equal(config.Tables.Count, resultConfig.Tables.Count);
                 Assert.False(resultConfig.CodeGeneration.UseStoredProcedureResultSetFallback);
                 Assert.Equal("crlf", resultConfig.CodeGeneration.FileLineEndings);
+                Assert.Equal("utf-8", resultConfig.CodeGeneration.FileCharset);
 
                 for (var i = 0; i < config.Tables.Count; i++)
                 {
@@ -245,6 +247,31 @@ namespace UnitTests
                 TestPath("efpt.renaming.json"));
 
             Assert.Equal("lf", commandOptions.FileLineEndingStyle);
+        }
+
+        [Fact]
+        public void ToCommandOptionsMapsFileCharset()
+        {
+            var config = GetConfig();
+            config.CodeGeneration.FileCharset = "utf-8";
+            config.Names.DbContextName = "TestContext";
+
+            var commandOptions = config.ToCommandOptions(
+                "Server=(localdb)\\mssqllocaldb;Database=Northwind;Trusted_Connection=True;",
+                DatabaseType.SQLServer,
+                cliTestDirectory,
+                false,
+                TestPath("test.efpcli.json"),
+                TestPath("efpt.renaming.json"));
+
+            Assert.Equal("utf-8", commandOptions.FileCharset);
+        }
+
+        [Fact]
+        public void FileCharsetDefaultsToUtf8Bom()
+        {
+            Assert.Equal("utf-8-bom", new CodeGeneration().FileCharset);
+            Assert.Equal("utf-8-bom", new ReverseEngineerCommandOptions().FileCharset);
         }
 
         [Fact]
