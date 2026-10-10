@@ -51,7 +51,7 @@ namespace NUnitTestCore
 
             try
             {
-                ReverseEngineerRunner.RetryFileWrite(codeFile, new System.Collections.Generic.List<string> { "line1", "line2" }, "lf");
+                ReverseEngineerRunner.RetryFileWrite(codeFile, new System.Collections.Generic.List<string> { "line1", "line2" }, new GeneratedFileFormat("lf", null));
 
                 var contents = File.ReadAllText(codeFile, Encoding.UTF8);
 
@@ -73,7 +73,7 @@ namespace NUnitTestCore
                 var originalBytes = File.ReadAllBytes(codeFile);
 
                 Assert.Throws<ArgumentOutOfRangeException>(() =>
-                    ReverseEngineerRunner.RetryFileWrite(codeFile, new System.Collections.Generic.List<string> { "replacement" }, "unsupported"));
+                    ReverseEngineerRunner.RetryFileWrite(codeFile, new System.Collections.Generic.List<string> { "replacement" }, new GeneratedFileFormat("unsupported", null)));
 
                 Assert.Equal(originalBytes, File.ReadAllBytes(codeFile));
             }
@@ -90,7 +90,7 @@ namespace NUnitTestCore
 
             try
             {
-                ReverseEngineerRunner.RetryFileWrite(codeFile, "line1\nline2\n", "crlf");
+                ReverseEngineerRunner.RetryFileWrite(codeFile, "line1\nline2\n", new GeneratedFileFormat("crlf", null));
 
                 var contents = File.ReadAllText(codeFile, Encoding.UTF8);
 
@@ -119,7 +119,7 @@ namespace NUnitTestCore
             {
                 var method = typeof(ReverseEngineerRunner).GetMethod("PostProcess", BindingFlags.NonPublic | BindingFlags.Static);
                 Assert.NotNull(method);
-                method.Invoke(null, new object[] { codeFile, useNullable, lineEndingStyle });
+                method.Invoke(null, new object[] { codeFile, useNullable, new GeneratedFileFormat(lineEndingStyle, null) });
 
                 var lineEnding = lineEndingStyle switch
                 {
@@ -135,6 +135,85 @@ namespace NUnitTestCore
             finally
             {
                 RemoveIfExists(codeFile);
+            }
+        }
+
+        [Theory]
+        [InlineData(null, true)]
+        [InlineData(null, false)]
+        [InlineData("utf-8-bom", true)]
+        [InlineData("utf-8-bom", false)]
+        [InlineData("UTF-8-BOM", true)]
+        [InlineData("UTF-8-BOM", false)]
+        public void RetryFileWriteWritesBomForDefaultCharset(string charset, bool writeLines)
+        {
+            var codeFile = CreateTestFile(string.Empty);
+
+            try
+            {
+                WriteWithCharset(codeFile, charset, writeLines);
+
+                Assert.Equal(new byte[] { 0xEF, 0xBB, 0xBF }, File.ReadAllBytes(codeFile)[..3]);
+            }
+            finally
+            {
+                RemoveIfExists(codeFile);
+            }
+        }
+
+        [Theory]
+        [InlineData("utf-8", true)]
+        [InlineData("utf-8", false)]
+        [InlineData("UTF-8", true)]
+        [InlineData("UTF-8", false)]
+        public void RetryFileWriteWritesNoBomForUtf8Charset(string charset, bool writeLines)
+        {
+            var codeFile = CreateTestFile(string.Empty);
+
+            try
+            {
+                WriteWithCharset(codeFile, charset, writeLines);
+
+                Assert.Equal(Encoding.ASCII.GetBytes("line1\nline2\n"), File.ReadAllBytes(codeFile));
+            }
+            finally
+            {
+                RemoveIfExists(codeFile);
+            }
+        }
+
+        [Theory]
+        [InlineData(true)]
+        [InlineData(false)]
+        public void RetryFileWritePreservesExistingFileWhenCharsetIsUnsupported(bool writeLines)
+        {
+            var codeFile = CreateTestFile("existing contents\r\n");
+
+            try
+            {
+                var originalBytes = File.ReadAllBytes(codeFile);
+
+                Assert.Throws<ArgumentOutOfRangeException>(() => WriteWithCharset(codeFile, "latin1", writeLines));
+
+                Assert.Equal(originalBytes, File.ReadAllBytes(codeFile));
+            }
+            finally
+            {
+                RemoveIfExists(codeFile);
+            }
+        }
+
+        private static void WriteWithCharset(string codeFile, string charset, bool writeLines)
+        {
+            var fileFormat = new GeneratedFileFormat("lf", charset);
+
+            if (writeLines)
+            {
+                ReverseEngineerRunner.RetryFileWrite(codeFile, new System.Collections.Generic.List<string> { "line1", "line2" }, fileFormat);
+            }
+            else
+            {
+                ReverseEngineerRunner.RetryFileWrite(codeFile, "line1\nline2\n", fileFormat);
             }
         }
 

@@ -105,7 +105,7 @@ namespace RevEng.Core
             filePaths = Save(
                 scaffoldedModel,
                 Path.GetFullPath(Path.Combine(options.ProjectPath, outputPath ?? string.Empty)),
-                options.FileLineEndingStyle);
+                GeneratedFileFormat.From(options));
             return filePaths;
         }
 
@@ -161,7 +161,7 @@ namespace RevEng.Core
                         options.UseAsyncCalls,
                         functionOptions.UseInternalAccessModifier,
                         options.UseNullableReferences,
-                        options.FileLineEndingStyle);
+                        GeneratedFileFormat.From(options));
                 }
             }
 
@@ -237,7 +237,7 @@ namespace RevEng.Core
                         options.UseAsyncCalls,
                         procedureOptions.UseInternalAccessModifier,
                         options.UseNullableReferences,
-                        options.FileLineEndingStyle);
+                        GeneratedFileFormat.From(options));
                 }
             }
 
@@ -247,7 +247,7 @@ namespace RevEng.Core
         private static SavedModelFiles Save(
            ScaffoldedModel scaffoldedModel,
            string outputDir,
-           string fileLineEndingStyle)
+           GeneratedFileFormat fileFormat)
         {
             Directory.CreateDirectory(outputDir);
 
@@ -257,7 +257,7 @@ namespace RevEng.Core
             {
                 contextPath = Path.GetFullPath(Path.Combine(outputDir, scaffoldedModel.ContextFile.Path));
                 Directory.CreateDirectory(Path.GetDirectoryName(contextPath)!);
-                ReverseEngineerRunner.RetryFileWrite(contextPath, scaffoldedModel.ContextFile.Code, fileLineEndingStyle);
+                ReverseEngineerRunner.RetryFileWrite(contextPath, scaffoldedModel.ContextFile.Code, fileFormat);
             }
 
             var additionalFiles = new List<string>();
@@ -270,7 +270,7 @@ namespace RevEng.Core
                     if (path != null)
                     {
                         Directory.CreateDirectory(path);
-                        ReverseEngineerRunner.RetryFileWrite(additionalFilePath, entityTypeFile.Code, fileLineEndingStyle);
+                        ReverseEngineerRunner.RetryFileWrite(additionalFilePath, entityTypeFile.Code, fileFormat);
                         additionalFiles.Add(additionalFilePath);
                     }
                 }

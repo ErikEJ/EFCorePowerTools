@@ -17,6 +17,10 @@ namespace RevEng.Common.Cli.Configuration
         [JsonPropertyName("generate-mermaid-diagram")]
         public bool GenerateMermaidDiagram { get; set; }
 
+        [JsonPropertyOrder(35)]
+        [JsonPropertyName("file-charset")]
+        public string FileCharset { get; set; } = "utf-8-bom";
+
         [JsonPropertyOrder(40)]
         [JsonPropertyName("file-line-endings")]
         public string FileLineEndings { get; set; } = "native";

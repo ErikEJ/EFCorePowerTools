@@ -90,7 +90,7 @@ namespace RevEng.Common
             };
         }
 
-        public static string CreateReadme(ReverseEngineerCommandOptions commandOptions, CodeGenerationMode codeGenerationMode, string redactedConnectionString)
+        public static string CreateReadme(ReverseEngineerCommandOptions commandOptions, CodeGenerationMode codeGenerationMode, string redactedConnectionString, Encoding encoding)
         {
             if (commandOptions == null)
             {
@@ -120,7 +120,7 @@ namespace RevEng.Common
 
             var readmePath = Path.Combine(commandOptions.ProjectPath, readmeName);
 
-            File.WriteAllText(readmePath, finalText, Encoding.UTF8);
+            File.WriteAllText(readmePath, finalText, encoding);
 
             return readmePath;
         }

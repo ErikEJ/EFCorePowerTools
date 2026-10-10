@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ErikEJ.EFCorePowerTools.Services;
@@ -67,7 +66,7 @@ internal sealed class ScaffoldHostedService : HostedService
                 return;
             }
 
-            GenerateMermaidContent(config.CodeGeneration.GenerateMermaidDiagram);
+            GenerateMermaidContent(config.CodeGeneration.GenerateMermaidDiagram, config.CodeGeneration.FileCharset);
 
             var commandOptions = config.ToCommandOptions(
                 scaffoldOptions.ConnectionString,
@@ -124,7 +123,11 @@ internal sealed class ScaffoldHostedService : HostedService
 
             var redactedConnectionString = "The_Connection_String_You_Supplied_With_The_Reverse_Engineering_Command";
 
-            var readmePath = Providers.CreateReadme(commandOptions, Constants.CodeGeneration, redactedConnectionString);
+            var readmePath = Providers.CreateReadme(
+                commandOptions,
+                Constants.CodeGeneration,
+                redactedConnectionString,
+                ReverseEngineerRunner.GetConfiguredEncoding(commandOptions.FileCharset));
             var fileUri = new Uri(new Uri("file://"), readmePath);
 
             DisplayService.MarkupLine();
@@ -195,18 +198,21 @@ internal sealed class ScaffoldHostedService : HostedService
         return paths.Where(p => !string.IsNullOrEmpty(p)).Select(p => p!).Distinct().ToList();
     }
 
-    private void GenerateMermaidContent(bool generate)
+    private void GenerateMermaidContent(bool generate, string charset)
     {
         if (!generate)
         {
             return;
         }
 
+        // Options are validated later, so use the default charset if the configured one is unsupported.
+        var encoding = ReverseEngineerRunner.GetConfiguredEncoding(ReverseEngineerRunner.IsSupportedCharset(charset) ? charset : null);
+
         var content = tableListBuilder.GetMermaidDiagram();
 
         var file = fileSystem.Path.Combine(scaffoldOptions.Output ?? Directory.GetCurrentDirectory(), "dbdiagram.md");
 
-        File.WriteAllText(file, content, Encoding.UTF8);
+        File.WriteAllText(file, content, encoding);
         DisplayService.MarkupLine();
         DisplayService.MarkupLine("db diagram:", Color.Green);
         var fileUri = new Uri(new Uri("file://"), file);
