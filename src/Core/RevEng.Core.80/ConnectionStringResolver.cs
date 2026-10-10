@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using FirebirdSql.Data.FirebirdClient;
+using IBM.Data.Db2;
 using Microsoft.Data.SqlClient;
 using Microsoft.Data.Sqlite;
 #if !CORE100
@@ -100,6 +101,16 @@ namespace RevEng.Core
             {
                 var a = new FbConnectionStringBuilder(connectionString);
                 aliases.Add("firebird");
+            }
+            catch
+            {
+                // Ignore
+            }
+
+            try
+            {
+                var a = new DB2ConnectionStringBuilder(connectionString);
+                aliases.Add("DB2");
             }
             catch
             {
