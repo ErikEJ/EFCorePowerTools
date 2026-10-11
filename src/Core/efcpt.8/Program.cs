@@ -56,6 +56,14 @@ internal static class Program
                         .Configure()
                         .RegisterServices(fileSystem, options)
                         .Build();
+
+                    // When RegisterServices cannot read the config file, it sets a non-zero exit code
+                    // and does not register ScaffoldHostedService. Nothing would then stop the host.
+                    if (Environment.ExitCode != 0)
+                    {
+                        return Environment.ExitCode;
+                    }
+
                     await host.RunAsync()
                         .ConfigureAwait(false);
 
