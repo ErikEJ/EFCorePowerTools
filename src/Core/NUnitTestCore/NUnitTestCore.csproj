@@ -19,6 +19,7 @@
     <None Remove="Dacpac\Temporal.dacpac" />
     <None Remove="Dacpac\TvpParams.dacpac" />
     <None Remove="Dacpac\Vector.dacpac" />
+    <None Remove="Dacpac\VectorAzure.dacpac" />
     <None Remove="Identity.txt" />
     <None Remove="Issue208.dacpac" />
     <None Remove="Issue210.dacpac" />
@@ -59,6 +60,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Dacpac\Vector.dacpac">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dacpac\VectorAzure.dacpac">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Dgml\Aw2014Person.txt">

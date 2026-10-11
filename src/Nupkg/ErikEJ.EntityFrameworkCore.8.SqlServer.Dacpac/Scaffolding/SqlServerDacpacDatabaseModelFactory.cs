@@ -93,7 +93,9 @@ namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
             using var model = new TSqlTypedModel(sqlModel);
 
             var typeAliases = GetTypeAliases(model);
-            var vectorColumnDimensions = sqlModel.Version >= SqlServerVersion.Sql170
+            var vectorColumnDimensions = (sqlModel.Version >= SqlServerVersion.Sql170
+                    || sqlModel.Version == SqlServerVersion.SqlAzure
+                    || sqlModel.Version == SqlServerVersion.SqlDbFabric)
                 ? GetVectorColumnDimensions(connectionString)
                 : new Dictionary<string, int>(StringComparer.Ordinal);
 

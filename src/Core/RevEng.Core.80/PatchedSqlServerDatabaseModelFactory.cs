@@ -32,31 +32,6 @@ public class PatchedSqlServerDatabaseModelFactory : IDatabaseModelFactory
     private readonly IRelationalTypeMappingSource _typeMappingSource;
     private readonly ReverseEngineerCommandOptions _commandOptions;
 
-    private static readonly ISet<string> DateTimePrecisionTypes = new HashSet<string>
-    {
-        "datetimeoffset",
-        "datetime2",
-        "time"
-    };
-
-    private static readonly ISet<string> MaxLengthRequiredTypes
-        = new HashSet<string>
-        {
-            "binary",
-            "varbinary",
-            "char",
-            "varchar",
-            "nchar",
-            "nvarchar"
-        };
-
-    private enum EngineEdition
-    {
-        SqlDataWarehouse = 6,
-        SqlOnDemand = 11,
-        DynamicsTdsEndpoint = 1000,
-    }
-
     private const string NamePartRegex
         = @"(?:(?:\[(?<part{0}>(?:(?:\]\])|[^\]])+)\])|(?<part{0}>[^\.\[\]]+))";
 
@@ -69,17 +44,6 @@ public class PatchedSqlServerDatabaseModelFactory : IDatabaseModelFactory
                 string.Format(CultureInfo.InvariantCulture, NamePartRegex, 2)),
             RegexOptions.Compiled,
             TimeSpan.FromMilliseconds(1000));
-
-    // see https://msdn.microsoft.com/en-us/library/ff878091.aspx
-    // decimal/numeric are excluded because default value varies based on the precision.
-    private static readonly Dictionary<string, long[]> DefaultSequenceMinMax =
-        new(StringComparer.OrdinalIgnoreCase)
-        {
-            { "tinyint", [0L, 255L] },
-            { "smallint", [-32768L, 32767L] },
-            { "int", [-2147483648L, 2147483647L] },
-            { "bigint", [-9223372036854775808L, 9223372036854775807L] }
-        };
 
     private byte? _compatibilityLevel;
     private EngineEdition? _engineEdition;
@@ -160,7 +124,7 @@ public class PatchedSqlServerDatabaseModelFactory : IDatabaseModelFactory
             var tableList = options.Tables.ToList();
             var tableFilter = GenerateTableFilter(tableList.Select(Parse).ToList(), schemaFilter);
 
-            if (SupportsSequences())
+            if (SupportsSequences)
             {
                 GetSequences(connection, databaseModel, schemaFilter, typeAliases);
             }
@@ -178,8 +142,8 @@ public class PatchedSqlServerDatabaseModelFactory : IDatabaseModelFactory
             foreach (var table in tableList)
             {
                 var (parsedSchema, parsedTableName) = Parse(table);
-                if (!databaseModel.Tables.Any(t => !string.IsNullOrEmpty(parsedSchema)
-                        && t.Schema == parsedSchema
+                if (!databaseModel.Tables.Any(t => (!string.IsNullOrEmpty(parsedSchema)
+                        && t.Schema == parsedSchema)
                         || t.Name == parsedTableName))
                 {
                     _logger.MissingTableWarning(table);
@@ -511,13 +475,24 @@ WHERE "
                 MaxValue = maxValue
             };
 
-            if (DefaultSequenceMinMax.TryGetValue(storeType, out var defaultMinMax))
+            // See https://msdn.microsoft.com/en-us/library/ff878091.aspx
+            // decimal/numeric are excluded because the default value varies based on the precision.
+            var (defaultMin, defaultMax) = storeType.ToLowerInvariant() switch
             {
-                var defaultMin = defaultMinMax[0];
+                "tinyint" => (0L, 255L),
+                "smallint" => (-32768L, 32767L),
+                "int" => (-2147483648L, 2147483647L),
+                "bigint" => (-9223372036854775808L, 9223372036854775807L),
+
+                _ => ((long?)null, (long?)null)
+            };
+
+            if (defaultMin is not null && defaultMax is not null)
+            {
                 sequence.MinValue = sequence.MinValue == defaultMin ? null : sequence.MinValue;
                 sequence.StartValue = sequence.StartValue == defaultMin ? null : sequence.StartValue;
 
-                sequence.MaxValue = sequence.MaxValue == defaultMinMax[1]
+                sequence.MaxValue = sequence.MaxValue == defaultMax
                     ? null
                     : sequence.MaxValue;
             }
@@ -536,9 +511,6 @@ WHERE "
         using var command = connection.CreateCommand();
         var tables = new List<DatabaseTable>();
 
-        var supportsMemoryOptimizedTable = SupportsMemoryOptimizedTable();
-        var supportsTemporalTable = SupportsTemporalTable();
-
         var builder = new StringBuilder(
             """
 SELECT
@@ -548,12 +520,12 @@ SELECT
     'table' AS [type]
 """);
 
-        if (supportsMemoryOptimizedTable)
+        if (SupportsMemoryOptimizedTable)
         {
             builder.AppendLine(",").Append("    [t].[is_memory_optimized]");
         }
 
-        if (supportsTemporalTable)
+        if (SupportsTemporalTable)
         {
             builder.AppendLine(",").Append(
                 """
@@ -583,7 +555,7 @@ AND [t].[object_id] NOT IN (SELECT [ep].[major_id]
 AND [t].[name] <> '{HistoryRepository.DefaultTableName}'
 """);
 
-        if (supportsTemporalTable)
+        if (SupportsTemporalTable)
         {
             tableFilterBuilder.AppendLine().Append("AND [t].[temporal_type] <> 1");
         }
@@ -603,7 +575,7 @@ AND [t].[name] <> '{HistoryRepository.DefaultTableName}'
         // If views are supported, scaffold them too.
         string? viewFilter = null;
 
-        if (SupportsViews())
+        if (SupportsViews)
         {
             builder.AppendLine().Append(
                 """
@@ -615,12 +587,12 @@ SELECT
     'view' AS [type]
 """);
 
-            if (supportsMemoryOptimizedTable)
+            if (SupportsMemoryOptimizedTable)
             {
                 builder.AppendLine(",").Append("     CAST(0 AS bit) AS [is_memory_optimized]");
             }
 
-            if (supportsTemporalTable)
+            if (SupportsTemporalTable)
             {
                 builder.AppendLine(",").Append(
                     """
@@ -678,7 +650,7 @@ AND [v].[is_date_correlation_view] = 0
                 table.Schema = schema;
                 table.Comment = comment;
 
-                if (supportsMemoryOptimizedTable)
+                if (SupportsMemoryOptimizedTable)
                 {
                     if (reader.GetValueOrDefault<bool>("is_memory_optimized"))
                     {
@@ -686,7 +658,7 @@ AND [v].[is_date_correlation_view] = 0
                     }
                 }
 
-                if (supportsTemporalTable)
+                if (SupportsTemporalTable)
                 {
                     if (reader.GetValueOrDefault<int>("temporal_type") == 2)
                     {
@@ -719,14 +691,14 @@ AND [v].[is_date_correlation_view] = 0
         }
         else
         {
-            if (SupportsIndexes())
+            if (SupportsIndexes)
             {
                 GetIndexes(connection, tables, tableFilterSql);
             }
-            
+
             GetForeignKeys(connection, tables, tableFilterSql);
 
-            if (SupportsTriggers())
+            if (SupportsTriggers)
             {
                 GetTriggers(connection, tables, tableFilterSql);
             }
@@ -781,8 +753,9 @@ FROM
     WHERE {tableFilter}
 """);
 
-        if (SupportsViews())
+        if (SupportsViews)
         {
+            ArgumentNullException.ThrowIfNull(viewFilter);
             builder.AppendLine().Append(
                 $"""
     UNION ALL
@@ -802,7 +775,7 @@ LEFT JOIN [sys].[computed_columns] AS [cc] ON [c].[object_id] = [cc].[object_id]
 LEFT JOIN [sys].[default_constraints] AS [dc] ON [c].[object_id] = [dc].[parent_object_id] AND [c].[column_id] = [dc].[parent_column_id]
 """);
 
-        if (SupportsTemporalTable())
+        if (SupportsTemporalTable)
         {
             builder.AppendLine().Append("WHERE [c].[generated_always_type] <> 1 AND [c].[generated_always_type] <> 2");
         }
@@ -1045,13 +1018,14 @@ LEFT JOIN [sys].[default_constraints] AS [dc] ON [c].[object_id] = [dc].[parent_
                 return $"vector({vectorDimensions})";
         }
 
-        if (DateTimePrecisionTypes.Contains(dataTypeName)
-            && scale != 7)
-        {
+        // date/time types with scale facet
+        if (dataTypeName is "time" or "datetime2" or "datetimeoffset" && scale != 7)
+        { 
             return $"{dataTypeName}({scale})";
         }
 
-        if (MaxLengthRequiredTypes.Contains(dataTypeName))
+        // These types require a length facet
+        if (dataTypeName is "binary" or "varbinary" or "char" or "varchar" or "nchar" or "nvarchar")
         {
             if (maxLength == -1)
             {
@@ -1095,7 +1069,7 @@ WHERE [i].[is_hypothetical] = 0
 AND "
             + tableFilter;
 
-        if (SupportsTemporalTable())
+        if (SupportsTemporalTable)
         {
             commandText += @"
 AND CAST([i].[object_id] AS nvarchar(12)) + '#' + CAST([i].[index_id] AS nvarchar(12)) NOT IN
@@ -1199,7 +1173,7 @@ OPTION (MERGE JOIN);";
 
             bool IsValidPrimaryKey(DatabasePrimaryKey primaryKey)
             {
-                if (_engineEdition != EngineEdition.DynamicsTdsEndpoint)
+                if (_engineEdition != EngineEdition.DynamicsCrm)
                 {
                     return true;
                 }
@@ -1442,7 +1416,7 @@ OPTION (MERGE JOIN);
                     foreignKey.PrincipalColumns.Add(principalColumn);
                 }
 
-                if (!invalid && _engineEdition == EngineEdition.DynamicsTdsEndpoint && !IsValidDataverseForeignKey(foreignKey))
+                if (!invalid && _engineEdition == EngineEdition.DynamicsCrm && !IsValidDataverseForeignKey(foreignKey))
                 {
                     invalid = true;
                     _logger.Logger.LogWarning(
@@ -1477,38 +1451,16 @@ OPTION (MERGE JOIN);
                         table.ForeignKeys.Add(foreignKey);
                     }
                 }
-
-                bool IsValidDataverseForeignKey(DatabaseForeignKey foreignKey)
-                {
-                    if (foreignKey.Columns.Count != 1)
-                    {
-                        return false;
-                    }
-
-                    if (foreignKey.Columns[0].StoreType != "uniqueidentifier")
-                    {
-                        return false;
-                    }
-
-                    if (foreignKey.PrincipalTable.PrimaryKey == null)
-                    {
-                        return false;
-                    }
-
-                    if (foreignKey.PrincipalTable.PrimaryKey.Columns.Count != 1)
-                    {
-                        return false;
-                    }
-
-                    if (foreignKey.PrincipalTable.PrimaryKey.Columns[0].Name != foreignKey.PrincipalColumns[0].Name)
-                    {
-                        return false;
-                    }
-
-                    return true;
-                }
             }
         }
+
+        static bool IsValidDataverseForeignKey(DatabaseForeignKey foreignKey)
+            => foreignKey.Columns.Count == 1
+                && foreignKey.Columns[0].StoreType == "uniqueidentifier"
+                && foreignKey.PrincipalTable.PrimaryKey != null
+                && foreignKey.PrincipalTable.PrimaryKey.Columns.Count == 1
+                && foreignKey.PrincipalTable.PrimaryKey.Columns[0].StoreType == "uniqueidentifier"
+                && foreignKey.PrincipalTable.PrimaryKey.Columns[0].Name == foreignKey.PrincipalColumns[0].Name;
     }
 
     private void GetTriggers(DbConnection connection, IReadOnlyList<DatabaseTable> tables, string tableFilter)
@@ -1551,26 +1503,27 @@ ORDER BY [table_schema], [table_name], [tr].[name];
         }
     }
 
-    private bool SupportsTemporalTable()
-        => _compatibilityLevel >= 130 && IsFullFeaturedEngineEdition();
+    private bool SupportsTemporalTable
+        => _compatibilityLevel >= 130 && IsFullFeaturedEngineEdition;
 
-    private bool SupportsMemoryOptimizedTable()
-        => _compatibilityLevel >= 120 && IsFullFeaturedEngineEdition();
+    private bool SupportsMemoryOptimizedTable
+        => _compatibilityLevel >= 120 && IsFullFeaturedEngineEdition;
 
-    private bool SupportsSequences()
-        => _compatibilityLevel >= 110 && IsFullFeaturedEngineEdition();
+    private bool SupportsSequences
+        => _compatibilityLevel >= 110 && IsFullFeaturedEngineEdition;
 
-    private bool SupportsIndexes()
-        => _engineEdition != EngineEdition.DynamicsTdsEndpoint;
+    private bool SupportsIndexes
+        => _engineEdition != EngineEdition.DynamicsCrm;
 
-    private bool SupportsViews()
-        => _engineEdition != EngineEdition.DynamicsTdsEndpoint;
+    private bool SupportsViews
+        => _engineEdition != EngineEdition.DynamicsCrm;
 
-    private bool SupportsTriggers()
-        => IsFullFeaturedEngineEdition();
+    private bool SupportsTriggers
+        => IsFullFeaturedEngineEdition;
 
-    private bool IsFullFeaturedEngineEdition()
-        => _engineEdition is not EngineEdition.SqlDataWarehouse and not EngineEdition.SqlOnDemand and not EngineEdition.DynamicsTdsEndpoint
+    private bool IsFullFeaturedEngineEdition
+        => _engineEdition is not EngineEdition.AzureSynapseAnalytics and not EngineEdition.AzureSynapseServerlessOrFabric
+                and not EngineEdition.DynamicsCrm
             && _version != "Microsoft SQL Kusto";
 
     private static string DisplayName(string? schema, string name)
@@ -1585,6 +1538,65 @@ ORDER BY [table_schema], [table_name], [tr].[name];
             "SET_DEFAULT" => ReferentialAction.SetDefault,
             _ => null
         };
+
+    // See https://learn.microsoft.com/sql/t-sql/functions/serverproperty-transact-sql
+    private enum EngineEdition
+    {
+        /// <summary>
+        ///     Personal or Desktop Engine (Not available in SQL Server 2005 (9.x) and later versions.)
+        /// </summary>
+        PersonalOrDesktop = 1,
+
+        /// <summary>
+        ///     Standard (For Standard, Standard Developer, Web, and Business Intelligence.)
+        /// </summary>
+        Standard = 2,
+
+        /// <summary>
+        ///     Enterprise (For Enterprise, Enterprise Developer, Developer, and Evaluation editions.)
+        /// </summary>
+        Enterprise = 3,
+
+        /// <summary>
+        ///     Express (For Express, Express with Tools, and Express with Advanced Services)
+        /// </summary>
+        Express = 4,
+
+        /// <summary>
+        ///     SQL Database (Azure SQL Database)
+        /// </summary>
+        SqlDatabase = 5,
+
+        /// <summary>
+        ///     Azure Synapse Analytics
+        /// </summary>
+        AzureSynapseAnalytics = 6,
+
+        /// <summary>
+        ///     Azure SQL Managed Instance
+        /// </summary>
+        AzureSqlManaged = 8,
+
+        /// <summary>
+        ///     Azure SQL Edge (For all editions of Azure SQL Edge)
+        /// </summary>
+        AzureSqlEdge = 9,
+
+        /// <summary>
+        ///     Azure Synapse serverless SQL pool, or Microsoft Fabric
+        /// </summary>
+        AzureSynapseServerlessOrFabric = 11,
+
+        /// <summary>
+        ///     Microsoft Fabric SQL database in Microsoft Fabric.
+        /// </summary>
+        FabricSql = 12,
+
+        /// <summary>
+        ///     Dynamics CRM TDS endpoint
+        /// </summary>
+        DynamicsCrm = 1000,
+    }
 }
 
 public static class TypeExtensions
