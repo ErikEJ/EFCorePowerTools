@@ -139,8 +139,15 @@ internal sealed class ScaffoldHostedService : HostedService
             DisplayService.MarkupLine($"{fileUri}", Color.Blue, DisplayService.Link);
             DisplayService.MarkupLine();
 
-            Environment.ExitCode = 0;
+            Environment.ExitCode = result.EntityErrors.Count > 0 ? 1 : 0;
         }
+#pragma warning disable CA1031 // Do not catch general exception types
+        catch (Exception ex)
+        {
+            DisplayService.Error(ex.ToString());
+            Environment.ExitCode = 1;
+        }
+#pragma warning restore CA1031 // Do not catch general exception types
         finally
         {
             hostApplicationLifetime.StopApplication();
