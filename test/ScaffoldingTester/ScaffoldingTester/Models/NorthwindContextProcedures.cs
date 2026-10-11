@@ -191,6 +191,51 @@ namespace ScaffoldingTester.Models
             return _;
         }
 
+        public virtual async Task<int> OutputScenariosAsync(short? year, OutputParameter<int?> productCount, OutputParameter<string> description, OutputParameter<int>? returnValue = null, CancellationToken cancellationToken = default)
+        {
+            var parameterProductCount = new SqlParameter
+            {
+                ParameterName = "ProductCount",
+                Direction = System.Data.ParameterDirection.InputOutput,
+                Value = productCount?._value ?? Convert.DBNull,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
+            var parameterDescription = new SqlParameter
+            {
+                ParameterName = "Description",
+                Size = 50,
+                Direction = System.Data.ParameterDirection.InputOutput,
+                Value = description?._value ?? Convert.DBNull,
+                SqlDbType = System.Data.SqlDbType.NVarChar,
+            };
+            var parameterreturnValue = new SqlParameter
+            {
+                ParameterName = "returnValue",
+                Direction = System.Data.ParameterDirection.Output,
+                SqlDbType = System.Data.SqlDbType.Int,
+            };
+
+            var sqlParameters = new []
+            {
+                new SqlParameter
+                {
+                    ParameterName = "Year",
+                    Value = year ?? Convert.DBNull,
+                    SqlDbType = System.Data.SqlDbType.SmallInt,
+                },
+                parameterProductCount,
+                parameterDescription,
+                parameterreturnValue,
+            };
+            var _ = await _context.Database.ExecuteSqlRawAsync("EXEC @returnValue = [dbo].[OutputScenarios] @Year = @Year, @ProductCount = @ProductCount OUTPUT, @Description = @Description OUTPUT", sqlParameters, cancellationToken);
+
+            productCount?.SetValue(parameterProductCount.Value);
+            description?.SetValue(parameterDescription.Value);
+            returnValue?.SetValue(parameterreturnValue.Value);
+
+            return _;
+        }
+
         public virtual async Task<List<SalesbyYearResult>> SalesbyYearAsync(DateTime? beginning_Date, DateTime? ending_Date, OutputParameter<int>? returnValue = null, CancellationToken cancellationToken = default)
         {
             var parameterreturnValue = new SqlParameter
