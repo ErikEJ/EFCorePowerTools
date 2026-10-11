@@ -42,9 +42,21 @@ Type `efcpt --help` for help on command line options.
 
 The provider name (`mssql`) may not be required, as an attempt is made to resolve the provider from the connection string.
 
+### Using a .dacpac file
+
+Instead of a connection string, you can use the path to a SQL Server .dacpac file. The provider is resolved automatically.
+
+```bash
+efcpt "Database/bin/Debug/net10.0/Database.dacpac"
+```
+
+You can build the .dacpac with `dotnet build` from an SDK-style database project, for example [MSBuild.Sdk.SqlProj](https://github.com/rr-wfm/MSBuild.Sdk.SqlProj) or [Microsoft.Build.Sql](https://github.com/microsoft/DacFx). Then no SQL Server is required, neither to build the .dacpac nor to generate the code.
+
 ### Configuring options
 
 A configuration file `efcpt-config.json` is created in the output folder, and you can open this file in your editor to modify the default options. If your editor supports it (for example VS Code), it will provide syntax guidance for the file. For reference there is a fully populated sample file [here](https://github.com/ErikEJ/EFCorePowerTools/blob/master/samples/efcpt-config.json).
+
+The [Reverse Engineering guide](https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering) describes the options. For each option, it shows the key in `efcpt-config.json` as `CLI: section/key`, for example `CLI: code-generation/use-t4`.
 
 ### Updating to new configuration
 
@@ -58,7 +70,7 @@ The config file defaults to always contain all current database objects.
 
 If you don't want the lists of objects to be refreshed during each scaffolding operation, set the `"refresh-object-lists"` option in the configuration file to `false`.
 
-You can exclude indvidual database objects with `"exclude": true` for the object.
+You can exclude individual database objects with `"exclude": true` for the object.
 
 You can also use the `exclusionWildcard` item under each type of data object to filter included objects. 
 
@@ -138,12 +150,28 @@ In the example above, Users table will be selected.
 
 ### Generate a Mermaid ER diagram
 
-The tool can generate a [Mermaid ER diagram](https://mermaid.js.org/syntax/entityRelationshipDiagram.html) during exectution, just set the `code-generation` option `generate-mermaid-diagram` to `true` and a `dbdiagram.md` file will be created in the output folder.
+The tool can generate a [Mermaid ER diagram](https://mermaid.js.org/syntax/entityRelationshipDiagram.html) during execution, just set the `code-generation` option `generate-mermaid-diagram` to `true` and a `dbdiagram.md` file will be created in the output folder.
+
+### Line endings and character set
+
+By default, the generated files use the line endings of the operating system where the tool runs, and are UTF-8 with a byte order mark (BOM). To get the same files on every operating system, for example to match your `.editorconfig`, set the `code-generation` options `file-line-endings` and `file-charset`:
+
+```json
+"code-generation": {
+   "file-charset": "utf-8",
+   "file-line-endings": "crlf"
+}
+```
+
+- `file-line-endings`: `native` (default), `crlf` or `lf`
+- `file-charset`: `utf-8-bom` (default) or `utf-8` (without a BOM). These are the same values as the `.editorconfig` `charset` property.
+
+The options apply to the generated code files, `efcpt-readme.md` and `dbdiagram.md`.
 
 ### Updating the tool
 
 ```bash
-dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version 8.*
+dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version 10.*
 ```
 
 [Release notes](https://github.com/ErikEJ/EFCorePowerTools/wiki/Release-notes) - notice the `+CLI` label.
@@ -151,5 +179,5 @@ dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version 8.*
 ### Getting the latest daily build
 
 ```bash
-dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version 8.*-*
+dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version 10.*-*
 ```
