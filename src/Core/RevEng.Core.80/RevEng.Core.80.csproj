@@ -18,6 +18,7 @@
     <PackageReference Include="EntityFrameworkCore.Scaffolding.Handlebars" Version="8.0.0" />
     <PackageReference Include="EntityFrameworkCore.Sqlite.NodaTime" Version="8.0.1" />
     <PackageReference Include="FirebirdSql.EntityFrameworkCore.Firebird" Version="11.0.0" />
+    <PackageReference Include="IBM.EntityFrameworkCore" Version="8.0.0.400" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.30" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.30" />   

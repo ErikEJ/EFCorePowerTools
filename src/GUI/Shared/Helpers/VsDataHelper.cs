@@ -162,6 +162,7 @@ namespace EFCorePowerTools.Helpers
             Guid providerOracle = new Guid(Resources.OracleProvider);
             Guid providerFirebird = new Guid(Resources.FirebirdProvider);
             Guid providerMicrosoftSqlServerDotNet = new Guid(Resources.MicrosoftSqlServerDotNetProvider);
+            Guid providerDB2 = new Guid(Resources.DB2Provider);
 
             try
             {
@@ -213,6 +214,11 @@ namespace EFCorePowerTools.Helpers
                             if (objProviderGuid == providerFirebird)
                             {
                                 info.DatabaseType = DatabaseType.Firebird;
+                            }
+
+                            if (objProviderGuid == providerDB2)
+                            {
+                                info.DatabaseType = DatabaseType.DB2;
                             }
 
                             if (info.DatabaseType != DatabaseType.Undefined
@@ -309,6 +315,12 @@ namespace EFCorePowerTools.Helpers
                 {
                     dbType = DatabaseType.Firebird;
                     providerGuid = Resources.FirebirdProvider;
+                }
+
+                if (providerInvariant == "IBM.Data.Db2")
+                {
+                    dbType = DatabaseType.DB2;
+                    providerGuid = Resources.DB2Provider;
                 }
             }
 

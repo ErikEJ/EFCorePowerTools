@@ -12,5 +12,6 @@ namespace RevEng.Common
         SQLServerDacpac = 8,
         Firebird = 10,
         Snowflake = 11,
+        DB2 = 12,
     }
 }

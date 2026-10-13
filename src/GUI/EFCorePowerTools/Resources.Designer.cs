@@ -61,6 +61,15 @@ namespace EFCorePowerTools {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 9d8c88c6-df88-4b8a-ab73-ca75034649cc.
+        /// </summary>
+        internal static string DB2Provider {
+            get {
+                return ResourceManager.GetString("DB2Provider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 43015f6e-757f-408b-966e-c2bce34686ba.
         /// </summary>
         internal static string FirebirdProvider {
