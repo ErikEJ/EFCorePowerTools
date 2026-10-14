@@ -31,7 +31,8 @@
     <PackageReference Include="EntityFrameworkCore.Scaffolding.Handlebars" Version="10.0.0" />
     <PackageReference Include="EntityFrameworkCore.Sqlite.NodaTime" Version="10.0.0" />
     <PackageReference Include="FirebirdSql.EntityFrameworkCore.Firebird" Version="13.0.0" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.7" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="7.1.1" />
+    <PackageReference Include="Microsoft.Data.SqlClient.Extensions.Azure" Version="7.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.13" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite" Version="10.0.13" />

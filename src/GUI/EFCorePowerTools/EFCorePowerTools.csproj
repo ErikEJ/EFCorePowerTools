@@ -677,7 +677,10 @@
     <PackageReference Include="Community.VisualStudio.Toolkit.17" Version="17.0.551" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.Data.SqlClient">
-      <Version>6.1.7</Version>
+      <Version>7.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Data.SqlClient.Extensions.Azure">
+      <Version>7.1.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection">
       <Version>8.0.1</Version>
