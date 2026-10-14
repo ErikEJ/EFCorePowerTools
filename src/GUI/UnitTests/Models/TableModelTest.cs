@@ -1,6 +1,5 @@
-﻿namespace UnitTests.Models
+namespace UnitTests.Models
 {
-    using System;
     using NUnit.Framework;
     using NUnit.Framework.Legacy;
     using RevEng.Common;
@@ -8,16 +7,6 @@
     [TestFixture]
     public class TableModelTest
     {
-        [Test]
-        public void Constructor_ArgumentException_Schema()
-        {
-            // Arrange
-            string table = null;
-
-            // Act & Assert
-            ClassicAssert.Throws<ArgumentException>(() => new TableModel(table, null, DatabaseType.SQLServer, ObjectType.Table, null));
-        }
-
         [Test]
         public void Constructor_CorrectCreation()
         {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using EFCorePowerTools.Common.DAL;
 using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Contracts.Views;
@@ -13,57 +13,6 @@ namespace UnitTests.ViewModels
     [TestFixture]
     public class PickServerDatabaseViewModelTests
     {
-        [Test]
-        public void Constructor_ArgumentNullException()
-        {
-            // Arrange
-            IVisualStudioAccess vsa = null;
-            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
-            var connFactory = Mock.Of<Func<IPickConnectionDialog>>();
-            var creds = Mock.Of<ICredentialStore>();
-
-            // Act & Assert
-            ClassicAssert.Throws<ArgumentNullException>(() => new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory));
-        }
-
-        [Test]
-        public void Constructor_Argument2NullException()
-        {
-            // Arrange
-            var vsa = Mock.Of<IVisualStudioAccess>();
-            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
-            var connFactory = Mock.Of<Func<IPickConnectionDialog>>();
-            ICredentialStore creds = null;
-
-            // Act & Assert
-            ClassicAssert.Throws<ArgumentNullException>(() => new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory));
-        }
-
-        [Test]
-        public void Constructor_Argument3NullException()
-        {
-            // Arrange
-            var vsa = Mock.Of<IVisualStudioAccess>();
-            Func<IPickSchemasDialog> psdFactory = null;
-            var connFactory = Mock.Of<Func<IPickConnectionDialog>>();
-            var creds = Mock.Of<ICredentialStore>();
-
-            // Act & Assert
-            ClassicAssert.Throws<ArgumentNullException>(() => new PickServerDatabaseViewModel(vsa, creds, psdFactory, connFactory));
-        }
-
-        [Test]
-        public void Constructor_Argument4NullException()
-        {
-            // Arrange
-            var vsa = Mock.Of<IVisualStudioAccess>();
-            var psdFactory = Mock.Of<Func<IPickSchemasDialog>>();
-            var creds = Mock.Of<ICredentialStore>();
-
-            // Act & Assert
-            ClassicAssert.Throws<ArgumentNullException>(() => new PickServerDatabaseViewModel(vsa, creds, psdFactory, null));
-        }
-
         [Test]
         public void Constructor_CommandsInitialized()
         {

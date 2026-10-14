@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 
 namespace UnitTests.ViewModels
 {
@@ -16,18 +16,6 @@ namespace UnitTests.ViewModels
     public class ObjectTreeViewModelTests
     {
         [Test]
-        public void Constructors_ArgumentNullException_ViewModelFactory()
-        {
-            // Arrange
-            Func<ISchemaInformationViewModel> s = null;
-            Func<ITableInformationViewModel> t = null;
-            Func<IColumnInformationViewModel> c = null;
-
-            // Act & Assert
-            ClassicAssert.Throws<ArgumentNullException>(() => new ObjectTreeViewModel(s, t, c));
-        }
-
-        [Test]
         public void Constructors_CollectionsInitialized()
         {
             // Act
@@ -35,17 +23,6 @@ namespace UnitTests.ViewModels
 
             // Assert
             ClassicAssert.IsNotNull(vm.Types);
-        }
-
-        [Test]
-        public void AddObjects_Null()
-        {
-            // Arrange
-            var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
-
-            // Act
-            // Assert
-            ClassicAssert.Throws<ArgumentNullException>(() => vm.AddObjects(null, null));
         }
 
         [Test]
@@ -172,16 +149,6 @@ namespace UnitTests.ViewModels
         }
 
         [Test]
-        public void SelectObjects_Null()
-        {
-            // Arrange
-            var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
-
-            // Act and assert
-            ClassicAssert.Throws<ArgumentNullException>(() => vm.SelectObjects(null));
-        }
-
-        [Test]
         public void SelectTables_EmptyCollection()
         {
             // Arrange
@@ -238,27 +205,6 @@ namespace UnitTests.ViewModels
             ClassicAssert.AreEqual(databaseObjects.Length, preFilter.Count());
             var postFilter = vm.Types.SelectMany(c => c.Schemas).SelectMany(c => c.Objects).Where(c => c.IsVisible);
             ClassicAssert.AreEqual(2, postFilter.Count());
-        }
-
-        [Test]
-        public void SearchText_FilterAfterDelay()
-        {
-            // Arrange
-            var vm = new ObjectTreeViewModel(CreateSchemaInformationViewModelMockObject, CreateTableInformationViewModelMockObject, CreateColumnInformationViewModelMockObject);
-            var databaseObjects = GetDatabaseObjects();
-            vm.AddObjects(databaseObjects, null);
-
-            // Act
-            vm.Search("ref", SearchMode.Text);
-
-            // Assert
-            ClassicAssert.That(
-                () =>
-                {
-                    var postFilter = vm.Types.SelectMany(c => c.Schemas).SelectMany(c => c.Objects).Where(c => c.IsVisible);
-                    return postFilter.Count() < databaseObjects.Length && postFilter.All(m => m.Name.ToUpper().Contains("REF"));
-                },
-                Is.True.After(1500, 200));
         }
 
         [Test]

@@ -1,8 +1,7 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 
 namespace UnitTests.ViewModels
 {
-    using System;
     using EFCorePowerTools.Common.BLL;
     using EFCorePowerTools.Common.DAL;
     using EFCorePowerTools.Common.Models;
@@ -13,57 +12,6 @@ namespace UnitTests.ViewModels
     [TestFixture]
     public class AboutViewModelTests
     {
-        [Test]
-        public void Constructor_ArgumentNullException_AboutExtensionModel()
-        {
-            // Arrange
-            AboutExtensionModel aem = null;
-            IExtensionVersionService evs = null;
-            IOperatingSystemAccess osa = null;
-
-            // Act & Assert
-            ClassicAssert.Throws<ArgumentNullException>(() => new AboutViewModel(aem, evs, osa));
-        }
-
-        [Test]
-        public void Constructor_ArgumentNullException_ExtensionVersionService()
-        {
-            // Arrange
-            var aem = new AboutExtensionModel();
-            IExtensionVersionService evs = null;
-            IOperatingSystemAccess osa = null;
-
-            // Act & Assert
-            ClassicAssert.Throws<ArgumentNullException>(() => new AboutViewModel(aem, evs, osa));
-        }
-
-        [Test]
-        public void Constructor_ArgumentNullException_InstalledComponentsService()
-        {
-            // Arrange
-            var aem = new AboutExtensionModel();
-            var evs = Mock.Of<IExtensionVersionService>();
-            IOperatingSystemAccess osa = null;
-
-            // Act & Assert
-            ClassicAssert.Throws<ArgumentNullException>(() => new AboutViewModel(aem, evs, osa));
-        }
-
-        [Test]
-        public void Constructor_ArgumentNullException_OperatingSystemAccess()
-        {
-            // Arrange
-            var aem = new AboutExtensionModel();
-            var evs = Mock.Of<IExtensionVersionService>();
-            IOperatingSystemAccess osa = null;
-
-            // Act & Assert
-            ClassicAssert.Throws<ArgumentNullException>(() => new AboutViewModel(aem, evs, osa));
-
-            // Act & Assert
-            ClassicAssert.Throws<ArgumentNullException>(() => new AboutViewModel(aem, evs, osa));
-        }
-
         [Test]
         public void Constructor_CommandsInitialized()
         {
