@@ -20,11 +20,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="10.32.0.713">
+    <PackageReference Include="SonarAnalyzer.CSharp" Version="10.35.0.4138">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
+    <PackageReference Include="StyleCop.Analyzers" Version="1.3.18-beta">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

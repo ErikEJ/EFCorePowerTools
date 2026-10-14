@@ -8,8 +8,8 @@
     <Content Include="Resources\RulesTransform.xslt" />
   </ItemGroup>	
   <ItemGroup>
-    <PackageReference Include="ErikEJ.DacFX.SqlServer.Rules" Version="5.1.2" />
-    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="170.4.83" />
-    <PackageReference Include="System.ComponentModel.Composition" Version="9.0.19" />    
+    <PackageReference Include="ErikEJ.DacFX.SqlServer.Rules" Version="5.1.4" />
+    <PackageReference Include="Microsoft.SqlServer.DacFx" Version="170.5.96" />
+    <PackageReference Include="System.ComponentModel.Composition" Version="9.0.21" />    
   </ItemGroup>
 </Project>

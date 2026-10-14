@@ -4,7 +4,6 @@
     <File Path="../.github/workflows/cli-tool.yml" />
     <File Path="../.github/workflows/nupkg-release.yml" />
     <File Path="../.github/workflows/vsix.yml" />
-    <File Path="../global.json" />
     <File Path="../samples/efcpt-config.schema.json" />
     <File Path=".editorconfig" />
     <File Path="Directory.Build.Props" />

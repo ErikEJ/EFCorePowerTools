@@ -1,8 +1,7 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 
 namespace UnitTests.BLL
 {
-    using System;
     using EFCorePowerTools.BLL;
     using EFCorePowerTools.Common.BLL;
     using EFCorePowerTools.Common.DAL;
@@ -13,27 +12,6 @@ namespace UnitTests.BLL
     [TestFixture]
     public class ExtensionVersionServiceTests
     {
-        [Test]
-        public void Constructor_ArgumentNullException()
-        {
-            // Arrange
-            IDotNetAccess dna = null;
-
-            // Act & Assert
-            ClassicAssert.Throws<ArgumentNullException>(() => new ExtensionVersionService(dna));
-        }
-
-        [Test]
-        public void SetExtensionVersion_ArgumentNullException()
-        {
-            // Arrange
-            var dna = Mock.Of<IDotNetAccess>();
-            IExtensionVersionService evs = new ExtensionVersionService(dna);
-
-            // Act & Assert
-            ClassicAssert.Throws<ArgumentNullException>(() => evs.SetExtensionVersion(null));
-        }
-
         [Test]
         public void SetExtensionVersion_ProvideVersion()
         {

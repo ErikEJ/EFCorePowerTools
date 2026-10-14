@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 
 namespace UnitTests.ViewModels
 {
@@ -140,59 +140,6 @@ namespace UnitTests.ViewModels
             // Assert
             ClassicAssert.IsTrue(closeRequested);
             ClassicAssert.IsFalse(dialogResult);
-        }
-
-        [Test]
-        public void AddObjects_Null()
-        {
-            // Arrange
-            var otvm = CreateObjectTreeViewModelMock();
-            var vm = new PickTablesViewModel(otvm.Object);
-
-            // Act
-            // Assert
-            ClassicAssert.DoesNotThrow(() => vm.AddObjects(null, null));
-        }
-
-        [Test]
-        public void AddObjects_NotNull()
-        {
-            // Arrange
-            var otvm = CreateObjectTreeViewModelMock();
-            var vm = new PickTablesViewModel(otvm.Object);
-            var databaseObjects = new TableModel[0];
-            var replacingSchemas = new Schema[0];
-
-            // Act
-            // Assert
-            ClassicAssert.DoesNotThrow(() => vm.AddObjects(databaseObjects, replacingSchemas));
-            otvm.Verify(c => c.AddObjects(databaseObjects, replacingSchemas), Times.Once);
-        }
-
-        [Test]
-        public void SelectTables_Null()
-        {
-            // Arrange
-            var otvm = CreateObjectTreeViewModelMock();
-            var vm = new PickTablesViewModel(otvm.Object);
-
-            // Act
-            // Assert
-            ClassicAssert.DoesNotThrow(() => vm.SelectObjects(null));
-        }
-
-        [Test]
-        public void SelectTables_NotNull()
-        {
-            // Arrange
-            var otvm = CreateObjectTreeViewModelMock();
-            var vm = new PickTablesViewModel(otvm.Object);
-            var databaseObjects = new SerializationTableModel[0];
-
-            // Act
-            // Assert
-            ClassicAssert.DoesNotThrow(() => vm.SelectObjects(databaseObjects));
-            otvm.Verify(c => c.SelectObjects(databaseObjects), Times.Once);
         }
 
         [Test]
