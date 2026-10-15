@@ -1,9 +1,8 @@
-﻿namespace RevEng.Common.Cli
-{
-    internal sealed class ExclusionFilter
-    {
-        public string Filter { get; set; }
+namespace RevEng.Common.Cli;
 
-        public ExclusionFilterType FilterType { get; set; }
-    }
+internal sealed class ExclusionFilter
+{
+    public string Filter { get; set; }
+
+    public ExclusionFilterType FilterType { get; set; }
 }

@@ -1,9 +1,8 @@
-﻿namespace EFCorePowerTools.Contracts.ViewModels
-{
-    public class TemplateTypeItem
-    {
-        public int Key { get; set; }
+namespace EFCorePowerTools.Contracts.ViewModels;
 
-        public string Value { get; set; }
-    }
+public class TemplateTypeItem
+{
+    public int Key { get; set; }
+
+    public string Value { get; set; }
 }

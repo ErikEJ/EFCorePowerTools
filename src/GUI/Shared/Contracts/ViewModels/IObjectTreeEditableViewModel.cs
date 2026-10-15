@@ -1,21 +1,20 @@
-﻿using System.Windows.Input;
+using System.Windows.Input;
 
-namespace EFCorePowerTools.Contracts.ViewModels
+namespace EFCorePowerTools.Contracts.ViewModels;
+
+public interface IObjectTreeEditableViewModel
 {
-    public interface IObjectTreeEditableViewModel
-    {
-        string Name { get; set; }
+    string Name { get; set; }
 
-        string NewName { get; set; }
+    string NewName { get; set; }
 
-        string DisplayName { get; }
+    string DisplayName { get; }
 
-        bool IsEditing { get; set; }
+    bool IsEditing { get; set; }
 
-        ICommand StartEditCommand { get; }
+    ICommand StartEditCommand { get; }
 
-        ICommand ConfirmEditCommand { get; }
+    ICommand ConfirmEditCommand { get; }
 
-        ICommand CancelEditCommand { get; }
-    }
+    ICommand CancelEditCommand { get; }
 }

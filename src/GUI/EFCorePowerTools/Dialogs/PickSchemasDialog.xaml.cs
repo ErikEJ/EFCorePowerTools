@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using EFCorePowerTools.Common.DAL;
@@ -6,56 +6,55 @@ using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Contracts.Views;
 using RevEng.Common;
 
-namespace EFCorePowerTools.Dialogs
+namespace EFCorePowerTools.Dialogs;
+
+public partial class PickSchemasDialog : IPickSchemasDialog
 {
-    public partial class PickSchemasDialog : IPickSchemasDialog
+    private readonly Func<SchemaInfo[]> getDialogResult;
+    private readonly Action<IEnumerable<SchemaInfo>> addSchemas;
+
+    public PickSchemasDialog(
+        ITelemetryAccess telemetryAccess,
+        IPickSchemasViewModel viewModel)
     {
-        private readonly Func<SchemaInfo[]> getDialogResult;
-        private readonly Action<IEnumerable<SchemaInfo>> addSchemas;
+        telemetryAccess.TrackPageView(nameof(PickSchemasDialog));
 
-        public PickSchemasDialog(
-            ITelemetryAccess telemetryAccess,
-            IPickSchemasViewModel viewModel)
+        DataContext = viewModel;
+        viewModel.CloseRequested += (sender, args) =>
         {
-            telemetryAccess.TrackPageView(nameof(PickSchemasDialog));
-
-            DataContext = viewModel;
-            viewModel.CloseRequested += (sender, args) =>
-            {
-                DialogResult = args.DialogResult;
-                Close();
-            };
-            getDialogResult = () => viewModel.Schemas.ToArray();
-            addSchemas = models =>
-            {
-                foreach (var model in models)
-                {
-                    viewModel.Schemas.Add(model);
-                }
-            };
-
-            InitializeComponent();
-        }
-
-        (bool ClosedByOK, SchemaInfo[] Payload) IDialog<SchemaInfo[]>.ShowAndAwaitUserResponse(bool modal)
+            DialogResult = args.DialogResult;
+            Close();
+        };
+        getDialogResult = () => viewModel.Schemas.ToArray();
+        addSchemas = models =>
         {
-            bool closedByOkay;
-
-            if (modal)
+            foreach (var model in models)
             {
-                closedByOkay = ShowModal() == true;
+                viewModel.Schemas.Add(model);
             }
-            else
-            {
-                closedByOkay = ShowDialog() == true;
-            }
+        };
 
-            return (closedByOkay, getDialogResult());
-        }
+        InitializeComponent();
+    }
 
-        void IPickSchemasDialog.AddSchemas(IEnumerable<SchemaInfo> schemas)
+    (bool ClosedByOK, SchemaInfo[] Payload) IDialog<SchemaInfo[]>.ShowAndAwaitUserResponse(bool modal)
+    {
+        bool closedByOkay;
+
+        if (modal)
         {
-            addSchemas(schemas);
+            closedByOkay = ShowModal() == true;
         }
+        else
+        {
+            closedByOkay = ShowDialog() == true;
+        }
+
+        return (closedByOkay, getDialogResult());
+    }
+
+    void IPickSchemasDialog.AddSchemas(IEnumerable<SchemaInfo> schemas)
+    {
+        addSchemas(schemas);
     }
 }

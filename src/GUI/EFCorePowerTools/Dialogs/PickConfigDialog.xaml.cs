@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using EFCorePowerTools.Common.DAL;
@@ -6,62 +6,61 @@ using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Contracts.Views;
 
-namespace EFCorePowerTools.Dialogs
+namespace EFCorePowerTools.Dialogs;
+
+public partial class PickConfigDialog : IPickConfigDialog
 {
-    public partial class PickConfigDialog : IPickConfigDialog
+    private readonly Func<ConfigModel> getDialogResult;
+    private readonly Action<IEnumerable<ConfigModel>> addConfigurations;
+
+    public PickConfigDialog(
+        ITelemetryAccess telemetryAccess,
+        IPickConfigViewModel viewModel)
     {
-        private readonly Func<ConfigModel> getDialogResult;
-        private readonly Action<IEnumerable<ConfigModel>> addConfigurations;
+        telemetryAccess.TrackPageView(nameof(PickConfigDialog));
 
-        public PickConfigDialog(
-            ITelemetryAccess telemetryAccess,
-            IPickConfigViewModel viewModel)
+        DataContext = viewModel;
+        viewModel.CloseRequested += (sender, args) =>
         {
-            telemetryAccess.TrackPageView(nameof(PickConfigDialog));
+            DialogResult = args.DialogResult;
+            Close();
+        };
+        getDialogResult = () => viewModel.SelectedConfiguration;
 
-            DataContext = viewModel;
-            viewModel.CloseRequested += (sender, args) =>
-            {
-                DialogResult = args.DialogResult;
-                Close();
-            };
-            getDialogResult = () => viewModel.SelectedConfiguration;
-
-            addConfigurations = models =>
-            {
-                foreach (var model in models)
-                {
-                    viewModel.Configurations.Add(model);
-                }
-            };
-
-            InitializeComponent();
-        }
-
-        (bool ClosedByOK, ConfigModel Payload) IDialog<ConfigModel>.ShowAndAwaitUserResponse(bool modal)
+        addConfigurations = models =>
         {
-            bool closedByOkay;
-
-            if (modal)
+            foreach (var model in models)
             {
-                closedByOkay = ShowModal() == true;
+                viewModel.Configurations.Add(model);
             }
-            else
-            {
-                closedByOkay = ShowDialog() == true;
-            }
+        };
 
-            return (closedByOkay, getDialogResult());
-        }
+        InitializeComponent();
+    }
 
-        public void PublishConfigurations(IEnumerable<ConfigModel> configurations)
+    (bool ClosedByOK, ConfigModel Payload) IDialog<ConfigModel>.ShowAndAwaitUserResponse(bool modal)
+    {
+        bool closedByOkay;
+
+        if (modal)
         {
-            addConfigurations(configurations);
+            closedByOkay = ShowModal() == true;
+        }
+        else
+        {
+            closedByOkay = ShowDialog() == true;
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            DatabaseConnectionCombobox.Focus();
-        }
+        return (closedByOkay, getDialogResult());
+    }
+
+    public void PublishConfigurations(IEnumerable<ConfigModel> configurations)
+    {
+        addConfigurations(configurations);
+    }
+
+    private void Window_Loaded(object sender, RoutedEventArgs e)
+    {
+        DatabaseConnectionCombobox.Focus();
     }
 }

@@ -1,17 +1,13 @@
-﻿using System;
+using System;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Abstractions.Model;
 
-namespace RevEng.Core.Routines.Procedures
-{
+namespace RevEng.Core.Routines.Procedures;
+
 #pragma warning disable CA1812 // Internal class that is apparently never instantiated; this class is instantiated generically
-    internal sealed class NotImplementedProcedureModelFactory : IProcedureModelFactory
+internal sealed class NotImplementedProcedureModelFactory : IProcedureModelFactory
 #pragma warning restore CA1812 // Internal class that is apparently never instantiated
-    {
-        public RoutineModel Create(string connectionString, ModuleModelFactoryOptions options)
-        {
-            throw new NotSupportedException();
-        }
-    }
+{
+    public RoutineModel Create(string connectionString, ModuleModelFactoryOptions options) => throw new NotSupportedException();
 }

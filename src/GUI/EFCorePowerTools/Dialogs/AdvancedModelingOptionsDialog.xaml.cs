@@ -1,54 +1,53 @@
-﻿using System;
+using System;
 using EFCorePowerTools.Common.DAL;
 using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Contracts.Views;
 
-namespace EFCorePowerTools.Dialogs
+namespace EFCorePowerTools.Dialogs;
+
+public partial class AdvancedModelingOptionsDialog : IAdvancedModelingOptionsDialog
 {
-    public partial class AdvancedModelingOptionsDialog : IAdvancedModelingOptionsDialog
+    private readonly Func<ModelingOptionsModel> getDialogResult;
+    private readonly Action<ModelingOptionsModel> applyPresets;
+
+    public AdvancedModelingOptionsDialog(
+        ITelemetryAccess telemetryAccess,
+        IAdvancedModelingOptionsViewModel viewModel)
     {
-        private readonly Func<ModelingOptionsModel> getDialogResult;
-        private readonly Action<ModelingOptionsModel> applyPresets;
+        telemetryAccess.TrackPageView(nameof(AdvancedModelingOptionsDialog));
 
-        public AdvancedModelingOptionsDialog(
-            ITelemetryAccess telemetryAccess,
-            IAdvancedModelingOptionsViewModel viewModel)
+        DataContext = viewModel;
+        viewModel.CloseRequested += (sender, args) =>
         {
-            telemetryAccess.TrackPageView(nameof(AdvancedModelingOptionsDialog));
+            DialogResult = args.DialogResult;
+            Close();
+        };
+        getDialogResult = () => viewModel.Model;
+        applyPresets = viewModel.ApplyPresets;
 
-            DataContext = viewModel;
-            viewModel.CloseRequested += (sender, args) =>
-            {
-                DialogResult = args.DialogResult;
-                Close();
-            };
-            getDialogResult = () => viewModel.Model;
-            applyPresets = viewModel.ApplyPresets;
+        InitializeComponent();
+    }
 
-            InitializeComponent();
+    public (bool ClosedByOK, ModelingOptionsModel Payload) ShowAndAwaitUserResponse(bool modal)
+    {
+        bool closedByOkay;
+
+        if (modal)
+        {
+            closedByOkay = ShowModal() == true;
+        }
+        else
+        {
+            closedByOkay = ShowDialog() == true;
         }
 
-        public (bool ClosedByOK, ModelingOptionsModel Payload) ShowAndAwaitUserResponse(bool modal)
-        {
-            bool closedByOkay;
+        return (closedByOkay, getDialogResult());
+    }
 
-            if (modal)
-            {
-                closedByOkay = ShowModal() == true;
-            }
-            else
-            {
-                closedByOkay = ShowDialog() == true;
-            }
-
-            return (closedByOkay, getDialogResult());
-        }
-
-        IAdvancedModelingOptionsDialog IAdvancedModelingOptionsDialog.ApplyPresets(ModelingOptionsModel presets)
-        {
-            applyPresets(presets);
-            return this;
-        }
+    IAdvancedModelingOptionsDialog IAdvancedModelingOptionsDialog.ApplyPresets(ModelingOptionsModel presets)
+    {
+        applyPresets(presets);
+        return this;
     }
 }

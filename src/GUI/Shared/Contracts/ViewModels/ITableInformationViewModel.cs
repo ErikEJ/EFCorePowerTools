@@ -1,25 +1,24 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using RevEng.Common;
 
-namespace EFCorePowerTools.Contracts.ViewModels
+namespace EFCorePowerTools.Contracts.ViewModels;
+
+public interface ITableInformationViewModel : IObjectTreeEditableViewModel, IObjectTreeSelectableViewModel, IViewModel
 {
-    public interface ITableInformationViewModel : IObjectTreeEditableViewModel, IObjectTreeSelectableViewModel, IViewModel
-    {
-        string Schema { get; set; }
+    string Schema { get; set; }
 
-        bool HasPrimaryKey { get; }
+    bool HasPrimaryKey { get; }
 
-        IEnumerable<string> ExcludedIndexes { get; set; }
+    IEnumerable<string> ExcludedIndexes { get; set; }
 
-        ObjectType ObjectType { get; set; }
+    ObjectType ObjectType { get; set; }
 
-        ObjectTypeIcon ObjectTypeIcon { get; }
+    ObjectTypeIcon ObjectTypeIcon { get; }
 
-        ObservableCollection<IColumnInformationViewModel> Columns { get; }
+    ObservableCollection<IColumnInformationViewModel> Columns { get; }
 
-        bool IsVisible { get; set; }
+    bool IsVisible { get; set; }
 
-        string ModelDisplayName { get; set; }
-    }
+    string ModelDisplayName { get; set; }
 }

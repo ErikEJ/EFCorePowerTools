@@ -1,8 +1,7 @@
-﻿namespace EFCorePowerTools.Contracts.ViewModels
+namespace EFCorePowerTools.Contracts.ViewModels;
+
+public enum SearchMode
 {
-    public enum SearchMode
-    {
-        Text,
-        RegularExpression,
-    }
+    Text,
+    RegularExpression,
 }

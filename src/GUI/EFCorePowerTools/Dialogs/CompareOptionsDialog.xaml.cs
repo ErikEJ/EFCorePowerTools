@@ -1,60 +1,59 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using EFCorePowerTools.Common.DAL;
 using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Contracts.Views;
 
-namespace EFCorePowerTools.Dialogs
+namespace EFCorePowerTools.Dialogs;
+
+public partial class CompareOptionsDialog : ICompareOptionsDialog
 {
-    public partial class CompareOptionsDialog : ICompareOptionsDialog
+    private readonly Func<(DatabaseConnectionModel Connection, IEnumerable<string> ContextTypes)> getDialogResult;
+    private readonly Action<IEnumerable<DatabaseConnectionModel>> addConnections;
+    private readonly Action<IEnumerable<string>> contextTypes;
+
+    public CompareOptionsDialog(
+        ITelemetryAccess telemetryAccess,
+        ICompareOptionsViewModel viewModel)
     {
-        private readonly Func<(DatabaseConnectionModel Connection, IEnumerable<string> ContextTypes)> getDialogResult;
-        private readonly Action<IEnumerable<DatabaseConnectionModel>> addConnections;
-        private readonly Action<IEnumerable<string>> contextTypes;
+        telemetryAccess.TrackPageView(nameof(CompareOptionsDialog));
 
-        public CompareOptionsDialog(
-            ITelemetryAccess telemetryAccess,
-            ICompareOptionsViewModel viewModel)
+        DataContext = viewModel;
+        viewModel.CloseRequested += (sender, args) =>
         {
-            telemetryAccess.TrackPageView(nameof(CompareOptionsDialog));
+            DialogResult = args.DialogResult;
+            Close();
+        };
+        getDialogResult = viewModel.GetSelection;
+        addConnections = viewModel.AddDatabaseConnections;
+        contextTypes = viewModel.AddContextTypes;
+        InitializeComponent();
+    }
 
-            DataContext = viewModel;
-            viewModel.CloseRequested += (sender, args) =>
-            {
-                DialogResult = args.DialogResult;
-                Close();
-            };
-            getDialogResult = viewModel.GetSelection;
-            addConnections = viewModel.AddDatabaseConnections;
-            contextTypes = viewModel.AddContextTypes;
-            InitializeComponent();
+    public (bool ClosedByOK, (DatabaseConnectionModel Connection, IEnumerable<string> ContextTypes) Payload) ShowAndAwaitUserResponse(bool modal)
+    {
+        bool closedByOkay;
+
+        if (modal)
+        {
+            closedByOkay = ShowModal() == true;
+        }
+        else
+        {
+            closedByOkay = ShowDialog() == true;
         }
 
-        public (bool ClosedByOK, (DatabaseConnectionModel Connection, IEnumerable<string> ContextTypes) Payload) ShowAndAwaitUserResponse(bool modal)
-        {
-            bool closedByOkay;
+        return (closedByOkay, getDialogResult());
+    }
 
-            if (modal)
-            {
-                closedByOkay = ShowModal() == true;
-            }
-            else
-            {
-                closedByOkay = ShowDialog() == true;
-            }
+    public void AddConnections(IEnumerable<DatabaseConnectionModel> connections)
+    {
+        addConnections(connections);
+    }
 
-            return (closedByOkay, getDialogResult());
-        }
-
-        public void AddConnections(IEnumerable<DatabaseConnectionModel> connections)
-        {
-            addConnections(connections);
-        }
-
-        public void AddContextTypes(IEnumerable<string> contextTypes)
-        {
-            this.contextTypes(contextTypes);
-        }
+    public void AddContextTypes(IEnumerable<string> contextTypes)
+    {
+        this.contextTypes(contextTypes);
     }
 }

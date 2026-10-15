@@ -10,15 +10,15 @@ using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Abstractions.Model;
 using RevEng.Core.Routines.Extensions;
 
-namespace RevEng.Core.Routines.Procedures
-{
-    public class SqlServerStoredProcedureModelFactory : SqlServerRoutineModelFactory, IProcedureModelFactory
-    {
-        public SqlServerStoredProcedureModelFactory()
-        {
-            RoutineType = "PROCEDURE";
+namespace RevEng.Core.Routines.Procedures;
 
-            RoutineSql = $@"
+public class SqlServerStoredProcedureModelFactory : SqlServerRoutineModelFactory, IProcedureModelFactory
+{
+    public SqlServerStoredProcedureModelFactory()
+    {
+        RoutineType = "PROCEDURE";
+
+        RoutineSql = $@"
 SELECT
     ROUTINE_SCHEMA,
     ROUTINE_NAME,
@@ -34,136 +34,243 @@ AND object_id(QUOTENAME(ROUTINE_SCHEMA) + '.' + QUOTENAME(ROUTINE_NAME)) NOT IN 
     )
 AND ROUTINE_TYPE = N'PROCEDURE' 
 ORDER BY ROUTINE_NAME;";
-        }
+    }
 
-        public RoutineModel Create(string connectionString, ModuleModelFactoryOptions options)
-        {
-            return GetRoutines(connectionString, options);
-        }
+    public RoutineModel Create(string connectionString, ModuleModelFactoryOptions options) => GetRoutines(connectionString, options);
 
-        protected override List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection, Routine module, bool multipleResults, bool useLegacyResultSetDiscovery, bool useStoredProcedureResultSetFallback)
-        {
-            ArgumentNullException.ThrowIfNull(connection);
+    protected override List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection, Routine module, bool multipleResults, bool useLegacyResultSetDiscovery, bool useStoredProcedureResultSetFallback)
+    {
+        ArgumentNullException.ThrowIfNull(connection);
 
-            ArgumentNullException.ThrowIfNull(module);
+        ArgumentNullException.ThrowIfNull(module);
 
-            if (useLegacyResultSetDiscovery)
-            {
-                try
-                {
-                    return GetFirstResultSet(connection, module);
-                }
-                catch (SqlException ex) when (useStoredProcedureResultSetFallback && ShouldTryDefinitionFallback(ex))
-                {
-                    return GetResultSetsWithMetadataOrDefinitionFallback(
-                        () => GetAllResultSets(connection, module, !multipleResults),
-                        () => GetResultSetsFromDefinition(connection, module, !multipleResults),
-                        fallbackException => fallbackException is SqlException sqlException && ShouldTryDefinitionFallback(sqlException),
-                        ex);
-                }
-            }
-
-            if (!useStoredProcedureResultSetFallback)
-            {
-                return GetAllResultSets(connection, module, !multipleResults);
-            }
-
-            return GetResultSetsWithMetadataOrDefinitionFallback(
-                () => GetAllResultSets(connection, module, !multipleResults),
-                () => GetResultSetsFromDefinition(connection, module, !multipleResults),
-                ex => ex is SqlException sqlException && ShouldTryDefinitionFallback(sqlException));
-        }
-
-        private static List<List<ModuleResultElement>> GetAllResultSets(SqlConnection connection, Routine module, bool singleResult)
-        {
-            var result = new List<List<ModuleResultElement>>();
-            using var sqlCommand = CreateStoredProcedureCommand(connection, module);
-
-            using var schemaReader = sqlCommand.ExecuteReader(CommandBehavior.SchemaOnly);
-            ReadResultSets(module, singleResult, result, schemaReader);
-
-            return result;
-        }
-
-        /// <summary>
-        /// Tries SQL Server metadata discovery first and falls back to parsing the stored procedure definition.
-        /// </summary>
-        private static List<List<ModuleResultElement>> GetResultSetsWithMetadataOrDefinitionFallback(
-            Func<List<List<ModuleResultElement>>> getMetadataResultSets,
-            Func<List<List<ModuleResultElement>>> getDefinitionResultSets,
-            Func<Exception, bool> shouldTryDefinitionFallback,
-            Exception originalException = null)
+        if (useLegacyResultSetDiscovery)
         {
             try
             {
-                return getMetadataResultSets();
+                return GetFirstResultSet(connection, module);
             }
-            catch (Exception ex) when (shouldTryDefinitionFallback(ex))
+            catch (SqlException ex) when (useStoredProcedureResultSetFallback && ShouldTryDefinitionFallback(ex))
             {
-                var resultFromDefinition = getDefinitionResultSets();
-                if (resultFromDefinition.Count > 0)
-                {
-                    return resultFromDefinition;
-                }
-
-                throw originalException ?? ex;
+                return GetResultSetsWithMetadataOrDefinitionFallback(
+                    () => GetAllResultSets(connection, module, !multipleResults),
+                    () => GetResultSetsFromDefinition(connection, module, !multipleResults),
+                    fallbackException => fallbackException is SqlException sqlException && ShouldTryDefinitionFallback(sqlException),
+                    ex);
             }
         }
 
-        private static List<List<ModuleResultElement>> GetFirstResultSet(SqlConnection connection, Routine module)
+        if (!useStoredProcedureResultSetFallback)
         {
-            using var dtResult = new DataTable();
+            return GetAllResultSets(connection, module, !multipleResults);
+        }
+
+        return GetResultSetsWithMetadataOrDefinitionFallback(
+            () => GetAllResultSets(connection, module, !multipleResults),
+            () => GetResultSetsFromDefinition(connection, module, !multipleResults),
+            ex => ex is SqlException sqlException && ShouldTryDefinitionFallback(sqlException));
+    }
+
+    private static List<List<ModuleResultElement>> GetAllResultSets(SqlConnection connection, Routine module, bool singleResult)
+    {
+        var result = new List<List<ModuleResultElement>>();
+        using var sqlCommand = CreateStoredProcedureCommand(connection, module);
+
+        using var schemaReader = sqlCommand.ExecuteReader(CommandBehavior.SchemaOnly);
+        ReadResultSets(module, singleResult, result, schemaReader);
+
+        return result;
+    }
+
+    /// <summary>
+    /// Tries SQL Server metadata discovery first and falls back to parsing the stored procedure definition.
+    /// </summary>
+    private static List<List<ModuleResultElement>> GetResultSetsWithMetadataOrDefinitionFallback(
+        Func<List<List<ModuleResultElement>>> getMetadataResultSets,
+        Func<List<List<ModuleResultElement>>> getDefinitionResultSets,
+        Func<Exception, bool> shouldTryDefinitionFallback,
+        Exception originalException = null)
+    {
+        try
+        {
+            return getMetadataResultSets();
+        }
+        catch (Exception ex) when (shouldTryDefinitionFallback(ex))
+        {
+            var resultFromDefinition = getDefinitionResultSets();
+            if (resultFromDefinition.Count > 0)
+            {
+                return resultFromDefinition;
+            }
+
+            throw originalException ?? ex;
+        }
+    }
+
+    private static List<List<ModuleResultElement>> GetFirstResultSet(SqlConnection connection, Routine module)
+    {
+        using var dtResult = new DataTable();
+        var list = new List<ModuleResultElement>();
+
+        var escapedSchema = module.Schema.Replace("]", "]]", StringComparison.Ordinal);
+        var escapedName = module.Name.Replace("]", "]]", StringComparison.Ordinal);
+        const string sql = "exec dbo.sp_describe_first_result_set @tsql = @statement;";
+
+        using var command = new SqlCommand(sql, connection);
+        command.Parameters.AddWithValue("@statement", $"[{escapedSchema}].[{escapedName}]");
+
+        using var adapter = new SqlDataAdapter
+        {
+            SelectCommand = command,
+        };
+
+        adapter.Fill(dtResult);
+
+        var unnamedColumnCount = 0;
+
+        foreach (DataRow row in dtResult.Rows)
+        {
+            if (row != null)
+            {
+                var name = row["name"].ToString();
+                if (string.IsNullOrEmpty(name))
+                {
+                    unnamedColumnCount++;
+                    continue;
+                }
+
+                var storeType = string.IsNullOrEmpty(row["system_type_name"].ToString()) ? row["user_type_name"].ToString() : row["system_type_name"].ToString();
+                var maxLength = row["max_length"] == DBNull.Value ? 0 : int.Parse(row["max_length"].ToString()!, CultureInfo.InvariantCulture);
+
+                if (storeType != null
+                    && storeType.StartsWith("nvarchar", StringComparison.OrdinalIgnoreCase)
+                    && maxLength > 0)
+                {
+                    maxLength = maxLength / 2;
+                }
+
+                var parameter = new ModuleResultElement()
+                {
+                    Name = name,
+                    StoreType = storeType,
+                    Ordinal = int.Parse(row["column_ordinal"].ToString()!, CultureInfo.InvariantCulture),
+                    Nullable = (bool)row["is_nullable"],
+                    MaxLength = maxLength,
+                    Precision = (byte)row["precision"],
+                    Scale = (byte)row["scale"],
+                };
+
+                list.Add(parameter);
+            }
+        }
+
+        if (unnamedColumnCount > 0)
+        {
+            module.UnnamedColumnCount += unnamedColumnCount;
+        }
+
+        var result = new List<List<ModuleResultElement>>
+        {
+            list,
+        };
+
+        return result;
+    }
+
+    /// <summary>
+    /// Creates a schema-only stored procedure command with placeholder parameters for metadata discovery.
+    /// </summary>
+    private static SqlCommand CreateStoredProcedureCommand(SqlConnection connection, Routine module)
+    {
+        var sqlCommand = connection.CreateCommand();
+        var escapedSchema = module.Schema.Replace("]", "]]", StringComparison.Ordinal);
+        var escapedName = module.Name.Replace("]", "]]", StringComparison.Ordinal);
+#pragma warning disable S2077 // SQL queries should not be dynamically formatted
+#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
+        sqlCommand.CommandText = string.Concat("[", escapedSchema, "].[", escapedName, "]");
+#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
+#pragma warning restore S2077 // SQL queries should not be dynamically formatted
+        sqlCommand.CommandType = CommandType.StoredProcedure;
+
+        AddStoredProcedureParameters(sqlCommand, module, connection);
+
+        return sqlCommand;
+    }
+
+    /// <summary>
+    /// Adds placeholder parameters needed to compile the stored procedure and infer its result shape.
+    /// </summary>
+    private static void AddStoredProcedureParameters(SqlCommand sqlCommand, Routine module, SqlConnection connection)
+    {
+        var parameters = module.Parameters.Take(module.Parameters.Count - 1);
+
+        foreach (var parameter in parameters)
+        {
+            var param = new SqlParameter("@" + parameter.Name, DBNull.Value);
+
+            if (parameter.ClrTypeFromSqlParameter() == typeof(DataTable))
+            {
+                param.Value = GetDataTableFromSchema(parameter, connection);
+                param.SqlDbType = SqlDbType.Structured;
+            }
+
+            if (parameter.ClrTypeFromSqlParameter() == typeof(byte[]))
+            {
+                param.SqlDbType = SqlDbType.VarBinary;
+            }
+
+            sqlCommand.Parameters.Add(param);
+        }
+    }
+
+    /// <summary>
+    /// Reads one or more result-set schemas from a data reader into <see cref="ModuleResultElement"/> collections.
+    /// </summary>
+    private static void ReadResultSets(Routine module, bool singleResult, List<List<ModuleResultElement>> result, SqlDataReader schemaReader)
+    {
+        do
+        {
+            // https://docs.microsoft.com/en-us/dotnet/api/system.data.datatablereader.getschematable
+            var schemaTable = schemaReader.GetSchemaTable();
             var list = new List<ModuleResultElement>();
 
-            var escapedSchema = module.Schema.Replace("]", "]]", StringComparison.Ordinal);
-            var escapedName = module.Name.Replace("]", "]]", StringComparison.Ordinal);
-            const string sql = "exec dbo.sp_describe_first_result_set @tsql = @statement;";
-
-            using var command = new SqlCommand(sql, connection);
-            command.Parameters.AddWithValue("@statement", $"[{escapedSchema}].[{escapedName}]");
-
-            using var adapter = new SqlDataAdapter
+            if (schemaTable == null)
             {
-                SelectCommand = command,
-            };
-
-            adapter.Fill(dtResult);
+                break;
+            }
 
             var unnamedColumnCount = 0;
 
-            foreach (DataRow row in dtResult.Rows)
+            foreach (DataRow row in schemaTable.Rows)
             {
                 if (row != null)
                 {
-                    var name = row["name"].ToString();
-                    if (string.IsNullOrEmpty(name))
+                    var name = row["ColumnName"].ToString();
+                    if (string.IsNullOrWhiteSpace(name))
                     {
                         unnamedColumnCount++;
                         continue;
                     }
 
-                    var storeType = string.IsNullOrEmpty(row["system_type_name"].ToString()) ? row["user_type_name"].ToString() : row["system_type_name"].ToString();
-                    var maxLength = row["max_length"] == DBNull.Value ? 0 : int.Parse(row["max_length"].ToString()!, CultureInfo.InvariantCulture);
+                    var storeType = row["DataTypeName"].ToString();
 
-                    if (storeType != null
-                        && storeType.StartsWith("nvarchar", StringComparison.OrdinalIgnoreCase)
-                        && maxLength > 0)
+                    if (row["ProviderSpecificDataType"]?.ToString()?.StartsWith("Microsoft.SqlServer.Types.Sql", StringComparison.OrdinalIgnoreCase) ?? false)
                     {
-                        maxLength = maxLength / 2;
+#pragma warning disable CA1308 // Normalize strings to uppercase
+                        storeType = row["ProviderSpecificDataType"].ToString()?.Replace("Microsoft.SqlServer.Types.Sql", string.Empty, StringComparison.OrdinalIgnoreCase).ToLowerInvariant();
+#pragma warning restore CA1308 // Normalize strings to uppercase
                     }
 
-                    var parameter = new ModuleResultElement()
+                    list.Add(new ModuleResultElement
                     {
                         Name = name,
+                        Nullable = (bool?)row["AllowDBNull"] ?? true,
+                        Ordinal = (int)row["ColumnOrdinal"],
                         StoreType = storeType,
-                        Ordinal = int.Parse(row["column_ordinal"].ToString()!, CultureInfo.InvariantCulture),
-                        Nullable = (bool)row["is_nullable"],
-                        MaxLength = maxLength,
-                        Precision = (byte)row["precision"],
-                        Scale = (byte)row["scale"],
-                    };
-
-                    list.Add(parameter);
+                        Precision = (short?)row["NumericPrecision"],
+                        Scale = (short?)row["NumericScale"],
+                        MaxLength = (int)row["ColumnSize"],
+                    });
                 }
             }
 
@@ -172,171 +279,58 @@ ORDER BY ROUTINE_NAME;";
                 module.UnnamedColumnCount += unnamedColumnCount;
             }
 
-            var result = new List<List<ModuleResultElement>>
-            {
-                list,
-            };
+            result.Add(list);
+        }
+        while (schemaReader.NextResult() && !singleResult);
+    }
 
-            return result;
+    /// <summary>
+    /// Identifies SQL Server errors that should fall back to parsing the stored procedure definition.
+    /// Known observed live-db discovery failures from the DockerPlayground repro include:
+    /// "Invalid object name '#OrderTable'."
+    /// "Invalid object name '#OrderLegacyTable'."
+    /// "Invalid object name '#OrderSummaryTable'."
+    /// "Invalid object name '#OrderSearchTable'."
+    /// The broader text matches remain as defensive fallbacks for temp-table wording and describe-result-set errors.
+    /// </summary>
+    private static bool ShouldTryDefinitionFallback(SqlException ex) => ShouldTryDefinitionFallback(ex.Number, ex.Message);
+
+    internal static bool ShouldTryDefinitionFallback(int errorNumber, string message)
+    {
+        ArgumentNullException.ThrowIfNull(message);
+
+        // Observed live-db failures from DockerPlayground are SqlException 208
+        // with temp-table object names such as '#OrderTable'.
+        if (errorNumber == 208 && message.Contains('#', StringComparison.Ordinal))
+        {
+            return true;
         }
 
-        /// <summary>
-        /// Creates a schema-only stored procedure command with placeholder parameters for metadata discovery.
-        /// </summary>
-        private static SqlCommand CreateStoredProcedureCommand(SqlConnection connection, Routine module)
+        return message.Contains("temp table", StringComparison.OrdinalIgnoreCase)
+            || message.Contains("sp_describe_first_result_set", StringComparison.OrdinalIgnoreCase);
+    }
+
+    /// <summary>
+    /// Reads the stored procedure body from SQL Server and parses it to infer result sets when live discovery fails.
+    /// </summary>
+    private static List<List<ModuleResultElement>> GetResultSetsFromDefinition(SqlConnection connection, Routine module, bool singleResult)
+    {
+        var definition = GetRoutineDefinition(connection, module);
+        if (string.IsNullOrWhiteSpace(definition))
         {
-            var sqlCommand = connection.CreateCommand();
-            var escapedSchema = module.Schema.Replace("]", "]]", StringComparison.Ordinal);
-            var escapedName = module.Name.Replace("]", "]]", StringComparison.Ordinal);
-#pragma warning disable S2077 // SQL queries should not be dynamically formatted
-#pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
-            sqlCommand.CommandText = string.Concat("[", escapedSchema, "].[", escapedName, "]");
-#pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
-#pragma warning restore S2077 // SQL queries should not be dynamically formatted
-            sqlCommand.CommandType = CommandType.StoredProcedure;
-
-            AddStoredProcedureParameters(sqlCommand, module, connection);
-
-            return sqlCommand;
+            return new List<List<ModuleResultElement>>();
         }
 
-        /// <summary>
-        /// Adds placeholder parameters needed to compile the stored procedure and infer its result shape.
-        /// </summary>
-        private static void AddStoredProcedureParameters(SqlCommand sqlCommand, Routine module, SqlConnection connection)
-        {
-            var parameters = module.Parameters.Take(module.Parameters.Count - 1);
+        return SqlServerStoredProcedureResultSetFactory.CreateFromDefinition(definition, singleResult);
+    }
 
-            foreach (var parameter in parameters)
-            {
-                var param = new SqlParameter("@" + parameter.Name, DBNull.Value);
-
-                if (parameter.ClrTypeFromSqlParameter() == typeof(DataTable))
-                {
-                    param.Value = GetDataTableFromSchema(parameter, connection);
-                    param.SqlDbType = SqlDbType.Structured;
-                }
-
-                if (parameter.ClrTypeFromSqlParameter() == typeof(byte[]))
-                {
-                    param.SqlDbType = SqlDbType.VarBinary;
-                }
-
-                sqlCommand.Parameters.Add(param);
-            }
-        }
-
-        /// <summary>
-        /// Reads one or more result-set schemas from a data reader into <see cref="ModuleResultElement"/> collections.
-        /// </summary>
-        private static void ReadResultSets(Routine module, bool singleResult, List<List<ModuleResultElement>> result, SqlDataReader schemaReader)
-        {
-            do
-            {
-                // https://docs.microsoft.com/en-us/dotnet/api/system.data.datatablereader.getschematable
-                var schemaTable = schemaReader.GetSchemaTable();
-                var list = new List<ModuleResultElement>();
-
-                if (schemaTable == null)
-                {
-                    break;
-                }
-
-                var unnamedColumnCount = 0;
-
-                foreach (DataRow row in schemaTable.Rows)
-                {
-                    if (row != null)
-                    {
-                        var name = row["ColumnName"].ToString();
-                        if (string.IsNullOrWhiteSpace(name))
-                        {
-                            unnamedColumnCount++;
-                            continue;
-                        }
-
-                        var storeType = row["DataTypeName"].ToString();
-
-                        if (row["ProviderSpecificDataType"]?.ToString()?.StartsWith("Microsoft.SqlServer.Types.Sql", StringComparison.OrdinalIgnoreCase) ?? false)
-                        {
-#pragma warning disable CA1308 // Normalize strings to uppercase
-                            storeType = row["ProviderSpecificDataType"].ToString()?.Replace("Microsoft.SqlServer.Types.Sql", string.Empty, StringComparison.OrdinalIgnoreCase).ToLowerInvariant();
-#pragma warning restore CA1308 // Normalize strings to uppercase
-                        }
-
-                        list.Add(new ModuleResultElement
-                        {
-                            Name = name,
-                            Nullable = (bool?)row["AllowDBNull"] ?? true,
-                            Ordinal = (int)row["ColumnOrdinal"],
-                            StoreType = storeType,
-                            Precision = (short?)row["NumericPrecision"],
-                            Scale = (short?)row["NumericScale"],
-                            MaxLength = (int)row["ColumnSize"],
-                        });
-                    }
-                }
-
-                if (unnamedColumnCount > 0)
-                {
-                    module.UnnamedColumnCount += unnamedColumnCount;
-                }
-
-                result.Add(list);
-            }
-            while (schemaReader.NextResult() && !singleResult);
-        }
-
-        /// <summary>
-        /// Identifies SQL Server errors that should fall back to parsing the stored procedure definition.
-        /// Known observed live-db discovery failures from the DockerPlayground repro include:
-        /// "Invalid object name '#OrderTable'."
-        /// "Invalid object name '#OrderLegacyTable'."
-        /// "Invalid object name '#OrderSummaryTable'."
-        /// "Invalid object name '#OrderSearchTable'."
-        /// The broader text matches remain as defensive fallbacks for temp-table wording and describe-result-set errors.
-        /// </summary>
-        private static bool ShouldTryDefinitionFallback(SqlException ex)
-        {
-            return ShouldTryDefinitionFallback(ex.Number, ex.Message);
-        }
-
-        internal static bool ShouldTryDefinitionFallback(int errorNumber, string message)
-        {
-            ArgumentNullException.ThrowIfNull(message);
-
-            // Observed live-db failures from DockerPlayground are SqlException 208
-            // with temp-table object names such as '#OrderTable'.
-            if (errorNumber == 208 && message.Contains('#', StringComparison.Ordinal))
-            {
-                return true;
-            }
-
-            return message.Contains("temp table", StringComparison.OrdinalIgnoreCase)
-                || message.Contains("sp_describe_first_result_set", StringComparison.OrdinalIgnoreCase);
-        }
-
-        /// <summary>
-        /// Reads the stored procedure body from SQL Server and parses it to infer result sets when live discovery fails.
-        /// </summary>
-        private static List<List<ModuleResultElement>> GetResultSetsFromDefinition(SqlConnection connection, Routine module, bool singleResult)
-        {
-            var definition = GetRoutineDefinition(connection, module);
-            if (string.IsNullOrWhiteSpace(definition))
-            {
-                return new List<List<ModuleResultElement>>();
-            }
-
-            return SqlServerStoredProcedureResultSetFactory.CreateFromDefinition(definition, singleResult);
-        }
-
-        /// <summary>
-        /// Retrieves the T-SQL module definition for the target stored procedure from system catalog views.
-        /// </summary>
-        private static string GetRoutineDefinition(SqlConnection connection, Routine module)
-        {
-            using var command = connection.CreateCommand();
-            command.CommandText = @"
+    /// <summary>
+    /// Retrieves the T-SQL module definition for the target stored procedure from system catalog views.
+    /// </summary>
+    private static string GetRoutineDefinition(SqlConnection connection, Routine module)
+    {
+        using var command = connection.CreateCommand();
+        command.CommandText = @"
 SELECT sm.definition
 FROM sys.sql_modules sm
 INNER JOIN sys.objects o ON sm.object_id = o.object_id
@@ -344,49 +338,46 @@ INNER JOIN sys.schemas s ON o.schema_id = s.schema_id
 WHERE s.name = @schemaName
 AND o.name = @routineName;";
 
-            command.Parameters.AddWithValue("@schemaName", module.Schema);
-            command.Parameters.AddWithValue("@routineName", module.Name);
+        command.Parameters.AddWithValue("@schemaName", module.Schema);
+        command.Parameters.AddWithValue("@routineName", module.Name);
 
-            return command.ExecuteScalar() as string;
-        }
+        return command.ExecuteScalar() as string;
+    }
 
-        private static DataTable GetDataTableFromSchema(ModuleParameter parameter, SqlConnection connection)
+    private static DataTable GetDataTableFromSchema(ModuleParameter parameter, SqlConnection connection)
+    {
+        var userType = new SqlParameter
         {
-            var userType = new SqlParameter
+            Value = parameter.TypeId,
+            ParameterName = "@userTypeId",
+        };
+
+        var userSchema = new SqlParameter
+        {
+            Value = parameter.TypeSchema,
+            ParameterName = "@schemaId",
+        };
+
+        var query = "SELECT SC.name, ST.name AS datatype FROM sys.columns SC " +
+                    "INNER JOIN sys.types ST ON ST.system_type_id = SC.system_type_id AND ST.is_user_defined = 0 " +
+                    "WHERE ST.name <> 'sysname' AND SC.object_id = " +
+                    "(SELECT type_table_object_id FROM sys.table_types WHERE schema_id = @schemaId AND user_type_id =  @userTypeId);";
+
+        var dataTable = new DataTable();
+
+        using (var command = new SqlCommand(query, connection))
+        {
+            command.Parameters.Add(userType);
+            command.Parameters.Add(userSchema);
+            using var sqlDataReader = command.ExecuteReader();
+            while (sqlDataReader.Read())
             {
-                Value = parameter.TypeId,
-                ParameterName = "@userTypeId",
-            };
-
-            var userSchema = new SqlParameter
-            {
-                Value = parameter.TypeSchema,
-                ParameterName = "@schemaId",
-            };
-
-            var query = "SELECT SC.name, ST.name AS datatype FROM sys.columns SC " +
-                        "INNER JOIN sys.types ST ON ST.system_type_id = SC.system_type_id AND ST.is_user_defined = 0 " +
-                        "WHERE ST.name <> 'sysname' AND SC.object_id = " +
-                        "(SELECT type_table_object_id FROM sys.table_types WHERE schema_id = @schemaId AND user_type_id =  @userTypeId);";
-
-            var dataTable = new DataTable();
-
-            using (var command = new SqlCommand(query, connection))
-            {
-                command.Parameters.Add(userType);
-                command.Parameters.Add(userSchema);
-                using (var sqlDataReader = command.ExecuteReader())
-                {
-                    while (sqlDataReader.Read())
-                    {
-                        var columnName = sqlDataReader["name"].ToString();
-                        var clrType = SqlServerSqlTypeExtensions.GetClrType(sqlDataReader["datatype"].ToString(), false);
-                        dataTable.Columns.Add(columnName, clrType);
-                    }
-                }
+                var columnName = sqlDataReader["name"].ToString();
+                var clrType = SqlServerSqlTypeExtensions.GetClrType(sqlDataReader["datatype"].ToString(), false);
+                dataTable.Columns.Add(columnName, clrType);
             }
-
-            return dataTable;
         }
+
+        return dataTable;
     }
 }

@@ -8,25 +8,24 @@ using Microsoft.Extensions.DependencyInjection;
 
 [assembly: DesignTimeProviderServices("ErikEJ.EntityFrameworkCore.SqlServer.Design.SqlServerDacpacDesignTimeServices")]
 
-namespace ErikEJ.EntityFrameworkCore.SqlServer.Design
+namespace ErikEJ.EntityFrameworkCore.SqlServer.Design;
+
+public class SqlServerDacpacDesignTimeServices : IDesignTimeServices
 {
-    public class SqlServerDacpacDesignTimeServices : IDesignTimeServices
+    public virtual void ConfigureDesignTimeServices(IServiceCollection serviceCollection)
     {
-        public virtual void ConfigureDesignTimeServices(IServiceCollection serviceCollection)
-        {
-            serviceCollection.AddEntityFrameworkSqlServer();
-            new EntityFrameworkRelationalDesignServicesBuilder(serviceCollection)
-                .TryAdd<IAnnotationCodeGenerator, SqlServerAnnotationCodeGenerator>()
-                .TryAdd<ICSharpRuntimeAnnotationCodeGenerator, SqlServerCSharpRuntimeAnnotationCodeGenerator>()
-                .TryAdd<IDatabaseModelFactory, SqlServerDacpacDatabaseModelFactory>()
-                .TryAdd<IProviderConfigurationCodeGenerator, SqlServerCodeGenerator>()
-                .TryAddCoreServices();
+        serviceCollection.AddEntityFrameworkSqlServer();
+        new EntityFrameworkRelationalDesignServicesBuilder(serviceCollection)
+            .TryAdd<IAnnotationCodeGenerator, SqlServerAnnotationCodeGenerator>()
+            .TryAdd<ICSharpRuntimeAnnotationCodeGenerator, SqlServerCSharpRuntimeAnnotationCodeGenerator>()
+            .TryAdd<IDatabaseModelFactory, SqlServerDacpacDatabaseModelFactory>()
+            .TryAdd<IProviderConfigurationCodeGenerator, SqlServerCodeGenerator>()
+            .TryAddCoreServices();
 
-            var spatial = new SqlServerNetTopologySuiteDesignTimeServices();
-            spatial.ConfigureDesignTimeServices(serviceCollection);
+        var spatial = new SqlServerNetTopologySuiteDesignTimeServices();
+        spatial.ConfigureDesignTimeServices(serviceCollection);
 
-            var hierachyId = new SqlServerHierarchyIdDesignTimeServices();
-            hierachyId.ConfigureDesignTimeServices(serviceCollection);
-        }
+        var hierachyId = new SqlServerHierarchyIdDesignTimeServices();
+        hierachyId.ConfigureDesignTimeServices(serviceCollection);
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
@@ -7,127 +7,125 @@ using Npgsql;
 using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 
-namespace RevEng.Core.Routines
-{
-    public abstract class PostgresRoutineModelFactory
-    {
-        public string RoutineSql { get; set; }
+namespace RevEng.Core.Routines;
 
-        public string RoutineType { get; set; }
+public abstract class PostgresRoutineModelFactory
+{
+    public string RoutineSql { get; set; }
+
+    public string RoutineType { get; set; }
 
 #pragma warning disable CA1716 // Identifiers should not match keywords
-        protected abstract List<List<ModuleResultElement>> GetResultElementLists(NpgsqlConnection connection, Routine module);
+    protected abstract List<List<ModuleResultElement>> GetResultElementLists(NpgsqlConnection connection, Routine module);
 #pragma warning restore CA1716 // Identifiers should not match keywords
 
-        protected RoutineModel GetRoutines(string connectionString, ModuleModelFactoryOptions options)
+    protected RoutineModel GetRoutines(string connectionString, ModuleModelFactoryOptions options)
+    {
+        ArgumentNullException.ThrowIfNull(options);
+
+        var result = new List<Routine>();
+        var found = new List<Tuple<string, string, bool, char>>();
+        var errors = new List<string>();
+
+        var filter = options.Modules.ToHashSet();
+
+        using (var connection = new NpgsqlConnection(connectionString))
         {
-            ArgumentNullException.ThrowIfNull(options);
-
-            var result = new List<Routine>();
-            var found = new List<Tuple<string, string, bool, char>>();
-            var errors = new List<string>();
-
-            var filter = options.Modules.ToHashSet();
-
-            using (var connection = new NpgsqlConnection(connectionString))
-            {
 #pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
-                using (var command = new NpgsqlCommand(RoutineSql, connection))
+            using (var command = new NpgsqlCommand(RoutineSql, connection))
+            {
+                connection.Open();
+
+                if (connection.PostgreSqlVersion.Major < 11)
                 {
-                    connection.Open();
-
-                    if (connection.PostgreSqlVersion.Major < 11)
+                    return new RoutineModel
                     {
-                        return new RoutineModel
-                        {
-                            Routines = result,
-                            Errors = errors,
-                        };
-                    }
-
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            // Schema, Name, IsScalar, Type (f or p)
-                            found.Add(new Tuple<string, string, bool, char>(reader.GetString(0), reader.GetString(1), reader.GetFieldValue<bool>(2), reader.GetChar(3)));
-                        }
-                    }
+                        Routines = result,
+                        Errors = errors,
+                    };
                 }
+
+                using var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    // Schema, Name, IsScalar, Type (f or p)
+                    found.Add(new Tuple<string, string, bool, char>(reader.GetString(0), reader.GetString(1), reader.GetFieldValue<bool>(2), reader.GetChar(3)));
+                }
+            }
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
 
-                var allParameters = options.FullModel && found.Count != 0 ? GetParameters(connection) : new Dictionary<string, List<ModuleParameter>>();
+            var allParameters = options.FullModel && found.Count != 0 ? GetParameters(connection) : new Dictionary<string, List<ModuleParameter>>();
 
-                foreach (var foundModule in found)
+            foreach (var foundModule in found)
+            {
+                var key = $"{foundModule.Item1}.{foundModule.Item2}";
+
+                if (filter.Count == 0 || filter.Contains(key))
                 {
-                    var key = $"{foundModule.Item1}.{foundModule.Item2}";
+                    var isScalar = false; //// !foundModule.Item3;
 
-                    if (filter.Count == 0 || filter.Contains(key))
+                    var module = RoutineType == "PROCEDURE"
+                        ? (Routine)new Procedure()
+                        : new Function { IsScalar = isScalar };
+
+                    module.Schema = foundModule.Item1;
+                    module.Name = foundModule.Item2;
+                    module.IsScalar = foundModule.Item4 == 'f';
+
+                    if (options.FullModel)
                     {
-                        var isScalar = false; //// !foundModule.Item3;
+                        module.HasValidResultSet = true;
 
-                        var module = RoutineType == "PROCEDURE"
-                            ? (Routine)new Procedure()
-                            : new Function { IsScalar = isScalar };
-
-                        module.Schema = foundModule.Item1;
-                        module.Name = foundModule.Item2;
-                        module.IsScalar = foundModule.Item4 == 'f';
-
-                        if (options.FullModel)
+                        if (options.MappedModules?.ContainsKey(key) ?? false)
                         {
-                            module.HasValidResultSet = true;
+                            module.MappedType = options.MappedModules[key];
+                        }
 
-                            if (options.MappedModules?.ContainsKey(key) ?? false)
-                            {
-                                module.MappedType = options.MappedModules[key];
-                            }
-
-                            if (allParameters.TryGetValue($"{module.Schema}.{module.Name}", out var moduleParameters))
-                            {
-                                module.Parameters = moduleParameters;
-                            }
+                        if (allParameters.TryGetValue($"{module.Schema}.{module.Name}", out var moduleParameters))
+                        {
+                            module.Parameters = moduleParameters;
+                        }
 
 #pragma warning disable CA1031 // Do not catch general exception types
-                            try
-                            {
-                                module.Results.AddRange(GetResultElementLists(connection, module));
-                            }
-                            catch (Exception ex)
-                            {
-                                module.HasValidResultSet = false;
-                                module.Results = new List<List<ModuleResultElement>>
-                                {
-                                    new List<ModuleResultElement>(),
-                                };
-#pragma warning disable CA1308 // Normalize strings to uppercase
-                                errors.Add($"Unable to get result set shape for {RoutineType.ToLower(CultureInfo.InvariantCulture)} '{module.Schema}.{module.Name}'. {ex.Message}.");
-#pragma warning restore CA1308 // Normalize strings to uppercase
-                            }
-#pragma warning restore CA1031 // Do not catch general exception types
-                        }
-
-                        if (!isScalar)
+                        try
                         {
-                            result.Add(module);
+                            module.Results.AddRange(GetResultElementLists(connection, module));
                         }
+                        catch (Exception ex)
+                        {
+                            module.HasValidResultSet = false;
+                            module.Results = new List<List<ModuleResultElement>>
+                            {
+                                new List<ModuleResultElement>(),
+                            };
+#pragma warning disable CA1308 // Normalize strings to uppercase
+                            errors.Add($"Unable to get result set shape for {RoutineType.ToLower(CultureInfo.InvariantCulture)} '{module.Schema}.{module.Name}'. {ex.Message}.");
+#pragma warning restore CA1308 // Normalize strings to uppercase
+                        }
+#pragma warning restore CA1031 // Do not catch general exception types
+                    }
+
+                    if (!isScalar)
+                    {
+                        result.Add(module);
                     }
                 }
             }
-
-            return new RoutineModel
-            {
-                Routines = result,
-                Errors = errors,
-            };
         }
 
-        private static Dictionary<string, List<ModuleParameter>> GetParameters(NpgsqlConnection connection)
+        return new RoutineModel
         {
-            using var dtResult = new DataTable();
-            var result = new List<ModuleParameter>();
+            Routines = result,
+            Errors = errors,
+        };
+    }
 
-            var sql = $@"
+    private static Dictionary<string, List<ModuleParameter>> GetParameters(NpgsqlConnection connection)
+    {
+        using var dtResult = new DataTable();
+        var result = new List<ModuleParameter>();
+
+        var sql = $@"
 select proc.specific_schema as procedure_schema,
        proc.routine_name as procedure_name,
        args.parameter_name,
@@ -148,46 +146,45 @@ order by procedure_schema,
          procedure_name,
          args.ordinal_position;";
 
-            using var adapter = new NpgsqlDataAdapter
-            {
-                SelectCommand = new NpgsqlCommand(sql, connection),
-            };
+        using var adapter = new NpgsqlDataAdapter
+        {
+            SelectCommand = new NpgsqlCommand(sql, connection),
+        };
 
-            adapter.Fill(dtResult);
+        adapter.Fill(dtResult);
 
-            foreach (DataRow par in dtResult.Rows)
+        foreach (DataRow par in dtResult.Rows)
+        {
+            if (par != null)
             {
-                if (par != null)
+                if (par["parameter_mode"] is DBNull)
                 {
-                    if (par["parameter_mode"] is DBNull)
-                    {
-                        continue;
-                    }
+                    continue;
+                }
 
-                    var dataType = par["data_type"].ToString();
-                    var parameter = new ModuleParameter()
-                    {
-                        Name = par["parameter_name"].ToString(),
-                        RoutineName = par["procedure_name"].ToString(),
-                        RoutineSchema = par["procedure_schema"].ToString(),
-                        StoreType = dataType == "USER-DEFINED"
-                            ? par["udt_name"].ToString()
-                            : dataType,
-                        Length = (par["character_maximum_length"] is DBNull) ? (int?)null : int.Parse(par["character_maximum_length"].ToString()!, CultureInfo.InvariantCulture),
-                        Precision = (par["numeric_precision"] is DBNull) ? (int?)null : int.Parse(par["numeric_precision"].ToString()!, CultureInfo.InvariantCulture),
-                        Scale = (par["numeric_scale"] is DBNull) ? (int?)null : int.Parse(par["numeric_scale"].ToString()!, CultureInfo.InvariantCulture),
-                        Output = par["parameter_mode"].ToString() == "INOUT",
-                        Nullable = true,
-                    };
+                var dataType = par["data_type"].ToString();
+                var parameter = new ModuleParameter()
+                {
+                    Name = par["parameter_name"].ToString(),
+                    RoutineName = par["procedure_name"].ToString(),
+                    RoutineSchema = par["procedure_schema"].ToString(),
+                    StoreType = dataType == "USER-DEFINED"
+                        ? par["udt_name"].ToString()
+                        : dataType,
+                    Length = (par["character_maximum_length"] is DBNull) ? null : int.Parse(par["character_maximum_length"].ToString()!, CultureInfo.InvariantCulture),
+                    Precision = (par["numeric_precision"] is DBNull) ? null : int.Parse(par["numeric_precision"].ToString()!, CultureInfo.InvariantCulture),
+                    Scale = (par["numeric_scale"] is DBNull) ? null : int.Parse(par["numeric_scale"].ToString()!, CultureInfo.InvariantCulture),
+                    Output = par["parameter_mode"].ToString() == "INOUT",
+                    Nullable = true,
+                };
 
-                    if (par["parameter_mode"].ToString() != "OUT")
-                    {
-                        result.Add(parameter);
-                    }
+                if (par["parameter_mode"].ToString() != "OUT")
+                {
+                    result.Add(parameter);
                 }
             }
-
-            return result.GroupBy(x => $"{x.RoutineSchema}.{x.RoutineName}").ToDictionary(g => g.Key, g => g.ToList(), StringComparer.InvariantCulture);
         }
+
+        return result.GroupBy(x => $"{x.RoutineSchema}.{x.RoutineName}").ToDictionary(g => g.Key, g => g.ToList(), StringComparer.InvariantCulture);
     }
 }

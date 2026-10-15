@@ -7,15 +7,15 @@ using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Abstractions.Model;
 
-namespace RevEng.Core.Routines.Functions
-{
-    public class SqlServerFunctionModelFactory : SqlServerRoutineModelFactory, IFunctionModelFactory
-    {
-        public SqlServerFunctionModelFactory()
-        {
-            RoutineType = "FUNCTION";
+namespace RevEng.Core.Routines.Functions;
 
-            RoutineSql = $@"
+public class SqlServerFunctionModelFactory : SqlServerRoutineModelFactory, IFunctionModelFactory
+{
+    public SqlServerFunctionModelFactory()
+    {
+        RoutineType = "FUNCTION";
+
+        RoutineSql = $@"
 SELECT
     ROUTINE_SCHEMA,
     ROUTINE_NAME,
@@ -31,21 +31,18 @@ AND object_id(QUOTENAME(ROUTINE_SCHEMA) + '.' + QUOTENAME(ROUTINE_NAME)) NOT IN 
     )
 AND ROUTINE_TYPE = N'FUNCTION' 
 ORDER BY ROUTINE_NAME;";
-        }
+    }
 
-        public RoutineModel Create(string connectionString, ModuleModelFactoryOptions options)
-        {
-            return GetRoutines(connectionString, options);
-        }
+    public RoutineModel Create(string connectionString, ModuleModelFactoryOptions options) => GetRoutines(connectionString, options);
 
-        protected override List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection, Routine module, bool multipleResults, bool useLegacyResultSetDiscovery, bool useStoredProcedureResultSetFallback)
-        {
-            ArgumentNullException.ThrowIfNull(module);
+    protected override List<List<ModuleResultElement>> GetResultElementLists(SqlConnection connection, Routine module, bool multipleResults, bool useLegacyResultSetDiscovery, bool useStoredProcedureResultSetFallback)
+    {
+        ArgumentNullException.ThrowIfNull(module);
 
-            using var dtResult = new DataTable();
-            var list = new List<ModuleResultElement>();
+        using var dtResult = new DataTable();
+        var list = new List<ModuleResultElement>();
 
-            const string sql = @"
+        const string sql = @"
 SELECT 
     c.name,
     COALESCE(ts.name, tu.name) AS type_name,
@@ -61,56 +58,55 @@ inner JOIN sys.schemas AS s ON o.schema_id = s.schema_id
 LEFT JOIN sys.types ts ON tu.system_type_id = ts.user_type_id
 where o.name = @moduleName and s.name = @moduleSchema;";
 
-            using var command = new SqlCommand(sql, connection);
-            command.Parameters.AddWithValue("@moduleName", module.Name);
-            command.Parameters.AddWithValue("@moduleSchema", module.Schema);
+        using var command = new SqlCommand(sql, connection);
+        command.Parameters.AddWithValue("@moduleName", module.Name);
+        command.Parameters.AddWithValue("@moduleSchema", module.Schema);
 
-            using var adapter = new SqlDataAdapter
+        using var adapter = new SqlDataAdapter
+        {
+            SelectCommand = command,
+        };
+
+        adapter.Fill(dtResult);
+
+        var rCounter = 0;
+
+        foreach (DataRow res in dtResult.Rows)
+        {
+            if (res != null)
             {
-                SelectCommand = command,
-            };
+                var storeType = res["type_name"].ToString();
+                var maxLength = res["max_length"] == DBNull.Value ? 0 : int.Parse(res["max_length"].ToString()!, CultureInfo.InvariantCulture);
 
-            adapter.Fill(dtResult);
-
-            var rCounter = 0;
-
-            foreach (DataRow res in dtResult.Rows)
-            {
-                if (res != null)
+                if (storeType != null
+                    && storeType.StartsWith("nvarchar", StringComparison.OrdinalIgnoreCase)
+                    && maxLength > 0)
                 {
-                    var storeType = res["type_name"].ToString();
-                    var maxLength = res["max_length"] == DBNull.Value ? 0 : int.Parse(res["max_length"].ToString()!, CultureInfo.InvariantCulture);
-
-                    if (storeType != null
-                        && storeType.StartsWith("nvarchar", StringComparison.OrdinalIgnoreCase)
-                        && maxLength > 0)
-                    {
-                        maxLength = maxLength / 2;
-                    }
-
-                    var parameter = new ModuleResultElement()
-                    {
-                        Name = string.IsNullOrEmpty(res["name"].ToString()) ? $"Col{rCounter}" : res["name"].ToString(),
-                        StoreType = storeType,
-                        Ordinal = int.Parse(res["column_ordinal"].ToString()!, CultureInfo.InvariantCulture),
-                        Nullable = (bool)res["is_nullable"],
-                        MaxLength = maxLength,
-                        Precision = (byte)res["precision"],
-                        Scale = (byte)res["scale"],
-                    };
-
-                    list.Add(parameter);
+                    maxLength = maxLength / 2;
                 }
 
-                rCounter++;
+                var parameter = new ModuleResultElement()
+                {
+                    Name = string.IsNullOrEmpty(res["name"].ToString()) ? $"Col{rCounter}" : res["name"].ToString(),
+                    StoreType = storeType,
+                    Ordinal = int.Parse(res["column_ordinal"].ToString()!, CultureInfo.InvariantCulture),
+                    Nullable = (bool)res["is_nullable"],
+                    MaxLength = maxLength,
+                    Precision = (byte)res["precision"],
+                    Scale = (byte)res["scale"],
+                };
+
+                list.Add(parameter);
             }
 
-            var result = new List<List<ModuleResultElement>>
-            {
-                list,
-            };
-
-            return result;
+            rCounter++;
         }
+
+        var result = new List<List<ModuleResultElement>>
+        {
+            list,
+        };
+
+        return result;
     }
 }

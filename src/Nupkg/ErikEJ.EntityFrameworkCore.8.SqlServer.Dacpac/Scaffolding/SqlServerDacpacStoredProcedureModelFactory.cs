@@ -9,172 +9,169 @@ using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Abstractions.Model;
 
-namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
+namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
+
+public class SqlServerDacpacStoredProcedureModelFactory : IProcedureModelFactory
 {
-    public class SqlServerDacpacStoredProcedureModelFactory : IProcedureModelFactory
+    private readonly SqlServerDacpacDatabaseModelFactoryOptions dacpacOptions;
+
+    public SqlServerDacpacStoredProcedureModelFactory(SqlServerDacpacDatabaseModelFactoryOptions options)
     {
-        private readonly SqlServerDacpacDatabaseModelFactoryOptions dacpacOptions;
+        dacpacOptions = options;
+    }
 
-        public SqlServerDacpacStoredProcedureModelFactory(SqlServerDacpacDatabaseModelFactoryOptions options)
+    public RoutineModel Create(string connectionString, ModuleModelFactoryOptions options)
+    {
+        if (string.IsNullOrEmpty(connectionString))
         {
-            dacpacOptions = options;
+            throw new ArgumentException(@"invalid path", nameof(connectionString));
         }
 
-        public RoutineModel Create(string connectionString, ModuleModelFactoryOptions options)
+        if (!File.Exists(connectionString))
         {
-            if (string.IsNullOrEmpty(connectionString))
-            {
-                throw new ArgumentException(@"invalid path", nameof(connectionString));
-            }
-
-            if (!File.Exists(connectionString))
-            {
-                throw new ArgumentException($"Dacpac file not found: {connectionString}");
-            }
-
-            ArgumentNullException.ThrowIfNull(options);
-
-            return GetStoredProcedures(connectionString, options, dacpacOptions.MergeDacpacs);
+            throw new ArgumentException($"Dacpac file not found: {connectionString}");
         }
 
-        private static RoutineModel GetStoredProcedures(string dacpacPath, ModuleModelFactoryOptions options, bool mergeDacpacs)
+        ArgumentNullException.ThrowIfNull(options);
+
+        return GetStoredProcedures(connectionString, options, dacpacOptions.MergeDacpacs);
+    }
+
+    private static RoutineModel GetStoredProcedures(string dacpacPath, ModuleModelFactoryOptions options, bool mergeDacpacs)
+    {
+        var result = new List<RevEng.Core.Abstractions.Metadata.Procedure>();
+        var errors = new List<string>();
+
+        if (mergeDacpacs && dacpacPath != null)
         {
-            var result = new List<RevEng.Core.Abstractions.Metadata.Procedure>();
-            var errors = new List<string>();
+            dacpacPath = DacpacConsolidator.Consolidate(dacpacPath);
+        }
 
-            if (mergeDacpacs && dacpacPath != null)
+        using var model = new TSqlTypedModel(dacpacPath);
+
+        var procedures = model.GetObjects<TSqlProcedure>(DacQueryScopes.UserDefined)
+           .ToList();
+
+        var filter = new HashSet<string>(options.Modules);
+
+        foreach (var proc in procedures)
+        {
+            var procedure = new RevEng.Core.Abstractions.Metadata.Procedure
             {
-                dacpacPath = DacpacConsolidator.Consolidate(dacpacPath);
-            }
+                Schema = proc.Name.Parts[0],
+                Name = proc.Name.Parts[1],
+            };
 
-            using var model = new TSqlTypedModel(dacpacPath);
+            var key = $"[{procedure.Schema}].[{procedure.Name}]";
 
-            var procedures = model.GetObjects<TSqlProcedure>(DacQueryScopes.UserDefined)
-               .ToList();
-
-            var filter = new HashSet<string>(options.Modules);
-
-            foreach (var proc in procedures)
+            if (filter.Count == 0 || filter.Contains(key))
             {
-                var procedure = new RevEng.Core.Abstractions.Metadata.Procedure
+                if (options.FullModel)
                 {
-                    Schema = proc.Name.Parts[0],
-                    Name = proc.Name.Parts[1],
-                };
+                    procedure.HasValidResultSet = true;
 
-                var key = $"[{procedure.Schema}].[{procedure.Name}]";
+                    procedure.Parameters = GetStoredProcedureParameters(proc);
 
-                if (filter.Count == 0 || filter.Contains(key))
-                {
-                    if (options.FullModel)
+                    if (options.MappedModules?.ContainsKey(key) ?? false)
                     {
-                        procedure.HasValidResultSet = true;
-
-                        procedure.Parameters = GetStoredProcedureParameters(proc);
-
-                        if (options.MappedModules?.ContainsKey(key) ?? false)
-                        {
-                            procedure.MappedType = options.MappedModules[key];
-                        }
-
-#pragma warning disable CA1031 // Do not catch general exception types
-                        try
-                        {
-                            procedure.Results.AddRange(GetStoredProcedureResultElements(proc, !options.DiscoverMultipleResultSets));
-                        }
-                        catch (Exception ex)
-                        {
-                            procedure.HasValidResultSet = false;
-                            errors.Add($"Unable to get result set shape for {procedure.Schema}.{procedure.Name}" + Environment.NewLine + ex.ToString());
-                        }
-#pragma warning restore CA1031 // Do not catch general exception types
+                        procedure.MappedType = options.MappedModules[key];
                     }
 
-                    result.Add(procedure);
+#pragma warning disable CA1031 // Do not catch general exception types
+                    try
+                    {
+                        procedure.Results.AddRange(GetStoredProcedureResultElements(proc, !options.DiscoverMultipleResultSets));
+                    }
+                    catch (Exception ex)
+                    {
+                        procedure.HasValidResultSet = false;
+                        errors.Add($"Unable to get result set shape for {procedure.Schema}.{procedure.Name}" + Environment.NewLine + ex.ToString());
+                    }
+#pragma warning restore CA1031 // Do not catch general exception types
                 }
-            }
 
-            return new RoutineModel
-            {
-                Routines = result.Cast<Routine>().ToList(),
-                Errors = errors,
-            };
+                result.Add(procedure);
+            }
         }
 
-        private static List<ModuleParameter> GetStoredProcedureParameters(TSqlProcedure proc)
+        return new RoutineModel
         {
-            var result = new List<ModuleParameter>();
+            Routines = result.Cast<Routine>().ToList(),
+            Errors = errors,
+        };
+    }
 
-            string typeName = null;
-            string typeSchemaName = null;
+    private static List<ModuleParameter> GetStoredProcedureParameters(TSqlProcedure proc)
+    {
+        var result = new List<ModuleParameter>();
 
-            foreach (var parameter in proc.Parameters)
-            {
-                var storeType = parameter.DataType.First().Name.Parts[0];
+        string typeName = null;
+        string typeSchemaName = null;
 
-                var dtReference = parameter.DataType.First() as TSqlDataTypeReference;
+        foreach (var parameter in proc.Parameters)
+        {
+            var storeType = parameter.DataType.First().Name.Parts[0];
 
-                List<ModuleResultElement> tvpColumns = null;
+            List<ModuleResultElement> tvpColumns = null;
 
 #pragma warning disable S2219 // Runtime type checking should be simplified
-                if (dtReference != null
-                    && dtReference.Type != null
-                    && dtReference.Type.Any()
-                    && dtReference.Type.First() is TSqlDataTypeReference)
-                {
-                    storeType = dtReference.Type.First().Name.Parts[0];
-                }
+            if (parameter.DataType.First() is TSqlDataTypeReference dtReference
+                && dtReference.Type != null
+                && dtReference.Type.Any()
+                && dtReference.Type.First() is not null)
+            {
+                storeType = dtReference.Type.First().Name.Parts[0];
+            }
 
-                if (parameter.DataType.First() is TSqlUserDefinedTypeReference udtReference)
-                {
-                    storeType = udtReference.Name.Parts[1];
-                }
+            if (parameter.DataType.First() is TSqlUserDefinedTypeReference udtReference)
+            {
+                storeType = udtReference.Name.Parts[1];
+            }
 
-                if (parameter.DataType.First() is TSqlTableTypeReference tableReference)
-                {
-                    // parameter is a table type (TVP)
-                    storeType = "structured";
-                    typeName = tableReference.Name.Parts[1];
-                    typeSchemaName = tableReference.Name.Parts[0];
-                    tvpColumns = DacpacModelFactoryHelper.GetTvpColumns(tableReference);
-                }
+            if (parameter.DataType.First() is TSqlTableTypeReference tableReference)
+            {
+                // parameter is a table type (TVP)
+                storeType = "structured";
+                typeName = tableReference.Name.Parts[1];
+                typeSchemaName = tableReference.Name.Parts[0];
+                tvpColumns = DacpacModelFactoryHelper.GetTvpColumns(tableReference);
+            }
 
 #pragma warning restore S2219 // Runtime type checking should be simplified
 
-                var newParameter = new ModuleParameter()
-                {
-                    Length = parameter.IsMax ? -1 : parameter.Length,
-                    Name = parameter.Name.Parts[2].Trim('@'),
-                    Output = parameter.IsOutput,
-                    Precision = parameter.Precision,
-                    Scale = parameter.Scale,
-                    StoreType = storeType,
-                    Nullable = true,
-                    TypeName = typeName,
-                    TypeSchemaName = typeSchemaName,
-                    TvpColumns = tvpColumns,
-                };
-
-                result.Add(newParameter);
-            }
-
-            // Add parameter to hold the standard return value
-            result.Add(new ModuleParameter()
+            var newParameter = new ModuleParameter()
             {
-                Name = "returnValue",
-                StoreType = "int",
-                Output = true,
-                Nullable = false,
-                IsReturnValue = true,
-            });
+                Length = parameter.IsMax ? -1 : parameter.Length,
+                Name = parameter.Name.Parts[2].Trim('@'),
+                Output = parameter.IsOutput,
+                Precision = parameter.Precision,
+                Scale = parameter.Scale,
+                StoreType = storeType,
+                Nullable = true,
+                TypeName = typeName,
+                TypeSchemaName = typeSchemaName,
+                TvpColumns = tvpColumns,
+            };
 
-            return result;
+            result.Add(newParameter);
         }
 
-        private static List<List<ModuleResultElement>> GetStoredProcedureResultElements(TSqlProcedure proc, bool singleResult)
+        // Add parameter to hold the standard return value
+        result.Add(new ModuleParameter()
         {
-            var metaProc = new SqlSharpener.Model.Procedure(proc.Element);
-            return SqlServerStoredProcedureResultSetFactory.CreateFromSelects(metaProc.Selects, singleResult);
-        }
+            Name = "returnValue",
+            StoreType = "int",
+            Output = true,
+            Nullable = false,
+            IsReturnValue = true,
+        });
+
+        return result;
+    }
+
+    private static List<List<ModuleResultElement>> GetStoredProcedureResultElements(TSqlProcedure proc, bool singleResult)
+    {
+        var metaProc = new SqlSharpener.Model.Procedure(proc.Element);
+        return SqlServerStoredProcedureResultSetFactory.CreateFromSelects(metaProc.Selects, singleResult);
     }
 }

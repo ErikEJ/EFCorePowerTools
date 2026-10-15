@@ -1,26 +1,25 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace RevEng.Common.Dab
+namespace RevEng.Common.Dab;
+
+[System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "DTO")]
+public class DataApiBuilderOptions
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "DTO")]
-    public class DataApiBuilderOptions
-    {
-        public DatabaseType DatabaseType { get; set; }
+    public DatabaseType DatabaseType { get; set; }
 
-        [IgnoreDataMember]
-        public string ConnectionString { get; set; }
+    [IgnoreDataMember]
+    public string ConnectionString { get; set; }
 
-        public string ProjectPath { get; set; }
+    public string ProjectPath { get; set; }
 
-        public List<SerializationTableModel> Tables { get; set; }
+    public List<SerializationTableModel> Tables { get; set; }
 
-        public string Dacpac { get; set; }
+    public string Dacpac { get; set; }
 
-        public string ConnectionStringName { get; set; } = "dab-connection-string";
+    public string ConnectionStringName { get; set; } = "dab-connection-string";
 
-        public bool MergeDacpacs { get; set; }
+    public bool MergeDacpacs { get; set; }
 
-        public bool Optional { get; set; }
-    }
+    public bool Optional { get; set; }
 }

@@ -1,13 +1,12 @@
-﻿namespace EFCorePowerTools.Common.Enums
-{
-    using System;
+namespace EFCorePowerTools.Common.Enums;
 
-    [Flags]
-    public enum ModelingGenerationMode
-    {
-        None = 0,
-        DbContext = 1,
-        EntityTypes = 2,
-        All = 3,
-    }
+using System;
+
+[Flags]
+public enum ModelingGenerationMode
+{
+    None = 0,
+    DbContext = 1,
+    EntityTypes = 2,
+    All = 3,
 }

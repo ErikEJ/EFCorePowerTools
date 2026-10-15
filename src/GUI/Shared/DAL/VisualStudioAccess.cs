@@ -1,4 +1,4 @@
-﻿using Community.VisualStudio.Toolkit;
+using Community.VisualStudio.Toolkit;
 using EFCorePowerTools.Common.DAL;
 using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Helpers;
@@ -6,100 +6,99 @@ using Microsoft.VisualStudio.Data.Services;
 using Microsoft.VisualStudio.Shell;
 using RevEng.Common;
 
-namespace EFCorePowerTools.DAL
-{
-    public class VisualStudioAccess : IVisualStudioAccess
-    {
-        DatabaseConnectionModel IVisualStudioAccess.PromptForNewDatabaseConnection()
-        {
-            DatabaseConnectionModel info = null;
+namespace EFCorePowerTools.DAL;
 
-            ThreadHelper.JoinableTaskFactory.Run(async () =>
-            {
-                // Switch to main thread
-                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-                info = await VsDataHelper.PromptForInfoAsync();
-            });
+public class VisualStudioAccess : IVisualStudioAccess
+{
+    DatabaseConnectionModel IVisualStudioAccess.PromptForNewDatabaseConnection()
+    {
+        DatabaseConnectionModel info = null;
+
+        ThreadHelper.JoinableTaskFactory.Run(async () =>
+        {
+            // Switch to main thread
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            info = await VsDataHelper.PromptForInfoAsync();
+        });
 
 #pragma warning disable S2583 // Conditionally executed code should be reachable
-            if (info == null)
-            {
-                return null;
-            }
+        if (info == null)
+        {
+            return null;
+        }
 #pragma warning restore S2583 // Conditionally executed code should be reachable
 
-            if (info.DatabaseType == DatabaseType.Undefined)
-            {
-                return null;
-            }
-
-            return new DatabaseConnectionModel
-            {
-                ConnectionName = info.ConnectionName,
-                ConnectionString = info.ConnectionString,
-                DatabaseType = info.DatabaseType,
-                DataConnection = info.DataConnection,
-            };
-        }
-
-        DatabaseConnectionModel IVisualStudioAccess.PromptForNewDacpacDatabaseDefinition()
+        if (info.DatabaseType == DatabaseType.Undefined)
         {
-            var fileName = VsDataHelper.PromptForDacpac();
-
-            if (string.IsNullOrEmpty(fileName))
-            {
-                return null;
-            }
-
-            return new DatabaseConnectionModel
-            {
-                FilePath = fileName,
-                DatabaseType = DatabaseType.SQLServerDacpac,
-            };
+            return null;
         }
 
-        async System.Threading.Tasks.Task IVisualStudioAccess.RemoveDatabaseConnectionAsync(IVsDataConnection dataConnection)
+        return new DatabaseConnectionModel
         {
-            await VsDataHelper.RemoveDataConnectionAsync(dataConnection);
-        }
+            ConnectionName = info.ConnectionName,
+            ConnectionString = info.ConnectionString,
+            DatabaseType = info.DatabaseType,
+            DataConnection = info.DataConnection,
+        };
+    }
 
-        void IVisualStudioAccess.ShowMessage(string message)
+    DatabaseConnectionModel IVisualStudioAccess.PromptForNewDacpacDatabaseDefinition()
+    {
+        var fileName = VsDataHelper.PromptForDacpac();
+
+        if (string.IsNullOrEmpty(fileName))
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
-            VSHelper.ShowMessage(message);
+            return null;
         }
 
-        async System.Threading.Tasks.Task IVisualStudioAccess.StartStatusBarAnimationAsync()
+        return new DatabaseConnectionModel
         {
-            await VS.StatusBar.StartAnimationAsync(StatusAnimation.Build);
-        }
+            FilePath = fileName,
+            DatabaseType = DatabaseType.SQLServerDacpac,
+        };
+    }
 
-        async System.Threading.Tasks.Task IVisualStudioAccess.StopStatusBarAnimationAsync()
+    async System.Threading.Tasks.Task IVisualStudioAccess.RemoveDatabaseConnectionAsync(IVsDataConnection dataConnection)
+    {
+        await VsDataHelper.RemoveDataConnectionAsync(dataConnection);
+    }
+
+    void IVisualStudioAccess.ShowMessage(string message)
+    {
+        ThreadHelper.ThrowIfNotOnUIThread();
+
+        VSHelper.ShowMessage(message);
+    }
+
+    async System.Threading.Tasks.Task IVisualStudioAccess.StartStatusBarAnimationAsync()
+    {
+        await VS.StatusBar.StartAnimationAsync(StatusAnimation.Build);
+    }
+
+    async System.Threading.Tasks.Task IVisualStudioAccess.StopStatusBarAnimationAsync()
+    {
+        await VS.StatusBar.EndAnimationAsync(StatusAnimation.Build);
+    }
+
+    async System.Threading.Tasks.Task IVisualStudioAccess.SetStatusBarTextAsync(string text)
+    {
+        await VS.StatusBar.ShowMessageAsync(text);
+    }
+
+    void IVisualStudioAccess.ShowError(string error)
+    {
+        ThreadHelper.ThrowIfNotOnUIThread();
+
+        VSHelper.ShowError(error);
+    }
+
+    void IVisualStudioAccess.OpenFile(string fileName)
+    {
+        ThreadHelper.JoinableTaskFactory.Run(async () =>
         {
-            await VS.StatusBar.EndAnimationAsync(StatusAnimation.Build);
-        }
-
-        async System.Threading.Tasks.Task IVisualStudioAccess.SetStatusBarTextAsync(string text)
-        {
-            await VS.StatusBar.ShowMessageAsync(text);
-        }
-
-        void IVisualStudioAccess.ShowError(string error)
-        {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
-            VSHelper.ShowError(error);
-        }
-
-        void IVisualStudioAccess.OpenFile(string fileName)
-        {
-            ThreadHelper.JoinableTaskFactory.Run(async () =>
-            {
-                // Switch to main thread
-                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-                await VS.Documents.OpenAsync(fileName);
-            });
-        }
+            // Switch to main thread
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            await VS.Documents.OpenAsync(fileName);
+        });
     }
 }

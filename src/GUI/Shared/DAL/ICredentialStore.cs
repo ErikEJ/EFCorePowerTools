@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using EFCorePowerTools.Common.Models;
 
-namespace EFCorePowerTools.DAL
+namespace EFCorePowerTools.DAL;
+
+public interface ICredentialStore
 {
-    public interface ICredentialStore
-    {
-        bool DeleteCredential(string name);
+    bool DeleteCredential(string name);
 
-        List<DatabaseConnectionModel> GetStoredDatabaseConnections();
+    List<DatabaseConnectionModel> GetStoredDatabaseConnections();
 
-        bool SaveCredential(DatabaseConnectionModel connectionModel);
-    }
+    bool SaveCredential(DatabaseConnectionModel connectionModel);
 }

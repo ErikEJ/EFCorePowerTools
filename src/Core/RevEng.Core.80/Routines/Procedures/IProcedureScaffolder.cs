@@ -1,6 +1,5 @@
-﻿namespace RevEng.Core.Routines.Procedures
+namespace RevEng.Core.Routines.Procedures;
+
+public interface IProcedureScaffolder : IRoutineScaffolder
 {
-    public interface IProcedureScaffolder : IRoutineScaffolder
-    {
-    }
 }

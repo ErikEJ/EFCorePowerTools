@@ -1,11 +1,10 @@
-﻿using RevEng.Common;
+using RevEng.Common;
 
-namespace EFCorePowerTools.Contracts.Views
+namespace EFCorePowerTools.Contracts.Views;
+
+public class PickTablesDialogResult
 {
-    public class PickTablesDialogResult
-    {
-        public SerializationTableModel[] Objects { get; set; }
+    public SerializationTableModel[] Objects { get; set; }
 
-        public Schema[] CustomReplacers { get; set; }
-    }
+    public Schema[] CustomReplacers { get; set; }
 }

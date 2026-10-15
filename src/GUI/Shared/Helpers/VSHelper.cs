@@ -1,44 +1,43 @@
-﻿// ReSharper disable once CheckNamespace
+// ReSharper disable once CheckNamespace
 using System.Threading.Tasks;
 using Community.VisualStudio.Toolkit;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 
-namespace EFCorePowerTools.Helpers
+namespace EFCorePowerTools.Helpers;
+
+internal static class VSHelper
 {
-    internal static class VSHelper
+    public static async Task<bool> IsDebugModeAsync()
     {
-        public static async Task<bool> IsDebugModeAsync()
+        await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+        IVsDebugger debugger = await VS.Services.GetDebuggerAsync();
+
+        DBGMODE[] mode = new DBGMODE[1];
+        ErrorHandler.ThrowOnFailure(debugger.GetMode(mode));
+
+        if (mode[0] != DBGMODE.DBGMODE_Design)
         {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
-            IVsDebugger debugger = await VS.Services.GetDebuggerAsync();
-
-            DBGMODE[] mode = new DBGMODE[1];
-            ErrorHandler.ThrowOnFailure(debugger.GetMode(mode));
-
-            if (mode[0] != DBGMODE.DBGMODE_Design)
-            {
-                return true;
-            }
-
-            return false;
+            return true;
         }
 
-        public static VSConstants.MessageBoxResult ShowError(string errorText)
-        {
-            return VS.MessageBox.ShowError("EF Core Power Tools", errorText);
-        }
+        return false;
+    }
 
-        public static VSConstants.MessageBoxResult ShowMessage(string messageText)
-        {
-            return VS.MessageBox.Show("EF Core Power Tools", messageText, buttons: OLEMSGBUTTON.OLEMSGBUTTON_OK);
-        }
+    public static VSConstants.MessageBoxResult ShowError(string errorText)
+    {
+        return VS.MessageBox.ShowError("EF Core Power Tools", errorText);
+    }
 
-        public static VSConstants.MessageBoxResult ShowWarning(string messageText)
-        {
-            return VS.MessageBox.Show("EF Core Power Tools", messageText, buttons: OLEMSGBUTTON.OLEMSGBUTTON_OK, icon: OLEMSGICON.OLEMSGICON_WARNING);
-        }
+    public static VSConstants.MessageBoxResult ShowMessage(string messageText)
+    {
+        return VS.MessageBox.Show("EF Core Power Tools", messageText, buttons: OLEMSGBUTTON.OLEMSGBUTTON_OK);
+    }
+
+    public static VSConstants.MessageBoxResult ShowWarning(string messageText)
+    {
+        return VS.MessageBox.Show("EF Core Power Tools", messageText, buttons: OLEMSGBUTTON.OLEMSGBUTTON_OK, icon: OLEMSGICON.OLEMSGICON_WARNING);
     }
 }

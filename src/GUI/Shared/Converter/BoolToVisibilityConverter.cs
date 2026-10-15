@@ -1,37 +1,36 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace EFCorePowerTools.Converter
+namespace EFCorePowerTools.Converter;
+
+public class BoolToVisibilityConverter : IValueConverter
 {
-    public class BoolToVisibilityConverter : IValueConverter
+    object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        if (targetType != typeof(Visibility))
         {
-            if (targetType != typeof(Visibility))
-            {
-                throw new ArgumentException(@"Value must be of type System.Windows.Visibility.", nameof(targetType));
-            }
-
-            var invert = parameter?.ToString().ToLower() == "invert";
-            if (!(value is bool) && value != null)
-            {
-                throw new ArgumentException(@"Value must be of type System.Boolean or Nullable<System.Boolean>.", nameof(value));
-            }
-
-            var b = value as bool?;
-            if (invert)
-            {
-                b = !b;
-            }
-
-            return b == null ? Visibility.Hidden : b.Value ? Visibility.Visible : Visibility.Collapsed;
+            throw new ArgumentException(@"Value must be of type System.Windows.Visibility.", nameof(targetType));
         }
 
-        object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        var invert = parameter?.ToString().ToLower() == "invert";
+        if (!(value is bool) && value != null)
         {
-            throw new NotSupportedException();
+            throw new ArgumentException(@"Value must be of type System.Boolean or Nullable<System.Boolean>.", nameof(value));
         }
+
+        var b = value as bool?;
+        if (invert)
+        {
+            b = !b;
+        }
+
+        return b == null ? Visibility.Hidden : b.Value ? Visibility.Visible : Visibility.Collapsed;
+    }
+
+    object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        throw new NotSupportedException();
     }
 }

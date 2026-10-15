@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -12,224 +12,223 @@ using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using RevEng.Common;
 
-namespace EFCorePowerTools.ViewModels
+namespace EFCorePowerTools.ViewModels;
+
+public class TableInformationViewModel : ViewModelBase, ITableInformationViewModel
 {
-    public class TableInformationViewModel : ViewModelBase, ITableInformationViewModel
+    private readonly IMessenger messenger;
+
+    private string name;
+    private string newName;
+    private string schema;
+    private ObjectType objectType;
+
+    private bool isSelected = false;
+    private bool isEditing;
+
+    private bool isVisible = true;
+
+    public TableInformationViewModel(IMessenger messenger)
     {
-        private readonly IMessenger messenger;
+        this.messenger = messenger;
+        StartEditCommand = new RelayCommand(StartEdit_Execute);
+        ConfirmEditCommand = new RelayCommand(ConfirmEdit_Execute);
+        CancelEditCommand = new RelayCommand(CancelEdit_Execute);
+        SetSelectedCommand = new RelayCommand<bool>(SetSelected_Execute);
+        Columns.CollectionChanged += Columns_CollectionChanged;
+    }
 
-        private string name;
-        private string newName;
-        private string schema;
-        private ObjectType objectType;
+    public IEnumerable<string> ExcludedIndexes { get; set; }
 
-        private bool isSelected = false;
-        private bool isEditing;
-
-        private bool isVisible = true;
-
-        public TableInformationViewModel(IMessenger messenger)
+    public string Schema
+    {
+        get => schema;
+        set
         {
-            this.messenger = messenger;
-            StartEditCommand = new RelayCommand(StartEdit_Execute);
-            ConfirmEditCommand = new RelayCommand(ConfirmEdit_Execute);
-            CancelEditCommand = new RelayCommand(CancelEdit_Execute);
-            SetSelectedCommand = new RelayCommand<bool>(SetSelected_Execute);
-            Columns.CollectionChanged += Columns_CollectionChanged;
-        }
-
-        public IEnumerable<string> ExcludedIndexes { get; set; }
-
-        public string Schema
-        {
-            get => schema;
-            set
+            if (Equals(value, schema))
             {
-                if (Equals(value, schema))
-                {
-                    return;
-                }
-
-                schema = value;
-                RaisePropertyChanged();
+                return;
             }
+
+            schema = value;
+            RaisePropertyChanged();
         }
+    }
 
-        public string Name
+    public string Name
+    {
+        get => name;
+        set
         {
-            get => name;
-            set
+            if (Equals(value, name))
             {
-                if (Equals(value, name))
-                {
-                    return;
-                }
-
-                name = value;
-                RaisePropertyChanged();
-                RaisePropertyChanged(nameof(DisplayName));
+                return;
             }
+
+            name = value;
+            RaisePropertyChanged();
+            RaisePropertyChanged(nameof(DisplayName));
         }
+    }
 
-        public string NewName
+    public string NewName
+    {
+        get => newName;
+        set
         {
-            get => newName;
-            set
+            if (Equals(value, newName))
             {
-                if (Equals(value, newName))
-                {
-                    return;
-                }
-
-                newName = value;
-                RaisePropertyChanged();
-                RaisePropertyChanged(nameof(DisplayName));
+                return;
             }
-        }
 
-        public string DisplayName
+            newName = value;
+            RaisePropertyChanged();
+            RaisePropertyChanged(nameof(DisplayName));
+        }
+    }
+
+    public string DisplayName
+    {
+        get
         {
-            get
+            return newName == name ? name : $"{newName} - ({name})";
+        }
+    }
+
+    public string ModelDisplayName { get; set; }
+
+    public bool HasPrimaryKey
+    {
+        get => Columns.Any(c => c.IsPrimaryKey);
+    }
+
+    public ObjectType ObjectType
+    {
+        get => objectType;
+        set
+        {
+            if (Equals(value, objectType))
             {
-                return newName == name ? name : $"{newName} - ({name})";
+                return;
             }
+
+            objectType = value;
+            RaisePropertyChanged();
+            RaisePropertyChanged(nameof(ObjectTypeIcon));
         }
+    }
 
-        public string ModelDisplayName { get; set; }
-
-        public bool HasPrimaryKey
+    public ObjectTypeIcon ObjectTypeIcon
+    {
+        get
         {
-            get => Columns.Any(c => c.IsPrimaryKey);
-        }
-
-        public ObjectType ObjectType
-        {
-            get => objectType;
-            set
+            if (ObjectType == ObjectType.Table && !HasPrimaryKey)
             {
-                if (Equals(value, objectType))
-                {
-                    return;
-                }
-
-                objectType = value;
-                RaisePropertyChanged();
-                RaisePropertyChanged(nameof(ObjectTypeIcon));
-            }
-        }
-
-        public ObjectTypeIcon ObjectTypeIcon
-        {
-            get
-            {
-                if (ObjectType == ObjectType.Table && !HasPrimaryKey)
-                {
-                    return ObjectTypeIcon.TableWithoutKey;
-                }
-                else
-                {
-                    return (ObjectTypeIcon)Enum.Parse(typeof(ObjectTypeIcon), ObjectType.ToString());
-                }
-            }
-        }
-
-        public ObservableCollection<IColumnInformationViewModel> Columns { get; } = new ObservableCollection<IColumnInformationViewModel>();
-
-        public bool? IsSelected
-        {
-            get => isSelected;
-            private set
-            {
-                if (Equals(value, isSelected))
-                {
-                    return;
-                }
-
-                isSelected = value.Value;
-                RaisePropertyChanged();
-                foreach (var column in Columns)
-                {
-                    column.IsTableSelected = isSelected;
-                    column.SetSelected(isSelected);
-                }
-            }
-        }
-
-        public bool IsVisible
-        {
-            get => isVisible;
-            set
-            {
-                if (Equals(value, isVisible))
-                {
-                    return;
-                }
-
-                isVisible = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        public bool IsEditing
-        {
-            get => isEditing;
-            set
-            {
-                if (Equals(value, isEditing))
-                {
-                    return;
-                }
-
-                isEditing = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        public ICommand StartEditCommand { get; }
-
-        public ICommand ConfirmEditCommand { get; }
-
-        public ICommand CancelEditCommand { get; }
-
-        public ICommand SetSelectedCommand { get; }
-
-        private void StartEdit_Execute()
-        {
-            IsEditing = true;
-        }
-
-        private void ConfirmEdit_Execute()
-        {
-            if (string.IsNullOrWhiteSpace(NewName))
-            {
-                messenger.Send(new ShowMessageBoxMessage
-                {
-                    Content = ReverseEngineerLocale.NewNameCannotBeEmpty,
-                });
+                return ObjectTypeIcon.TableWithoutKey;
             }
             else
             {
-                IsEditing = false;
+                return (ObjectTypeIcon)Enum.Parse(typeof(ObjectTypeIcon), ObjectType.ToString());
             }
         }
+    }
 
-        private void CancelEdit_Execute()
+    public ObservableCollection<IColumnInformationViewModel> Columns { get; } = new ObservableCollection<IColumnInformationViewModel>();
+
+    public bool? IsSelected
+    {
+        get => isSelected;
+        private set
         {
-            NewName = Name;
+            if (Equals(value, isSelected))
+            {
+                return;
+            }
+
+            isSelected = value.Value;
+            RaisePropertyChanged();
+            foreach (var column in Columns)
+            {
+                column.IsTableSelected = isSelected;
+                column.SetSelected(isSelected);
+            }
+        }
+    }
+
+    public bool IsVisible
+    {
+        get => isVisible;
+        set
+        {
+            if (Equals(value, isVisible))
+            {
+                return;
+            }
+
+            isVisible = value;
+            RaisePropertyChanged();
+        }
+    }
+
+    public bool IsEditing
+    {
+        get => isEditing;
+        set
+        {
+            if (Equals(value, isEditing))
+            {
+                return;
+            }
+
+            isEditing = value;
+            RaisePropertyChanged();
+        }
+    }
+
+    public ICommand StartEditCommand { get; }
+
+    public ICommand ConfirmEditCommand { get; }
+
+    public ICommand CancelEditCommand { get; }
+
+    public ICommand SetSelectedCommand { get; }
+
+    private void StartEdit_Execute()
+    {
+        IsEditing = true;
+    }
+
+    private void ConfirmEdit_Execute()
+    {
+        if (string.IsNullOrWhiteSpace(NewName))
+        {
+            messenger.Send(new ShowMessageBoxMessage
+            {
+                Content = ReverseEngineerLocale.NewNameCannotBeEmpty,
+            });
+        }
+        else
+        {
             IsEditing = false;
         }
+    }
 
-        private void Columns_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            foreach (var item in e.NewItems)
-            {
-                RaisePropertyChanged(nameof(HasPrimaryKey));
-            }
-        }
+    private void CancelEdit_Execute()
+    {
+        NewName = Name;
+        IsEditing = false;
+    }
 
-        private void SetSelected_Execute(bool value)
+    private void Columns_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        foreach (var item in e.NewItems)
         {
-            IsSelected = value;
+            RaisePropertyChanged(nameof(HasPrimaryKey));
         }
+    }
+
+    private void SetSelected_Execute(bool value)
+    {
+        IsSelected = value;
     }
 }

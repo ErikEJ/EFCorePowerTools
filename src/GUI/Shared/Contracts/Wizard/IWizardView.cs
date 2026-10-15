@@ -1,11 +1,10 @@
-﻿using EFCorePowerTools.Wizard;
+using EFCorePowerTools.Wizard;
 
-namespace EFCorePowerTools.Contracts.Wizard
+namespace EFCorePowerTools.Contracts.Wizard;
+
+public interface IWizardView
 {
-    public interface IWizardView
-    {
-        void WizardReturnInvoke(object sender, WizardReturnEventArgs e);
+    void WizardReturnInvoke(object sender, WizardReturnEventArgs e);
 
-        bool? ShowDialog();
-    }
+    bool? ShowDialog();
 }

@@ -1,9 +1,8 @@
-﻿using System;
+using System;
 
-namespace EFCorePowerTools.Common.DAL
+namespace EFCorePowerTools.Common.DAL;
+
+public interface IDotNetAccess
 {
-    public interface IDotNetAccess
-    {
-        string GetExtensionVersion();
-    }
+    string GetExtensionVersion();
 }

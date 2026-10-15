@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
@@ -6,160 +6,159 @@ using JetBrains.Annotations;
 using Microsoft.VisualStudio.Data.Services;
 using RevEng.Common;
 
-namespace EFCorePowerTools.Common.Models
+namespace EFCorePowerTools.Common.Models;
+
+/// <summary>
+/// A model holding data about a database connection.
+/// </summary>
+public class DatabaseConnectionModel : INotifyPropertyChanged
 {
+    private string connectionName;
+    private string connectionString;
+    private string filePath;
+    private DatabaseType databaseType;
+    private IVsDataConnection dataConnection;
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
     /// <summary>
-    /// A model holding data about a database connection.
+    /// Gets or sets the file path to the database definition.
     /// </summary>
-    public class DatabaseConnectionModel : INotifyPropertyChanged
+    public string FilePath
     {
-        private string connectionName;
-        private string connectionString;
-        private string filePath;
-        private DatabaseType databaseType;
-        private IVsDataConnection dataConnection;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        /// <summary>
-        /// Gets or sets the file path to the database definition.
-        /// </summary>
-        public string FilePath
+        get => filePath;
+        set
         {
-            get => filePath;
-            set
+            if (value == filePath)
             {
-                if (value == filePath)
-                {
-                    return;
-                }
-
-                filePath = value;
-                OnPropertyChanged();
+                return;
             }
+
+            filePath = value;
+            OnPropertyChanged();
         }
+    }
 
-        public string ConnectionName
+    public string ConnectionName
+    {
+        get => connectionName;
+        set
         {
-            get => connectionName;
-            set
+            if (value == connectionName)
             {
-                if (value == connectionName)
-                {
-                    return;
-                }
-
-                connectionName = value;
-                OnPropertyChanged();
+                return;
             }
-        }
 
-        public string DisplayName
+            connectionName = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string DisplayName
+    {
+        get
         {
-            get
+            if (DataConnection == null)
             {
-                if (DataConnection == null)
+                if (DatabaseType == DatabaseType.SQLServerDacpac)
                 {
-                    if (DatabaseType == DatabaseType.SQLServerDacpac)
+                    if (string.IsNullOrEmpty(FilePath))
                     {
-                        if (string.IsNullOrEmpty(FilePath))
-                        {
-                            return "<null>";
-                        }
-
-                        if (FilePath.EndsWith(".sqlproj", StringComparison.InvariantCultureIgnoreCase)
-                            || FilePath.EndsWith(".csproj", StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            return $"{Path.GetFileNameWithoutExtension(FilePath)} (SQL Project)";
-                        }
-
-                        if (FilePath.EndsWith(".dacpac", StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            return $"{Path.GetFileNameWithoutExtension(FilePath)} (.dacpac)";
-                        }
+                        return "<null>";
                     }
 
-                    return $"{ConnectionName} ({DatabaseType})";
-                }
-
-                return ConnectionName;
-            }
-        }
-
-        public string ToolTip
-        {
-            get
-            {
-                if (DataConnection == null)
-                {
-                    if (DatabaseType == DatabaseType.SQLServerDacpac)
+                    if (FilePath.EndsWith(".sqlproj", StringComparison.InvariantCultureIgnoreCase)
+                        || FilePath.EndsWith(".csproj", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        if (string.IsNullOrEmpty(FilePath))
-                        {
-                            return "<null>";
-                        }
-                        else
-                        {
-                            return FilePath;
-                        }
+                        return $"{Path.GetFileNameWithoutExtension(FilePath)} (SQL Project)";
                     }
 
-                    return ConnectionString;
+                    if (FilePath.EndsWith(".dacpac", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        return $"{Path.GetFileNameWithoutExtension(FilePath)} (.dacpac)";
+                    }
+                }
+
+                return $"{ConnectionName} ({DatabaseType})";
+            }
+
+            return ConnectionName;
+        }
+    }
+
+    public string ToolTip
+    {
+        get
+        {
+            if (DataConnection == null)
+            {
+                if (DatabaseType == DatabaseType.SQLServerDacpac)
+                {
+                    if (string.IsNullOrEmpty(FilePath))
+                    {
+                        return "<null>";
+                    }
+                    else
+                    {
+                        return FilePath;
+                    }
                 }
 
                 return ConnectionString;
             }
-        }
 
-        public string ConnectionString
+            return ConnectionString;
+        }
+    }
+
+    public string ConnectionString
+    {
+        get => connectionString;
+        set
         {
-            get => connectionString;
-            set
+            if (value == connectionString)
             {
-                if (value == connectionString)
-                {
-                    return;
-                }
-
-                connectionString = value;
-                OnPropertyChanged();
+                return;
             }
-        }
 
-        public DatabaseType DatabaseType
+            connectionString = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public DatabaseType DatabaseType
+    {
+        get => databaseType;
+        set
         {
-            get => databaseType;
-            set
+            if (value == databaseType)
             {
-                if (value == databaseType)
-                {
-                    return;
-                }
-
-                databaseType = value;
-                OnPropertyChanged();
+                return;
             }
-        }
 
-        public IVsDataConnection DataConnection
+            databaseType = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public IVsDataConnection DataConnection
+    {
+        get => dataConnection;
+        set
         {
-            get => dataConnection;
-            set
+            if (value == dataConnection)
             {
-                if (value == dataConnection)
-                {
-                    return;
-                }
-
-                dataConnection = value;
-                OnPropertyChanged();
+                return;
             }
-        }
 
-        [NotifyPropertyChangedInvocator]
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            dataConnection = value;
+            OnPropertyChanged();
         }
+    }
+
+    [NotifyPropertyChangedInvocator]
+    private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

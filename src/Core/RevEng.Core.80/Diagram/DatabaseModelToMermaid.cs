@@ -3,111 +3,110 @@ using System.Globalization;
 using System.Linq;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 
-namespace RevEng.Core.Diagram
+namespace RevEng.Core.Diagram;
+
+public class DatabaseModelToMermaid
 {
-    public class DatabaseModelToMermaid
+    private readonly DatabaseModel databaseModel;
+
+    public DatabaseModelToMermaid(DatabaseModel databaseModel)
     {
-        private readonly DatabaseModel databaseModel;
+        this.databaseModel = databaseModel;
+    }
 
-        public DatabaseModelToMermaid(DatabaseModel databaseModel)
+    private static bool IsValidChar(char c) =>
+        c is (>= '0' and <= '9') or (>= 'A' and <= 'Z') or (>= 'a' and <= 'z') or '.' or '_' or '-';
+
+    public string CreateMermaid(bool createMarkdown = true)
+    {
+        var sb = new System.Text.StringBuilder();
+
+        if (createMarkdown)
         {
-            this.databaseModel = databaseModel;
+            sb.AppendLine("```mermaid");
         }
 
-        private static bool IsValidChar(char c) =>
-            c is (>= '0' and <= '9') or (>= 'A' and <= 'Z') or (>= 'a' and <= 'z') or '.' or '_' or '-';
+        sb.AppendLine("erDiagram");
 
-        public string CreateMermaid(bool createMarkdown = true)
+        foreach (var table in databaseModel.Tables)
         {
-            var sb = new System.Text.StringBuilder();
-
-            if (createMarkdown)
+            if (table.ForeignKeys.Count == 0 && table.PrimaryKey == null)
             {
-                sb.AppendLine("```mermaid");
+                continue;
             }
 
-            sb.AppendLine("erDiagram");
+            var formattedTableName = Sanitize(string.IsNullOrEmpty(table.Schema) ? table.Name : $"{table.Schema}.{table.Name}");
 
-            foreach (var table in databaseModel.Tables)
+            sb.AppendLine(CultureInfo.InvariantCulture, $"  \"{formattedTableName}\" {{");
+            foreach (var column in table.Columns)
             {
-                if (table.ForeignKeys.Count == 0 && table.PrimaryKey == null)
+                var formattedColumnName = Sanitize(column.Name);
+
+                var pkfk = string.Empty;
+
+                if (table.PrimaryKey?.Columns.Contains(column) ?? false)
                 {
-                    continue;
+                    pkfk = "PK";
                 }
 
-                var formattedTableName = Sanitize(string.IsNullOrEmpty(table.Schema) ? table.Name : $"{table.Schema}.{table.Name}");
-
-                sb.AppendLine(CultureInfo.InvariantCulture, $"  \"{formattedTableName}\" {{");
-                foreach (var column in table.Columns)
+                if (table.ForeignKeys.Any(c => c.Columns.Contains(column)))
                 {
-                    var formattedColumnName = Sanitize(column.Name);
-
-                    var pkfk = string.Empty;
-
-                    if (table.PrimaryKey?.Columns.Contains(column) ?? false)
-                    {
-                        pkfk = "PK";
-                    }
-
-                    if (table.ForeignKeys.Any(c => c.Columns.Contains(column)))
-                    {
-                        pkfk = string.IsNullOrEmpty(pkfk) ? "FK" : "PK,FK";
-                    }
-
-                    var nullable = column.IsNullable ? "(NULL)" : string.Empty;
-                    sb.AppendLine(CultureInfo.InvariantCulture, $"    {formattedColumnName} {column.StoreType?.Replace(", ", "-", System.StringComparison.OrdinalIgnoreCase)}{nullable} {pkfk}");
+                    pkfk = string.IsNullOrEmpty(pkfk) ? "FK" : "PK,FK";
                 }
 
-                sb.AppendLine("  }");
-
-                foreach (var foreignKey in table.ForeignKeys)
-                {
-                    var relationship = "}o--|";
-
-                    var dependentIndexes = foreignKey.PrincipalTable.Indexes
-                        .Where(i => i.Columns.SequenceEqual(foreignKey.PrincipalColumns));
-
-                    if (dependentIndexes.Any(i => i.IsUnique))
-                    {
-                        relationship = "|o--|";
-                    }
-
-                    if (foreignKey.PrincipalColumns.Any(c => c.IsNullable))
-                    {
-                        relationship = "}o--o";
-                    }
-
-                    var formattedPrincipalTableName = Sanitize(string.IsNullOrEmpty(foreignKey.PrincipalTable.Schema) ? foreignKey.PrincipalTable.Name : $"{foreignKey.PrincipalTable.Schema}.{foreignKey.PrincipalTable.Name}");
-                    var formattedForeignKeyName = Sanitize(foreignKey.Name);
-
-                    sb.AppendLine(CultureInfo.InvariantCulture, $"  \"{formattedTableName}\" {relationship}| \"{formattedPrincipalTableName}\" : {formattedForeignKeyName}");
-                }
+                var nullable = column.IsNullable ? "(NULL)" : string.Empty;
+                sb.AppendLine(CultureInfo.InvariantCulture, $"    {formattedColumnName} {column.StoreType?.Replace(", ", "-", System.StringComparison.OrdinalIgnoreCase)}{nullable} {pkfk}");
             }
 
-            if (createMarkdown)
-            {
-                sb.AppendLine("```");
-            }
+            sb.AppendLine("  }");
 
-            return sb.ToString();
+            foreach (var foreignKey in table.ForeignKeys)
+            {
+                var relationship = "}o--|";
+
+                var dependentIndexes = foreignKey.PrincipalTable.Indexes
+                    .Where(i => i.Columns.SequenceEqual(foreignKey.PrincipalColumns));
+
+                if (dependentIndexes.Any(i => i.IsUnique))
+                {
+                    relationship = "|o--|";
+                }
+
+                if (foreignKey.PrincipalColumns.Any(c => c.IsNullable))
+                {
+                    relationship = "}o--o";
+                }
+
+                var formattedPrincipalTableName = Sanitize(string.IsNullOrEmpty(foreignKey.PrincipalTable.Schema) ? foreignKey.PrincipalTable.Name : $"{foreignKey.PrincipalTable.Schema}.{foreignKey.PrincipalTable.Name}");
+                var formattedForeignKeyName = Sanitize(foreignKey.Name);
+
+                sb.AppendLine(CultureInfo.InvariantCulture, $"  \"{formattedTableName}\" {relationship}| \"{formattedPrincipalTableName}\" : {formattedForeignKeyName}");
+            }
         }
 
-        private static string Sanitize(string name)
+        if (createMarkdown)
         {
-            if (string.IsNullOrEmpty(name))
-            {
-                return name;
-            }
-
-            Span<char> buffer = new char[name.Length];
-
-            int index = 0;
-            foreach (var c in name.Where(IsValidChar))
-            {
-                buffer[index++] = c;
-            }
-
-            return new string(buffer[..index]);
+            sb.AppendLine("```");
         }
+
+        return sb.ToString();
+    }
+
+    private static string Sanitize(string name)
+    {
+        if (string.IsNullOrEmpty(name))
+        {
+            return name;
+        }
+
+        Span<char> buffer = new char[name.Length];
+
+        var index = 0;
+        foreach (var c in name.Where(IsValidChar))
+        {
+            buffer[index++] = c;
+        }
+
+        return new string(buffer[..index]);
     }
 }

@@ -1,13 +1,12 @@
-﻿using System.Runtime.InteropServices;
+using System.Runtime.InteropServices;
 using Community.VisualStudio.Toolkit;
 
-namespace EFCorePowerTools.Options
+namespace EFCorePowerTools.Options;
+
+internal class OptionsProvider
 {
-    internal class OptionsProvider
+    [ComVisible(true)]
+    public class AdvancedOptions : BaseOptionPage<EFCorePowerTools.AdvancedOptions>
     {
-        [ComVisible(true)]
-        public class AdvancedOptions : BaseOptionPage<EFCorePowerTools.AdvancedOptions>
-        {
-        }
     }
 }

@@ -232,7 +232,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer
         {
             var databaseList = await vsDataHelper.GetDataConnectionsAsync(package);
 
-            databaseList = databaseList.Where(databaseList => Providers.GetDabProviders().Contains(databaseList.Value.DatabaseType))
+            databaseList = databaseList.Where(databaseList => Providers.DabProviders.Contains(databaseList.Value.DatabaseType))
                 .ToDictionary(databaseList => databaseList.Key, databaseList => databaseList.Value);
 
             var dacpacList = await SqlProjHelper.GetDacpacProjectsInActiveSolutionAsync();

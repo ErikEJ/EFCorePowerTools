@@ -1,7 +1,6 @@
-﻿namespace RevEng.Common
+namespace RevEng.Common;
+
+public class SchemaInfo
 {
-    public class SchemaInfo
-    {
-        public string Name { get; set; }
-    }
+    public string Name { get; set; }
 }

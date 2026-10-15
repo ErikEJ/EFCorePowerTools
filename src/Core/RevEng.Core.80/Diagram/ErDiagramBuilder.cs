@@ -7,53 +7,52 @@ using Microsoft.Extensions.DependencyInjection;
 using RevEng.Common;
 using RevEng.Common.Dab;
 
-namespace RevEng.Core.Diagram
+namespace RevEng.Core.Diagram;
+
+public class ErDiagramBuilder
 {
-    public class ErDiagramBuilder
+    private readonly ServiceProvider serviceProvider;
+    private readonly DataApiBuilderOptions dataApiBuilderOptions;
+
+    public ErDiagramBuilder(DataApiBuilderOptions dataApiBuilderCommandOptions)
     {
-        private readonly ServiceProvider serviceProvider;
-        private readonly DataApiBuilderOptions dataApiBuilderOptions;
+        dataApiBuilderOptions = dataApiBuilderCommandOptions;
 
-        public ErDiagramBuilder(DataApiBuilderOptions dataApiBuilderCommandOptions)
+        var options = new ReverseEngineerCommandOptions
         {
-            dataApiBuilderOptions = dataApiBuilderCommandOptions;
+            DatabaseType = dataApiBuilderOptions.DatabaseType,
+            ConnectionString = dataApiBuilderOptions.ConnectionString,
+            Dacpac = dataApiBuilderOptions.Dacpac,
+            MergeDacpacs = dataApiBuilderOptions.MergeDacpacs,
+        };
 
-            var options = new ReverseEngineerCommandOptions
-            {
-                DatabaseType = dataApiBuilderOptions.DatabaseType,
-                ConnectionString = dataApiBuilderOptions.ConnectionString,
-                Dacpac = dataApiBuilderOptions.Dacpac,
-                MergeDacpacs = dataApiBuilderOptions.MergeDacpacs,
-            };
+        serviceProvider = new ServiceCollection().AddEfpt(options, [], [], []).BuildServiceProvider();
+    }
 
-            serviceProvider = new ServiceCollection().AddEfpt(options, [], [], []).BuildServiceProvider();
-        }
+    public string GetErDiagramFileName(bool createMarkdown)
+    {
+        var model = GetModelInternal();
 
-        public string GetErDiagramFileName(bool createMarkdown)
-        {
-            var model = GetModelInternal();
+        var creator = new DatabaseModelToMermaid(model);
 
-            var creator = new DatabaseModelToMermaid(model);
+        var diagram = creator.CreateMermaid(createMarkdown);
 
-            var diagram = creator.CreateMermaid(createMarkdown);
+        var extension = createMarkdown ? ".md" : ".mmd";
 
-            var extension = createMarkdown ? ".md" : ".mmd";
+        var fileName = Path.Join(Path.GetTempPath(), Path.GetRandomFileName() + extension);
+        File.WriteAllText(fileName, diagram, Encoding.UTF8);
 
-            var fileName = Path.Join(Path.GetTempPath(), Path.GetRandomFileName() + extension);
-            File.WriteAllText(fileName, diagram, Encoding.UTF8);
+        return fileName;
+    }
 
-            return fileName;
-        }
+    private DatabaseModel GetModelInternal()
+    {
+        var dbModelFactory = serviceProvider.GetService<IDatabaseModelFactory>();
 
-        private DatabaseModel GetModelInternal()
-        {
-            var dbModelFactory = serviceProvider.GetService<IDatabaseModelFactory>();
+        var dbModelOptions = new DatabaseModelFactoryOptions(dataApiBuilderOptions.Tables.Where(t => t.ObjectType.HasColumns()).Select(m => m.Name), null);
 
-            var dbModelOptions = new DatabaseModelFactoryOptions(dataApiBuilderOptions.Tables.Where(t => t.ObjectType.HasColumns()).Select(m => m.Name), null);
+        var dbModel = dbModelFactory!.Create(dataApiBuilderOptions.Dacpac ?? dataApiBuilderOptions.ConnectionString, dbModelOptions);
 
-            var dbModel = dbModelFactory!.Create(dataApiBuilderOptions.Dacpac ?? dataApiBuilderOptions.ConnectionString, dbModelOptions);
-
-            return dbModel;
-        }
+        return dbModel;
     }
 }

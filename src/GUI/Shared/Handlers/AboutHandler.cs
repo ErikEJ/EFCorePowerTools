@@ -1,34 +1,33 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using EFCorePowerTools.Contracts.Views;
 using EFCorePowerTools.Helpers;
 using Microsoft.VisualStudio.Shell;
 
-namespace EFCorePowerTools.Handlers
+namespace EFCorePowerTools.Handlers;
+
+internal class AboutHandler
 {
-    internal class AboutHandler
+    private readonly EFCorePowerToolsPackage package;
+
+    public AboutHandler(EFCorePowerToolsPackage package)
     {
-        private readonly EFCorePowerToolsPackage package;
+        this.package = package;
+    }
 
-        public AboutHandler(EFCorePowerToolsPackage package)
+    public void ShowDialog()
+    {
+        ThreadHelper.ThrowIfNotOnUIThread();
+
+        try
         {
-            this.package = package;
+            var dialog = package.GetView<IAboutDialog>();
+            dialog.ShowAndAwaitUserResponse(true);
+            Telemetry.TrackEvent("PowerTools.About");
         }
-
-        public void ShowDialog()
+        catch (Exception exception)
         {
-            ThreadHelper.ThrowIfNotOnUIThread();
-
-            try
-            {
-                var dialog = package.GetView<IAboutDialog>();
-                dialog.ShowAndAwaitUserResponse(true);
-                Telemetry.TrackEvent("PowerTools.About");
-            }
-            catch (Exception exception)
-            {
-                EFCorePowerToolsPackage.LogError(new List<string>(), exception);
-            }
+            EFCorePowerToolsPackage.LogError(new List<string>(), exception);
         }
     }
 }

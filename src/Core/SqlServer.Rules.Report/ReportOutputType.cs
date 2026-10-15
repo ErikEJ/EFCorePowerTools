@@ -1,8 +1,7 @@
-﻿namespace SqlServer.Rules.Report
+namespace SqlServer.Rules.Report;
+
+public enum ReportOutputType
 {
-    public enum ReportOutputType
-    {
-        XML,
-        CSV,
-    }
+    XML,
+    CSV,
 }

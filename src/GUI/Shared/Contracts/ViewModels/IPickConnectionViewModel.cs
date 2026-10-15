@@ -1,18 +1,17 @@
-﻿using System;
+using System;
 using System.Windows.Input;
 using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Contracts.EventArgs;
 
-namespace EFCorePowerTools.Contracts.ViewModels
+namespace EFCorePowerTools.Contracts.ViewModels;
+
+public interface IPickConnectionViewModel : IViewModel
 {
-    public interface IPickConnectionViewModel : IViewModel
-    {
-        event EventHandler<CloseRequestedEventArgs> CloseRequested;
+    event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
-        ICommand OkCommand { get; }
+    ICommand OkCommand { get; }
 
-        ICommand CancelCommand { get; }
+    ICommand CancelCommand { get; }
 
-        DatabaseConnectionModel DatabaseConnection { get; }
-    }
+    DatabaseConnectionModel DatabaseConnection { get; }
 }

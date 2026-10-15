@@ -1,23 +1,22 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Contracts.EventArgs;
 
-namespace EFCorePowerTools.Contracts.ViewModels
+namespace EFCorePowerTools.Contracts.ViewModels;
+
+public interface IPickConfigViewModel : IViewModel
 {
-    public interface IPickConfigViewModel : IViewModel
-    {
-        event EventHandler<CloseRequestedEventArgs> CloseRequested;
+    event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
-        ICommand LoadedCommand { get; }
+    ICommand LoadedCommand { get; }
 
-        ICommand OkCommand { get; }
+    ICommand OkCommand { get; }
 
-        ICommand CancelCommand { get; }
+    ICommand CancelCommand { get; }
 
-        ObservableCollection<ConfigModel> Configurations { get; }
+    ObservableCollection<ConfigModel> Configurations { get; }
 
-        ConfigModel SelectedConfiguration { get; set; }
-    }
+    ConfigModel SelectedConfiguration { get; set; }
 }

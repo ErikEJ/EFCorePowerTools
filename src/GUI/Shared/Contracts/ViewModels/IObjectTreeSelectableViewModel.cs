@@ -1,11 +1,10 @@
-﻿using System.Windows.Input;
+using System.Windows.Input;
 
-namespace EFCorePowerTools.Contracts.ViewModels
+namespace EFCorePowerTools.Contracts.ViewModels;
+
+public interface IObjectTreeSelectableViewModel
 {
-    public interface IObjectTreeSelectableViewModel
-    {
-        bool? IsSelected { get; }
+    bool? IsSelected { get; }
 
-        ICommand SetSelectedCommand { get; }
-    }
+    ICommand SetSelectedCommand { get; }
 }

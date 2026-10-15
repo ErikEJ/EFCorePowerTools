@@ -1,6 +1,5 @@
-﻿namespace EFCorePowerTools.Contracts.Views
+namespace EFCorePowerTools.Contracts.Views;
+
+public interface IAboutDialog : IDialog<object>
 {
-    public interface IAboutDialog : IDialog<object>
-    {
-    }
 }

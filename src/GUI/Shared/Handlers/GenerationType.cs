@@ -1,11 +1,10 @@
-﻿namespace EFCorePowerTools.Extensions
+namespace EFCorePowerTools.Extensions;
+
+public enum GenerationType
 {
-    public enum GenerationType
-    {
-        Dgml = 0,
-        Ddl = 1,
-        DebugView = 2,
-        DbContextList = 7,
-        DbContextCompare = 8,
-    }
+    Dgml = 0,
+    Ddl = 1,
+    DebugView = 2,
+    DbContextList = 7,
+    DbContextCompare = 8,
 }

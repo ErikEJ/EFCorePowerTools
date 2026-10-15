@@ -1,16 +1,15 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using RevEng.Common;
 
-namespace EFCorePowerTools.Contracts.ViewModels
+namespace EFCorePowerTools.Contracts.ViewModels;
+
+public interface ISchemaInformationViewModel : IObjectTreeSelectableViewModel, IViewModel
 {
-    public interface ISchemaInformationViewModel : IObjectTreeSelectableViewModel, IViewModel
-    {
-        string Name { get; set; }
+    string Name { get; set; }
 
-        bool IsVisible { get; }
+    bool IsVisible { get; }
 
-        ObservableCollection<ITableInformationViewModel> Objects { get; }
+    ObservableCollection<ITableInformationViewModel> Objects { get; }
 
-        Schema ReplacingSchema { get; set; }
-    }
+    Schema ReplacingSchema { get; set; }
 }

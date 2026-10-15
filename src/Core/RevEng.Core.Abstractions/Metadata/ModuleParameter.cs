@@ -1,39 +1,38 @@
 using System.Collections.Generic;
 
-namespace RevEng.Core.Abstractions.Metadata
+namespace RevEng.Core.Abstractions.Metadata;
+
+public class ModuleParameter
 {
-    public class ModuleParameter
-    {
-        public string Name { get; set; }
+    public string Name { get; set; }
 
-        public string StoreType { get; set; }
+    public string StoreType { get; set; }
 
-        public int? Length { get; set; }
+    public int? Length { get; set; }
 
-        public int? Precision { get; set; }
+    public int? Precision { get; set; }
 
-        public int? Scale { get; set; }
+    public int? Scale { get; set; }
 
-        public bool Output { get; set; }
+    public bool Output { get; set; }
 
-        public bool Nullable { get; set; }
+    public bool Nullable { get; set; }
 
-        public string TypeName { get; set; }
+    public string TypeName { get; set; }
 
-        public string TypeSchemaName { get; set; }
+    public string TypeSchemaName { get; set; }
 
-        public int? TypeId { get; set; }
+    public int? TypeId { get; set; }
 
-        public int? TypeSchema { get; set; }
+    public int? TypeSchema { get; set; }
 
-        public bool IsReturnValue { get; set; }
+    public bool IsReturnValue { get; set; }
 
-        public string RoutineName { get; set; }
+    public string RoutineName { get; set; }
 
-        public string RoutineSchema { get; set; }
+    public string RoutineSchema { get; set; }
 
 #pragma warning disable CA2227 // Collection properties should be read only
-        public List<ModuleResultElement> TvpColumns { get; set; }
+    public List<ModuleResultElement> TvpColumns { get; set; }
 #pragma warning restore CA2227 // Collection properties should be read only
-    }
 }
