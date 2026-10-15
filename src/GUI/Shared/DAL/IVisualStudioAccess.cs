@@ -1,27 +1,26 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using EFCorePowerTools.Common.Models;
 using Microsoft.VisualStudio.Data.Services;
 
-namespace EFCorePowerTools.Common.DAL
+namespace EFCorePowerTools.Common.DAL;
+
+public interface IVisualStudioAccess
 {
-    public interface IVisualStudioAccess
-    {
-        DatabaseConnectionModel PromptForNewDatabaseConnection();
+    DatabaseConnectionModel PromptForNewDatabaseConnection();
 
-        DatabaseConnectionModel PromptForNewDacpacDatabaseDefinition();
+    DatabaseConnectionModel PromptForNewDacpacDatabaseDefinition();
 
-        Task RemoveDatabaseConnectionAsync(IVsDataConnection dataConnection);
+    Task RemoveDatabaseConnectionAsync(IVsDataConnection dataConnection);
 
-        void ShowMessage(string message);
+    void ShowMessage(string message);
 
-        Task StartStatusBarAnimationAsync();
+    Task StartStatusBarAnimationAsync();
 
-        Task StopStatusBarAnimationAsync();
+    Task StopStatusBarAnimationAsync();
 
-        Task SetStatusBarTextAsync(string text);
+    Task SetStatusBarTextAsync(string text);
 
-        void ShowError(string error);
+    void ShowError(string error);
 
-        void OpenFile(string fileName);
-    }
+    void OpenFile(string fileName);
 }

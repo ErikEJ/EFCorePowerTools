@@ -17,7 +17,7 @@ namespace Microsoft.EntityFrameworkCore
                 throw new ArgumentNullException(nameof(context));
             }
 
-            Type type = context.GetType();
+            var type = context.GetType();
 
             var debugView = CreateDebugView(context);
             var dgml = Dgml.DgmlBuilder.Build(debugView, type.Name, GetTemplate());
@@ -36,22 +36,15 @@ namespace Microsoft.EntityFrameworkCore
             return context.Database.GenerateCreateScript();
         }
 
-        private static string CreateDebugView(DbContext context)
-        {
-            return context.GetService<IDesignTimeModel>().Model.ToDebugString(MetadataDebugStringOptions.LongDefault);
-        }
+        private static string CreateDebugView(DbContext context) => context.GetService<IDesignTimeModel>().Model.ToDebugString(MetadataDebugStringOptions.LongDefault);
 
         private static string GetTemplate()
         {
             var resourceName = "DgmlBuilder.template.dgml";
 
-            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
-            {
-                using (var reader = new StreamReader(stream ?? throw new InvalidOperationException()))
-                {
-                    return reader.ReadToEnd();
-                }
-            }
+            using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
+            using var reader = new StreamReader(stream ?? throw new InvalidOperationException());
+            return reader.ReadToEnd();
         }
     }
 }

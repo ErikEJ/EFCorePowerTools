@@ -1,18 +1,17 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Contracts.EventArgs;
 
-namespace EFCorePowerTools.Contracts.ViewModels
+namespace EFCorePowerTools.Contracts.ViewModels;
+
+public interface ICompareOptionsViewModel : IViewModel
 {
-    public interface ICompareOptionsViewModel : IViewModel
-    {
-        event EventHandler<CloseRequestedEventArgs> CloseRequested;
+    event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
-        void AddDatabaseConnections(IEnumerable<DatabaseConnectionModel> connections);
+    void AddDatabaseConnections(IEnumerable<DatabaseConnectionModel> connections);
 
-        void AddContextTypes(IEnumerable<string> contextTypes);
+    void AddContextTypes(IEnumerable<string> contextTypes);
 
-        (DatabaseConnectionModel Connection, IEnumerable<string> ContextTypes) GetSelection();
-    }
+    (DatabaseConnectionModel Connection, IEnumerable<string> ContextTypes) GetSelection();
 }

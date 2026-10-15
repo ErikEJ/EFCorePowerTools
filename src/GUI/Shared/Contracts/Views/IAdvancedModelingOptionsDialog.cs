@@ -1,9 +1,8 @@
-﻿using EFCorePowerTools.Common.Models;
+using EFCorePowerTools.Common.Models;
 
-namespace EFCorePowerTools.Contracts.Views
+namespace EFCorePowerTools.Contracts.Views;
+
+public interface IAdvancedModelingOptionsDialog : IDialog<ModelingOptionsModel>
 {
-    public interface IAdvancedModelingOptionsDialog : IDialog<ModelingOptionsModel>
-    {
-        IAdvancedModelingOptionsDialog ApplyPresets(ModelingOptionsModel presets);
-    }
+    IAdvancedModelingOptionsDialog ApplyPresets(ModelingOptionsModel presets);
 }

@@ -1,9 +1,8 @@
-namespace SqlServer.Rules.Report
+namespace SqlServer.Rules.Report;
+
+public enum NotificationType
 {
-    public enum NotificationType
-    {
-        Error,
-        Warning,
-        Information,
-    }
+    Error,
+    Warning,
+    Information,
 }

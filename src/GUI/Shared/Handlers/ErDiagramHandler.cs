@@ -17,281 +17,280 @@ using Microsoft.VisualStudio.Shell;
 using RevEng.Common;
 using RevEng.Common.Dab;
 
-namespace EFCorePowerTools.Handlers.ReverseEngineer
+namespace EFCorePowerTools.Handlers.ReverseEngineer;
+
+internal class ErDiagramHandler
 {
-    internal class ErDiagramHandler
+    private readonly EFCorePowerToolsPackage package;
+    private readonly VsDataHelper vsDataHelper;
+
+    public ErDiagramHandler(EFCorePowerToolsPackage package)
     {
-        private readonly EFCorePowerToolsPackage package;
-        private readonly VsDataHelper vsDataHelper;
+        this.package = package;
+        vsDataHelper = new VsDataHelper();
+    }
 
-        public ErDiagramHandler(EFCorePowerToolsPackage package)
+    public async System.Threading.Tasks.Task BuildErDiagramAsync(Project project, string uiHint)
+    {
+        await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+        try
         {
-            this.package = package;
-            vsDataHelper = new VsDataHelper();
+            if (await VSHelper.IsDebugModeAsync())
+            {
+                VSHelper.ShowError(ReverseEngineerLocale.CannotGenerateCodeWhileDebugging);
+                return;
+            }
+
+            var optionsPath = Path.Combine(Path.GetTempPath(), "erdiagram-options.json");
+
+            var options = new DataApiBuilderOptions();
+
+            options.ProjectPath = Path.GetDirectoryName(project.FullPath);
+
+            var version = await VS.Shell.GetVsVersionAsync();
+
+            if (version >= new Version(18, 0))
+            {
+                options.Optional = true;
+            }
+
+            if (!await ChooseDataBaseConnectionAsync(options, uiHint))
+            {
+                await VS.StatusBar.ClearAsync();
+                return;
+            }
+
+            await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.GettingReadyToConnect);
+
+            var dbInfo = await GetDatabaseInfoAsync(options);
+
+            if (dbInfo == null)
+            {
+                await VS.StatusBar.ClearAsync();
+                return;
+            }
+
+            await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.LoadingDatabaseObjects);
+
+            if (!await LoadDataBaseObjectsAsync(options, dbInfo))
+            {
+                await VS.StatusBar.ClearAsync();
+                return;
+            }
+
+            SaveOptions(optionsPath, options);
+
+            await GenerateFilesAsync(optionsPath, dbInfo.ConnectionString);
+
+            options.ConnectionString = null;
+
+            Telemetry.TrackEvent("PowerTools.ErDiagramBuild");
         }
-
-        public async System.Threading.Tasks.Task BuildErDiagramAsync(Project project, string uiHint)
+        catch (AggregateException ae)
         {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
-            try
+            foreach (var innerException in ae.Flatten().InnerExceptions)
             {
-                if (await VSHelper.IsDebugModeAsync())
-                {
-                    VSHelper.ShowError(ReverseEngineerLocale.CannotGenerateCodeWhileDebugging);
-                    return;
-                }
-
-                var optionsPath = Path.Combine(Path.GetTempPath(), "erdiagram-options.json");
-
-                var options = new DataApiBuilderOptions();
-
-                options.ProjectPath = Path.GetDirectoryName(project.FullPath);
-
-                var version = await VS.Shell.GetVsVersionAsync();
-
-                if (version >= new Version(18, 0))
-                {
-                    options.Optional = true;
-                }
-
-                if (!await ChooseDataBaseConnectionAsync(options, uiHint))
-                {
-                    await VS.StatusBar.ClearAsync();
-                    return;
-                }
-
-                await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.GettingReadyToConnect);
-
-                var dbInfo = await GetDatabaseInfoAsync(options);
-
-                if (dbInfo == null)
-                {
-                    await VS.StatusBar.ClearAsync();
-                    return;
-                }
-
-                await VS.StatusBar.ShowMessageAsync(ReverseEngineerLocale.LoadingDatabaseObjects);
-
-                if (!await LoadDataBaseObjectsAsync(options, dbInfo))
-                {
-                    await VS.StatusBar.ClearAsync();
-                    return;
-                }
-
-                SaveOptions(optionsPath, options);
-
-                await GenerateFilesAsync(optionsPath, dbInfo.ConnectionString);
-
-                options.ConnectionString = null;
-
-                Telemetry.TrackEvent("PowerTools.ErDiagramBuild");
-            }
-            catch (AggregateException ae)
-            {
-                foreach (var innerException in ae.Flatten().InnerExceptions)
-                {
-                    EFCorePowerToolsPackage.LogError(new List<string>(), innerException);
-                }
-            }
-            catch (Exception exception)
-            {
-                EFCorePowerToolsPackage.LogError(new List<string>(), exception);
+                EFCorePowerToolsPackage.LogError(new List<string>(), innerException);
             }
         }
-
-        private static async Task<DatabaseConnectionModel> GetDatabaseInfoAsync(DataApiBuilderOptions options)
+        catch (Exception exception)
         {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            EFCorePowerToolsPackage.LogError(new List<string>(), exception);
+        }
+    }
 
-            var dbInfo = new DatabaseConnectionModel();
+    private static async Task<DatabaseConnectionModel> GetDatabaseInfoAsync(DataApiBuilderOptions options)
+    {
+        await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
-            if (!string.IsNullOrEmpty(options.ConnectionString))
+        var dbInfo = new DatabaseConnectionModel();
+
+        if (!string.IsNullOrEmpty(options.ConnectionString))
+        {
+            dbInfo.ConnectionString = options.ConnectionString;
+            dbInfo.DatabaseType = options.DatabaseType;
+        }
+
+        if (!string.IsNullOrEmpty(options.Dacpac))
+        {
+            dbInfo.DatabaseType = DatabaseType.SQLServerDacpac;
+            dbInfo.ConnectionString = $"Data Source=(local);Initial Catalog={Path.GetFileNameWithoutExtension(options.Dacpac)};Integrated Security=true;";
+            options.ConnectionString = dbInfo.ConnectionString;
+            options.DatabaseType = dbInfo.DatabaseType;
+            options.MergeDacpacs = AdvancedOptions.Instance.MergeDacpacs;
+
+            options.Dacpac = await SqlProjHelper.BuildSqlProjectAsync(options.Dacpac);
+            if (string.IsNullOrEmpty(options.Dacpac))
             {
-                dbInfo.ConnectionString = options.ConnectionString;
-                dbInfo.DatabaseType = options.DatabaseType;
-            }
-
-            if (!string.IsNullOrEmpty(options.Dacpac))
-            {
-                dbInfo.DatabaseType = DatabaseType.SQLServerDacpac;
-                dbInfo.ConnectionString = $"Data Source=(local);Initial Catalog={Path.GetFileNameWithoutExtension(options.Dacpac)};Integrated Security=true;";
-                options.ConnectionString = dbInfo.ConnectionString;
-                options.DatabaseType = dbInfo.DatabaseType;
-                options.MergeDacpacs = AdvancedOptions.Instance.MergeDacpacs;
-
-                options.Dacpac = await SqlProjHelper.BuildSqlProjectAsync(options.Dacpac);
-                if (string.IsNullOrEmpty(options.Dacpac))
-                {
-                    VSHelper.ShowMessage(ReverseEngineerLocale.UnableToBuildSelectedDatabaseProject);
-                    return null;
-                }
-            }
-
-            if (dbInfo.DatabaseType == DatabaseType.Undefined)
-            {
-                VSHelper.ShowError($"{ReverseEngineerLocale.UnsupportedProvider}");
+                VSHelper.ShowMessage(ReverseEngineerLocale.UnableToBuildSelectedDatabaseProject);
                 return null;
             }
-
-            return dbInfo;
         }
 
-        private static async System.Threading.Tasks.Task GenerateFilesAsync(string optionsPath, string connectionString)
+        if (dbInfo.DatabaseType == DatabaseType.Undefined)
         {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
-            await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 1, 3);
-
-            var stopWatch = Stopwatch.StartNew();
-
-            await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 2, 3);
-
-            var revEngRunner = new EfRevEngLauncher(new ReverseEngineerCommandOptions(), CodeGenerationMode.EFCore8);
-            var cmdPath = await revEngRunner.GetErDiagramAsync(optionsPath, connectionString);
-
-            await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 3, 3);
-
-            stopWatch.Stop();
-
-            if (File.Exists(cmdPath))
-            {
-                await VS.Documents.OpenAsync(cmdPath);
-            }
-
-            await VS.StatusBar.ShowMessageAsync(string.Format(ReverseEngineerLocale.ReverseEngineerCompleted, stopWatch.Elapsed.ToString(@"mm\:ss")));
-
-            Telemetry.TrackFrameworkUse(nameof(ErDiagramHandler), CodeGenerationMode.EFCore8);
+            VSHelper.ShowError($"{ReverseEngineerLocale.UnsupportedProvider}");
+            return null;
         }
 
-        private static void SaveOptions(string optionsPath, DataApiBuilderOptions options)
+        return dbInfo;
+    }
+
+    private static async System.Threading.Tasks.Task GenerateFilesAsync(string optionsPath, string connectionString)
+    {
+        await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+        await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 1, 3);
+
+        var stopWatch = Stopwatch.StartNew();
+
+        await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 2, 3);
+
+        var revEngRunner = new EfRevEngLauncher(new ReverseEngineerCommandOptions(), CodeGenerationMode.EFCore8);
+        var cmdPath = await revEngRunner.GetErDiagramAsync(optionsPath, connectionString);
+
+        await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 3, 3);
+
+        stopWatch.Stop();
+
+        if (File.Exists(cmdPath))
         {
-            File.WriteAllText(optionsPath, options.Write(), Encoding.UTF8);
+            await VS.Documents.OpenAsync(cmdPath);
         }
 
-        private static async Task<List<TableModel>> GetDacpacTablesAsync(string dacpacPath, CodeGenerationMode codeGenerationMode)
+        await VS.StatusBar.ShowMessageAsync(string.Format(ReverseEngineerLocale.ReverseEngineerCompleted, stopWatch.Elapsed.ToString(@"mm\:ss")));
+
+        Telemetry.TrackFrameworkUse(nameof(ErDiagramHandler), CodeGenerationMode.EFCore8);
+    }
+
+    private static void SaveOptions(string optionsPath, DataApiBuilderOptions options)
+    {
+        File.WriteAllText(optionsPath, options.Write(), Encoding.UTF8);
+    }
+
+    private static async Task<List<TableModel>> GetDacpacTablesAsync(string dacpacPath, CodeGenerationMode codeGenerationMode)
+    {
+        var builder = new TableListBuilder(dacpacPath, DatabaseType.SQLServerDacpac, null);
+
+        return await builder.GetTableDefinitionsAsync(codeGenerationMode);
+    }
+
+    private static async Task<List<TableModel>> GetTablesAsync(DatabaseConnectionModel dbInfo, CodeGenerationMode codeGenerationMode)
+    {
+        if (dbInfo.DataConnection != null)
         {
-            var builder = new TableListBuilder(dacpacPath, DatabaseType.SQLServerDacpac, null);
-
-            return await builder.GetTableDefinitionsAsync(codeGenerationMode);
+            dbInfo.DataConnection.Open();
+            dbInfo.ConnectionString = DataProtection.DecryptString(dbInfo.DataConnection.EncryptedConnectionString);
         }
 
-        private static async Task<List<TableModel>> GetTablesAsync(DatabaseConnectionModel dbInfo, CodeGenerationMode codeGenerationMode)
+        var builder = new TableListBuilder(dbInfo.ConnectionString, dbInfo.DatabaseType, null);
+        return await builder.GetTableDefinitionsAsync(codeGenerationMode);
+    }
+
+    private async Task<bool> ChooseDataBaseConnectionAsync(DataApiBuilderOptions options, string uiHint)
+    {
+        var databaseList = await vsDataHelper.GetDataConnectionsAsync(package);
+
+        databaseList = databaseList.Where(databaseList => Providers.DabProviders.Contains(databaseList.Value.DatabaseType))
+            .ToDictionary(databaseList => databaseList.Key, databaseList => databaseList.Value);
+
+        var dacpacList = await SqlProjHelper.GetDacpacProjectsInActiveSolutionAsync();
+
+        var psd = package.GetView<IPickServerDatabaseDialog>();
+
+        if (databaseList.Any())
         {
-            if (dbInfo.DataConnection != null)
+            psd.PublishConnections(databaseList.Select(m => new DatabaseConnectionModel
             {
-                dbInfo.DataConnection.Open();
-                dbInfo.ConnectionString = DataProtection.DecryptString(dbInfo.DataConnection.EncryptedConnectionString);
-            }
-
-            var builder = new TableListBuilder(dbInfo.ConnectionString, dbInfo.DatabaseType, null);
-            return await builder.GetTableDefinitionsAsync(codeGenerationMode);
+                ConnectionName = m.Value.ConnectionName,
+                ConnectionString = m.Value.ConnectionString,
+                DatabaseType = m.Value.DatabaseType,
+                DataConnection = m.Value.DataConnection,
+            }));
         }
 
-        private async Task<bool> ChooseDataBaseConnectionAsync(DataApiBuilderOptions options, string uiHint)
+        if (dacpacList != null && dacpacList.Any())
         {
-            var databaseList = await vsDataHelper.GetDataConnectionsAsync(package);
-
-            databaseList = databaseList.Where(databaseList => Providers.GetDabProviders().Contains(databaseList.Value.DatabaseType))
-                .ToDictionary(databaseList => databaseList.Key, databaseList => databaseList.Value);
-
-            var dacpacList = await SqlProjHelper.GetDacpacProjectsInActiveSolutionAsync();
-
-            var psd = package.GetView<IPickServerDatabaseDialog>();
-
-            if (databaseList.Any())
+            psd.PublishDefinitions(dacpacList.Select(m => new DatabaseConnectionModel
             {
-                psd.PublishConnections(databaseList.Select(m => new DatabaseConnectionModel
-                {
-                    ConnectionName = m.Value.ConnectionName,
-                    ConnectionString = m.Value.ConnectionString,
-                    DatabaseType = m.Value.DatabaseType,
-                    DataConnection = m.Value.DataConnection,
-                }));
-            }
-
-            if (dacpacList != null && dacpacList.Any())
-            {
-                psd.PublishDefinitions(dacpacList.Select(m => new DatabaseConnectionModel
-                {
-                    FilePath = m,
-                    DatabaseType = DatabaseType.SQLServerDacpac,
-                }));
-            }
-
-            psd.PublishCodeGenerationMode(CodeGenerationMode.EFCore8, new List<CodeGenerationItem>
-            {
-                new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore8, Value = "DAB" },
-            });
-
-            psd.PublishUiHint(uiHint);
-
-            psd.PublishSchemas(new List<SchemaInfo>());
-
-            var pickDataSourceResult = psd.ShowAndAwaitUserResponse(true);
-            if (!pickDataSourceResult.ClosedByOK)
-            {
-                return false;
-            }
-
-            options.Dacpac = pickDataSourceResult.Payload.Connection?.FilePath;
-
-            if (pickDataSourceResult.Payload.Connection != null)
-            {
-                options.ConnectionString = pickDataSourceResult.Payload.Connection.ConnectionString;
-                options.DatabaseType = pickDataSourceResult.Payload.Connection.DatabaseType;
-            }
-
-            return true;
+                FilePath = m,
+                DatabaseType = DatabaseType.SQLServerDacpac,
+            }));
         }
 
-        private async Task<bool> LoadDataBaseObjectsAsync(DataApiBuilderOptions options, DatabaseConnectionModel dbInfo)
+        psd.PublishCodeGenerationMode(CodeGenerationMode.EFCore8, new List<CodeGenerationItem>
         {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore8, Value = "DAB" },
+        });
 
-            IEnumerable<TableModel> predefinedTables = null;
+        psd.PublishUiHint(uiHint);
 
-            try
-            {
-                await VS.StatusBar.StartAnimationAsync(StatusAnimation.Build);
+        psd.PublishSchemas(new List<SchemaInfo>());
 
-                predefinedTables = !string.IsNullOrEmpty(options.Dacpac)
-                                           ? await GetDacpacTablesAsync(options.Dacpac, CodeGenerationMode.EFCore8)
-                                           : await GetTablesAsync(dbInfo, CodeGenerationMode.EFCore8);
-
-                predefinedTables = predefinedTables
-                    .Where(t => t.ObjectType == ObjectType.Table
-                    || t.ObjectType == ObjectType.View);
-            }
-            catch (InvalidOperationException ex)
-            {
-                VSHelper.ShowError($"{ex.Message}");
-                return false;
-            }
-            finally
-            {
-                await VS.StatusBar.EndAnimationAsync(StatusAnimation.Build);
-            }
-
-            var preselectedTables = new List<SerializationTableModel>();
-
-            if (options.Tables?.Count > 0)
-            {
-                var normalizedTables = ReverseEngineerHelper.NormalizeTables(options.Tables, dbInfo.DatabaseType == DatabaseType.SQLServer);
-                preselectedTables.AddRange(normalizedTables);
-            }
-
-            await VS.StatusBar.ClearAsync();
-
-            var ptd = package.GetView<IPickTablesDialog>()
-                              .AddTables(predefinedTables, new List<Schema>())
-                              .PreselectTables(preselectedTables)
-                              .SqliteToolboxInstall(true);
-
-            var pickTablesResult = ptd.ShowAndAwaitUserResponse(true);
-
-            options.Tables = pickTablesResult.Payload.Objects.ToList();
-            return pickTablesResult.ClosedByOK;
+        var pickDataSourceResult = psd.ShowAndAwaitUserResponse(true);
+        if (!pickDataSourceResult.ClosedByOK)
+        {
+            return false;
         }
+
+        options.Dacpac = pickDataSourceResult.Payload.Connection?.FilePath;
+
+        if (pickDataSourceResult.Payload.Connection != null)
+        {
+            options.ConnectionString = pickDataSourceResult.Payload.Connection.ConnectionString;
+            options.DatabaseType = pickDataSourceResult.Payload.Connection.DatabaseType;
+        }
+
+        return true;
+    }
+
+    private async Task<bool> LoadDataBaseObjectsAsync(DataApiBuilderOptions options, DatabaseConnectionModel dbInfo)
+    {
+        await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+        IEnumerable<TableModel> predefinedTables = null;
+
+        try
+        {
+            await VS.StatusBar.StartAnimationAsync(StatusAnimation.Build);
+
+            predefinedTables = !string.IsNullOrEmpty(options.Dacpac)
+                                       ? await GetDacpacTablesAsync(options.Dacpac, CodeGenerationMode.EFCore8)
+                                       : await GetTablesAsync(dbInfo, CodeGenerationMode.EFCore8);
+
+            predefinedTables = predefinedTables
+                .Where(t => t.ObjectType == ObjectType.Table
+                || t.ObjectType == ObjectType.View);
+        }
+        catch (InvalidOperationException ex)
+        {
+            VSHelper.ShowError($"{ex.Message}");
+            return false;
+        }
+        finally
+        {
+            await VS.StatusBar.EndAnimationAsync(StatusAnimation.Build);
+        }
+
+        var preselectedTables = new List<SerializationTableModel>();
+
+        if (options.Tables?.Count > 0)
+        {
+            var normalizedTables = ReverseEngineerHelper.NormalizeTables(options.Tables, dbInfo.DatabaseType == DatabaseType.SQLServer);
+            preselectedTables.AddRange(normalizedTables);
+        }
+
+        await VS.StatusBar.ClearAsync();
+
+        var ptd = package.GetView<IPickTablesDialog>()
+                          .AddTables(predefinedTables, new List<Schema>())
+                          .PreselectTables(preselectedTables)
+                          .SqliteToolboxInstall(true);
+
+        var pickTablesResult = ptd.ShowAndAwaitUserResponse(true);
+
+        options.Tables = pickTablesResult.Payload.Objects.ToList();
+        return pickTablesResult.ClosedByOK;
     }
 }

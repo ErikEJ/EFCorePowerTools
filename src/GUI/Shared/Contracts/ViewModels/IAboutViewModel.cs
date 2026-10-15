@@ -1,20 +1,19 @@
-﻿using System;
+using System;
 using System.Windows.Input;
 
-namespace EFCorePowerTools.Contracts.ViewModels
+namespace EFCorePowerTools.Contracts.ViewModels;
+
+public interface IAboutViewModel : IViewModel
 {
-    public interface IAboutViewModel : IViewModel
-    {
-        event EventHandler CloseRequested;
+    event EventHandler CloseRequested;
 
-        ICommand LoadedCommand { get; }
+    ICommand LoadedCommand { get; }
 
-        ICommand OkCommand { get; }
+    ICommand OkCommand { get; }
 
-        ICommand OpenSourcesCommand { get; }
+    ICommand OpenSourcesCommand { get; }
 
-        ICommand OpenMarketplaceCommand { get; }
+    ICommand OpenMarketplaceCommand { get; }
 
-        string Version { get; }
-    }
+    string Version { get; }
 }

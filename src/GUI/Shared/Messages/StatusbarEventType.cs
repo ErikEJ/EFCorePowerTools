@@ -1,8 +1,7 @@
-﻿namespace EFCorePowerTools.Messages
+namespace EFCorePowerTools.Messages;
+
+public enum StatusbarEventType
 {
-    public enum StatusbarEventType
-    {
-        None = 0,
-        Reset = 1,
-    }
+    None = 0,
+    Reset = 1,
 }

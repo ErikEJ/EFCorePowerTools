@@ -1,14 +1,13 @@
 using System.Runtime.Serialization;
 
-namespace RevEng.Common
-{
-    [DataContract]
-    public class ReplacementRule
-    {
-        [DataMember]
-        public string Rule { get; set; }
+namespace RevEng.Common;
 
-        [DataMember]
-        public string Replacement { get; set; }
-    }
+[DataContract]
+public class ReplacementRule
+{
+    [DataMember]
+    public string Rule { get; set; }
+
+    [DataMember]
+    public string Replacement { get; set; }
 }

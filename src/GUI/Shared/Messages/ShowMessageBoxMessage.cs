@@ -1,7 +1,6 @@
-﻿namespace EFCorePowerTools.Messages
+namespace EFCorePowerTools.Messages;
+
+public class ShowMessageBoxMessage
 {
-    public class ShowMessageBoxMessage
-    {
-        public string Content { get; set; }
-    }
+    public string Content { get; set; }
 }

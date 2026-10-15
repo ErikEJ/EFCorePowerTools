@@ -19,14 +19,10 @@ namespace Modelling
     {
 #pragma warning disable CA1002 // Do not expose generic lists
         public static List<Tuple<string, string>> GenerateDebugView(string outputPath, string startupOutputPath)
-        {
-            return BuildResult(outputPath, startupOutputPath ?? outputPath, false);
-        }
+            => BuildResult(outputPath, startupOutputPath ?? outputPath, false);
 
         public static List<Tuple<string, string>> GenerateDatabaseCreateScript(string outputPath, string startupOutputPath)
-        {
-            return BuildResult(outputPath, startupOutputPath ?? outputPath, true);
-        }
+            => BuildResult(outputPath, startupOutputPath ?? outputPath, true);
 #pragma warning restore CA1002 // Do not expose generic lists
 
         private static List<Tuple<string, string>> BuildResult(string outputPath, string startupOutputPath, bool generateDdl)
@@ -66,12 +62,7 @@ namespace Modelling
         private static List<Type> GetDbContextTypes(DbContextOperations operations)
         {
             var types = operations.GetContextTypes().ToList();
-            if (types.Count == 0)
-            {
-                throw new ArgumentException("No EF Core DbContext types found in the project");
-            }
-
-            return types;
+            return types.Count == 0 ? throw new ArgumentException("No EF Core DbContext types found in the project") : types;
         }
 
         private static DbContextOperations GetOperations(string outputPath, string startupOutputPath)
@@ -99,9 +90,6 @@ namespace Modelling
 #endif
         }
 
-        private static Assembly Load(string assemblyPath)
-        {
-            return File.Exists(assemblyPath) ? Assembly.LoadFile(assemblyPath) : null;
-        }
+        private static Assembly Load(string assemblyPath) => File.Exists(assemblyPath) ? Assembly.LoadFile(assemblyPath) : null;
     }
 }

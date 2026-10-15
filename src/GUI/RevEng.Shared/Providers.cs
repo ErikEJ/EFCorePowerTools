@@ -5,542 +5,443 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace RevEng.Common
+namespace RevEng.Common;
+
+public static class Providers
 {
-    public static class Providers
+    public static DatabaseType ToDatabaseType(this string providerAlias, bool isDacpac)
     {
-        public static DatabaseType ToDatabaseType(this string providerAlias, bool isDacpac)
+        if (!GetKnownProviders().TryGetValue(providerAlias, out var provider))
         {
-            if (!GetKnownProviders().TryGetValue(providerAlias, out var provider))
-            {
+            return DatabaseType.Undefined;
+        }
+
+        switch (provider)
+        {
+            case "Microsoft.EntityFrameworkCore.SqlServer":
+                if (isDacpac)
+                {
+                    return DatabaseType.SQLServerDacpac;
+                }
+
+                return DatabaseType.SQLServer;
+
+            case "Microsoft.EntityFrameworkCore.Sqlite":
+                return DatabaseType.SQLite;
+
+            case "Npgsql.EntityFrameworkCore.PostgreSQL":
+                return DatabaseType.Npgsql;
+
+            case "Pomelo.EntityFrameworkCore.MySql":
+                return DatabaseType.Mysql;
+
+            case "Microting.EntityFrameworkCore.MySql":
+                return DatabaseType.Mysql;
+
+            case "Oracle.EntityFrameworkCore":
+                return DatabaseType.Oracle;
+
+            case "FirebirdSql.EntityFrameworkCore.Firebird":
+                return DatabaseType.Firebird;
+
+            case "EFCore.Snowflake":
+                return DatabaseType.Snowflake;
+
+            default:
                 return DatabaseType.Undefined;
-            }
-
-            switch (provider)
-            {
-                case "Microsoft.EntityFrameworkCore.SqlServer":
-                    if (isDacpac)
-                    {
-                        return DatabaseType.SQLServerDacpac;
-                    }
-
-                    return DatabaseType.SQLServer;
-
-                case "Microsoft.EntityFrameworkCore.Sqlite":
-                    return DatabaseType.SQLite;
-
-                case "Npgsql.EntityFrameworkCore.PostgreSQL":
-                    return DatabaseType.Npgsql;
-
-                case "Pomelo.EntityFrameworkCore.MySql":
-                    return DatabaseType.Mysql;
-
-                case "Microting.EntityFrameworkCore.MySql":
-                    return DatabaseType.Mysql;
-
-                case "Oracle.EntityFrameworkCore":
-                    return DatabaseType.Oracle;
-
-                case "FirebirdSql.EntityFrameworkCore.Firebird":
-                    return DatabaseType.Firebird;
-
-                case "EFCore.Snowflake":
-                    return DatabaseType.Snowflake;
-
-                default:
-                    return DatabaseType.Undefined;
-            }
-        }
-
-        public static string ToDatabaseShortName(this DatabaseType databaseType)
-        {
-            switch (databaseType)
-            {
-                case DatabaseType.Undefined:
-                    return "Undefined";
-                case DatabaseType.SQLServer:
-                    return "mssql";
-                case DatabaseType.SQLite:
-                    return "sqlite";
-                case DatabaseType.Npgsql:
-                    return "npgsql";
-                case DatabaseType.Mysql:
-                    return "mysql";
-                case DatabaseType.Oracle:
-                    return "oracle";
-                case DatabaseType.SQLServerDacpac:
-                    return "mssql";
-                case DatabaseType.Firebird:
-                    return "firebird";
-                case DatabaseType.Snowflake:
-                    return "snowflake";
-                default:
-                    return "Undefined";
-            }
-        }
-
-        public static HashSet<DatabaseType> GetDabProviders()
-            {
-            return new HashSet<DatabaseType>
-            {
-                DatabaseType.SQLServer,
-                DatabaseType.SQLServerDacpac,
-                DatabaseType.Npgsql,
-                DatabaseType.Mysql,
-            };
-        }
-
-        public static string GetReadmeContent(ReverseEngineerCommandOptions commandOptions, CodeGenerationMode codeGenerationMode, string redactedConnectionString)
-        {
-            if (commandOptions == null)
-            {
-                throw new ArgumentNullException(nameof(commandOptions));
-            }
-
-            if (string.IsNullOrEmpty(redactedConnectionString))
-            {
-                throw new ArgumentNullException(nameof(redactedConnectionString));
-            }
-
-            var packages = GetNeededPackages(
-                commandOptions.DatabaseType,
-                commandOptions.UseSpatial,
-                commandOptions.UseNodaTime,
-                commandOptions.UseDateOnlyTimeOnly,
-                commandOptions.UseHierarchyId,
-                commandOptions.UseMultipleSprocResultSets,
-                commandOptions.Tables?.Exists(t => t.ObjectType == ObjectType.Procedure) ?? false,
-                codeGenerationMode);
-
-            var readmeName = "efcpt-readme.md";
-
-            var template = File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), readmeName), Encoding.UTF8);
-
-            return GetReadMeText(commandOptions, template, packages, redactedConnectionString);
-        }
-
-        public static List<NuGetPackage> GetNeededPackages(DatabaseType databaseType, bool useSpatial, bool useNodaTime, bool useDateOnlyTimeOnly, bool useHierarchyId, bool discoverMultipleResultSets, bool hasProcedures, CodeGenerationMode codeGenerationMode)
-        {
-            // Update versions here when adding provider and other updates
-            var packages = new List<NuGetPackage>();
-
-            if (databaseType == DatabaseType.SQLServer || databaseType == DatabaseType.SQLServerDacpac)
-            {
-                var pkgVersion = string.Empty;
-                switch (codeGenerationMode)
-                {
-                    case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.0.30";
-                        break;
-                    case CodeGenerationMode.EFCore9:
-                        pkgVersion = "9.0.19";
-                        break;
-                    case CodeGenerationMode.EFCore10:
-                        pkgVersion = "10.0.11";
-                        break;
-
-                    default:
-                        throw new NotImplementedException();
-                }
-
-                packages.Add(new NuGetPackage
-                {
-                    PackageId = "Microsoft.EntityFrameworkCore.SqlServer",
-                    Version = pkgVersion,
-                    DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
-                    IsMainProviderPackage = true,
-                    UseMethodName = "SqlServer",
-                });
-
-                if (useSpatial)
-                {
-                    packages.Add(new NuGetPackage
-                    {
-                        PackageId = "Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite",
-                        Version = pkgVersion,
-                        DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
-                        IsMainProviderPackage = false,
-                        UseMethodName = "NetTopologySuite",
-                    });
-                }
-
-                if (useHierarchyId)
-                {
-                    packages.Add(new NuGetPackage
-                    {
-                        PackageId = "Microsoft.EntityFrameworkCore.SqlServer.HierarchyId",
-                        Version = pkgVersion,
-                        DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
-                        IsMainProviderPackage = false,
-                        UseMethodName = "HierarchyId",
-                    });
-                }
-
-                if (useNodaTime)
-                {
-                    switch (codeGenerationMode)
-                    {
-                        case CodeGenerationMode.EFCore8:
-                            pkgVersion = "8.0.1";
-                            break;
-
-                        case CodeGenerationMode.EFCore9:
-                            pkgVersion = "9.1.1";
-                            break;
-
-                        case CodeGenerationMode.EFCore10:
-                            pkgVersion = "10.0.1";
-                            break;
-
-                        default: throw new NotImplementedException();
-                    }
-
-                    packages.Add(new NuGetPackage
-                    {
-                        PackageId = "SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime",
-                        Version = pkgVersion,
-                        DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
-                        IsMainProviderPackage = false,
-                        UseMethodName = "NodaTime",
-                    });
-                }
-
-                if (hasProcedures && discoverMultipleResultSets)
-                {
-                    packages.Add(new NuGetPackage
-                    {
-                        PackageId = "Dapper",
-                        Version = "2.1.66",
-                        DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
-                        IsMainProviderPackage = false,
-                        UseMethodName = null,
-                    });
-                }
-            }
-
-            if (databaseType == DatabaseType.SQLite)
-            {
-                var pkgVersion = string.Empty;
-                switch (codeGenerationMode)
-                {
-                    case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.0.30";
-                        break;
-
-                    case CodeGenerationMode.EFCore9:
-                        pkgVersion = "9.0.19";
-                        break;
-
-                    case CodeGenerationMode.EFCore10:
-                        pkgVersion = "10.0.11";
-                        break;
-
-                    default: throw new NotImplementedException();
-                }
-
-                packages.Add(new NuGetPackage
-                {
-                    PackageId = "Microsoft.EntityFrameworkCore.Sqlite",
-                    Version = pkgVersion,
-                    DatabaseTypes = new List<DatabaseType> { databaseType },
-                    IsMainProviderPackage = true,
-                    UseMethodName = "Sqlite",
-                });
-
-                if (useNodaTime)
-                {
-                    switch (codeGenerationMode)
-                    {
-                        case CodeGenerationMode.EFCore8:
-                            pkgVersion = "8.0.0";
-                            break;
-
-                        case CodeGenerationMode.EFCore9:
-                            pkgVersion = "9.1.0";
-                            break;
-
-                        case CodeGenerationMode.EFCore10:
-                            pkgVersion = "10.0.0";
-                            break;
-
-                        default: throw new NotImplementedException();
-                    }
-
-                    packages.Add(new NuGetPackage
-                    {
-                        PackageId = "EntityFrameworkCore.Sqlite.NodaTime",
-                        Version = pkgVersion,
-                        DatabaseTypes = new List<DatabaseType> { databaseType },
-                        IsMainProviderPackage = false,
-                        UseMethodName = "NodaTime",
-                    });
-                }
-            }
-
-            if (databaseType == DatabaseType.Npgsql)
-            {
-                var pkgVersion = string.Empty;
-                switch (codeGenerationMode)
-                {
-                    case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.0.11";
-                        break;
-
-                    case CodeGenerationMode.EFCore9:
-                        pkgVersion = "9.0.4";
-                        break;
-
-                    case CodeGenerationMode.EFCore10:
-                        pkgVersion = "10.0.3";
-                        break;
-
-                    default: throw new NotImplementedException();
-                }
-
-                packages.Add(new NuGetPackage
-                {
-                    PackageId = "Npgsql.EntityFrameworkCore.PostgreSQL",
-                    Version = pkgVersion,
-                    DatabaseTypes = new List<DatabaseType> { databaseType },
-                    IsMainProviderPackage = true,
-                    UseMethodName = "Npgsql",
-                });
-
-                if (useSpatial)
-                {
-                    packages.Add(new NuGetPackage
-                    {
-                        PackageId = "Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite",
-                        Version = pkgVersion,
-                        DatabaseTypes = new List<DatabaseType> { databaseType },
-                        IsMainProviderPackage = false,
-                        UseMethodName = "NetTopologySuite",
-                    });
-                }
-
-                if (useNodaTime)
-                {
-                    packages.Add(new NuGetPackage
-                    {
-                        PackageId = "Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime",
-                        Version = pkgVersion,
-                        DatabaseTypes = new List<DatabaseType> { databaseType },
-                        IsMainProviderPackage = false,
-                        UseMethodName = "NodaTime",
-                    });
-                }
-            }
-
-            if (databaseType == DatabaseType.Mysql)
-            {
-                var pkgVersion = string.Empty;
-                var prefix = "Pomelo";
-                switch (codeGenerationMode)
-                {
-                    case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.0.3";
-                        break;
-
-                    case CodeGenerationMode.EFCore9:
-                        pkgVersion = "9.0.8";
-                        break;
-
-                    case CodeGenerationMode.EFCore10:
-                        pkgVersion = "10.0.10";
-                        prefix = "Microting";
-                        break;
-
-                    default: throw new NotImplementedException();
-                }
-
-                packages.Add(new NuGetPackage
-                {
-                    PackageId = prefix + ".EntityFrameworkCore.MySql",
-                    Version = pkgVersion,
-                    DatabaseTypes = new List<DatabaseType> { databaseType },
-                    IsMainProviderPackage = true,
-                    UseMethodName = "Mysql",
-                });
-
-                if (useSpatial)
-                {
-                    packages.Add(new NuGetPackage
-                    {
-                        PackageId = prefix + ".EntityFrameworkCore.MySql.NetTopologySuite",
-                        Version = pkgVersion,
-                        DatabaseTypes = new List<DatabaseType> { databaseType },
-                        IsMainProviderPackage = false,
-                        UseMethodName = "NetTopologySuite",
-                    });
-                }
-            }
-
-            if (databaseType == DatabaseType.Oracle)
-            {
-                var pkgVersion = string.Empty;
-                switch (codeGenerationMode)
-                {
-                    case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.23.26300";
-                        break;
-                    case CodeGenerationMode.EFCore9:
-                        pkgVersion = "9.23.26300";
-                        break;
-
-                    case CodeGenerationMode.EFCore10:
-                        pkgVersion = "10.23.26200";
-                        break;
-
-                    default: throw new NotImplementedException();
-                }
-
-                packages.Add(new NuGetPackage
-                {
-                    PackageId = "Oracle.EntityFrameworkCore",
-                    Version = pkgVersion,
-                    DatabaseTypes = new List<DatabaseType> { databaseType },
-                    IsMainProviderPackage = true,
-                    UseMethodName = "Oracle",
-                });
-            }
-
-            if (databaseType == DatabaseType.Firebird)
-            {
-                var pkgVersion = string.Empty;
-                switch (codeGenerationMode)
-                {
-                    case CodeGenerationMode.EFCore8:
-                        pkgVersion = "11.0.0";
-                        break;
-
-                    case CodeGenerationMode.EFCore9:
-                        pkgVersion = "12.0.0";
-                        break;
-
-                    case CodeGenerationMode.EFCore10:
-                        pkgVersion = "13.0.0";
-                        break;
-
-                    default: throw new NotImplementedException();
-                }
-
-                packages.Add(new NuGetPackage
-                {
-                    PackageId = "FirebirdSql.EntityFrameworkCore.Firebird",
-                    Version = pkgVersion,
-                    DatabaseTypes = new List<DatabaseType> { databaseType },
-                    IsMainProviderPackage = true,
-                    UseMethodName = "Firebird",
-                });
-            }
-
-            if (databaseType == DatabaseType.Snowflake)
-            {
-                var pkgVersion = string.Empty;
-                switch (codeGenerationMode)
-                {
-                    case CodeGenerationMode.EFCore8:
-                        pkgVersion = "8.0.8";
-                        break;
-
-                    case CodeGenerationMode.EFCore9:
-                        pkgVersion = "9.0.4";
-                        break;
-
-                    default: throw new NotImplementedException();
-                }
-
-                packages.Add(new NuGetPackage
-                {
-                    PackageId = "EFCore.Snowflake",
-                    Version = pkgVersion,
-                    DatabaseTypes = new List<DatabaseType> { databaseType },
-                    IsMainProviderPackage = true,
-                    UseMethodName = "Snowflake",
-                });
-            }
-
-            return packages;
-        }
-
-        private static string GetReadMeText(ReverseEngineerCommandOptions options, string content, List<NuGetPackage> packages, string redactedConnectionString)
-        {
-            var extraPackages = packages.Where(p => !p.IsMainProviderPackage && p.UseMethodName != null)
-                .Select(p => $"Use{p.UseMethodName}()").ToList();
-
-            var useText = string.Empty;
-
-            if (extraPackages.Count > 0)
-            {
-                useText = "," + Environment.NewLine + "           x => x." + string.Join(".", extraPackages);
-            }
-
-            var packageText = new StringBuilder();
-
-            foreach (var package in packages)
-            {
-                packageText.AppendLine($"  <PackageReference Include=\"{package.PackageId}\" Version=\"{package.Version}\" />");
-            }
-
-            var mainPackage = packages.Find(p => p.IsMainProviderPackage);
-
-            return content.Replace("[ProviderName]", mainPackage?.UseMethodName ?? string.Empty)
-                .Replace("[ConnectionString]", redactedConnectionString.Replace(@"\", @"\\"))
-                .Replace("[UseList]", useText)
-                .Replace("[PackageList]", packageText.ToString())
-                .Replace("[ContextName]", options.ContextClassName);
-        }
-
-        private static Dictionary<string, string> GetKnownProviders()
-        {
-            var result = new Dictionary<string, string>();
-
-            foreach (var provider in GetProvidersWithAliases())
-            {
-                result.Add(provider.Key, provider.Key);
-
-                foreach (var item in provider.Value)
-                {
-                    result.Add(item, provider.Key);
-                }
-            }
-
-            return result;
-        }
-
-        private static Dictionary<string, List<string>> GetProvidersWithAliases()
-        {
-            return new Dictionary<string, List<string>>
-            {
-                {
-                    "Microsoft.EntityFrameworkCore.SqlServer",
-                    new List<string> { "mssql", "sqlserver" }
-                },
-                {
-                    "Microsoft.EntityFrameworkCore.Sqlite",
-                    new List<string> { "sqlite" }
-                },
-                {
-                    "Npgsql.EntityFrameworkCore.PostgreSQL",
-                    new List<string> { "postgres", "postgresql" }
-                },
-                {
-                    "Pomelo.EntityFrameworkCore.MySql",
-                    new List<string> { "mysql" }
-                },
-                {
-                    "Oracle.EntityFrameworkCore",
-                    new List<string> { "oracle" }
-                },
-                {
-                    "FirebirdSql.EntityFrameworkCore.Firebird",
-                    new List<string> { "firebird" }
-                },
-                {
-                    "EFCore.Snowflake",
-                    new List<string> { "snowflake" }
-                },
-            };
         }
     }
+
+    public static string ToDatabaseShortName(this DatabaseType databaseType)
+        => databaseType switch
+        {
+            DatabaseType.Undefined => "Undefined",
+            DatabaseType.SQLServer => "mssql",
+            DatabaseType.SQLite => "sqlite",
+            DatabaseType.Npgsql => "npgsql",
+            DatabaseType.Mysql => "mysql",
+            DatabaseType.Oracle => "oracle",
+            DatabaseType.SQLServerDacpac => "mssql",
+            DatabaseType.Firebird => "firebird",
+            DatabaseType.Snowflake => "snowflake",
+            _ => "Undefined",
+        };
+
+    public static HashSet<DatabaseType> DabProviders => [
+            DatabaseType.SQLServer,
+            DatabaseType.SQLServerDacpac,
+            DatabaseType.Npgsql,
+            DatabaseType.Mysql,
+        ];
+
+    public static string GetReadmeContent(ReverseEngineerCommandOptions commandOptions, CodeGenerationMode codeGenerationMode, string redactedConnectionString)
+    {
+        if (commandOptions == null)
+        {
+            throw new ArgumentNullException(nameof(commandOptions));
+        }
+
+        if (string.IsNullOrEmpty(redactedConnectionString))
+        {
+            throw new ArgumentNullException(nameof(redactedConnectionString));
+        }
+
+        var packages = GetNeededPackages(
+            commandOptions.DatabaseType,
+            commandOptions.UseSpatial,
+            commandOptions.UseNodaTime,
+            commandOptions.UseDateOnlyTimeOnly,
+            commandOptions.UseHierarchyId,
+            commandOptions.UseMultipleSprocResultSets,
+            commandOptions.Tables?.Exists(t => t.ObjectType == ObjectType.Procedure) ?? false,
+            codeGenerationMode);
+
+        var readmeName = "efcpt-readme.md";
+
+        var template = File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), readmeName), Encoding.UTF8);
+
+        return GetReadMeText(commandOptions, template, packages, redactedConnectionString);
+    }
+
+    public static List<NuGetPackage> GetNeededPackages(DatabaseType databaseType, bool useSpatial, bool useNodaTime, bool useDateOnlyTimeOnly, bool useHierarchyId, bool discoverMultipleResultSets, bool hasProcedures, CodeGenerationMode codeGenerationMode)
+    {
+        // Update versions here when adding provider and other updates
+        var packages = new List<NuGetPackage>();
+
+        if (databaseType is DatabaseType.SQLServer or DatabaseType.SQLServerDacpac)
+        {
+            var pkgVersion = codeGenerationMode switch
+            {
+                CodeGenerationMode.EFCore8 => "8.0.30",
+                CodeGenerationMode.EFCore9 => "9.0.19",
+                CodeGenerationMode.EFCore10 => "10.0.11",
+                _ => throw new NotImplementedException(),
+            };
+            packages.Add(new NuGetPackage
+            {
+                PackageId = "Microsoft.EntityFrameworkCore.SqlServer",
+                Version = pkgVersion,
+                DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
+                IsMainProviderPackage = true,
+                UseMethodName = "SqlServer",
+            });
+
+            if (useSpatial)
+            {
+                packages.Add(new NuGetPackage
+                {
+                    PackageId = "Microsoft.EntityFrameworkCore.SqlServer.NetTopologySuite",
+                    Version = pkgVersion,
+                    DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
+                    IsMainProviderPackage = false,
+                    UseMethodName = "NetTopologySuite",
+                });
+            }
+
+            if (useHierarchyId)
+            {
+                packages.Add(new NuGetPackage
+                {
+                    PackageId = "Microsoft.EntityFrameworkCore.SqlServer.HierarchyId",
+                    Version = pkgVersion,
+                    DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
+                    IsMainProviderPackage = false,
+                    UseMethodName = "HierarchyId",
+                });
+            }
+
+            if (useNodaTime)
+            {
+                pkgVersion = codeGenerationMode switch
+                {
+                    CodeGenerationMode.EFCore8 => "8.0.1",
+                    CodeGenerationMode.EFCore9 => "9.1.1",
+                    CodeGenerationMode.EFCore10 => "10.0.1",
+                    _ => throw new NotImplementedException(),
+                };
+                packages.Add(new NuGetPackage
+                {
+                    PackageId = "SimplerSoftware.EntityFrameworkCore.SqlServer.NodaTime",
+                    Version = pkgVersion,
+                    DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
+                    IsMainProviderPackage = false,
+                    UseMethodName = "NodaTime",
+                });
+            }
+
+            if (hasProcedures && discoverMultipleResultSets)
+            {
+                packages.Add(new NuGetPackage
+                {
+                    PackageId = "Dapper",
+                    Version = "2.1.66",
+                    DatabaseTypes = new List<DatabaseType> { DatabaseType.SQLServer, DatabaseType.SQLServerDacpac },
+                    IsMainProviderPackage = false,
+                    UseMethodName = null,
+                });
+            }
+        }
+
+        if (databaseType == DatabaseType.SQLite)
+        {
+            var pkgVersion = codeGenerationMode switch
+            {
+                CodeGenerationMode.EFCore8 => "8.0.30",
+                CodeGenerationMode.EFCore9 => "9.0.19",
+                CodeGenerationMode.EFCore10 => "10.0.11",
+                _ => throw new NotImplementedException(),
+            };
+            packages.Add(new NuGetPackage
+            {
+                PackageId = "Microsoft.EntityFrameworkCore.Sqlite",
+                Version = pkgVersion,
+                DatabaseTypes = new List<DatabaseType> { databaseType },
+                IsMainProviderPackage = true,
+                UseMethodName = "Sqlite",
+            });
+
+            if (useNodaTime)
+            {
+                pkgVersion = codeGenerationMode switch
+                {
+                    CodeGenerationMode.EFCore8 => "8.0.0",
+                    CodeGenerationMode.EFCore9 => "9.1.0",
+                    CodeGenerationMode.EFCore10 => "10.0.0",
+                    _ => throw new NotImplementedException(),
+                };
+                packages.Add(new NuGetPackage
+                {
+                    PackageId = "EntityFrameworkCore.Sqlite.NodaTime",
+                    Version = pkgVersion,
+                    DatabaseTypes = new List<DatabaseType> { databaseType },
+                    IsMainProviderPackage = false,
+                    UseMethodName = "NodaTime",
+                });
+            }
+        }
+
+        if (databaseType == DatabaseType.Npgsql)
+        {
+            var pkgVersion = codeGenerationMode switch
+            {
+                CodeGenerationMode.EFCore8 => "8.0.11",
+                CodeGenerationMode.EFCore9 => "9.0.4",
+                CodeGenerationMode.EFCore10 => "10.0.3",
+                _ => throw new NotImplementedException(),
+            };
+
+            packages.Add(new NuGetPackage
+            {
+                PackageId = "Npgsql.EntityFrameworkCore.PostgreSQL",
+                Version = pkgVersion,
+                DatabaseTypes = new List<DatabaseType> { databaseType },
+                IsMainProviderPackage = true,
+                UseMethodName = "Npgsql",
+            });
+
+            if (useSpatial)
+            {
+                packages.Add(new NuGetPackage
+                {
+                    PackageId = "Npgsql.EntityFrameworkCore.PostgreSQL.NetTopologySuite",
+                    Version = pkgVersion,
+                    DatabaseTypes = new List<DatabaseType> { databaseType },
+                    IsMainProviderPackage = false,
+                    UseMethodName = "NetTopologySuite",
+                });
+            }
+
+            if (useNodaTime)
+            {
+                packages.Add(new NuGetPackage
+                {
+                    PackageId = "Npgsql.EntityFrameworkCore.PostgreSQL.NodaTime",
+                    Version = pkgVersion,
+                    DatabaseTypes = new List<DatabaseType> { databaseType },
+                    IsMainProviderPackage = false,
+                    UseMethodName = "NodaTime",
+                });
+            }
+        }
+
+        if (databaseType == DatabaseType.Mysql)
+        {
+            var pkgVersion = string.Empty;
+            var prefix = "Pomelo";
+            switch (codeGenerationMode)
+            {
+                case CodeGenerationMode.EFCore8:
+                    pkgVersion = "8.0.3";
+                    break;
+
+                case CodeGenerationMode.EFCore9:
+                    pkgVersion = "9.0.8";
+                    break;
+
+                case CodeGenerationMode.EFCore10:
+                    pkgVersion = "10.0.10";
+                    prefix = "Microting";
+                    break;
+
+                default: throw new NotImplementedException();
+            }
+
+            packages.Add(new NuGetPackage
+            {
+                PackageId = prefix + ".EntityFrameworkCore.MySql",
+                Version = pkgVersion,
+                DatabaseTypes = new List<DatabaseType> { databaseType },
+                IsMainProviderPackage = true,
+                UseMethodName = "Mysql",
+            });
+
+            if (useSpatial)
+            {
+                packages.Add(new NuGetPackage
+                {
+                    PackageId = prefix + ".EntityFrameworkCore.MySql.NetTopologySuite",
+                    Version = pkgVersion,
+                    DatabaseTypes = new List<DatabaseType> { databaseType },
+                    IsMainProviderPackage = false,
+                    UseMethodName = "NetTopologySuite",
+                });
+            }
+        }
+
+        if (databaseType == DatabaseType.Oracle)
+        {
+            var pkgVersion = codeGenerationMode switch
+            {
+                CodeGenerationMode.EFCore8 => "8.23.26300",
+                CodeGenerationMode.EFCore9 => "9.23.26300",
+                CodeGenerationMode.EFCore10 => "10.23.26200",
+                _ => throw new NotImplementedException(),
+            };
+            packages.Add(new NuGetPackage
+            {
+                PackageId = "Oracle.EntityFrameworkCore",
+                Version = pkgVersion,
+                DatabaseTypes = new List<DatabaseType> { databaseType },
+                IsMainProviderPackage = true,
+                UseMethodName = "Oracle",
+            });
+        }
+
+        if (databaseType == DatabaseType.Firebird)
+        {
+            var pkgVersion = codeGenerationMode switch
+            {
+                CodeGenerationMode.EFCore8 => "11.0.0",
+                CodeGenerationMode.EFCore9 => "12.0.0",
+                CodeGenerationMode.EFCore10 => "13.0.0",
+                _ => throw new NotImplementedException(),
+            };
+            packages.Add(new NuGetPackage
+            {
+                PackageId = "FirebirdSql.EntityFrameworkCore.Firebird",
+                Version = pkgVersion,
+                DatabaseTypes = new List<DatabaseType> { databaseType },
+                IsMainProviderPackage = true,
+                UseMethodName = "Firebird",
+            });
+        }
+
+        if (databaseType == DatabaseType.Snowflake)
+        {
+            var pkgVersion = codeGenerationMode switch
+            {
+                CodeGenerationMode.EFCore8 => "8.0.8",
+                CodeGenerationMode.EFCore9 => "9.0.4",
+                CodeGenerationMode.EFCore10 => throw new NotImplementedException(),
+                _ => throw new NotImplementedException(),
+            };
+            packages.Add(new NuGetPackage
+            {
+                PackageId = "EFCore.Snowflake",
+                Version = pkgVersion,
+                DatabaseTypes = new List<DatabaseType> { databaseType },
+                IsMainProviderPackage = true,
+                UseMethodName = "Snowflake",
+            });
+        }
+
+        return packages;
+    }
+
+    private static string GetReadMeText(ReverseEngineerCommandOptions options, string content, List<NuGetPackage> packages, string redactedConnectionString)
+    {
+        var extraPackages = packages.Where(p => !p.IsMainProviderPackage && p.UseMethodName != null)
+            .Select(p => $"Use{p.UseMethodName}()").ToList();
+
+        var useText = string.Empty;
+
+        if (extraPackages.Count > 0)
+        {
+            useText = "," + Environment.NewLine + "           x => x." + string.Join(".", extraPackages);
+        }
+
+        var packageText = new StringBuilder();
+
+        foreach (var package in packages)
+        {
+            packageText.AppendLine($"  <PackageReference Include=\"{package.PackageId}\" Version=\"{package.Version}\" />");
+        }
+
+        var mainPackage = packages.Find(p => p.IsMainProviderPackage);
+
+        return content.Replace("[ProviderName]", mainPackage?.UseMethodName ?? string.Empty)
+            .Replace("[ConnectionString]", redactedConnectionString.Replace(@"\", @"\\"))
+            .Replace("[UseList]", useText)
+            .Replace("[PackageList]", packageText.ToString())
+            .Replace("[ContextName]", options.ContextClassName);
+    }
+
+    private static Dictionary<string, string> GetKnownProviders()
+    {
+        var result = new Dictionary<string, string>();
+
+        foreach (var provider in GetProvidersWithAliases())
+        {
+            result.Add(provider.Key, provider.Key);
+
+            foreach (var item in provider.Value)
+            {
+                result.Add(item, provider.Key);
+            }
+        }
+
+        return result;
+    }
+
+    private static Dictionary<string, List<string>> GetProvidersWithAliases() => new Dictionary<string, List<string>>
+        {
+            {
+                "Microsoft.EntityFrameworkCore.SqlServer",
+                new List<string> { "mssql", "sqlserver" }
+            },
+            {
+                "Microsoft.EntityFrameworkCore.Sqlite",
+                new List<string> { "sqlite" }
+            },
+            {
+                "Npgsql.EntityFrameworkCore.PostgreSQL",
+                new List<string> { "postgres", "postgresql" }
+            },
+            {
+                "Pomelo.EntityFrameworkCore.MySql",
+                new List<string> { "mysql" }
+            },
+            {
+                "Oracle.EntityFrameworkCore",
+                new List<string> { "oracle" }
+            },
+            {
+                "FirebirdSql.EntityFrameworkCore.Firebird",
+                new List<string> { "firebird" }
+            },
+            {
+                "EFCore.Snowflake",
+                new List<string> { "snowflake" }
+            },
+        };
 }

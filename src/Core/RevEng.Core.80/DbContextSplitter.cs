@@ -8,249 +8,243 @@ using RevEng.Common;
 
 [assembly: CLSCompliant(false)]
 
-namespace RevEng.Core
+namespace RevEng.Core;
+
+public static class DbContextSplitter
 {
-    public static class DbContextSplitter
+    // Adapted from https://github.com/lauxjpn/DbContextOnModelCreatingSplitter
+    public static List<string> Split(string dbContextPath, string configNamespace, bool supportNullable, string dbContextName, GeneratedFileFormat fileFormat)
     {
-        // Adapted from https://github.com/lauxjpn/DbContextOnModelCreatingSplitter
-        public static List<string> Split(string dbContextPath, string configNamespace, bool supportNullable, string dbContextName, GeneratedFileFormat fileFormat)
+        ArgumentNullException.ThrowIfNull(dbContextPath);
+
+        var dbContextFilePath = Path.GetFullPath(dbContextPath);
+
+        var configurationsDirectoryPath = Path.Combine(Path.GetDirectoryName(dbContextFilePath) ?? string.Empty, "Configurations");
+
+        Directory.CreateDirectory(configurationsDirectoryPath);
+
+        var source = File.ReadAllText(dbContextFilePath, Encoding.UTF8);
+
+        var configBlocks = GetConfigurationBlocks(File.ReadAllLines(dbContextFilePath, Encoding.UTF8));
+
+        if (configBlocks.Count == 0)
         {
-            ArgumentNullException.ThrowIfNull(dbContextPath);
+            return new List<string>();
+        }
 
-            var dbContextFilePath = Path.GetFullPath(dbContextPath);
+        var contextNamespace = GetContextNamespace(source);
 
-            var configurationsDirectoryPath = Path.Combine(Path.GetDirectoryName(dbContextFilePath) ?? string.Empty, "Configurations");
+        var configurationNamespace = configNamespace ?? contextNamespace;
 
-            Directory.CreateDirectory(configurationsDirectoryPath);
+        configurationNamespace = configurationNamespace + ".Configurations";
 
-            var source = File.ReadAllText(dbContextFilePath, Encoding.UTF8);
+        var contextUsingStatements = Regex.Matches(source, @"^using\s+.*?;", RegexOptions.Multiline | RegexOptions.Singleline, TimeSpan.FromSeconds(5))
+            .Cast<Match>()
+            .Select(m => m.Value)
+            .Distinct()
+            .OrderBy(m => m)
+            .ToList();
 
-            var configBlocks = GetConfigurationBlocks(File.ReadAllLines(dbContextFilePath, Encoding.UTF8));
+        if (configurationNamespace != contextNamespace)
+        {
+            contextUsingStatements.Add($"using {contextNamespace};");
+        }
 
-            if (configBlocks.Count == 0)
-            {
-                return new List<string>();
-            }
+        contextUsingStatements.Add("using Microsoft.EntityFrameworkCore.Metadata.Builders;");
 
-            var contextNamespace = GetContextNamespace(source);
+        contextUsingStatements = contextUsingStatements
+            .Distinct()
+            .OrderBy(m => m)
+            .ToList();
 
-            var configurationNamespace = configNamespace ?? contextNamespace;
+        const string statementsInnerBlockPattern = @"(?<=modelBuilder\.Entity<(?<EntityName>.*?)>\((?<EntityParameterName>.*?)\s*=>\s*\{).*?(?=\s{2,}\}\);)";
 
-            configurationNamespace = configurationNamespace + ".Configurations";
-
-            var contextUsingStatements = Regex.Matches(source, @"^using\s+.*?;", RegexOptions.Multiline | RegexOptions.Singleline, TimeSpan.FromSeconds(5))
-                .Cast<Match>()
-                .Select(m => m.Value)
-                .Distinct()
-                .OrderBy(m => m)
-                .ToList();
-
-            if (configurationNamespace != contextNamespace)
-            {
-                contextUsingStatements.Add($"using {contextNamespace};");
-            }
-
-            contextUsingStatements.Add("using Microsoft.EntityFrameworkCore.Metadata.Builders;");
-
-            contextUsingStatements = contextUsingStatements
-                .Distinct()
-                .OrderBy(m => m)
-                .ToList();
-
-            const string statementsInnerBlockPattern = @"(?<=modelBuilder\.Entity<(?<EntityName>.*?)>\((?<EntityParameterName>.*?)\s*=>\s*\{).*?(?=\s{2,}\}\);)";
-
-            var statementsBlockMatches = Regex.Matches(source, statementsInnerBlockPattern, RegexOptions.Multiline | RegexOptions.Singleline, TimeSpan.FromSeconds(3))
-                .Cast<Match>()
-                .Where(m => !m.Value.StartsWith(
-                    @"
+        var statementsBlockMatches = Regex.Matches(source, statementsInnerBlockPattern, RegexOptions.Multiline | RegexOptions.Singleline, TimeSpan.FromSeconds(3))
+            .Cast<Match>()
+            .Where(m => !m.Value.StartsWith(
+                @"
                             ",
-                    StringComparison.OrdinalIgnoreCase))
-                .Where(m => m.Value.Trim().StartsWith("entity", StringComparison.Ordinal))
-                .ToList();
+                StringComparison.OrdinalIgnoreCase))
+            .Where(m => m.Value.Trim().StartsWith("entity", StringComparison.Ordinal))
+            .ToList();
 
-            if (statementsBlockMatches.Count == 0)
+        if (statementsBlockMatches.Count == 0)
+        {
+            return new List<string>();
+        }
+
+        if (statementsBlockMatches.Count != configBlocks.Count)
+        {
+            return new List<string>();
+        }
+
+        var result = new List<string>();
+        var configurationLines = new List<string>();
+        var index = 0;
+
+        foreach (var groups in statementsBlockMatches.Select(m => m.Groups))
+        {
+            var entityName = groups["EntityName"].Value;
+            var entityParameterName = groups["EntityParameterName"].Value;
+            var statements = configBlocks[index];
+
+            var sb = new StringBuilder();
+            sb.AppendLine(PathHelper.Header);
+            sb.AppendLine(string.Join(Environment.NewLine, contextUsingStatements));
+            if (supportNullable)
             {
-                return new List<string>();
-            }
-
-            if (statementsBlockMatches.Count != configBlocks.Count)
-            {
-                return new List<string>();
-            }
-
-            var result = new List<string>();
-            var configurationLines = new List<string>();
-            var index = 0;
-
-            foreach (var groups in statementsBlockMatches.Select(m => m.Groups))
-            {
-                var entityName = groups["EntityName"].Value;
-                var entityParameterName = groups["EntityParameterName"].Value;
-                var statements = configBlocks[index];
-
-                var sb = new StringBuilder();
-                sb.AppendLine(PathHelper.Header);
-                sb.AppendLine(string.Join(Environment.NewLine, contextUsingStatements));
-                if (supportNullable)
-                {
-                    sb.AppendLine();
-                    sb.AppendLine("#nullable disable");
-                }
-
                 sb.AppendLine();
+                sb.AppendLine("#nullable disable");
+            }
+
+            sb.AppendLine();
 #pragma warning disable CA1305 // Specify IFormatProvider
-                sb.AppendLine($"namespace {configurationNamespace}");
+            sb.AppendLine($"namespace {configurationNamespace}");
 #pragma warning restore CA1305 // Specify IFormatProvider
-                sb.AppendLine("{");
-                sb.AppendLine(new string(' ', 4) + $"public partial class {entityName}Configuration : IEntityTypeConfiguration<{entityName}>");
-                sb.AppendLine(new string(' ', 4) + "{");
-                sb.AppendLine(new string(' ', 8) + $"public void Configure(EntityTypeBuilder<{entityName}> {entityParameterName})");
-                sb.AppendLine(new string(' ', 8) + "{");
-                sb.AppendLine(new string(' ', 12) + statements);
-                sb.AppendLine(new string(' ', 12) + "OnConfigurePartial(entity);");
-                sb.AppendLine(new string(' ', 8) + "}");
-                sb.AppendLine();
-                sb.AppendLine(new string(' ', 8) + $"partial void OnConfigurePartial(EntityTypeBuilder<{entityName}> entity);");
-                sb.AppendLine(new string(' ', 4) + "}");
-                sb.AppendLine("}");
+            sb.AppendLine("{");
+            sb.AppendLine(new string(' ', 4) + $"public partial class {entityName}Configuration : IEntityTypeConfiguration<{entityName}>");
+            sb.AppendLine(new string(' ', 4) + "{");
+            sb.AppendLine(new string(' ', 8) + $"public void Configure(EntityTypeBuilder<{entityName}> {entityParameterName})");
+            sb.AppendLine(new string(' ', 8) + "{");
+            sb.AppendLine(new string(' ', 12) + statements);
+            sb.AppendLine(new string(' ', 12) + "OnConfigurePartial(entity);");
+            sb.AppendLine(new string(' ', 8) + "}");
+            sb.AppendLine();
+            sb.AppendLine(new string(' ', 8) + $"partial void OnConfigurePartial(EntityTypeBuilder<{entityName}> entity);");
+            sb.AppendLine(new string(' ', 4) + "}");
+            sb.AppendLine("}");
 
-                var configurationContents = sb.ToString();
+            var configurationContents = sb.ToString();
 
-                var configurationFilePath = Path.Combine(configurationsDirectoryPath, $"{entityName}Configuration.cs");
+            var configurationFilePath = Path.Combine(configurationsDirectoryPath, $"{entityName}Configuration.cs");
 
-                ReverseEngineerRunner.RetryFileWrite(configurationFilePath, configurationContents, fileFormat);
+            ReverseEngineerRunner.RetryFileWrite(configurationFilePath, configurationContents, fileFormat);
 
-                result.Add(configurationFilePath);
+            result.Add(configurationFilePath);
 
-                configurationLines.Add($"{new string(' ', 8)}modelBuilder.ApplyConfiguration(new Configurations.{entityName}Configuration());");
+            configurationLines.Add($"{new string(' ', 8)}modelBuilder.ApplyConfiguration(new Configurations.{entityName}Configuration());");
 
-                index++;
-            }
-
-            var finalSource = BuildDbContext(configurationNamespace, configurationLines, File.ReadAllLines(dbContextFilePath, Encoding.UTF8));
-
-            ReverseEngineerRunner.RetryFileWrite(dbContextFilePath, finalSource, fileFormat);
-
-            return result;
+            index++;
         }
 
-        private static string GetContextNamespace(string source)
+        var finalSource = BuildDbContext(configurationNamespace, configurationLines, File.ReadAllLines(dbContextFilePath, Encoding.UTF8));
+
+        ReverseEngineerRunner.RetryFileWrite(dbContextFilePath, finalSource, fileFormat);
+
+        return result;
+    }
+
+    private static string GetContextNamespace(string source)
+    {
+        var ns = Regex.Match(source, @"(?<=(?:^|\s|;)namespace\s+).*?(?=(?:\s|\{))", RegexOptions.Multiline | RegexOptions.Singleline, TimeSpan.FromSeconds(5)).Value;
+
+        return ns?.EndsWith(';') ?? false ? ns[..^1] : ns;
+    }
+
+    private static List<string> BuildDbContext(string configurationNamespace, List<string> configurationLines, string[] sourceLines)
+    {
+        var finalSource = new List<string>();
+        var usings = new List<string>();
+        var inEntityBuilder = false;
+        var configLinesWritten = false;
+        string prevLine = null;
+        string spaces = null;
+
+        foreach (var line in sourceLines)
         {
-            var ns = Regex.Match(source, @"(?<=(?:^|\s|;)namespace\s+).*?(?=(?:\s|\{))", RegexOptions.Multiline | RegexOptions.Singleline, TimeSpan.FromSeconds(5)).Value;
-
-            if (ns?.EndsWith(';') ?? false)
+            if (prevLine != null && string.IsNullOrEmpty(prevLine) && string.IsNullOrEmpty(line.Trim()))
             {
-                return ns.Remove(ns.Length - 1);
+                continue;
             }
 
-            return ns;
+            if (line.Trim().StartsWith("modelBuilder.Entity<", StringComparison.InvariantCulture))
+            {
+                spaces = line.Substring(0, line.IndexOf("modelBuilder.Entity<", StringComparison.OrdinalIgnoreCase));
+                inEntityBuilder = true;
+                if (!configLinesWritten)
+                {
+                    finalSource.AddRange(configurationLines);
+                    configLinesWritten = true;
+                }
+
+                continue;
+            }
+
+            if (line.StartsWith("using ", StringComparison.InvariantCulture))
+            {
+                usings.Add(line);
+                continue;
+            }
+
+            if (line.StartsWith(spaces + "});", StringComparison.OrdinalIgnoreCase) && inEntityBuilder)
+            {
+                inEntityBuilder = false;
+                continue;
+            }
+
+            if (inEntityBuilder)
+            {
+                continue;
+            }
+
+            prevLine = line.Trim();
+
+            finalSource.Add(line);
         }
 
-        private static List<string> BuildDbContext(string configurationNamespace, List<string> configurationLines, string[] sourceLines)
+        usings.Add($"using {configurationNamespace};");
+
+        usings.Sort();
+
+        finalSource.InsertRange(1, usings);
+        return finalSource;
+    }
+
+    private static List<string> GetConfigurationBlocks(string[] sourceLines)
+    {
+        var finalSections = new List<string>();
+        var inEntityBuilder = false;
+        string spaces = null;
+        var section = new StringBuilder();
+
+        foreach (var line in sourceLines)
         {
-            var finalSource = new List<string>();
-            var usings = new List<string>();
-            var inEntityBuilder = false;
-            var configLinesWritten = false;
-            string prevLine = null;
-            string spaces = null;
-
-            foreach (var line in sourceLines)
+            if (line.Trim().StartsWith("modelBuilder.Entity<", StringComparison.InvariantCulture))
             {
-                if (prevLine != null && string.IsNullOrEmpty(prevLine) && string.IsNullOrEmpty(line.Trim()))
-                {
-                    continue;
-                }
-
-                if (line.Trim().StartsWith("modelBuilder.Entity<", StringComparison.InvariantCulture))
-                {
-                    spaces = line.Substring(0, line.IndexOf("modelBuilder.Entity<", StringComparison.OrdinalIgnoreCase));
-                    inEntityBuilder = true;
-                    if (!configLinesWritten)
-                    {
-                        finalSource.AddRange(configurationLines);
-                        configLinesWritten = true;
-                    }
-
-                    continue;
-                }
-
-                if (line.StartsWith("using ", StringComparison.InvariantCulture))
-                {
-                    usings.Add(line);
-                    continue;
-                }
-
-                if (line.StartsWith(spaces + "});", StringComparison.OrdinalIgnoreCase) && inEntityBuilder)
-                {
-                    inEntityBuilder = false;
-                    continue;
-                }
-
-                if (inEntityBuilder)
-                {
-                    continue;
-                }
-
-                prevLine = line.Trim();
-
-                finalSource.Add(line);
+                spaces = line.Substring(0, line.IndexOf("modelBuilder.Entity<", StringComparison.OrdinalIgnoreCase));
+                inEntityBuilder = true;
+                continue;
             }
 
-            usings.Add($"using {configurationNamespace};");
+            if (line.StartsWith(spaces + "});", StringComparison.OrdinalIgnoreCase) && inEntityBuilder)
+            {
+                if (!string.IsNullOrWhiteSpace(section.ToString()))
+                {
+                    finalSections.Add(section.ToString().TrimStart());
+                    section.Clear();
+                }
 
-            usings.Sort();
+                inEntityBuilder = false;
+                continue;
+            }
 
-            finalSource.InsertRange(1, usings);
-            return finalSource;
+            if (inEntityBuilder)
+            {
+                if (line.StartsWith(spaces + "{", StringComparison.OrdinalIgnoreCase))
+                {
+                    section.AppendLine();
+                    continue;
+                }
+
+                section.AppendLine(line);
+            }
         }
 
-        private static List<string> GetConfigurationBlocks(string[] sourceLines)
+        if (!string.IsNullOrWhiteSpace(section.ToString()))
         {
-            var finalSections = new List<string>();
-            var inEntityBuilder = false;
-            string spaces = null;
-            var section = new StringBuilder();
-
-            foreach (var line in sourceLines)
-            {
-                if (line.Trim().StartsWith("modelBuilder.Entity<", StringComparison.InvariantCulture))
-                {
-                    spaces = line.Substring(0, line.IndexOf("modelBuilder.Entity<", StringComparison.OrdinalIgnoreCase));
-                    inEntityBuilder = true;
-                    continue;
-                }
-
-                if (line.StartsWith(spaces + "});", StringComparison.OrdinalIgnoreCase) && inEntityBuilder)
-                {
-                    if (!string.IsNullOrWhiteSpace(section.ToString()))
-                    {
-                        finalSections.Add(section.ToString().TrimStart());
-                        section.Clear();
-                    }
-
-                    inEntityBuilder = false;
-                    continue;
-                }
-
-                if (inEntityBuilder)
-                {
-                    if (line.StartsWith(spaces + "{", StringComparison.OrdinalIgnoreCase))
-                    {
-                        section.AppendLine();
-                        continue;
-                    }
-
-                    section.AppendLine(line);
-                }
-            }
-
-            if (!string.IsNullOrWhiteSpace(section.ToString()))
-            {
-                finalSections.Add(section.ToString());
-            }
-
-            return finalSections;
+            finalSections.Add(section.ToString());
         }
+
+        return finalSections;
     }
 }

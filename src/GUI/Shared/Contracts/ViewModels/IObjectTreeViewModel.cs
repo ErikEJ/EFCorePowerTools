@@ -3,28 +3,27 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using RevEng.Common;
 
-namespace EFCorePowerTools.Contracts.ViewModels
+namespace EFCorePowerTools.Contracts.ViewModels;
+
+public interface IObjectTreeViewModel : IViewModel
 {
-    public interface IObjectTreeViewModel : IViewModel
-    {
-        event EventHandler ObjectSelectionChanged;
+    event EventHandler ObjectSelectionChanged;
 
-        ObservableCollection<IObjectTreeRootItemViewModel> Types { get; }
+    ObservableCollection<IObjectTreeRootItemViewModel> Types { get; }
 
-        bool IsInEditMode { get; }
+    bool IsInEditMode { get; }
 
-        void Search(string searchText, SearchMode searchMode);
+    void Search(string searchText, SearchMode searchMode);
 
-        void SetSelectionState(bool value);
+    void SetSelectionState(bool value);
 
-        bool? GetSelectionState();
+    bool? GetSelectionState();
 
-        IEnumerable<SerializationTableModel> GetSelectedObjects();
+    IEnumerable<SerializationTableModel> GetSelectedObjects();
 
-        IEnumerable<Schema> GetRenamedObjects();
+    IEnumerable<Schema> GetRenamedObjects();
 
-        void AddObjects(IEnumerable<TableModel> objects, IEnumerable<Schema> customReplacers);
+    void AddObjects(IEnumerable<TableModel> objects, IEnumerable<Schema> customReplacers);
 
-        void SelectObjects(IEnumerable<SerializationTableModel> objects);
-    }
+    void SelectObjects(IEnumerable<SerializationTableModel> objects);
 }

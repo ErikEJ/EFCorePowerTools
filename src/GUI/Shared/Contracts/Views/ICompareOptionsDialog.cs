@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using EFCorePowerTools.Common.Models;
 
-namespace EFCorePowerTools.Contracts.Views
-{
-    public interface ICompareOptionsDialog : IDialog<(DatabaseConnectionModel Connection, IEnumerable<string> ContextTypes)>
-    {
-        void AddConnections(IEnumerable<DatabaseConnectionModel> connections);
+namespace EFCorePowerTools.Contracts.Views;
 
-        void AddContextTypes(IEnumerable<string> contextTypes);
-    }
+public interface ICompareOptionsDialog : IDialog<(DatabaseConnectionModel Connection, IEnumerable<string> ContextTypes)>
+{
+    void AddConnections(IEnumerable<DatabaseConnectionModel> connections);
+
+    void AddContextTypes(IEnumerable<string> contextTypes);
 }

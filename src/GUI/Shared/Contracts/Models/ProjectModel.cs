@@ -1,46 +1,45 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Community.VisualStudio.Toolkit;
 using JetBrains.Annotations;
 
-namespace EFCorePowerTools.Contracts.Models
+namespace EFCorePowerTools.Contracts.Models;
+
+public class ProjectModel : INotifyPropertyChanged
 {
-    public class ProjectModel : INotifyPropertyChanged
+    private Project project;
+
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    /// <summary>
+    /// Gets or sets the project.
+    /// </summary>
+    public Project Project
     {
-        private Project project;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        /// <summary>
-        /// Gets or sets the project.
-        /// </summary>
-        public Project Project
+        get => project;
+        set
         {
-            get => project;
-            set
+            if (Equals(value, project))
             {
-                if (Equals(value, project))
-                {
-                    return;
-                }
-
-                project = value;
-                OnPropertyChanged();
+                return;
             }
-        }
 
-        public string DisplayName
-        {
-            get
-            {
-                return project?.Name ?? string.Empty;
-            }
+            project = value;
+            OnPropertyChanged();
         }
+    }
 
-        [NotifyPropertyChangedInvocator]
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    public string DisplayName
+    {
+        get
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            return project?.Name ?? string.Empty;
         }
+    }
+
+    [NotifyPropertyChangedInvocator]
+    private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

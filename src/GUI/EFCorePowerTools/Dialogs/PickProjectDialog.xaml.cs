@@ -6,62 +6,61 @@ using EFCorePowerTools.Contracts.Models;
 using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Contracts.Views;
 
-namespace EFCorePowerTools.Dialogs
+namespace EFCorePowerTools.Dialogs;
+
+public partial class PickProjectDialog : IPickProjectDialog
 {
-    public partial class PickProjectDialog : IPickProjectDialog
+    private readonly Func<ProjectModel> getDialogResult;
+    private readonly Action<IEnumerable<ProjectModel>> addProjects;
+
+    public PickProjectDialog(
+        ITelemetryAccess telemetryAccess,
+        IPickProjectViewModel viewModel)
     {
-        private readonly Func<ProjectModel> getDialogResult;
-        private readonly Action<IEnumerable<ProjectModel>> addProjects;
+        telemetryAccess.TrackPageView(nameof(PickProjectDialog));
 
-        public PickProjectDialog(
-            ITelemetryAccess telemetryAccess,
-            IPickProjectViewModel viewModel)
+        DataContext = viewModel;
+        viewModel.CloseRequested += (sender, args) =>
         {
-            telemetryAccess.TrackPageView(nameof(PickProjectDialog));
+            DialogResult = args.DialogResult;
+            Close();
+        };
+        getDialogResult = () => viewModel.SelectedProject;
 
-            DataContext = viewModel;
-            viewModel.CloseRequested += (sender, args) =>
-            {
-                DialogResult = args.DialogResult;
-                Close();
-            };
-            getDialogResult = () => viewModel.SelectedProject;
-
-            addProjects = models =>
-            {
-                foreach (var model in models)
-                {
-                    viewModel.Projects.Add(model);
-                }
-            };
-
-            InitializeComponent();
-        }
-
-        (bool ClosedByOK, ProjectModel Payload) IDialog<ProjectModel>.ShowAndAwaitUserResponse(bool modal)
+        addProjects = models =>
         {
-            bool closedByOkay;
-
-            if (modal)
+            foreach (var model in models)
             {
-                closedByOkay = ShowModal() == true;
+                viewModel.Projects.Add(model);
             }
-            else
-            {
-                closedByOkay = ShowDialog() == true;
-            }
+        };
 
-            return (closedByOkay, getDialogResult());
-        }
+        InitializeComponent();
+    }
 
-        public void PublishProjects(IEnumerable<ProjectModel> projects)
+    (bool ClosedByOK, ProjectModel Payload) IDialog<ProjectModel>.ShowAndAwaitUserResponse(bool modal)
+    {
+        bool closedByOkay;
+
+        if (modal)
         {
-            addProjects(projects);
+            closedByOkay = ShowModal() == true;
+        }
+        else
+        {
+            closedByOkay = ShowDialog() == true;
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            ProjectCombobox.Focus();
-        }
+        return (closedByOkay, getDialogResult());
+    }
+
+    public void PublishProjects(IEnumerable<ProjectModel> projects)
+    {
+        addProjects(projects);
+    }
+
+    private void Window_Loaded(object sender, RoutedEventArgs e)
+    {
+        ProjectCombobox.Focus();
     }
 }

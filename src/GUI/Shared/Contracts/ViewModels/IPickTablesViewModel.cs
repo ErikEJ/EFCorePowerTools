@@ -1,33 +1,32 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 using EFCorePowerTools.Contracts.EventArgs;
 using RevEng.Common;
 
-namespace EFCorePowerTools.Contracts.ViewModels
+namespace EFCorePowerTools.Contracts.ViewModels;
+
+public interface IPickTablesViewModel : IViewModel
 {
-    public interface IPickTablesViewModel : IViewModel
-    {
-        event EventHandler<CloseRequestedEventArgs> CloseRequested;
+    event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
-        ICommand OkCommand { get; }
+    ICommand OkCommand { get; }
 
-        ICommand CancelCommand { get; }
+    ICommand CancelCommand { get; }
 
-        bool? TableSelectionThreeState { get; set; }
+    bool? TableSelectionThreeState { get; set; }
 
-        string SearchText { get; set; }
+    string SearchText { get; set; }
 
-        SearchMode SearchMode { get; set; }
+    SearchMode SearchMode { get; set; }
 
-        IObjectTreeViewModel ObjectTree { get; }
+    IObjectTreeViewModel ObjectTree { get; }
 
-        void AddObjects(IEnumerable<TableModel> objects, IEnumerable<Schema> customReplacers);
+    void AddObjects(IEnumerable<TableModel> objects, IEnumerable<Schema> customReplacers);
 
-        void SelectObjects(IEnumerable<SerializationTableModel> objects);
+    void SelectObjects(IEnumerable<SerializationTableModel> objects);
 
-        SerializationTableModel[] GetSelectedObjects();
+    SerializationTableModel[] GetSelectedObjects();
 
-        Schema[] GetRenamedObjects();
-    }
+    Schema[] GetRenamedObjects();
 }

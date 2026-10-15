@@ -1,7 +1,6 @@
-﻿namespace EFCorePowerTools.Common.DAL
+namespace EFCorePowerTools.Common.DAL;
+
+public interface ITelemetryAccess
 {
-    public interface ITelemetryAccess
-    {
-        void TrackPageView(string key);
-    }
+    void TrackPageView(string key);
 }

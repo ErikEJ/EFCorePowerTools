@@ -35,8 +35,8 @@ namespace EfReveng
                 if (args.Length > 0)
                 {
                     if ((args.Length == 3 || args.Length == 4)
-                        && int.TryParse(args[1], out int dbTypeInt)
-                        && bool.TryParse(args[0], out bool mergeDacpacs))
+                        && int.TryParse(args[1], out var dbTypeInt)
+                        && bool.TryParse(args[0], out var mergeDacpacs))
                     {
                         SchemaInfo[] schemas = null;
                         if (args.Length == 4)

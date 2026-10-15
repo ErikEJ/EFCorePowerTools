@@ -1,11 +1,10 @@
-﻿namespace EFCorePowerTools.Contracts.ViewModels
+namespace EFCorePowerTools.Contracts.ViewModels;
+
+public enum ObjectTypeIcon
 {
-    public enum ObjectTypeIcon
-    {
-        Table,
-        TableWithoutKey,
-        View,
-        Procedure,
-        ScalarFunction,
-    }
+    Table,
+    TableWithoutKey,
+    View,
+    Procedure,
+    ScalarFunction,
 }

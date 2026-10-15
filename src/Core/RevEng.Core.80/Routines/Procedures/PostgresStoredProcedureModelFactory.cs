@@ -7,15 +7,15 @@ using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Abstractions.Model;
 using RevEng.Core.Routines.Extensions;
 
-namespace RevEng.Core.Routines.Procedures
-{
-    public class PostgresStoredProcedureModelFactory : PostgresRoutineModelFactory, IProcedureModelFactory
-    {
-        public PostgresStoredProcedureModelFactory()
-        {
-            RoutineType = "PROCEDURE";
+namespace RevEng.Core.Routines.Procedures;
 
-            RoutineSql = $@"
+public class PostgresStoredProcedureModelFactory : PostgresRoutineModelFactory, IProcedureModelFactory
+{
+    public PostgresStoredProcedureModelFactory()
+    {
+        RoutineType = "PROCEDURE";
+
+        RoutineSql = $@"
 select n.nspname as schema_name,
        p.proname as specific_name,
        p.proretset as returns_set,
@@ -29,26 +29,26 @@ where n.nspname not in ('pg_catalog', 'information_schema')
       and (l.lanname = 'sql' or l.lanname = 'plpgsql')
 order by schema_name,
          specific_name;";
-        }
+    }
 
-        public RoutineModel Create(string connectionString, ModuleModelFactoryOptions options)
-        {
-            ArgumentNullException.ThrowIfNull(options);
+    public RoutineModel Create(string connectionString, ModuleModelFactoryOptions options)
+    {
+        ArgumentNullException.ThrowIfNull(options);
 
-            PostgresNpgsqlTypeExtensions.UseDateOnlyTimeOnly = options.UseDateOnlyTimeOnly;
-            return GetRoutines(connectionString, options);
-        }
+        PostgresNpgsqlTypeExtensions.UseDateOnlyTimeOnly = options.UseDateOnlyTimeOnly;
+        return GetRoutines(connectionString, options);
+    }
 
-        protected override List<List<ModuleResultElement>> GetResultElementLists(NpgsqlConnection connection, Routine module)
-        {
-            ArgumentNullException.ThrowIfNull(connection);
+    protected override List<List<ModuleResultElement>> GetResultElementLists(NpgsqlConnection connection, Routine module)
+    {
+        ArgumentNullException.ThrowIfNull(connection);
 
-            ArgumentNullException.ThrowIfNull(module);
+        ArgumentNullException.ThrowIfNull(module);
 
-            using var dtResult = new DataTable();
-            var list = new List<ModuleResultElement>();
+        using var dtResult = new DataTable();
+        var list = new List<ModuleResultElement>();
 
-            var sql = $@"
+        var sql = $@"
     with cte1 as (
         select
             lower(r.routine_type) as type,
@@ -178,19 +178,44 @@ order by schema_name,
 	where cte1.schema = '{module.Schema}' and (cte1.name = '{module.Name}' or cte1.name = '""{module.Name}""')";
 
 #pragma warning disable CA2100 // Review SQL queries for security vulnerabilities
-            using var adapter = new NpgsqlDataAdapter
-            {
-                SelectCommand = new NpgsqlCommand(sql, connection),
-            };
+        using var adapter = new NpgsqlDataAdapter
+        {
+            SelectCommand = new NpgsqlCommand(sql, connection),
+        };
 #pragma warning restore CA2100 // Review SQL queries for security vulnerabilities
 
-            adapter.Fill(dtResult);
+        adapter.Fill(dtResult);
 
-            if (dtResult.Rows.Count != 0)
+        if (dtResult.Rows.Count != 0)
+        {
+            var row = dtResult.Rows[0];
+            var hasSet = bool.Parse(row["returns_set"].ToString() ?? "false");
+            if (hasSet)
             {
-                var row = dtResult.Rows[0];
-                var hasSet = bool.Parse(row["returns_set"].ToString() ?? "false");
-                if (hasSet)
+                var names = (string[])row["return_record_names"];
+                var types = (string[])row["return_record_types"];
+                for (var i = 0; i < names.Length; i++)
+                {
+                    var name = names[i];
+
+                    if (name.Length >= 2 && name.StartsWith('"') && name.EndsWith('"'))
+                    {
+                        name = name.Substring(1, name.Length - 2);
+                    }
+
+                    list.Add(new ModuleResultElement
+                    {
+                        Name = name,
+                        StoreType = types[i],
+                        Ordinal = i,
+                        Nullable = true,
+                    });
+                }
+            }
+            else
+            {
+                var returnType = row["return_type"].ToString();
+                if (!string.IsNullOrEmpty(returnType) && returnType != "void")
                 {
                     var names = (string[])row["return_record_names"];
                     var types = (string[])row["return_record_types"];
@@ -212,40 +237,14 @@ order by schema_name,
                         });
                     }
                 }
-                else
-                {
-                    var returnType = row["return_type"].ToString();
-                    if (!string.IsNullOrEmpty(returnType) && returnType != "void")
-                    {
-                        var names = (string[])row["return_record_names"];
-                        var types = (string[])row["return_record_types"];
-                        for (var i = 0; i < names.Length; i++)
-                        {
-                            var name = names[i];
-
-                            if (name.Length >= 2 && name.StartsWith('"') && name.EndsWith('"'))
-                            {
-                                name = name.Substring(1, name.Length - 2);
-                            }
-
-                            list.Add(new ModuleResultElement
-                            {
-                                Name = name,
-                                StoreType = types[i],
-                                Ordinal = i,
-                                Nullable = true,
-                            });
-                        }
-                    }
-                }
             }
-
-            var result = new List<List<ModuleResultElement>>
-            {
-                list,
-            };
-
-            return result;
         }
+
+        var result = new List<List<ModuleResultElement>>
+        {
+            list,
+        };
+
+        return result;
     }
 }

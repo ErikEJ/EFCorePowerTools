@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using RevEng.Common;
 
-namespace EFCorePowerTools.Contracts.Views
+namespace EFCorePowerTools.Contracts.Views;
+
+public interface IPickSchemasDialog : IDialog<SchemaInfo[]>
 {
-    public interface IPickSchemasDialog : IDialog<SchemaInfo[]>
-    {
-        void AddSchemas(IEnumerable<SchemaInfo> schemas);
-    }
+    void AddSchemas(IEnumerable<SchemaInfo> schemas);
 }

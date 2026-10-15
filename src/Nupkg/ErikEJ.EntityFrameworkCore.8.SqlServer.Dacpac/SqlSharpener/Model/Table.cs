@@ -2,66 +2,65 @@ using System;
 using System.Collections.Generic;
 using Dac = Microsoft.SqlServer.Dac.Model;
 
-namespace SqlSharpener.Model
+namespace SqlSharpener.Model;
+
+/// <summary>
+/// Represents a table in the model.
+/// </summary>
+[Serializable]
+public class Table
 {
     /// <summary>
-    /// Represents a table in the model.
+    /// Initializes a new instance of the <see cref="Table"/> class.
     /// </summary>
-    [Serializable]
-    public class Table
+    /// <param name="name">The name of the table.</param>
+    /// <param name="columns">The columns.</param>
+#pragma warning disable S5766 // Serializable objects should validate data during deserialization
+    public Table(string name, IEnumerable<Column> columns)
+#pragma warning restore S5766 // Serializable objects should validate data during deserialization
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Table"/> class.
-        /// </summary>
-        /// <param name="name">The name of the table.</param>
-        /// <param name="columns">The columns.</param>
-#pragma warning disable S5766 // Serializable objects should validate data during deserialization
-        public Table(string name, IEnumerable<Column> columns)
-#pragma warning restore S5766 // Serializable objects should validate data during deserialization
-        {
-            this.Name = name;
-            this.Columns = columns ?? new List<Column>();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Table" /> class.
-        /// </summary>
-        /// <param name="tSqlObject">The TSqlObject representing the table.</param>
-#pragma warning disable S5766 // Serializable objects should validate data during deserialization
-        public Table(Dac.TSqlObject tSqlObject)
-#pragma warning restore S5766 // Serializable objects should validate data during deserialization
-        {
-            ArgumentNullException.ThrowIfNull(tSqlObject);
-
-            // Get the name.
-            this.Name = tSqlObject.Name.Parts[tSqlObject.Name.Parts.Count - 1];
-
-            // Get the columns
-            var columns = new List<Column>();
-            var sqlColumns = tSqlObject.ObjectType.Name == "TableType" ? tSqlObject.GetReferenced(Dac.TableType.Columns) : tSqlObject.GetReferenced(Dac.Table.Columns);
-            foreach (var sqlColumn in sqlColumns)
-            {
-                var column = new Column(sqlColumn);
-                columns.Add(column);
-            }
-
-            this.Columns = columns;
-        }
-
-        /// <summary>
-        /// Gets the name of the table.
-        /// </summary>
-        /// <value>
-        /// The name of the table.
-        /// </value>
-        public string Name { get; private set; }
-
-        /// <summary>
-        /// Gets the columns.
-        /// </summary>
-        /// <value>
-        /// The columns.
-        /// </value>
-        public IEnumerable<Column> Columns { get; private set; }
+        this.Name = name;
+        this.Columns = columns ?? new List<Column>();
     }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Table" /> class.
+    /// </summary>
+    /// <param name="tSqlObject">The TSqlObject representing the table.</param>
+#pragma warning disable S5766 // Serializable objects should validate data during deserialization
+    public Table(Dac.TSqlObject tSqlObject)
+#pragma warning restore S5766 // Serializable objects should validate data during deserialization
+    {
+        ArgumentNullException.ThrowIfNull(tSqlObject);
+
+        // Get the name.
+        this.Name = tSqlObject.Name.Parts[tSqlObject.Name.Parts.Count - 1];
+
+        // Get the columns
+        var columns = new List<Column>();
+        var sqlColumns = tSqlObject.ObjectType.Name == "TableType" ? tSqlObject.GetReferenced(Dac.TableType.Columns) : tSqlObject.GetReferenced(Dac.Table.Columns);
+        foreach (var sqlColumn in sqlColumns)
+        {
+            var column = new Column(sqlColumn);
+            columns.Add(column);
+        }
+
+        this.Columns = columns;
+    }
+
+    /// <summary>
+    /// Gets the name of the table.
+    /// </summary>
+    /// <value>
+    /// The name of the table.
+    /// </value>
+    public string Name { get; private set; }
+
+    /// <summary>
+    /// Gets the columns.
+    /// </summary>
+    /// <value>
+    /// The columns.
+    /// </value>
+    public IEnumerable<Column> Columns { get; private set; }
 }

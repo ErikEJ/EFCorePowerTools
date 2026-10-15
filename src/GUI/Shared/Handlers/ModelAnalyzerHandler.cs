@@ -11,157 +11,156 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
 using NuGet.Versioning;
 
-namespace EFCorePowerTools.Handlers
+namespace EFCorePowerTools.Handlers;
+
+internal static class ModelAnalyzerHandler
 {
-    internal static class ModelAnalyzerHandler
+    public static async System.Threading.Tasks.Task GenerateAsync(string outputPath, Project project, GenerationType generationType)
     {
-        public static async System.Threading.Tasks.Task GenerateAsync(string outputPath, Project project, GenerationType generationType)
+        await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+        try
         {
-            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
-
-            try
+            if (string.IsNullOrEmpty(outputPath))
             {
-                if (string.IsNullOrEmpty(outputPath))
-                {
-                    throw new ArgumentException(outputPath, nameof(outputPath));
-                }
+                throw new ArgumentException(outputPath, nameof(outputPath));
+            }
 
-                if (await project.GetAttributeAsync("TargetFrameworkMoniker") == null)
-                {
-                    VSHelper.ShowError(SharedLocale.SelectedProjectTypeNoTargetFrameworkMoniker);
-                    return;
-                }
+            if (await project.GetAttributeAsync("TargetFrameworkMoniker") == null)
+            {
+                VSHelper.ShowError(SharedLocale.SelectedProjectTypeNoTargetFrameworkMoniker);
+                return;
+            }
 
-                if (!await project.IsNet80OrHigherAsync())
-                {
-                    VSHelper.ShowError($"{SharedLocale.SupportedFramework}: {await project.GetAttributeAsync("TargetFrameworkMoniker")}");
-                    return;
-                }
+            if (!await project.IsNet80OrHigherAsync())
+            {
+                VSHelper.ShowError($"{SharedLocale.SupportedFramework}: {await project.GetAttributeAsync("TargetFrameworkMoniker")}");
+                return;
+            }
 
-                var result = await project.ContainsEfCoreDesignReferenceAsync();
-                if (string.IsNullOrEmpty(result.Item2))
-                {
-                    VSHelper.ShowError(SharedLocale.EFCoreVersionNotFound);
-                    return;
-                }
+            var result = await project.ContainsEfCoreDesignReferenceAsync();
+            if (string.IsNullOrEmpty(result.Item2))
+            {
+                VSHelper.ShowError(SharedLocale.EFCoreVersionNotFound);
+                return;
+            }
 
-                if (!Version.TryParse(result.Item2, out Version _))
-                {
-                    VSHelper.ShowError(string.Format(ModelAnalyzerLocale.CurrentEFCoreVersion, result.Item2));
-                    if (!result.Item1)
-                    {
-                        return;
-                    }
-                }
-
+            if (!Version.TryParse(result.Item2, out Version _))
+            {
+                VSHelper.ShowError(string.Format(ModelAnalyzerLocale.CurrentEFCoreVersion, result.Item2));
                 if (!result.Item1)
                 {
-                    var nugetHelper = new NuGetHelper();
-                    nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", project, new NuGetVersion(result.Item2));
-                    VSHelper.ShowError(string.Format(SharedLocale.InstallingEfCoreDesignPackage, new NuGetVersion(result.Item2)));
                     return;
                 }
-
-                var processLauncher = new ProcessLauncher(project);
-
-                var processResult = await processLauncher.GetOutputAsync(outputPath, generationType, null);
-
-                if (string.IsNullOrEmpty(processResult))
-                {
-                    throw new InvalidOperationException(ModelAnalyzerLocale.UnableToCollectModelInformation);
-                }
-
-                if (processResult.IndexOf("Error:", StringComparison.OrdinalIgnoreCase) >= 0)
-                {
-                    throw new InvalidOperationException(processResult);
-                }
-
-                var modelResult = ProcessLauncher.BuildModelResult(processResult);
-
-                switch (generationType)
-                {
-                    case GenerationType.Dgml:
-                        await GenerateDgmlAsync(modelResult, project);
-                        Telemetry.TrackEvent("PowerTools.GenerateModelDgml");
-                        break;
-                    case GenerationType.Ddl:
-                        var files = project.GenerateFiles(modelResult, ".sql", addToProject: true);
-                        foreach (var file in files)
-                        {
-                            await VS.Documents.OpenAsync(file);
-                        }
-
-                        Telemetry.TrackEvent("PowerTools.GenerateSqlCreate");
-                        break;
-                    case GenerationType.DebugView:
-                        var views = project.GenerateFiles(modelResult, ".txt");
-                        foreach (var file in views)
-                        {
-                            await VS.Documents.OpenAsync(file);
-                        }
-
-                        Telemetry.TrackEvent("PowerTools.GenerateDebugView");
-                        break;
-                    default:
-                        break;
-                }
-            }
-            catch (Exception exception)
-            {
-                EFCorePowerToolsPackage.LogError(new List<string>(), exception);
-            }
-        }
-
-        private static async System.Threading.Tasks.Task GenerateDgmlAsync(List<Tuple<string, string>> modelResult, Project project)
-        {
-            string target = null;
-
-            foreach (var info in modelResult)
-            {
-                var dgmlText = Dgml.DgmlBuilder.Build(info.Item2, info.Item1, GetTemplate());
-
-                if (info.Item1.IndexOfAny(Path.GetInvalidPathChars()) >= 0
-                    || info.Item1.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
-                {
-                    VSHelper.ShowError($"{SharedLocale.InvalidName}: {info.Item1}");
-                    return;
-                }
-
-                var path = Path.Combine(Path.GetTempPath(), info.Item1 + ".dgml");
-
-                File.WriteAllText(path, dgmlText, Encoding.UTF8);
-
-                target = Path.Combine(Path.GetDirectoryName(project.FullPath), Path.GetFileName(path));
-
-                File.Copy(path, target, true);
             }
 
-            if (target != null)
+            if (!result.Item1)
             {
-                await VS.Documents.OpenAsync(target);
+                var nugetHelper = new NuGetHelper();
+                nugetHelper.InstallPackage("Microsoft.EntityFrameworkCore.Design", project, new NuGetVersion(result.Item2));
+                VSHelper.ShowError(string.Format(SharedLocale.InstallingEfCoreDesignPackage, new NuGetVersion(result.Item2)));
+                return;
+            }
+
+            var processLauncher = new ProcessLauncher(project);
+
+            var processResult = await processLauncher.GetOutputAsync(outputPath, generationType, null);
+
+            if (string.IsNullOrEmpty(processResult))
+            {
+                throw new InvalidOperationException(ModelAnalyzerLocale.UnableToCollectModelInformation);
+            }
+
+            if (processResult.IndexOf("Error:", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                throw new InvalidOperationException(processResult);
+            }
+
+            var modelResult = ProcessLauncher.BuildModelResult(processResult);
+
+            switch (generationType)
+            {
+                case GenerationType.Dgml:
+                    await GenerateDgmlAsync(modelResult, project);
+                    Telemetry.TrackEvent("PowerTools.GenerateModelDgml");
+                    break;
+                case GenerationType.Ddl:
+                    var files = project.GenerateFiles(modelResult, ".sql", addToProject: true);
+                    foreach (var file in files)
+                    {
+                        await VS.Documents.OpenAsync(file);
+                    }
+
+                    Telemetry.TrackEvent("PowerTools.GenerateSqlCreate");
+                    break;
+                case GenerationType.DebugView:
+                    var views = project.GenerateFiles(modelResult, ".txt");
+                    foreach (var file in views)
+                    {
+                        await VS.Documents.OpenAsync(file);
+                    }
+
+                    Telemetry.TrackEvent("PowerTools.GenerateDebugView");
+                    break;
+                default:
+                    break;
             }
         }
-
-        private static string GetTemplate()
+        catch (Exception exception)
         {
-            var resourceName = "EFCorePowerTools.DgmlBuilder.template.dgml";
+            EFCorePowerToolsPackage.LogError(new List<string>(), exception);
+        }
+    }
 
-            Stream stream = null;
-            try
+    private static async System.Threading.Tasks.Task GenerateDgmlAsync(List<Tuple<string, string>> modelResult, Project project)
+    {
+        string target = null;
+
+        foreach (var info in modelResult)
+        {
+            var dgmlText = Dgml.DgmlBuilder.Build(info.Item2, info.Item1, GetTemplate());
+
+            if (info.Item1.IndexOfAny(Path.GetInvalidPathChars()) >= 0
+                || info.Item1.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
             {
-                stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
-                using (StreamReader reader = new StreamReader(stream))
-                {
-                    stream = null;
-                    return reader.ReadToEnd();
-                }
+                VSHelper.ShowError($"{SharedLocale.InvalidName}: {info.Item1}");
+                return;
             }
-            finally
+
+            var path = Path.Combine(Path.GetTempPath(), info.Item1 + ".dgml");
+
+            File.WriteAllText(path, dgmlText, Encoding.UTF8);
+
+            target = Path.Combine(Path.GetDirectoryName(project.FullPath), Path.GetFileName(path));
+
+            File.Copy(path, target, true);
+        }
+
+        if (target != null)
+        {
+            await VS.Documents.OpenAsync(target);
+        }
+    }
+
+    private static string GetTemplate()
+    {
+        var resourceName = "EFCorePowerTools.DgmlBuilder.template.dgml";
+
+        Stream stream = null;
+        try
+        {
+            stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
+            using (StreamReader reader = new StreamReader(stream))
             {
-                if (stream != null)
-                {
-                    stream.Dispose();
-                }
+                stream = null;
+                return reader.ReadToEnd();
+            }
+        }
+        finally
+        {
+            if (stream != null)
+            {
+                stream.Dispose();
             }
         }
     }

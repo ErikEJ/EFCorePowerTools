@@ -6,68 +6,67 @@ using EFCorePowerTools.Contracts.ViewModels;
 using EFCorePowerTools.Contracts.Views;
 using RevEng.Common;
 
-namespace EFCorePowerTools.Dialogs
+namespace EFCorePowerTools.Dialogs;
+
+public partial class ConnectionDialog : IPickConnectionDialog
 {
-    public partial class ConnectionDialog : IPickConnectionDialog
+    private readonly Func<DatabaseConnectionModel> getDialogResult;
+
+    public ConnectionDialog(IPickConnectionViewModel viewModel)
     {
-        private readonly Func<DatabaseConnectionModel> getDialogResult;
-
-        public ConnectionDialog(IPickConnectionViewModel viewModel)
+        DataContext = viewModel;
+        viewModel.CloseRequested += (sender, args) =>
         {
-            DataContext = viewModel;
-            viewModel.CloseRequested += (sender, args) =>
-            {
-                DialogResult = args.DialogResult;
-                Close();
-            };
-            getDialogResult = () => viewModel.DatabaseConnection;
+            DialogResult = args.DialogResult;
+            Close();
+        };
+        getDialogResult = () => viewModel.DatabaseConnection;
 
-            InitializeComponent();
-            cmdDatabaseType.SelectedIndex = 0;
+        InitializeComponent();
+        cmdDatabaseType.SelectedIndex = 0;
+    }
+
+    (bool ClosedByOK, DatabaseConnectionModel Payload) IDialog<DatabaseConnectionModel>.ShowAndAwaitUserResponse(bool modal)
+    {
+        bool closedByOkay;
+
+        if (modal)
+        {
+            closedByOkay = ShowModal() == true;
+        }
+        else
+        {
+            closedByOkay = ShowDialog() == true;
         }
 
-        (bool ClosedByOK, DatabaseConnectionModel Payload) IDialog<DatabaseConnectionModel>.ShowAndAwaitUserResponse(bool modal)
+        return (closedByOkay, getDialogResult());
+    }
+
+    private void CmdDatabaseType_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+    {
+        txtSample.Text = string.Empty;
+
+        var item = cmdDatabaseType.SelectedItem as ComboBoxItem;
+
+        if (item == null)
         {
-            bool closedByOkay;
-
-            if (modal)
-            {
-                closedByOkay = ShowModal() == true;
-            }
-            else
-            {
-                closedByOkay = ShowDialog() == true;
-            }
-
-            return (closedByOkay, getDialogResult());
+            return;
         }
 
-        private void CmdDatabaseType_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        var dbType = (DatabaseType)int.Parse(item.Tag.ToString(), CultureInfo.InvariantCulture);
+
+        switch (dbType)
         {
-            txtSample.Text = string.Empty;
-
-            var item = cmdDatabaseType.SelectedItem as ComboBoxItem;
-
-            if (item == null)
-            {
-                return;
-            }
-
-            var dbType = (DatabaseType)int.Parse(item.Tag.ToString(), CultureInfo.InvariantCulture);
-
-            switch (dbType)
-            {
-                case DatabaseType.Mysql:
+            case DatabaseType.Mysql:
 #pragma warning disable S2068 // Credentials should not be hard-coded
-                    txtSample.Text = "Server=myServerAddress;Database=myDataBase;Uid=myUsername;Pwd=myPassword;";
-                    break;
-                case DatabaseType.Snowflake:
-                    txtSample.Text = "ACCOUNT=<accountid>;DB=MYDATABASE;SCHEMA=MYSCHEMA;USER=MYUSERNAME;PASSWORD=myPassword";
-                    break;
+                txtSample.Text = "Server=myServerAddress;Database=myDataBase;Uid=myUsername;Pwd=myPassword;";
+                break;
+            case DatabaseType.Snowflake:
+                txtSample.Text = "ACCOUNT=<accountid>;DB=MYDATABASE;SCHEMA=MYSCHEMA;USER=MYUSERNAME;PASSWORD=myPassword";
+                break;
 #pragma warning restore S2068 // Credentials should not be hard-coded
-                default:
-                    break;
-            }
+            default:
+                break;
         }
     }
 }

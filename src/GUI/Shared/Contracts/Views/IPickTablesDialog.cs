@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using RevEng.Common;
 
-namespace EFCorePowerTools.Contracts.Views
+namespace EFCorePowerTools.Contracts.Views;
+
+public interface IPickTablesDialog : IDialog<PickTablesDialogResult>
 {
-    public interface IPickTablesDialog : IDialog<PickTablesDialogResult>
-    {
-        IPickTablesDialog AddTables(IEnumerable<TableModel> tables, IEnumerable<Schema> customReplacers);
+    IPickTablesDialog AddTables(IEnumerable<TableModel> tables, IEnumerable<Schema> customReplacers);
 
-        IPickTablesDialog PreselectTables(IEnumerable<SerializationTableModel> tables);
+    IPickTablesDialog PreselectTables(IEnumerable<SerializationTableModel> tables);
 
-        IPickTablesDialog SqliteToolboxInstall(bool installed);
-    }
+    IPickTablesDialog SqliteToolboxInstall(bool installed);
 }

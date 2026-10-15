@@ -1,14 +1,13 @@
-﻿using System.Runtime.Serialization;
+using System.Runtime.Serialization;
 
-namespace RevEng.Common
+namespace RevEng.Common;
+
+[DataContract]
+public class ColumnNamer
 {
-    [DataContract]
-    public class ColumnNamer
-    {
-        [DataMember]
-        public string Name { get; set; }
+    [DataMember]
+    public string Name { get; set; }
 
-        [DataMember]
-        public string NewName { get; set; }
-    }
+    [DataMember]
+    public string NewName { get; set; }
 }

@@ -1,20 +1,19 @@
-﻿using System;
+using System;
 using System.Windows.Input;
 using EFCorePowerTools.Common.Models;
 using EFCorePowerTools.Contracts.EventArgs;
 
-namespace EFCorePowerTools.Contracts.ViewModels
+namespace EFCorePowerTools.Contracts.ViewModels;
+
+public interface IAdvancedModelingOptionsViewModel : IViewModel
 {
-    public interface IAdvancedModelingOptionsViewModel : IViewModel
-    {
-        event EventHandler<CloseRequestedEventArgs> CloseRequested;
+    event EventHandler<CloseRequestedEventArgs> CloseRequested;
 
-        ICommand OkCommand { get; }
+    ICommand OkCommand { get; }
 
-        ICommand CancelCommand { get; }
+    ICommand CancelCommand { get; }
 
-        ModelingOptionsModel Model { get; }
+    ModelingOptionsModel Model { get; }
 
-        void ApplyPresets(ModelingOptionsModel presets);
-    }
+    void ApplyPresets(ModelingOptionsModel presets);
 }

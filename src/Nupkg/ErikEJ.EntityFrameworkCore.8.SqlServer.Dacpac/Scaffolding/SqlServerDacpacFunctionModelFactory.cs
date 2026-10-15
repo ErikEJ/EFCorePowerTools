@@ -9,244 +9,234 @@ using RevEng.Core.Abstractions;
 using RevEng.Core.Abstractions.Metadata;
 using RevEng.Core.Abstractions.Model;
 
-namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding
+namespace ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
+
+public class SqlServerDacpacFunctionModelFactory : IFunctionModelFactory
 {
-    public class SqlServerDacpacFunctionModelFactory : IFunctionModelFactory
+    private readonly SqlServerDacpacDatabaseModelFactoryOptions dacpacOptions;
+
+    public SqlServerDacpacFunctionModelFactory(SqlServerDacpacDatabaseModelFactoryOptions options)
     {
-        private readonly SqlServerDacpacDatabaseModelFactoryOptions dacpacOptions;
+        dacpacOptions = options;
+    }
 
-        public SqlServerDacpacFunctionModelFactory(SqlServerDacpacDatabaseModelFactoryOptions options)
+    public RoutineModel Create(string connectionString, ModuleModelFactoryOptions options)
+    {
+        if (string.IsNullOrEmpty(connectionString))
         {
-            dacpacOptions = options;
+            throw new ArgumentException(@"invalid path", nameof(connectionString));
         }
 
-        public RoutineModel Create(string connectionString, ModuleModelFactoryOptions options)
+        if (!File.Exists(connectionString))
         {
-            if (string.IsNullOrEmpty(connectionString))
+            throw new ArgumentException($"Dacpac file not found: {connectionString}");
+        }
+
+        ArgumentNullException.ThrowIfNull(options);
+
+        var scalars = GetScalarFunctions(connectionString, options, dacpacOptions.MergeDacpacs);
+
+        var tableValued = GetTableValuedFunctions(connectionString, options, dacpacOptions.MergeDacpacs);
+
+        return new RoutineModel
+        {
+            Routines = scalars.Routines.Concat(tableValued.Routines).ToList(),
+            Errors = scalars.Errors.Concat(tableValued.Errors).ToList(),
+        };
+    }
+
+    private static RoutineModel GetScalarFunctions(string dacpacPath, ModuleModelFactoryOptions options, bool mergeDacpacs)
+    {
+        var result = new List<Function>();
+        var errors = new List<string>();
+
+        if (mergeDacpacs && dacpacPath != null)
+        {
+            dacpacPath = DacpacConsolidator.Consolidate(dacpacPath);
+        }
+
+        using var model = new TSqlTypedModel(dacpacPath);
+
+        var functions = model.GetObjects<TSqlScalarFunction>(DacQueryScopes.UserDefined)
+           .ToList();
+
+        var filter = new HashSet<string>(options.Modules);
+
+        foreach (var func in functions)
+        {
+            var function = new Function
             {
-                throw new ArgumentException(@"invalid path", nameof(connectionString));
-            }
-
-            if (!File.Exists(connectionString))
-            {
-                throw new ArgumentException($"Dacpac file not found: {connectionString}");
-            }
-
-            ArgumentNullException.ThrowIfNull(options);
-
-            var scalars = GetScalarFunctions(connectionString, options, dacpacOptions.MergeDacpacs);
-
-            var tableValued = GetTableValuedFunctions(connectionString, options, dacpacOptions.MergeDacpacs);
-
-            return new RoutineModel
-            {
-                Routines = scalars.Routines.Concat(tableValued.Routines).ToList(),
-                Errors = scalars.Errors.Concat(tableValued.Errors).ToList(),
+                Schema = func.Name.Parts[0],
+                Name = func.Name.Parts[1],
+                IsScalar = true,
             };
-        }
 
-        private static RoutineModel GetScalarFunctions(string dacpacPath, ModuleModelFactoryOptions options, bool mergeDacpacs)
-        {
-            var result = new List<Function>();
-            var errors = new List<string>();
+            var key = $"[{function.Schema}].[{function.Name}]";
 
-            if (mergeDacpacs && dacpacPath != null)
+            if (filter.Count == 0 || filter.Contains(key))
             {
-                dacpacPath = DacpacConsolidator.Consolidate(dacpacPath);
-            }
-
-            using var model = new TSqlTypedModel(dacpacPath);
-
-            var functions = model.GetObjects<TSqlScalarFunction>(DacQueryScopes.UserDefined)
-               .ToList();
-
-            var filter = new HashSet<string>(options.Modules);
-
-            foreach (var func in functions)
-            {
-                var function = new Function
+                if (options.FullModel)
                 {
-                    Schema = func.Name.Parts[0],
-                    Name = func.Name.Parts[1],
-                    IsScalar = true,
-                };
-
-                var key = $"[{function.Schema}].[{function.Name}]";
-
-                if (filter.Count == 0 || filter.Contains(key))
-                {
-                    if (options.FullModel)
+                    function.Parameters = GetFunctionParameters(func.Parameters);
+                    function.Parameters.Insert(0, new ModuleParameter
                     {
-                        function.Parameters = GetFunctionParameters(func.Parameters);
-                        function.Parameters.Insert(0, new ModuleParameter
-                        {
-                            StoreType = func.ReturnType.First().Name.Parts[0],
-                            Output = false,
-                            Nullable = true,
-                        });
-                    }
-
-                    result.Add(function);
+                        StoreType = func.ReturnType.First().Name.Parts[0],
+                        Output = false,
+                        Nullable = true,
+                    });
                 }
-            }
 
-            return new RoutineModel
-            {
-                Routines = result.Cast<Routine>().ToList(),
-                Errors = errors,
-            };
+                result.Add(function);
+            }
         }
 
-        private static RoutineModel GetTableValuedFunctions(string dacpacPath, ModuleModelFactoryOptions options, bool mergeDacpacs)
+        return new RoutineModel
         {
-            var result = new List<Function>();
-            var errors = new List<string>();
+            Routines = result.Cast<Routine>().ToList(),
+            Errors = errors,
+        };
+    }
 
-            if (mergeDacpacs && dacpacPath != null)
+    private static RoutineModel GetTableValuedFunctions(string dacpacPath, ModuleModelFactoryOptions options, bool mergeDacpacs)
+    {
+        var result = new List<Function>();
+        var errors = new List<string>();
+
+        if (mergeDacpacs && dacpacPath != null)
+        {
+            dacpacPath = DacpacConsolidator.Consolidate(dacpacPath);
+        }
+
+        using var model = new TSqlTypedModel(dacpacPath);
+
+        var functions = model.GetObjects<TSqlTableValuedFunction>(DacQueryScopes.UserDefined)
+           .ToList();
+
+        var filter = new HashSet<string>(options.Modules);
+
+        foreach (var func in functions)
+        {
+            var function = new Function
             {
-                dacpacPath = DacpacConsolidator.Consolidate(dacpacPath);
-            }
+                Schema = func.Name.Parts[0],
+                Name = func.Name.Parts[1],
+                IsScalar = false,
+            };
 
-            using var model = new TSqlTypedModel(dacpacPath);
+            var key = $"[{function.Schema}].[{function.Name}]";
 
-            var functions = model.GetObjects<TSqlTableValuedFunction>(DacQueryScopes.UserDefined)
-               .ToList();
-
-            var filter = new HashSet<string>(options.Modules);
-
-            foreach (var func in functions)
+            if (filter.Count == 0 || filter.Contains(key))
             {
-                var function = new Function
+                if (options.FullModel)
                 {
-                    Schema = func.Name.Parts[0],
-                    Name = func.Name.Parts[1],
-                    IsScalar = false,
-                };
-
-                var key = $"[{function.Schema}].[{function.Name}]";
-
-                if (filter.Count == 0 || filter.Contains(key))
-                {
-                    if (options.FullModel)
+                    var columnList = new List<ModuleResultElement>();
+                    var i = 0;
+                    foreach (var column in func.Columns)
                     {
-                        var columnList = new List<ModuleResultElement>();
-                        var i = 0;
-                        foreach (var column in func.Columns)
+                        string storeType = null;
+
+                        if (column.ColumnType == ColumnType.ComputedColumn)
                         {
-                            string storeType = null;
-
-                            if (column.ColumnType == ColumnType.ComputedColumn)
+                            column.ExpressionDependencies.ToList().ForEach(e =>
                             {
-                                column.ExpressionDependencies.ToList().ForEach(e =>
+                                if (e is TSqlColumnReference colRef)
                                 {
-                                    if (e is TSqlColumnReference colRef)
-                                    {
-                                        storeType = colRef.DataType.First().Name.Parts[0];
-                                    }
-                                });
-                            }
-
-                            if (column.ColumnType == ColumnType.Column)
-                            {
-                                if (column.DataType.First() is TSqlTableTypeReference)
-                                {
-                                    storeType = "structured";
+                                    storeType = colRef.DataType.First().Name.Parts[0];
                                 }
-                                else
-                                {
-                                    storeType = column.DataType.First().Name.Parts[0];
-                                }
-                            }
-
-                            if (storeType == null)
-                            {
-                                errors.Add($"Could not determine store type for column {column.Name.Parts[2]} in function {key}");
-                                continue;
-                            }
-
-                            columnList.Add(new ModuleResultElement
-                            {
-                                StoreType = storeType,
-                                Nullable = column.Nullable,
-                                Name = column.Name.Parts[2],
-                                Ordinal = i++,
                             });
                         }
 
-                        function.Results.Add(columnList);
+                        if (column.ColumnType == ColumnType.Column)
+                        {
+                            storeType = column.DataType.First() is TSqlTableTypeReference ? "structured" : column.DataType.First().Name.Parts[0];
+                        }
 
-                        function.Parameters = GetFunctionParameters(func.Parameters);
+                        if (storeType == null)
+                        {
+                            errors.Add($"Could not determine store type for column {column.Name.Parts[2]} in function {key}");
+                            continue;
+                        }
+
+                        columnList.Add(new ModuleResultElement
+                        {
+                            StoreType = storeType,
+                            Nullable = column.Nullable,
+                            Name = column.Name.Parts[2],
+                            Ordinal = i++,
+                        });
                     }
 
-                    result.Add(function);
-                }
-            }
+                    function.Results.Add(columnList);
 
-            return new RoutineModel
-            {
-                Routines = result.Cast<Routine>().ToList(),
-                Errors = errors,
-            };
+                    function.Parameters = GetFunctionParameters(func.Parameters);
+                }
+
+                result.Add(function);
+            }
         }
 
-        private static List<ModuleParameter> GetFunctionParameters(IEnumerable<TSqlParameter> parameters)
+        return new RoutineModel
         {
-            var result = new List<ModuleParameter>();
+            Routines = result.Cast<Routine>().ToList(),
+            Errors = errors,
+        };
+    }
 
-            string typeName = null;
-            string typeSchema = null;
+    private static List<ModuleParameter> GetFunctionParameters(IEnumerable<TSqlParameter> parameters)
+    {
+        var result = new List<ModuleParameter>();
 
-            foreach (var parameter in parameters)
-            {
-                var storeType = parameter.DataType.First().Name.Parts[0];
+        string typeName = null;
+        string typeSchema = null;
 
-                var dtReference = parameter.DataType.First() as TSqlDataTypeReference;
+        foreach (var parameter in parameters)
+        {
+            var storeType = parameter.DataType.First().Name.Parts[0];
 
-                List<ModuleResultElement> tvpColumns = null;
+            List<ModuleResultElement> tvpColumns = null;
 
 #pragma warning disable S2219 // Runtime type checking should be simplified
-                if (dtReference != null
-                    && dtReference.Type != null
-                    && dtReference.Type.Any()
-                    && dtReference.Type.First() is TSqlDataTypeReference)
-                {
-                    storeType = dtReference.Type.First().Name.Parts[0];
-                }
+            if (parameter.DataType.First() is TSqlDataTypeReference dtReference
+                && dtReference.Type != null
+                && dtReference.Type.Any()
+                && dtReference.Type.First() is not null)
+            {
+                storeType = dtReference.Type.First().Name.Parts[0];
+            }
 
-                if (parameter.DataType.First() is TSqlUserDefinedTypeReference udtReference)
-                {
-                    storeType = udtReference.Name.Parts[1];
-                }
+            if (parameter.DataType.First() is TSqlUserDefinedTypeReference udtReference)
+            {
+                storeType = udtReference.Name.Parts[1];
+            }
 
-                if (parameter.DataType.First() is TSqlTableTypeReference tableReference)
-                {
-                    // parameter is a table type (TVP)
-                    storeType = "structured";
-                    typeName = tableReference.Name.Parts[1];
-                    typeSchema = tableReference.Name.Parts[0];
-                    tvpColumns = DacpacModelFactoryHelper.GetTvpColumns(tableReference);
-                }
+            if (parameter.DataType.First() is TSqlTableTypeReference tableReference)
+            {
+                // parameter is a table type (TVP)
+                storeType = "structured";
+                typeName = tableReference.Name.Parts[1];
+                typeSchema = tableReference.Name.Parts[0];
+                tvpColumns = DacpacModelFactoryHelper.GetTvpColumns(tableReference);
+            }
 
 #pragma warning restore S2219 // Runtime type checking should be simplified
 
-                var newParameter = new ModuleParameter()
-                {
-                    Length = parameter.Length,
-                    Name = parameter.Name.Parts[2].Trim('@'),
-                    Output = parameter.IsOutput,
-                    Precision = parameter.Precision,
-                    Scale = parameter.Scale,
-                    StoreType = storeType,
-                    Nullable = true,
-                    TypeName = typeName,
-                    TypeSchemaName = typeSchema,
-                    TvpColumns = tvpColumns,
-                };
+            var newParameter = new ModuleParameter()
+            {
+                Length = parameter.Length,
+                Name = parameter.Name.Parts[2].Trim('@'),
+                Output = parameter.IsOutput,
+                Precision = parameter.Precision,
+                Scale = parameter.Scale,
+                StoreType = storeType,
+                Nullable = true,
+                TypeName = typeName,
+                TypeSchemaName = typeSchema,
+                TvpColumns = tvpColumns,
+            };
 
-                result.Add(newParameter);
-            }
-
-            return result;
+            result.Add(newParameter);
         }
+
+        return result;
     }
 }

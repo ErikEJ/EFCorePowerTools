@@ -1,7 +1,6 @@
-﻿namespace EFCorePowerTools.Handlers.ReverseEngineer
+namespace EFCorePowerTools.Handlers.ReverseEngineer;
+
+public class ReverseEngineerUserOptions
 {
-    public class ReverseEngineerUserOptions
-    {
-        public string UiHint { get; set; }
-    }
+    public string UiHint { get; set; }
 }

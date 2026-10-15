@@ -1,25 +1,24 @@
-﻿using System.IO;
+using System.IO;
 using EntityFrameworkCore.Scaffolding.Handlebars;
 
-namespace RevEng.Core
+namespace RevEng.Core;
+
+public class CustomTemplateFileService : FileSystemTemplateFileService
 {
-    public class CustomTemplateFileService : FileSystemTemplateFileService
+    public CustomTemplateFileService(string rootDirectory)
     {
-        public CustomTemplateFileService(string rootDirectory)
-        {
-            RootDirectory = rootDirectory;
-        }
+        RootDirectory = rootDirectory;
+    }
 
-        public string RootDirectory { get; }
+    public string RootDirectory { get; }
 
-        public override string RetrieveTemplateFileContents(
-            string relativeDirectory,
-            string fileName,
-            string altRelativeDirectory = null)
-        {
-            var localDirectory = Path.GetFullPath(Path.Combine(RootDirectory, relativeDirectory));
-            var contents = RetrieveFileContents(localDirectory, fileName);
-            return contents;
-        }
+    public override string RetrieveTemplateFileContents(
+        string relativeDirectory,
+        string fileName,
+        string altRelativeDirectory = null)
+    {
+        var localDirectory = Path.GetFullPath(Path.Combine(RootDirectory, relativeDirectory));
+        var contents = RetrieveFileContents(localDirectory, fileName);
+        return contents;
     }
 }

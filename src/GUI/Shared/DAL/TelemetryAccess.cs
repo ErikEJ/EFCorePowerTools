@@ -1,12 +1,11 @@
-﻿using EFCorePowerTools.Common.DAL;
+using EFCorePowerTools.Common.DAL;
 
-namespace EFCorePowerTools.DAL
+namespace EFCorePowerTools.DAL;
+
+public class TelemetryAccess : ITelemetryAccess
 {
-    public class TelemetryAccess : ITelemetryAccess
+    void ITelemetryAccess.TrackPageView(string key)
     {
-        void ITelemetryAccess.TrackPageView(string key)
-        {
-            // Ignore
-        }
+        // Ignore
     }
 }

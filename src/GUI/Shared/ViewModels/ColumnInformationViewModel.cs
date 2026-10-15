@@ -1,4 +1,4 @@
-﻿using System.Collections.ObjectModel;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Windows.Input;
 using EFCorePowerTools.Contracts.ViewModels;
@@ -8,211 +8,210 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 
-namespace EFCorePowerTools.ViewModels
+namespace EFCorePowerTools.ViewModels;
+
+public class ColumnInformationViewModel : ViewModelBase, IColumnInformationViewModel
 {
-    public class ColumnInformationViewModel : ViewModelBase, IColumnInformationViewModel
+    private readonly IMessenger messenger;
+
+    private string name;
+    private string newName;
+
+    private bool isPrimaryKey;
+    private bool isForeignKey;
+
+    private bool isTableSelected;
+    private bool isSelected;
+    private bool isEditing;
+
+    public ColumnInformationViewModel(IMessenger messenger)
     {
-        private readonly IMessenger messenger;
+        this.messenger = messenger;
+        StartEditCommand = new RelayCommand(StartEdit_Execute);
+        ConfirmEditCommand = new RelayCommand(ConfirmEdit_Execute);
+        CancelEditCommand = new RelayCommand(CancelEdit_Execute);
+        SetSelectedCommand = new RelayCommand<bool>(SetSelected_Execute);
+        Children.CollectionChanged += Children_CollectionChanged;
+    }
 
-        private string name;
-        private string newName;
-
-        private bool isPrimaryKey;
-        private bool isForeignKey;
-
-        private bool isTableSelected;
-        private bool isSelected;
-        private bool isEditing;
-
-        public ColumnInformationViewModel(IMessenger messenger)
+    public string Name
+    {
+        get => name;
+        set
         {
-            this.messenger = messenger;
-            StartEditCommand = new RelayCommand(StartEdit_Execute);
-            ConfirmEditCommand = new RelayCommand(ConfirmEdit_Execute);
-            CancelEditCommand = new RelayCommand(CancelEdit_Execute);
-            SetSelectedCommand = new RelayCommand<bool>(SetSelected_Execute);
-            Children.CollectionChanged += Children_CollectionChanged;
-        }
-
-        public string Name
-        {
-            get => name;
-            set
+            if (Equals(value, name))
             {
-                if (Equals(value, name))
-                {
-                    return;
-                }
-
-                name = value;
-                RaisePropertyChanged();
+                return;
             }
-        }
 
-        public string NewName
+            name = value;
+            RaisePropertyChanged();
+        }
+    }
+
+    public string NewName
+    {
+        get => newName;
+        set
         {
-            get => newName;
-            set
+            if (Equals(value, newName))
             {
-                if (Equals(value, newName))
-                {
-                    return;
-                }
-
-                newName = value;
-                RaisePropertyChanged();
-                RaisePropertyChanged(nameof(DisplayName));
+                return;
             }
-        }
 
-        public string DisplayName
+            newName = value;
+            RaisePropertyChanged();
+            RaisePropertyChanged(nameof(DisplayName));
+        }
+    }
+
+    public string DisplayName
+    {
+        get
         {
-            get
+            return newName == name ? name : $"{newName} - ({name})";
+        }
+    }
+
+    public bool IsPrimaryKey
+    {
+        get => isPrimaryKey;
+        set
+        {
+            if (Equals(value, isPrimaryKey))
             {
-                return newName == name ? name : $"{newName} - ({name})";
+                return;
             }
-        }
 
-        public bool IsPrimaryKey
+            isPrimaryKey = value;
+            RaisePropertyChanged();
+            RaisePropertyChanged(nameof(IsEnabled));
+        }
+    }
+
+    public bool IsForeignKey
+    {
+        get => isForeignKey;
+        set
         {
-            get => isPrimaryKey;
-            set
+            if (Equals(value, isForeignKey))
             {
-                if (Equals(value, isPrimaryKey))
-                {
-                    return;
-                }
-
-                isPrimaryKey = value;
-                RaisePropertyChanged();
-                RaisePropertyChanged(nameof(IsEnabled));
+                return;
             }
-        }
 
-        public bool IsForeignKey
+            isForeignKey = value;
+            RaisePropertyChanged();
+            RaisePropertyChanged(nameof(IsEnabled));
+        }
+    }
+
+    public bool IsColumn
+    {
+        get => !isPrimaryKey;
+    }
+
+    public bool? IsSelected
+    {
+        get => isSelected;
+        private set
         {
-            get => isForeignKey;
-            set
+            if (Equals(value, isSelected))
             {
-                if (Equals(value, isForeignKey))
-                {
-                    return;
-                }
-
-                isForeignKey = value;
-                RaisePropertyChanged();
-                RaisePropertyChanged(nameof(IsEnabled));
+                return;
             }
-        }
 
-        public bool IsColumn
-        {
-            get => !isPrimaryKey;
+            isSelected = value.Value;
+            RaisePropertyChanged();
         }
+    }
 
-        public bool? IsSelected
+    public bool IsEditing
+    {
+        get => isEditing;
+        set
         {
-            get => isSelected;
-            private set
+            if (Equals(value, isEditing))
             {
-                if (Equals(value, isSelected))
-                {
-                    return;
-                }
-
-                isSelected = value.Value;
-                RaisePropertyChanged();
+                return;
             }
-        }
 
-        public bool IsEditing
+            isEditing = value;
+            RaisePropertyChanged();
+        }
+    }
+
+    public bool IsTableSelected
+    {
+        get => isTableSelected;
+        set
         {
-            get => isEditing;
-            set
+            if (Equals(value, isTableSelected))
             {
-                if (Equals(value, isEditing))
-                {
-                    return;
-                }
-
-                isEditing = value;
-                RaisePropertyChanged();
+                return;
             }
-        }
 
-        public bool IsTableSelected
+            isTableSelected = value;
+            RaisePropertyChanged();
+            RaisePropertyChanged(nameof(IsEnabled));
+        }
+    }
+
+    public bool IsEnabled { get => IsTableSelected && !IsPrimaryKey && !IsForeignKey; }
+
+    public ICommand StartEditCommand { get; }
+
+    public ICommand ConfirmEditCommand { get; }
+
+    public ICommand CancelEditCommand { get; }
+
+    public ICommand SetSelectedCommand { get; }
+
+    public ObservableCollection<IColumnChildrenViewModel> Children { get; set; } = new ObservableCollection<IColumnChildrenViewModel>();
+
+    public void SetSelected(bool value)
+    {
+        IsSelected = value;
+    }
+
+    private void StartEdit_Execute()
+    {
+        IsEditing = true;
+    }
+
+    private void ConfirmEdit_Execute()
+    {
+        if (string.IsNullOrWhiteSpace(NewName))
         {
-            get => isTableSelected;
-            set
+            messenger.Send(new ShowMessageBoxMessage
             {
-                if (Equals(value, isTableSelected))
-                {
-                    return;
-                }
-
-                isTableSelected = value;
-                RaisePropertyChanged();
-                RaisePropertyChanged(nameof(IsEnabled));
-            }
+                Content = ReverseEngineerLocale.NewNameCannotBeEmpty,
+            });
         }
+        else
+        {
+            IsEditing = false;
+        }
+    }
 
-        public bool IsEnabled { get => IsTableSelected && !IsPrimaryKey && !IsForeignKey; }
+    private void CancelEdit_Execute()
+    {
+        NewName = Name;
+        IsEditing = false;
+    }
 
-        public ICommand StartEditCommand { get; }
-
-        public ICommand ConfirmEditCommand { get; }
-
-        public ICommand CancelEditCommand { get; }
-
-        public ICommand SetSelectedCommand { get; }
-
-        public ObservableCollection<IColumnChildrenViewModel> Children { get; set; } = new ObservableCollection<IColumnChildrenViewModel>();
-
-        public void SetSelected(bool value)
+    private void SetSelected_Execute(bool value)
+    {
+        if (IsEnabled)
         {
             IsSelected = value;
         }
+    }
 
-        private void StartEdit_Execute()
+    private void Children_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        foreach (var item in e.NewItems)
         {
-            IsEditing = true;
-        }
-
-        private void ConfirmEdit_Execute()
-        {
-            if (string.IsNullOrWhiteSpace(NewName))
-            {
-                messenger.Send(new ShowMessageBoxMessage
-                {
-                    Content = ReverseEngineerLocale.NewNameCannotBeEmpty,
-                });
-            }
-            else
-            {
-                IsEditing = false;
-            }
-        }
-
-        private void CancelEdit_Execute()
-        {
-            NewName = Name;
-            IsEditing = false;
-        }
-
-        private void SetSelected_Execute(bool value)
-        {
-            if (IsEnabled)
-            {
-                IsSelected = value;
-            }
-        }
-
-        private void Children_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            foreach (var item in e.NewItems)
-            {
-                RaisePropertyChanged(nameof(Name));
-            }
+            RaisePropertyChanged(nameof(Name));
         }
     }
 }

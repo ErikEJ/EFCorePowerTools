@@ -1,9 +1,8 @@
-﻿using RevEng.Core.Abstractions.Metadata;
+using RevEng.Core.Abstractions.Metadata;
 
-namespace RevEng.Core.Abstractions.Model
+namespace RevEng.Core.Abstractions.Model;
+
+public interface IProcedureModelFactory
 {
-    public interface IProcedureModelFactory
-    {
-        RoutineModel Create(string connectionString, ModuleModelFactoryOptions options);
-    }
+    public RoutineModel Create(string connectionString, ModuleModelFactoryOptions options);
 }

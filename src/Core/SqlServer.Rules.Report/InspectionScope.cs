@@ -1,15 +1,14 @@
-﻿using System;
+using System;
 
-namespace SqlServer.Rules.Report
+namespace SqlServer.Rules.Report;
+
+[Serializable]
+public class InspectionScope
 {
-    [Serializable]
-    public class InspectionScope
+    public InspectionScope()
     {
-        public InspectionScope()
-        {
-            Element = "Project";
-        }
-
-        public string Element { get; set; }
+        Element = "Project";
     }
+
+    public string Element { get; set; }
 }

@@ -1,27 +1,26 @@
 using System.Collections.Generic;
 
-namespace RevEng.Core.Abstractions
-{
-    public class ModuleModelFactoryOptions
-    {
-        public IEnumerable<string> Modules { get; set; }
+namespace RevEng.Core.Abstractions;
 
-        public IEnumerable<string> ModulesUsingLegacyDiscovery { get; set; }
+public class ModuleModelFactoryOptions
+{
+    public IEnumerable<string> Modules { get; set; }
+
+    public IEnumerable<string> ModulesUsingLegacyDiscovery { get; set; }
 
 #pragma warning disable CA2227 // Collection properties should be read only
-        public IDictionary<string, string> MappedModules { get; set; }
+    public IDictionary<string, string> MappedModules { get; set; }
 
-        public IDictionary<string, bool> ModulesGeneratingEmptyResultTypes { get; set; }
+    public IDictionary<string, bool> ModulesGeneratingEmptyResultTypes { get; set; }
 
 #pragma warning restore CA2227 // Collection properties should be read only
-        public bool FullModel { get; set; }
+    public bool FullModel { get; set; }
 
-        public bool DiscoverMultipleResultSets { get; set; }
+    public bool DiscoverMultipleResultSets { get; set; }
 
-        public bool UseLegacyResultSetDiscovery { get; set; }
+    public bool UseLegacyResultSetDiscovery { get; set; }
 
-        public bool UseStoredProcedureResultSetFallback { get; set; } = true;
+    public bool UseStoredProcedureResultSetFallback { get; set; } = true;
 
-        public bool UseDateOnlyTimeOnly { get; set; }
-    }
+    public bool UseDateOnlyTimeOnly { get; set; }
 }

@@ -1,72 +1,71 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace RevEng.Common
-{
-    /// <summary>
-    /// A class holding information about database objects.
-    /// </summary>
-    [DataContract]
-    public class SerializationTableModel
-    {
-        public SerializationTableModel(
-            string name,
-            ObjectType objectType,
-            IList<string> excludedColumns,
-            IList<string> excludedIndexes)
-        {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                throw new ArgumentException(@"Value cannot be empty or only white spaces.", nameof(name));
-            }
+namespace RevEng.Common;
 
-            Name = name;
-            ExcludedColumns = excludedColumns?.Count > 0 ? excludedColumns : null;
-            ObjectType = objectType;
-            ExcludedIndexes = excludedIndexes?.Count > 0 ? excludedIndexes : null;
+/// <summary>
+/// A class holding information about database objects.
+/// </summary>
+[DataContract]
+public class SerializationTableModel
+{
+    public SerializationTableModel(
+        string name,
+        ObjectType objectType,
+        IList<string> excludedColumns,
+        IList<string> excludedIndexes)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException(@"Value cannot be empty or only white spaces.", nameof(name));
         }
 
-        /// <summary>
-        /// Gets or sets the table name.
-        /// </summary>
-        [DataMember]
-        public string Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets the object type.
-        /// </summary>
-        [DataMember]
-        public ObjectType ObjectType { get; set; }
-
-        /// <summary>
-        /// Gets or sets the columns excluded from reverse engineering.
-        /// </summary>
-        [DataMember(EmitDefaultValue = false, IsRequired = false)]
-        public IEnumerable<string> ExcludedColumns { get; set; }
-
-        /// <summary>
-        /// Gets or sets the indexes excluded from reverse engineering.
-        /// </summary>
-        [DataMember(EmitDefaultValue = false, IsRequired = false)]
-        public IEnumerable<string> ExcludedIndexes { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to exclude table from default result set discovery.
-        /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool UseLegacyResultSetDiscovery { get; set; }
-
-        /// <summary>
-        /// Gets or sets a map type to an existing DbSet.
-        /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public string MappedType { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether to generate an empty result type for stored procedures when result set cannot be discovered.
-        /// </summary>
-        [DataMember(EmitDefaultValue = false)]
-        public bool GenerateEmptyResultType { get; set; }
+        Name = name;
+        ExcludedColumns = excludedColumns?.Count > 0 ? excludedColumns : null;
+        ObjectType = objectType;
+        ExcludedIndexes = excludedIndexes?.Count > 0 ? excludedIndexes : null;
     }
+
+    /// <summary>
+    /// Gets or sets the table name.
+    /// </summary>
+    [DataMember]
+    public string Name { get; set; }
+
+    /// <summary>
+    /// Gets or sets the object type.
+    /// </summary>
+    [DataMember]
+    public ObjectType ObjectType { get; set; }
+
+    /// <summary>
+    /// Gets or sets the columns excluded from reverse engineering.
+    /// </summary>
+    [DataMember(EmitDefaultValue = false, IsRequired = false)]
+    public IEnumerable<string> ExcludedColumns { get; set; }
+
+    /// <summary>
+    /// Gets or sets the indexes excluded from reverse engineering.
+    /// </summary>
+    [DataMember(EmitDefaultValue = false, IsRequired = false)]
+    public IEnumerable<string> ExcludedIndexes { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether to exclude table from default result set discovery.
+    /// </summary>
+    [DataMember(EmitDefaultValue = false)]
+    public bool UseLegacyResultSetDiscovery { get; set; }
+
+    /// <summary>
+    /// Gets or sets a map type to an existing DbSet.
+    /// </summary>
+    [DataMember(EmitDefaultValue = false)]
+    public string MappedType { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether to generate an empty result type for stored procedures when result set cannot be discovered.
+    /// </summary>
+    [DataMember(EmitDefaultValue = false)]
+    public bool GenerateEmptyResultType { get; set; }
 }

@@ -1,12 +1,11 @@
-﻿using System;
+using System;
 using RevEng.Core.Abstractions.Metadata;
 
-namespace RevEng.Core.Routines.Extensions
-{
-    public interface IClrTypeMapper
-    {
-        Type GetClrType(ModuleParameter parameter);
+namespace RevEng.Core.Routines.Extensions;
 
-        Type GetClrType(ModuleResultElement resultElement);
-    }
+public interface IClrTypeMapper
+{
+    public Type GetClrType(ModuleParameter parameter);
+
+    public Type GetClrType(ModuleResultElement resultElement);
 }
