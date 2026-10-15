@@ -13,6 +13,7 @@ del bin\Release\net10.0\x64\publish\Microsoft.SqlServer.Server.dll
 del bin\Release\net10.0\x64\publish\Microsoft.SqlServer.TransactSql.ScriptDom.dll
 
 rd bin\Release\net10.0\x64\publish\runtimes\browser-wasm /Q /S
+rd bin\Release\net10.0\x64\publish\runtimes\linux /Q /S
 rd bin\Release\net10.0\x64\publish\runtimes\linux-arm /Q /S
 rd bin\Release\net10.0\x64\publish\runtimes\linux-arm64 /Q /S
 rd bin\Release\net10.0\x64\publish\runtimes\linux-armel /Q /S
@@ -29,7 +30,8 @@ rd bin\Release\net10.0\x64\publish\runtimes\linux-x64 /Q /S
 rd bin\Release\net10.0\x64\publish\runtimes\linux-x86 /Q /S
 rd bin\Release\net10.0\x64\publish\runtimes\maccatalyst-arm64 /Q /S
 rd bin\Release\net10.0\x64\publish\runtimes\maccatalyst-x64 /Q /S
-rd bin\Release\net10.0\x64\publish\runtimes\osx-arm64 /Q /S 
+rd bin\Release\net10.0\x64\publish\runtimes\osx /Q /S
+rd bin\Release\net10.0\x64\publish\runtimes\osx-arm64 /Q /S
 rd bin\Release\net10.0\x64\publish\runtimes\osx-x64 /Q /S
 rd bin\Release\net10.0\x64\publish\runtimes\unix /Q /S
 rd bin\Release\net10.0\x64\publish\runtimes\win-arm /Q /S
