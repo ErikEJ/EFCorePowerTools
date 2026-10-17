@@ -73,7 +73,7 @@ namespace EfReveng
                     if ((args.Length == 3 || args.Length == 4)
                         && (args[0] == "dgml")
                         && new FileInfo(args[1]).Exists)
-                        {
+                    {
                         var schemas = Enumerable.Empty<string>().ToList();
                         if (args.Length == 4)
                         {

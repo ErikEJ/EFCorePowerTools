@@ -5,7 +5,7 @@
     <File Path="../.github/workflows/nupkg-release.yml" />
     <File Path="../.github/workflows/vsix.yml" />
     <File Path="../samples/efcpt-config.schema.json" />
-    <File Path=".editorconfig" />
+    <File Path="../.editorconfig" />
     <File Path="Directory.Build.Props" />
     <File Path="NuGet.Config" />
   </Folder>
