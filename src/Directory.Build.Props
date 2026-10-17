@@ -15,6 +15,17 @@
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
 
+  <!-- Legacy projects need the analyzer package and cannot resolve the SDK's "latest" analysis level. -->
+  <PropertyGroup Condition="'$(UsingMicrosoftNETSdk)' != 'true' And '$(MSBuildProjectExtension)' == '.csproj'">
+    <AnalysisLevel>9.0-all</AnalysisLevel>
+    <AnalysisLevelStyle>9.0-all</AnalysisLevelStyle>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(UsingMicrosoftNETSdk)' != 'true' And '$(MSBuildProjectExtension)' == '.csproj'">
+    <!-- Roslyn 4.14 supports the Visual Studio 2022 compiler used by the existing build workflow. -->
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeStyle" Version="4.14.0" PrivateAssets="all" />
+  </ItemGroup>
+
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
