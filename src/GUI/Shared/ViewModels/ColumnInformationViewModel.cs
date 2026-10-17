@@ -209,7 +209,7 @@ public class ColumnInformationViewModel : ViewModelBase, IColumnInformationViewM
 
     private void Children_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
-        foreach (var item in e.NewItems)
+        foreach (var _ in e.NewItems)
         {
             RaisePropertyChanged(nameof(Name));
         }

@@ -221,7 +221,7 @@ public class TableInformationViewModel : ViewModelBase, ITableInformationViewMod
 
     private void Columns_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
-        foreach (var item in e.NewItems)
+        foreach (var _ in e.NewItems)
         {
             RaisePropertyChanged(nameof(HasPrimaryKey));
         }
