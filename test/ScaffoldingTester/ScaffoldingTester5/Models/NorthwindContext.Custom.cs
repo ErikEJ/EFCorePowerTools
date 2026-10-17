@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Globalization;
 using System.Linq;
 
 namespace ScaffoldingTester.Models
@@ -7,7 +8,10 @@ namespace ScaffoldingTester.Models
     public partial class NorthwindContext
     {
         public IQueryable<long> AsSplit(long[] source)
-            => Split(string.Join(",", source.Select(x => Convert.ToString(x))), ",").Select(s => Convert.ToInt64(s.Value));
+            => Split(string.Join(",", source.Select(x => x.ToString(CultureInfo.InvariantCulture))), ",")
+#pragma warning disable CA1305 // EF Core translates this overload to SQL CONVERT(bigint); the provider overload is not translatable.
+                .Select(s => Convert.ToInt64(s.Value));
+#pragma warning restore CA1305
 
         public IQueryable<string> AsSplit(string[] source)
             => Split(string.Join(",", source), ",").Select(s => s.Value);
