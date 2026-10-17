@@ -71,6 +71,22 @@ You can smoke test changes to reverse engineering. Launch one of the `efreveng` 
 
 In the `ScaffoldingTester` solution there are scripts to populate Northwind and Chinook databases with the required objects.
 
+### Code formatting
+
+CI build runs a **Verify formatting** step in the **VSIX** workflow to check both solutions against [`.editorconfig`](.editorconfig). If it fails and reports formatting violations, apply fixes from the repository root:
+
+```sh
+dotnet format src/EFCorePowerTools.slnx
+dotnet format test/ScaffoldingTester/ScaffoldingTester.slnx
+```
+
+Some violations may need manual fixes. Rerun the commands with `--verify-no-changes` to see those locally:
+
+```sh
+dotnet format src/EFCorePowerTools.slnx --verify-no-changes
+dotnet format test/ScaffoldingTester/ScaffoldingTester.slnx --verify-no-changes
+```
+
 ## Support and sponsors
 
 The tool and GitHub based support are free. A [rating or review](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools&ssr=false#review-details) and [sponsorships](https://github.com/sponsors/ErikEJ) are greatly appreciated.
