@@ -110,8 +110,8 @@ public static class SqlServerStoredProcedureResultSetFactory
         public List<QuerySpecification> Selects { get; } = new();
 
         /// <summary>
-         /// Maps a temp-table column definition to a SqlSharpener <see cref="DataType"/> when the type is supported.
-         /// </summary>
+        /// Maps a temp-table column definition to a SqlSharpener <see cref="DataType"/> when the type is supported.
+        /// </summary>
         private static bool TryCreateDataType(ColumnDefinition column, out DataType dataType)
         {
             dataType = null;
