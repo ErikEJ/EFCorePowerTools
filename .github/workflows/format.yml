@@ -32,15 +32,6 @@ jobs:
         with:
           vs-version: '[18.0,19.0)'
 
-      # Restore with Visual Studio MSBuild so legacy VSIX and SQL targets load.
-      - name: Restore source solution
-        run: msbuild src/EFCorePowerTools.slnx /t:Restore /p:Configuration=Debug /v:minimal /nologo
-
-      - name: Restore scaffolding test solution
-        run: msbuild test/ScaffoldingTester/ScaffoldingTester.slnx /t:Restore /p:Configuration=Debug /v:minimal /nologo
-
-      - name: Verify source formatting
-        run: dotnet format src/EFCorePowerTools.slnx --verify-no-changes --no-restore --verbosity normal
-
-      - name: Verify scaffolding test formatting
-        run: dotnet format test/ScaffoldingTester/ScaffoldingTester.slnx --verify-no-changes --no-restore --verbosity normal
+      # The helper restores with Visual Studio MSBuild when available.
+      - name: Verify formatting
+        run: dotnet run --file .github/scripts/verify-format.cs

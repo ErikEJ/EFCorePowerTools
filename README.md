@@ -66,6 +66,14 @@ Reverse engineer a SQL Server .dacpac with the EF Core tooling - `dotnet ef`
 
 If you encounter a bug or have a feature request, please use the [Issue Tracker](https://github.com/ErikEJ/EFCorePowerTools/issues/new). The project is also open for pull requests following [standard pull request guidelines](https://github.com/dotnet/aspnetcore/blob/master/CONTRIBUTING.md)
 
+### Formatting
+
+With the .NET 10 SDK installed, run this from the repository root to restore dependencies and check formatting for all tracked `.slnx` solutions:
+
+```shell
+dotnet run --file .github/scripts/verify-format.cs
+```
+
 ## Building and debugging
 
 To build and debug, run latest version of Visual Studio as Administrator with the "Visual Studio extension development workload" installed. Make EFCorePowerTools the startup project, and ensure your build configuration is Debug, AnyCPU.
