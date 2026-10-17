@@ -12,6 +12,8 @@ And there is a longer [30 minute demo here](https://www.youtube.com/watch?v=fwR5
 
 ### Installing the tool
 
+The CLI is published on NuGet as [ErikEJ.EFCorePowerTools.Cli](https://www.nuget.org/packages/ErikEJ.EFCorePowerTools.Cli). Install it as a .NET tool using the command for your EF Core version:
+
 EF Core 10:
 
 ```bash
@@ -30,7 +32,7 @@ EF Core 9:
 dotnet tool install ErikEJ.EFCorePowerTools.Cli -g --version 9.*
 ```
 
-### Running the tool 
+### Running the tool
 
 From the folder where you want the code to be generated (usually where your .NET project is located)
 
@@ -41,6 +43,21 @@ efcpt "Server=(local);Initial Catalog=Northwind;User id=user;Pwd=secret123;Encry
 Type `efcpt --help` for help on command line options.
 
 The provider name (`mssql`) may not be required, as an attempt is made to resolve the provider from the connection string.
+
+The following options control the CLI input and output:
+
+| Option | Purpose | Default |
+| --- | --- | --- |
+| `-o`, `--output` | Root folder for generated files. | Current directory |
+| `-i`, `--input` | Path to the CLI configuration file to read or create. | `efcpt-config.json` in the current directory |
+| `-r`, `--renamer` | Path to a [custom renaming file](https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering#custom-renaming-with-efptrenamingjson). | `efpt.renaming.json` in the current directory |
+| `-v`, `--verbose` | Show more detailed output, including generated file names. | Disabled |
+
+`--output` does not change the default configuration or renaming file locations. For example, to keep the configuration and generated code in a project subfolder, specify both paths:
+
+```bash
+efcpt "Database/bin/Debug/net10.0/Database.dacpac" --input "src/Data/efcpt-config.json" --output "src/Data"
+```
 
 ### Using a .dacpac file
 
@@ -54,9 +71,9 @@ You can build the .dacpac with `dotnet build` from an SDK-style database project
 
 ### Configuring options
 
-A configuration file `efcpt-config.json` is created in the output folder, and you can open this file in your editor to modify the default options. If your editor supports it (for example VS Code), it will provide syntax guidance for the file. For reference there is a fully populated sample file [here](https://github.com/ErikEJ/EFCorePowerTools/blob/master/samples/efcpt-config.json).
+A configuration file `efcpt-config.json` is created in the current directory, or at the path specified by `--input`. Open this file in your editor to modify the default options. If your editor supports it (for example VS Code), it will provide syntax guidance using the file's `$schema` reference. See the [sample configuration](https://github.com/ErikEJ/EFCorePowerTools/blob/master/samples/efcpt-config.json) and [configuration schema](https://github.com/ErikEJ/EFCorePowerTools/blob/master/samples/efcpt-config.schema.json) for the available keys and value types.
 
-The [Reverse Engineering guide](https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering) describes the options. For each option, it shows the key in `efcpt-config.json` as `CLI: section/key`, for example `CLI: code-generation/use-t4`.
+The [Reverse Engineering guide](https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering) describes the options. Its `CLI: section/key` tags identify the corresponding setting in `efcpt-config.json`. For example, `CLI: code-generation/use-t4` means the `use-t4` property inside the `code-generation` object. Examples using `efpt.config.json` refer to the Visual Studio configuration format; use the tagged CLI keys in `efcpt-config.json`.
 
 ### Updating to new configuration
 
@@ -66,13 +83,13 @@ If you have updated the configuration file in a way that requires files to be de
 
 ### Excluding objects
 
-The config file defaults to always contain all current database objects. 
+By default, `code-generation/refresh-object-lists` is `true`. Each run updates the `tables`, `views`, `stored-procedures` and `functions` lists with the current database objects, retaining settings for existing objects. Newly discovered objects are included unless an exclusion rule applies.
 
-If you don't want the lists of objects to be refreshed during each scaffolding operation, set the `"refresh-object-lists"` option in the configuration file to `false`.
+To keep a fixed selection, set `refresh-object-lists` to `false` in `code-generation`. Only the objects listed in the configuration are then considered for generation; add new objects to the lists manually or re-enable refreshing to discover them. When the configuration file already exists, this also prevents the CLI from rewriting it, preserving your formatting and manual grouping of objects.
 
 You can exclude individual database objects with `"exclude": true` for the object.
 
-You can also use the `exclusionWildcard` item under each type of data object to filter included objects. 
+You can also add an `exclusionWildcard` item to each of the `tables`, `views`, `stored-procedures` and `functions` arrays to filter included objects. Patterns match the full object name as it appears in the configuration, including the schema where present.
 
 You can use the following filter expressions:
 
@@ -147,6 +164,31 @@ In the example above, Users and Messages tables will be selected.
 
 In the example above, Users table will be selected.
 
+#### Keeping a hand-maintained object list
+
+You can keep a configuration in source control that lists only the objects your application needs. Merge settings like these into `efcpt-config.json`, or into a copy of the sample configuration before the first run:
+
+```json
+{
+   "code-generation": {
+      "refresh-object-lists": false
+   },
+   "tables": [
+      {
+         "name": "[dbo].[Products]",
+         "excludedColumns": [ "CreatedAt", "UpdatedAt" ]
+      },
+      {
+         "name": "[dbo].[Categories]"
+      }
+   ],
+   "views": [],
+   "stored-procedures": [],
+   "functions": []
+}
+```
+
+This selects only the Products and Categories tables and omits the two audit columns from the generated entity for Products. `excludedColumns` contains database column names and can be set on individual table or view entries; see [column selection](https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering#choose-database-objects) in the guide. New database objects will be included only when you add them to the configuration or re-enable `refresh-object-lists`.
 
 ### Generate a Mermaid ER diagram
 
