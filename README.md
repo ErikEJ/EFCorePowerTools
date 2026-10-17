@@ -4,9 +4,11 @@ Reverse engineering and model visualization tools for EF Core in Visual Studio 2
 
 Aims to lower the bar for getting started with EF Core, by providing GUI based assistance with reverse engineering of an existing database and visualizing your DbContext model.
 
-[![Visual Studio Marketplace Rating](https://img.shields.io/visual-studio-marketplace/r/ErikEJ.EFCorePowerTools)](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools&ssr=false#review-details)
-[![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/i/ErikEJ.EFCorePowerTools)](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools&ssr=false#review-details)
-[![Twitter Follow](https://img.shields.io/twitter/follow/ErikEJ.svg?style=social&label=Follow)](https://twitter.com/ErikEJ) 
+[![CLI build](https://github.com/ErikEJ/EFCorePowerTools/actions/workflows/cli-tool.yml/badge.svg?branch=master)](https://github.com/ErikEJ/EFCorePowerTools/actions/workflows/cli-tool.yml?query=branch%3Amaster)
+[![CLI version including nightly builds](https://img.shields.io/nuget/vpre/ErikEJ.EFCorePowerTools.Cli?label=CLI%20%28incl.%20nightly%29)](src/Core/efcpt.8/readme.md#getting-the-latest-daily-build)
+[![Visual Studio Marketplace Rating](https://badgen.net/vs-marketplace/rating/ErikEJ.EFCorePowerTools)](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools&ssr=false#review-details)
+[![Visual Studio Marketplace Installs](https://badgen.net/vs-marketplace/i/ErikEJ.EFCorePowerTools)](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools)
+[![Follow ErikEJ on X](https://img.shields.io/badge/Follow-%40ErikEJ-black?logo=x&logoColor=white)](https://x.com/ErikEJ)
 
 [Quick Start and 10 minute intro video](https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering-Quick-Start)
 
