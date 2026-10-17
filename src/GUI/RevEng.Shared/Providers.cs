@@ -283,7 +283,8 @@ public static class Providers
                     prefix = "Microting";
                     break;
 
-                default: throw new NotImplementedException();
+                default:
+                    throw new NotImplementedException();
             }
 
             packages.Add(new NuGetPackage

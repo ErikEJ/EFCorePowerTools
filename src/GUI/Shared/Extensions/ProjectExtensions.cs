@@ -126,7 +126,7 @@ internal static class ProjectExtensions
             return null;
         }
 
-        var path = Path.Combine(projectPath,  RevEng.Common.Constants.ConfigFileName);
+        var path = Path.Combine(projectPath, RevEng.Common.Constants.ConfigFileName);
 
         if (File.Exists(path))
         {

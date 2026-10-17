@@ -153,27 +153,27 @@ public class ReportFactory
 
     private static IEnumerable<IssueType> GetIssueTypes(IList<RuleDescriptor> rules, Func<RuleDescriptor, bool> suppressIssueTypes)
         => (from r in rules
-                where suppressIssueTypes == null || !suppressIssueTypes.Invoke(r)
-                select new IssueType()
-                {
-                    Severity = r.Severity.ToString(),
-                    Description = r.DisplayDescription,
-                    Category = $"{r.Namespace}.{r.Metadata.Category}",
+            where suppressIssueTypes == null || !suppressIssueTypes.Invoke(r)
+            select new IssueType()
+            {
+                Severity = r.Severity.ToString(),
+                Description = r.DisplayDescription,
+                Category = $"{r.Namespace}.{r.Metadata.Category}",
 
-                    // as we are including msft rules now too, we need to include the namespace in the category
-                    Id = r.ShortRuleId,
-                }).Distinct(new IssueTypeComparer());
+                // as we are including msft rules now too, we need to include the namespace in the category
+                Id = r.ShortRuleId,
+            }).Distinct(new IssueTypeComparer());
 
     private static IEnumerable<Issue> GetProblems(IEnumerable<SqlRuleProblem> problems)
         => from p in problems
-            select new Issue
-            {
-                File = !string.IsNullOrWhiteSpace(p.SourceName) ? p.SourceName : GetName(p.ModelElement.Name),
-                Line = p.StartLine,
-                Message = p.Description,
-                Offset = p.StartColumn.ToString(CultureInfo.InvariantCulture),
-                TypeId = p.Rule(),
-            };
+           select new Issue
+           {
+               File = !string.IsNullOrWhiteSpace(p.SourceName) ? p.SourceName : GetName(p.ModelElement.Name),
+               Line = p.StartLine,
+               Message = p.Description,
+               Offset = p.StartColumn.ToString(CultureInfo.InvariantCulture),
+               TypeId = p.Rule(),
+           };
 
     private static string GetName(ObjectIdentifier identifier) => "[" + string.Join("].[", identifier.Parts.Select((string x) => x)) + "]";
 
