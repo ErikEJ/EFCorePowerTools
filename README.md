@@ -14,7 +14,7 @@ Start with the **CLI (`efcpt`)** for reverse engineering across a team or in CI.
 
 | Tool | Use it for | Get started |
 | --- | --- | --- |
-| **Command-line tool (`efcpt`)** | Scripted reverse engineering for local development, shared team workflows and CI on Windows, Linux and macOS. | Follow the [CLI installation and usage guide](src/Core/efcpt.8/readme.md#getting-started). |
+| **Command-line tool (`efcpt`)** | Scripted reverse engineering for local development, shared team workflows and CI on Windows, Linux and macOS. | Follow the [CLI installation and usage guide](https://www.nuget.org/packages/ErikEJ.EFCorePowerTools.Cli#readme-body-tab). |
 | **Visual Studio extension** | Model visualization and inspection in Visual Studio 2022, plus a reverse engineering wizard for those who prefer a graphical workflow. | [Install from Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools). For the reverse engineering wizard, follow the [Quick Start](https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering-Quick-Start), which includes a 10 minute video. |
 
 You can use both tools together: generate and regenerate your code with the CLI, then use the Visual Studio extension to [visualize and inspect the resulting DbContext model](https://github.com/ErikEJ/EFCorePowerTools/wiki/Inspect-your-DbContext-model).
@@ -28,14 +28,14 @@ For reverse engineering with the **Visual Studio extension**, the .NET 8.0 or .N
 The CLI lets you keep generation choices in source control and run the same command locally and in CI. This makes changes to object selection, naming and code generation settings reviewable alongside your application code. For consistent output across developers and build agents:
 
 - Pin the CLI to an exact version and commit the generation script, `efcpt-config.json`, and any custom renaming files or T4 templates.
-- Use the same source database schema or [.dacpac input](src/Core/efcpt.8/readme.md#using-a-dacpac-file) for each run.
-- Set explicit [line endings and character set](src/Core/efcpt.8/readme.md#line-endings-and-character-set) so generated files use the same formatting on Windows, Linux and macOS.
+- Use the same source database schema or [.dacpac input](https://www.nuget.org/packages/ErikEJ.EFCorePowerTools.Cli#using-a-dacpac-file) for each run.
+- Set explicit [line endings and character set](https://www.nuget.org/packages/ErikEJ.EFCorePowerTools.Cli#line-endings-and-character-set) so generated files use the same formatting on Windows, Linux and macOS.
 
 ## Documentation
 
 | Task | Guide |
 | --- | --- |
-| Run and configure `efcpt`. | [CLI guide](src/Core/efcpt.8/readme.md) |
+| Run and configure `efcpt`. | [CLI guide](https://www.nuget.org/packages/ErikEJ.EFCorePowerTools.Cli#readme-body-tab) |
 | Choose database objects and customize generated code, names, templates and stored procedures. | [Reverse Engineering guide](https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering) |
 | Visualize and inspect a DbContext model in Visual Studio. | [Model graphing and scripting](https://github.com/ErikEJ/EFCorePowerTools/wiki/Inspect-your-DbContext-model) |
 | Explore the Visual Studio extension's database and database project tools. | [User guide and feature index](https://github.com/ErikEJ/EFCorePowerTools/wiki) |
@@ -43,7 +43,7 @@ The CLI lets you keep generation choices in source control and run the same comm
 
 ## Daily builds
 
-- **CLI:** Follow [Getting the latest daily build](src/Core/efcpt.8/readme.md#getting-the-latest-daily-build).
+- **CLI:** Follow [Getting the latest daily build](https://www.nuget.org/packages/ErikEJ.EFCorePowerTools.Cli#getting-the-latest-daily-build).
 - **Visual Studio extension:** Download from [Open VSIX Gallery](https://www.vsixgallery.com/extension/f4c4712c-ceae-4803-8e52-0e2049d5de9f). To receive daily build updates automatically, install the [VSIX Gallery extension](https://marketplace.visualstudio.com/items?itemName=MadsKristensen.VSIXGallery-nightlybuilds).
 
 ## Videos and presentations
@@ -55,8 +55,8 @@ The CLI lets you keep generation choices in source control and run the same comm
 ## Related projects and packages
 
 - [EF Core Power Pack](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerPack) bundles EF Core Power Tools with database connection providers (DDEX) and other tools for Visual Studio.
-- [ErikEJ.EntityFrameworkCore.DgmlBuilder](src/Nupkg/ErikEJ.EntityFrameworkCore.DgmlBuilder/readme.md) adds `AsDgml()` to a derived DbContext to generate a model graph for the Visual Studio DGML viewer.
-- [ErikEJ.EntityFrameworkCore.SqlServer.Dacpac](src/Nupkg/ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac/readme.md) enables reverse engineering a SQL Server .dacpac with the EF Core tooling (`dotnet ef`).
+- [ErikEJ.EntityFrameworkCore.DgmlBuilder](https://www.nuget.org/packages/ErikEJ.EntityFrameworkCore.DgmlBuilder) adds `AsDgml()` to a derived DbContext to generate a model graph for the Visual Studio DGML viewer.
+- [ErikEJ.EntityFrameworkCore.SqlServer.Dacpac](https://www.nuget.org/packages/ErikEJ.EntityFrameworkCore.SqlServer.Dacpac) enables reverse engineering a SQL Server .dacpac with the EF Core tooling (`dotnet ef`).
 - [Tools and utilities for embedded database development](https://erikej.github.io/SqlCeToolbox/)
 
 ## Contributing
