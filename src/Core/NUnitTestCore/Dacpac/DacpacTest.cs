@@ -547,7 +547,7 @@ GO
         public void Issue2263SprocWithCte()
         {
             var factory = new SqlServerDacpacStoredProcedureModelFactory(
-                new SqlServerDacpacDatabaseModelFactoryOptions{ MergeDacpacs = false });
+                new SqlServerDacpacDatabaseModelFactoryOptions { MergeDacpacs = false });
             var options = new ModuleModelFactoryOptions { FullModel = true, Modules = new List<string>() };
 
             // Act
@@ -618,7 +618,7 @@ GO
         public void Issue2322TvpSprocParameters()
         {
             var factory = new SqlServerDacpacStoredProcedureModelFactory(
-                new SqlServerDacpacDatabaseModelFactoryOptions{ MergeDacpacs = false });
+                new SqlServerDacpacDatabaseModelFactoryOptions { MergeDacpacs = false });
             var options = new ModuleModelFactoryOptions { FullModel = true, Modules = new List<string>() };
 
             // Act
@@ -632,7 +632,7 @@ GO
             Assert.Equal("structured", dbModel.Routines[0].Parameters[0].StoreType);
             Assert.NotNull(dbModel.Routines[0].Parameters[0].TvpColumns);
             Assert.True(dbModel.Routines[0].Parameters[0].TvpColumns.Count > 0);
-            
+
             // Debug - print TVP columns
             System.Console.WriteLine($"TVP Columns count: {dbModel.Routines[0].Parameters[0].TvpColumns.Count}");
             foreach (var col in dbModel.Routines[0].Parameters[0].TvpColumns)

@@ -763,7 +763,7 @@ namespace UnitTests.Services
             {
                 Name = "PREFIX_APPLE_NAME",
                 Table = new DatabaseTable
-                { 
+                {
                     Schema = "dbo",
                     Name = "whatever",
                 },
@@ -870,18 +870,18 @@ namespace UnitTests.Services
                       Tables = new List<TableRenamer>
                       {
                           new TableRenamer
-                          { 
+                          {
                             Name = "Users",
                             Columns = new List<ColumnNamer>
-                            { 
+                            {
                                 new ColumnNamer
-                                { 
+                                {
                                     Name = "UserID",
                                     NewName = "UserID",
                                 },
                             },
                           },
-                      },                       
+                      },
                   },
               };
 
