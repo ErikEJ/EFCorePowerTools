@@ -1,4 +1,4 @@
-﻿namespace UnitTests.ViewModels
+namespace UnitTests.ViewModels
 {
     using EFCorePowerTools.ViewModels;
     using NUnit.Framework;
