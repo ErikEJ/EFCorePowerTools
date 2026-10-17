@@ -34,8 +34,11 @@ if (solutions.Length == 0)
     return 1;
 }
 
+await Console.Out.WriteLineAsync("\nVerifying formatting: verification helper");
+using var helperFormat = StartProcess("dotnet", "format", "whitespace", ScriptDirectory(), "--folder", "--verify-no-changes", "--verbosity", "diagnostic");
+var result = (await LogOutputAsync(helperFormat)).ExitCode;
+
 var msbuild = OperatingSystem.IsWindows() ? await FindMSBuildAsync() : null;
-var result = 0;
 foreach (var solution in solutions)
 {
     await Console.Out.WriteLineAsync($"\nRestoring: {solution}");

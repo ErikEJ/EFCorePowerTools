@@ -266,8 +266,8 @@ public static class Providers
 
         if (databaseType == DatabaseType.Mysql)
         {
-            var pkgVersion = string.Empty;
             var prefix = "Pomelo";
+            string pkgVersion;
             switch (codeGenerationMode)
             {
                 case CodeGenerationMode.EFCore8:
