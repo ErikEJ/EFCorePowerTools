@@ -1,0 +1,46 @@
+name: Formatting
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  format:
+    name: Formatting
+    # Both solutions contain projects that need Visual Studio (VSSDK/SSDT).
+    runs-on: windows-2025-vs2026
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+
+      - uses: microsoft/setup-msbuild@v3
+        with:
+          vs-version: '[18.0,19.0)'
+
+      # Restore with Visual Studio MSBuild so legacy VSIX and SQL targets load.
+      - name: Restore source solution
+        run: msbuild src/EFCorePowerTools.slnx /t:Restore /p:Configuration=Debug /v:minimal /nologo
+
+      - name: Restore scaffolding test solution
+        run: msbuild test/ScaffoldingTester/ScaffoldingTester.slnx /t:Restore /p:Configuration=Debug /v:minimal /nologo
+
+      - name: Verify source formatting
+        run: dotnet format src/EFCorePowerTools.slnx --verify-no-changes --no-restore --verbosity normal
+
+      - name: Verify scaffolding test formatting
+        run: dotnet format test/ScaffoldingTester/ScaffoldingTester.slnx --verify-no-changes --no-restore --verbosity normal
