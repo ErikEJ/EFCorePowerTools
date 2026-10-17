@@ -8,7 +8,7 @@ Aims to lower the bar for getting started with EF Core, by providing GUI based a
 [![CLI version including nightly builds](https://img.shields.io/nuget/vpre/ErikEJ.EFCorePowerTools.Cli?label=CLI%20%28incl.%20nightly%29)](src/Core/efcpt.8/readme.md#getting-the-latest-daily-build)
 [![Visual Studio Marketplace Rating](https://badgen.net/vs-marketplace/rating/ErikEJ.EFCorePowerTools)](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools&ssr=false#review-details)
 [![Visual Studio Marketplace Installs](https://badgen.net/vs-marketplace/i/ErikEJ.EFCorePowerTools)](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools)
-[![Twitter Follow](https://img.shields.io/twitter/follow/ErikEJ.svg?style=social&label=Follow)](https://twitter.com/ErikEJ) 
+[![Follow ErikEJ on X](https://img.shields.io/badge/Follow-%40ErikEJ-black?logo=x&logoColor=white)](https://x.com/ErikEJ)
 
 [Quick Start and 10 minute intro video](https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering-Quick-Start)
 
