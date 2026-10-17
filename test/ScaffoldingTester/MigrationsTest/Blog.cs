@@ -1,4 +1,4 @@
-﻿namespace MigrationsTest
+namespace MigrationsTest
 {
     public class Blog
     {

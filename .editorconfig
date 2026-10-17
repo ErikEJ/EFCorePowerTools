@@ -29,7 +29,7 @@ trim_trailing_whitespace = true
 indent_style = tab
 
 # Visual Studio XML Project Files
-[*.{csproj,vcxproj.filters,proj,projitems,shproj}]
+[*.{csproj,vcxproj.filters,proj,projitems,shproj,slnx}]
 indent_size = 2
 
 # XML Configuration Files
@@ -571,3 +571,14 @@ dotnet_diagnostic.SA1518.severity = none # Newline at the end of the file
 
 [PatchedSqlServerDatabaseModelFactory.cs]
 generated_code = true
+
+# Preserve checked-in scaffolding output, including models generated from T4 templates.
+[test/ScaffoldingTester/**/Models/**.cs]
+generated_code = true
+
+# Custom partial classes are maintained by hand and should follow the shared rules.
+[test/ScaffoldingTester/**/Models/*.{custom,Custom}.cs]
+generated_code = false
+
+[test/ScaffoldingTester/ScaffoldingTester5/Models/StringSplitResult.cs]
+generated_code = false
