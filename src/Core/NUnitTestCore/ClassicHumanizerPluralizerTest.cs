@@ -1,4 +1,4 @@
-﻿using Xunit;
+using Xunit;
 using RevEng.Core;
 
 namespace UnitTests

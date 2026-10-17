@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using RevEng.Core.Routines.Extensions;
 using Xunit;
 

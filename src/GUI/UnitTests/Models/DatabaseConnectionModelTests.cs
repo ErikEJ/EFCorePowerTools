@@ -1,4 +1,4 @@
-﻿using EFCorePowerTools.Common.Models;
+using EFCorePowerTools.Common.Models;
 using NUnit.Framework;
 using NUnit.Framework.Legacy;
 using RevEng.Common;
