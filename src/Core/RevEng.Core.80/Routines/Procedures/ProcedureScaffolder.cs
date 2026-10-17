@@ -15,10 +15,6 @@ namespace RevEng.Core.Routines.Procedures;
 
 public abstract class ProcedureScaffolder : IRoutineScaffolder
 {
-#pragma warning disable SA1401 // Fields should be private
-    internal readonly ICSharpHelper Code;
-    internal IndentedStringBuilder Sb;
-#pragma warning restore SA1401 // Fields should be private
     private readonly IClrTypeMapper typeMapper;
     private readonly Scaffolder scaffolder;
 
@@ -33,6 +29,10 @@ public abstract class ProcedureScaffolder : IRoutineScaffolder
     public string FileNameSuffix { get; set; }
 
     public string ProviderUsing { get; set; }
+
+    internal ICSharpHelper Code { get; }
+
+    internal IndentedStringBuilder Sb { get; set; }
 
     public SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue, bool useAsyncCalls, bool useInternalAccessModifier, bool useNullableReferences, GeneratedFileFormat fileFormat)
         => ScaffoldHelper.Save(scaffoldedModel, outputDir, nameSpaceValue, useAsyncCalls, fileFormat);
