@@ -1,4 +1,4 @@
-﻿namespace ScaffoldingTester.Models
+namespace ScaffoldingTester.Models
 {
     public class StringSplitResult
     {

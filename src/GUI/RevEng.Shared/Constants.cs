@@ -1,4 +1,4 @@
-﻿namespace RevEng.Common;
+namespace RevEng.Common;
 
 public static class Constants
 {

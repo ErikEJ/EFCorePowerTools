@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using EFCorePowerTools.Handlers.ReverseEngineer;
 using NUnit.Framework;
 using NUnit.Framework.Legacy;
