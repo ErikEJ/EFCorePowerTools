@@ -1,10 +1,10 @@
-using Xunit;
-using RevEng.Common;
-using RevEng.Core;
 using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using RevEng.Common;
+using RevEng.Core;
+using Xunit;
 
 namespace NUnitTestCore
 {

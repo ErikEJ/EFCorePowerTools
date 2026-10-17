@@ -6,8 +6,8 @@ using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using Microsoft.SqlServer.Dac;
 using Microsoft.SqlServer.Dac.Model;
-using Xunit;
 using RevEng.Core.Abstractions;
+using Xunit;
 
 namespace UnitTests
 {

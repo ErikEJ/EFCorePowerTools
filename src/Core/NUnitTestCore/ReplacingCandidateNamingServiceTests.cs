@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
-using Xunit;
 using RevEng.Common;
 using RevEng.Core;
+using Xunit;
 
 namespace UnitTests.Services
 {

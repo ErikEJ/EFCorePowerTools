@@ -1,9 +1,5 @@
-# ATC coding rules - https://github.com/atc-net/atc-coding-rules
-# Version: 1.0.1
-# Updated: 03-06-2024
-# Location: Root
-# Distribution: DotNet8
-# Inspired by: https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/code-style-rule-options
+# EF Core Power Tools coding conventions
+# Adapted from https://github.com/atc-net/atc-coding-rules
 
 ##########################################
 # Common Settings
@@ -75,9 +71,10 @@ indent_style = tab
 # https://docs.microsoft.com/visualstudio/ide/editorconfig-language-conventions
 ##########################################
 
-# Default Severity for .NET Code Style
-# https://docs.microsoft.com/dotnet/fundamentals/code-analysis/configuration-options#scope
-dotnet_analyzer_diagnostic.severity = error
+[*.{cs,csx,cake}]
+
+# Configure analyzer severities per rule below.
+# Suggestions remain advisory; dotnet format checks warnings and errors by default.
 
 # Misc preferences
 file_header_template = unset                                                    # IDE0073
@@ -86,7 +83,6 @@ dotnet_separate_import_directive_groups = false
 
 # .NET Code Style Settings
 # https://docs.microsoft.com/visualstudio/ide/editorconfig-language-conventions#net-code-style-settings
-[*.{cs,csx,cake}]
 
 # "this." and "Me." qualifiers
 # https://docs.microsoft.com/visualstudio/ide/editorconfig-language-conventions#this-and-me
@@ -156,7 +152,7 @@ csharp_style_var_elsewhere = true                                               
 
 # Namespace declaration preferences
 # https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/style-rules/ide0160-ide0161?view=vs-2022
-csharp_style_namespace_declarations = file_scoped                               # IDE0160 and IDE0161
+csharp_style_namespace_declarations = file_scoped:suggestion                    # IDE0160 and IDE0161
 
 # Expression-bodied members
 # https://docs.microsoft.com/visualstudio/ide/editorconfig-language-conventions#expression-bodied-members
@@ -265,7 +261,6 @@ csharp_space_between_square_brackets = false
 # https://docs.microsoft.com/visualstudio/ide/editorconfig-formatting-conventions#wrap-options
 csharp_preserve_single_line_statements = false
 csharp_preserve_single_line_blocks = true
-csharp_style_namespace_declarations = file_scoped:suggestion
 
 ##########################################
 # .NET Naming Conventions
@@ -437,28 +432,6 @@ dotnet_naming_rule.parameters_rule.severity             = warning
 # Code Analyzers Rules
 ##########################################
 
-# AsyncFixer
-# http://www.asyncfixer.com
-
-
-# Asyncify
-# https://github.com/hvanbakel/Asyncify-CSharp
-
-
-# Meziantou
-# https://www.meziantou.net/enforcing-asynchronous-code-good-practices-using-a-roslyn-analyzer.htm
-dotnet_diagnostic.MA0003.severity = suggestion      # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/Meziantou/MA0003.md
-dotnet_diagnostic.MA0004.severity = suggestion      # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/Meziantou/MA0004.md
-dotnet_diagnostic.MA0006.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/Meziantou/MA0006.md
-dotnet_diagnostic.MA0011.severity = none            # Duplicate of CA1305
-dotnet_diagnostic.MA0016.severity = error           # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/Meziantou/MA0016.md
-dotnet_diagnostic.MA0025.severity = suggestion      # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/Meziantou/MA0025.md
-dotnet_diagnostic.MA0026.severity = suggestion      # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/Meziantou/MA0026.md
-dotnet_diagnostic.MA0028.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/Meziantou/MA0028.md
-dotnet_diagnostic.MA0038.severity = none            # Duplicate of CA1822
-dotnet_diagnostic.MA0048.severity = error           # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/Meziantou/MA0048.md
-
-
 # Microsoft - Code Analysis
 # https://docs.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/
 dotnet_diagnostic.CA1014.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/MicrosoftCodeAnalysis/CA1014.md
@@ -523,10 +496,6 @@ dotnet_diagnostic.IDE0305.severity = suggestion     # Collection initialization 
 dotnet_diagnostic.CS4014.severity = error          # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/MicrosoftCompilerErrors/CS4014.md
 
 
-# SecurityCodeScan
-# https://security-code-scan.github.io/
-
-
 # StyleCop
 # https://github.com/DotNetAnalyzers/StyleCopAnalyzers
 dotnet_diagnostic.SA1009.severity = none            # https://github.com/atc-net/atc-coding-rules/blob/main/documentation/CodeAnalyzersRules/StyleCop/SA1009.md
@@ -556,11 +525,6 @@ dotnet_diagnostic.S3358.severity = none           	# Extract this nested ternary
 dotnet_diagnostic.S6602.severity = none           	# "Find" method should be used instead of the "FirstOrDefault"
 dotnet_diagnostic.S6603.severity = none            	# The collection-specific "TrueForAll" method should be used instead of the "All"
 dotnet_diagnostic.S6605.severity = none             # Collection-specific "Exists" method should be used instead of the "Any"
-
-
-##########################################
-# Custom - File Extension Settings
-##########################################
 
 
 ##########################################

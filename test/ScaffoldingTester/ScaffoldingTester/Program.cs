@@ -1,6 +1,6 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 using ScaffoldingTester.Models;
-using System;
 
 namespace ScaffoldingTester
 {
