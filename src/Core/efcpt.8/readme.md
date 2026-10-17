@@ -2,6 +2,9 @@
 
 Cross platform command line tool for advanced EF Core reverse engineering. See the full guide explaining all the features [here](https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering).
 
+[![CLI build](https://github.com/ErikEJ/EFCorePowerTools/actions/workflows/cli-tool.yml/badge.svg?branch=master)](https://github.com/ErikEJ/EFCorePowerTools/actions/workflows/cli-tool.yml?query=branch%3Amaster)
+[![CLI version including nightly builds](https://img.shields.io/nuget/vpre/ErikEJ.EFCorePowerTools.Cli?label=CLI%20%28incl.%20nightly%29)](https://github.com/ErikEJ/EFCorePowerTools/blob/master/src/Core/efcpt.8/readme.md#getting-the-latest-daily-build)
+
 ## Getting started
 
 The tool runs on any operating system with the required .NET runtime installed, and can roll forward to a newer major runtime if needed.
