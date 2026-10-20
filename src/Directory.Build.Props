@@ -17,8 +17,8 @@
 
   <!-- Legacy projects need the analyzer package and cannot resolve the SDK's "latest" analysis level. -->
   <PropertyGroup Condition="'$(UsingMicrosoftNETSdk)' != 'true' And '$(MSBuildProjectExtension)' == '.csproj'">
-    <AnalysisLevel>9.0-all</AnalysisLevel>
-    <AnalysisLevelStyle>9.0-all</AnalysisLevelStyle>
+    <AnalysisLevel>10.0-all</AnalysisLevel>
+    <AnalysisLevelStyle>10.0-all</AnalysisLevelStyle>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(UsingMicrosoftNETSdk)' != 'true' And '$(MSBuildProjectExtension)' == '.csproj'">
