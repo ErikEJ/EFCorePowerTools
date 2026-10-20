@@ -3,12 +3,11 @@ name: VSIX
 on:
   workflow_dispatch:
   push:
-    paths-ignore:
-      - '**/*'
-      - '!.github/workflows/vsix.yml'
-      - '!.editorconfig'
-      - '!src/**/*'
-      - '!test/ScaffoldingTester/**/*'
+    paths:
+      - '.github/workflows/vsix.yml'
+      - '.editorconfig'
+      - 'src/**/*'
+      - 'test/ScaffoldingTester/**/*'
     branches:
       - 'master'
   pull_request:
