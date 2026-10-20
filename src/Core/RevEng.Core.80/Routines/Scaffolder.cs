@@ -13,10 +13,6 @@ namespace RevEng.Core.Routines;
 
 public class Scaffolder
 {
-#pragma warning disable SA1401 // Fields should be private
-    internal readonly ICSharpHelper Code;
-    internal IndentedStringBuilder Sb;
-#pragma warning restore SA1401 // Fields should be private
     private readonly IClrTypeMapper typeMapper;
 
     public Scaffolder([System.Diagnostics.CodeAnalysis.NotNull] ICSharpHelper code, IClrTypeMapper typeMapper)
@@ -26,6 +22,10 @@ public class Scaffolder
         Code = code;
         this.typeMapper = typeMapper;
     }
+
+    internal ICSharpHelper Code { get; }
+
+    internal IndentedStringBuilder Sb { get; set; }
 
     public string WriteResultClass(List<ModuleResultElement> resultElements, ModuleScaffolderOptions options, string name, string schemaName)
     {

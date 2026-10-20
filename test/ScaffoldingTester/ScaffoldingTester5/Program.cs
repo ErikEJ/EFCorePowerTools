@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ScaffoldingTester.Models;
 using System;
 using System.Linq;
@@ -15,7 +15,7 @@ namespace ScaffoldingTester
 
                 var retVal = new OutputParameter<int>();
                 var multi = await db.GetProcedures().MultiSetAsync(new DateTime(2021, 12, 24), 7.6m, retVal);
-                
+
                 //var list = new[] { "ALFKI", "BERGS", "VAFFE" };
 
                 var list = new[] { 10253L, 10255L, 10260L };

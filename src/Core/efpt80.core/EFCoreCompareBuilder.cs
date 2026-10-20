@@ -62,7 +62,7 @@ internal static class EfCoreCompareBuilder
         return result;
     }
 
-    private static List<Tuple<string, string>> BuildResult(string outputPath, string startupOutputPath,  bool listDbContexts)
+    private static List<Tuple<string, string>> BuildResult(string outputPath, string startupOutputPath, bool listDbContexts)
     {
         var result = new List<Tuple<string, string>>();
         var operations = GetOperations(outputPath, startupOutputPath);

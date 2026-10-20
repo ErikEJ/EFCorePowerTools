@@ -13,7 +13,6 @@ using EFCorePowerTools.Handlers.ReverseEngineer;
 using EFCorePowerTools.Locales;
 using EFCorePowerTools.Messages;
 using EFCorePowerTools.ViewModels;
-using Microsoft.VisualStudio.Shell;
 using RevEng.Common;
 
 namespace EFCorePowerTools.Wizard;

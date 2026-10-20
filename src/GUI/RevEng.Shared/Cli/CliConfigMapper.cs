@@ -264,8 +264,8 @@ public static class CliConfigMapper
         if (typeof(T) == typeof(Table)
             && !serializationTableModels.Any())
         {
-                // No tables selected, so add a dummy table in order to generate an empty DbContext
-                serializationTableModels.Add(new SerializationTableModel($"Dummy_{new Guid("9A016951-3470-4926-A7B2-58392A3F8CF3")}", ObjectType.Table, null, null));
+            // No tables selected, so add a dummy table in order to generate an empty DbContext
+            serializationTableModels.Add(new SerializationTableModel($"Dummy_{new Guid("9A016951-3470-4926-A7B2-58392A3F8CF3")}", ObjectType.Table, null, null));
         }
 
         if (typeof(T) == typeof(StoredProcedure))
