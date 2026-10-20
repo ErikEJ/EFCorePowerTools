@@ -6,7 +6,7 @@
     <File Path="../.github/workflows/vsix.yml" />
     <File Path="../samples/efcpt-config.schema.json" />
     <File Path="../.editorconfig" />
-    <File Path="Directory.Build.Props" />
+    <File Path="Directory.Build.props" />
     <File Path="NuGet.Config" />
   </Folder>
   <Folder Name="/Modelling/">
