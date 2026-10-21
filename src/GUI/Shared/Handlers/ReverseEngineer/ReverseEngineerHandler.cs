@@ -445,9 +445,9 @@ internal class ReverseEngineerHandler
         Telemetry.TrackEngineUse(options.DatabaseType, revEngResult.DatabaseEdition, revEngResult.DatabaseVersion, revEngResult.DatabaseLevel, revEngResult.DatabaseEditionId);
     }
 
-    private static async Task<List<TableModel>> GetDacpacTablesAsync(string dacpacPath, CodeGenerationMode codeGenerationMode)
+    private static async Task<List<TableModel>> GetDacpacTablesAsync(string dacpacPath, CodeGenerationMode codeGenerationMode, SchemaInfo[] schemas)
     {
-        var builder = new TableListBuilder(dacpacPath, DatabaseType.SQLServerDacpac, null);
+        var builder = new TableListBuilder(dacpacPath, DatabaseType.SQLServerDacpac, schemas);
 
         return await builder.GetTableDefinitionsAsync(codeGenerationMode);
     }
@@ -612,7 +612,7 @@ internal class ReverseEngineerHandler
             await VS.StatusBar.StartAnimationAsync(StatusAnimation.Build);
 
             predefinedTables = !string.IsNullOrEmpty(options.Dacpac)
-                                       ? await GetDacpacTablesAsync(options.Dacpac, options.CodeGenerationMode)
+                                       ? await GetDacpacTablesAsync(options.Dacpac, options.CodeGenerationMode, options.Schemas?.ToArray())
                                        : await GetTablesAsync(dbInfo, options.CodeGenerationMode, options.Schemas?.ToArray());
         }
         catch (InvalidOperationException ex)
