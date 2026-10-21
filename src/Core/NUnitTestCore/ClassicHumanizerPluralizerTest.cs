@@ -1,5 +1,5 @@
-using Xunit;
 using RevEng.Core;
+using Xunit;
 
 namespace UnitTests
 {

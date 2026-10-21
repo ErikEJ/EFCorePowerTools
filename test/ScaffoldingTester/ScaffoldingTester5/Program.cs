@@ -1,7 +1,7 @@
-using Microsoft.EntityFrameworkCore;
-using ScaffoldingTester.Models;
 using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using ScaffoldingTester.Models;
 
 namespace ScaffoldingTester
 {
