@@ -608,9 +608,9 @@ public class RevEngWizardHandler : IReverseEngineerBll
         return string.IsNullOrEmpty(messageForStatusPage) ? "Successfully completed" : messageForStatusPage;
     }
 
-    private static async Task<List<TableModel>> GetDacpacTablesAsync(string dacpacPath, CodeGenerationMode codeGenerationMode)
+    private static async Task<List<TableModel>> GetDacpacTablesAsync(string dacpacPath, CodeGenerationMode codeGenerationMode, SchemaInfo[] schemas)
     {
-        var builder = new TableListBuilder(dacpacPath, DatabaseType.SQLServerDacpac, null);
+        var builder = new TableListBuilder(dacpacPath, DatabaseType.SQLServerDacpac, schemas);
 
         return await builder.GetTableDefinitionsAsync(codeGenerationMode);
     }
@@ -789,7 +789,7 @@ public class RevEngWizardHandler : IReverseEngineerBll
             }
 
             predefinedTables = !string.IsNullOrEmpty(options.Dacpac)
-                                       ? await GetDacpacTablesAsync(options.Dacpac, options.CodeGenerationMode)
+                                       ? await GetDacpacTablesAsync(options.Dacpac, options.CodeGenerationMode, options.Schemas?.ToArray())
                                        : await GetTablesAsync(dbInfo, options.CodeGenerationMode, options.Schemas?.ToArray());
         }
         catch (Exception ex)

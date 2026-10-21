@@ -171,6 +171,7 @@ public class SqlServerDacpacDatabaseModelFactory : IDatabaseModelFactory
 
         var views = model.GetObjects<TSqlView>(DacQueryScopes.UserDefined)
             .Where(t => tables == null || !tables.Any() || tables.Contains($"[{t.Name.Parts[0]}].[{t.Name.Parts[1]}]"))
+            .Where(t => !schemas.Any() || schemas.Contains(t.Name.Parts[0]))
             .ToList();
 
         var tableTypes = model.GetObjects<TSqlTableType>(DacQueryScopes.UserDefined);

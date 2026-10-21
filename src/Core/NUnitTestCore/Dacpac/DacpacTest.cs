@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using ErikEJ.EntityFrameworkCore.SqlServer.Scaffolding;
 using Microsoft.EntityFrameworkCore.Scaffolding;
+using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using Microsoft.SqlServer.Dac;
 using Microsoft.SqlServer.Dac.Model;
 using RevEng.Core.Abstractions;
@@ -177,6 +178,56 @@ GO
 
                 var nameColumn = view.Columns.Single(c => c.Name == "Name");
                 Assert.Equal("Column description", nameColumn.Comment);
+            }
+            finally
+            {
+                File.Delete(dacpacPath);
+            }
+        }
+
+        [Fact]
+        public void CanFilterTablesAndViewsBySchema()
+        {
+            var factory = new SqlServerDacpacDatabaseModelFactory();
+            var options = new DatabaseModelFactoryOptions(null, new List<string> { "sales" });
+            var dacpacPath = BuildDacpac(
+                "CREATE SCHEMA [sales]",
+                "CREATE TABLE [dbo].[Customer] ([Id] int NOT NULL CONSTRAINT [PK_Customer] PRIMARY KEY)",
+                "CREATE TABLE [sales].[Order] ([Id] int NOT NULL CONSTRAINT [PK_Order] PRIMARY KEY)",
+                "CREATE VIEW [dbo].[CustomerView] AS SELECT [Id] FROM [dbo].[Customer]",
+                "CREATE VIEW [sales].[OrderView] AS SELECT [Id] FROM [sales].[Order]");
+
+            try
+            {
+                var dbModel = factory.Create(dacpacPath, options);
+
+                Assert.All(dbModel.Tables, t => Assert.Equal("sales", t.Schema));
+                Assert.Single(dbModel.Tables, t => t is not DatabaseView && t.Name == "Order");
+                Assert.Single(dbModel.Tables, t => t is DatabaseView && t.Name == "OrderView");
+            }
+            finally
+            {
+                File.Delete(dacpacPath);
+            }
+        }
+
+        [Fact]
+        public void IncludesAllSchemasWhenNoSchemaFilter()
+        {
+            var factory = new SqlServerDacpacDatabaseModelFactory();
+            var options = new DatabaseModelFactoryOptions(null, new List<string>());
+            var dacpacPath = BuildDacpac(
+                "CREATE SCHEMA [sales]",
+                "CREATE TABLE [dbo].[Customer] ([Id] int NOT NULL CONSTRAINT [PK_Customer] PRIMARY KEY)",
+                "CREATE TABLE [sales].[Order] ([Id] int NOT NULL CONSTRAINT [PK_Order] PRIMARY KEY)",
+                "CREATE VIEW [dbo].[CustomerView] AS SELECT [Id] FROM [dbo].[Customer]",
+                "CREATE VIEW [sales].[OrderView] AS SELECT [Id] FROM [sales].[Order]");
+
+            try
+            {
+                var dbModel = factory.Create(dacpacPath, options);
+
+                Assert.Equal(4, dbModel.Tables.Count);
             }
             finally
             {
