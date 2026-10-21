@@ -4,10 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
-using Xunit;
 using RevEng.Common;
 using RevEng.Common.Cli;
 using RevEng.Common.Cli.Configuration;
+using Xunit;
 
 namespace UnitTests
 {

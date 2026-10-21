@@ -75,18 +75,14 @@ indent_style = tab
 # https://docs.microsoft.com/visualstudio/ide/editorconfig-language-conventions
 ##########################################
 
-# Default Severity for .NET Code Style
-# https://docs.microsoft.com/dotnet/fundamentals/code-analysis/configuration-options#scope
-dotnet_analyzer_diagnostic.severity = error
+# .NET Code Style Settings
+# https://docs.microsoft.com/visualstudio/ide/editorconfig-language-conventions#net-code-style-settings
+[*.{cs,csx,cake}]
 
 # Misc preferences
 file_header_template = unset                                                    # IDE0073
 dotnet_sort_system_directives_first = true
 dotnet_separate_import_directive_groups = false
-
-# .NET Code Style Settings
-# https://docs.microsoft.com/visualstudio/ide/editorconfig-language-conventions#net-code-style-settings
-[*.{cs,csx,cake}]
 
 # "this." and "Me." qualifiers
 # https://docs.microsoft.com/visualstudio/ide/editorconfig-language-conventions#this-and-me
