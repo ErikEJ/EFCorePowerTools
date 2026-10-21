@@ -122,7 +122,7 @@ samples/                    # Configuration examples and schemas
 
 ### Common Configuration Files
 - `global.json`: SDK version requirements
-- `src/Directory.Build.Props`: MSBuild common properties, analyzers, code style
+- `src/Directory.Build.props`: MSBuild common properties, analyzers, code style
 - `src/EFCorePowerTools.slnx`: Main solution (includes VSIX projects)
 - `samples/efcpt-config.json`: Complete CLI configuration example
 - `.editorconfig`: Code style and formatting rules
