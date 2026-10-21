@@ -1,0 +1,55 @@
+name: ATC rule updates
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Mondays at 08:17 UTC.
+    - cron: '17 8 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      # Last inspected upstream revision, not an assertion that our rules are identical.
+      # After reviewing changes, update this SHA as described in README.md.
+      ATC_RULES_REVIEWED_REF: c2b0010d2853ddbf20a08a280f6b4300a030995a
+    steps:
+    - name: Check for upstream DotNet8 rule changes
+      shell: bash
+      run: |
+        base_url='https://raw.githubusercontent.com/atc-net/atc-coding-rules'
+        rules_path='distribution/dotnet8/.editorconfig'
+        reviewed="$RUNNER_TEMP/atc-reviewed.editorconfig"
+        current="$RUNNER_TEMP/atc-current.editorconfig"
+        changes="$RUNNER_TEMP/atc-rules.diff"
+
+        curl --fail --silent --show-error --location --retry 3 --max-time 30 \
+          "$base_url/$ATC_RULES_REVIEWED_REF/$rules_path" --output "$reviewed"
+        curl --fail --silent --show-error --location --retry 3 --max-time 30 \
+          "$base_url/main/$rules_path" --output "$current"
+
+        status=0
+        diff -u --label "ATC DotNet8 at $ATC_RULES_REVIEWED_REF" --label 'ATC DotNet8 on main' \
+          "$reviewed" "$current" > "$changes" || status=$?
+
+        if [ "$status" -eq 0 ]; then
+          echo 'ATC DotNet8 rules have not changed since the recorded upstream revision.' >> "$GITHUB_STEP_SUMMARY"
+        elif [ "$status" -eq 1 ]; then
+          cat "$changes"
+          echo '::error::ATC DotNet8 rules changed upstream. Review the diff and follow README.md to update the recorded revision.'
+          {
+            echo 'ATC DotNet8 rules changed upstream. Review the diff in the job log.'
+            echo
+            echo '[Upstream file history](https://github.com/atc-net/atc-coding-rules/commits/main/distribution/dotnet8/.editorconfig)'
+            echo
+            echo 'Follow **Maintaining the ATC rules** in README.md before updating `ATC_RULES_REVIEWED_REF`.'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit 1
+        else
+          echo '::error::Could not compare the ATC rule files.'
+          exit "$status"
+        fi

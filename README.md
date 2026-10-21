@@ -73,6 +73,8 @@ In the `ScaffoldingTester` solution there are scripts to populate Northwind and 
 
 ### Code formatting
 
+The root [`.editorconfig`](.editorconfig) is based on [ATC's DotNet8 coding rules](https://github.com/atc-net/atc-coding-rules/blob/main/distribution/dotnet8/.editorconfig), with project-specific settings for formatting and generated files. The formatter is `dotnet format`, included in the .NET SDK, which reads the checked-in rules. The [ATC coding rules updater](https://github.com/atc-net/atc-coding-rules-updater) is a separate tool for maintaining configuration files; contributors can format code without installing it.
+
 CI build runs a **Verify formatting** step in the **VSIX** workflow to check both solutions against [`.editorconfig`](.editorconfig). If it fails and reports formatting violations, apply fixes from the repository root:
 
 ```sh
@@ -86,6 +88,20 @@ Some violations may need manual fixes. Rerun the commands with `--verify-no-chan
 dotnet format src/EFCorePowerTools.slnx --verify-no-changes
 dotnet format test/ScaffoldingTester/ScaffoldingTester.slnx --verify-no-changes
 ```
+
+### Maintaining the ATC rules
+
+The [ATC rule updates workflow](.github/workflows/atc-rules.yml) runs weekly on Mondays at 08:17 UTC and can also be run manually. It compares ATC's root DotNet8 `.editorconfig` on `main` with a recorded upstream revision and fails when the file changes. This records which upstream changes have been inspected; the repository keeps its own formatting preferences and generated-code exceptions. The workflow checks for future upstream changes, rather than requiring our `.editorconfig` to match ATC exactly.
+
+When it fails:
+
+1. Review the diff in the job log and the [upstream file history](https://github.com/atc-net/atc-coding-rules/commits/main/distribution/dotnet8/.editorconfig).
+2. Apply relevant changes to the root `.editorconfig`, preserving this repository's custom settings, and run the formatting checks above.
+3. Update `ATC_RULES_REVIEWED_REF` in the workflow to the full upstream commit SHA that was reviewed. Explain any intentionally omitted rule changes in the pull request.
+
+The scheduled check downloads comparison files into the runner's temporary directory. It leaves repository files unchanged and runs separately from PR formatting verification. It monitors only the root DotNet8 rule template; analyzer package updates are handled by Dependabot.
+
+ATC's updater also supports `run -p . -t DotNet8 --dry-run --fail-on-changes`. That command checks the full updater configuration, including additional `.editorconfig` and `Directory.Build.props` files it would create. This repository uses the narrower upstream-file check so its existing layout does not cause a recurring failure.
 
 ## Support and sponsors
 
