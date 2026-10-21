@@ -1,0 +1,27 @@
+name: ATC rule updates
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Mondays at 08:17 UTC.
+    - cron: '17 8 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+    - uses: actions/checkout@v7
+
+    - uses: actions/setup-dotnet@v6
+      with:
+        dotnet-version: '10.0.x'
+
+    - name: Install ATC coding rules updater
+      run: dotnet tool install --global atc-coding-rules-updater --version 2.1.0
+
+    - name: Verify coding rules are current
+      run: atc-coding-rules-updater run -p . -t DotNet8 --dry-run --fail-on-changes

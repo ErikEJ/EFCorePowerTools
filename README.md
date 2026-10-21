@@ -73,6 +73,8 @@ In the `ScaffoldingTester` solution there are scripts to populate Northwind and 
 
 ### Code formatting
 
+The root [`.editorconfig`](.editorconfig) is based on [ATC's DotNet8 coding rules](https://github.com/atc-net/atc-coding-rules/blob/main/distribution/dotnet8/.editorconfig), with project-specific overrides. `dotnet format`, included in the .NET SDK, checks source code against these rules.
+
 CI build runs a **Verify formatting** step in the **VSIX** workflow to check both solutions against [`.editorconfig`](.editorconfig). If it fails and reports formatting violations, apply fixes from the repository root:
 
 ```sh
@@ -86,6 +88,8 @@ Some violations may need manual fixes. Rerun the commands with `--verify-no-chan
 dotnet format src/EFCorePowerTools.slnx --verify-no-changes
 dotnet format test/ScaffoldingTester/ScaffoldingTester.slnx --verify-no-changes
 ```
+
+The [ATC rule updates workflow](.github/workflows/atc-rules.yml) runs weekly or manually using [ATC's dry-run check](https://github.com/atc-net/atc-coding-rules-updater#gating-ci-on-coding-rules-are-current). It fails when the updater would create or update configuration files, flagging changes for maintainers to review without modifying repository files.
 
 ## Support and sponsors
 
