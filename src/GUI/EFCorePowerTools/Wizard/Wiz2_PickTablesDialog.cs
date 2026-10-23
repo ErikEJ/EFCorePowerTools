@@ -61,6 +61,8 @@ public partial class Wiz2_PickTablesDialog : WizardResultPageFunction, IPickTabl
             wea.Options.ConnectionString = viewModel.SelectedDatabaseConnection.ConnectionString;
             wea.Options.DatabaseType = viewModel.SelectedDatabaseConnection.DatabaseType;
             wea.Options.Dacpac = viewModel.SelectedDatabaseConnection.FilePath;
+            wea.Options.FilterSchemas = viewModel.FilterSchemas;
+            wea.Options.Schemas = viewModel.FilterSchemas ? viewModel.Schemas?.ToList() : null;
 
             var hasDbInfo = await InvokeWithErrorHandlingAsync(async () =>
             {
