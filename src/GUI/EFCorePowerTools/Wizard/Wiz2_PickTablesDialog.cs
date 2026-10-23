@@ -53,7 +53,12 @@ public partial class Wiz2_PickTablesDialog : WizardResultPageFunction, IPickTabl
         var viewModel = wizardViewModel;
         IsPageLoaded = viewModel.IsPage2Initialized;
         var wea = viewModel.WizardEventArgs;
-        if (!IsPageLoaded)
+
+        // Reload when the connection, EF Core version or schema filter changed on page 1 after the objects were loaded
+        var sourceKey = viewModel.GetObjectsSourceKey();
+        var sourceChanged = viewModel.LoadedObjectsSourceKey != null && viewModel.LoadedObjectsSourceKey != sourceKey;
+
+        if (!IsPageLoaded || sourceChanged)
         {
             wea.Options.UiHint = viewModel.UiHint;
             wea.UserOptions.UiHint = viewModel.UiHint;
@@ -78,15 +83,26 @@ public partial class Wiz2_PickTablesDialog : WizardResultPageFunction, IPickTabl
             }
         }
 
-        if (!IsPageLoaded && !wizardViewModel.ObjectTree.Types.Any())
+        if (sourceChanged || (!IsPageLoaded && !wizardViewModel.ObjectTree.Types.Any()))
         {
             wea.PickTablesDialog = this;
+
+            if (viewModel.ObjectTree.Types.Any())
+            {
+                // Carry the current selection over to the reloaded object list
+                wea.Options.Tables = viewModel.GetSelectedObjects().ToList();
+            }
 
             viewModel.ObjectTree.Types.Clear(); // Initialize to known state (empty)
             var isSuccessful = await InvokeWithErrorHandlingAsync(async () =>
             {
                 return await wizardViewModel.Bll.LoadDataBaseObjectsAsync(wea.Options, wea.DbInfo, wea.NamingOptionsAndPath, wea);
             });
+
+            if (isSuccessful)
+            {
+                viewModel.LoadedObjectsSourceKey = sourceKey;
+            }
 
             NextButton.IsEnabled = isSuccessful;
         }

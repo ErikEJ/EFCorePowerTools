@@ -428,6 +428,25 @@ public class WizardDataViewModel : ViewModelBase, IWizardViewModel
     // WizardPage2 - Database objects
     public bool IsPage2Initialized { get; set; }
 
+    // Identifies the page 1 choices the page 2 object list was last loaded from
+    public string LoadedObjectsSourceKey { get; set; }
+
+    public string GetObjectsSourceKey()
+    {
+        var schemaNames = FilterSchemas && Schemas != null
+            ? string.Join(",", Schemas.Select(s => s.Name).OrderBy(s => s, StringComparer.Ordinal))
+            : string.Empty;
+
+        return string.Join(
+            "|",
+            SelectedDatabaseConnection?.DatabaseType,
+            SelectedDatabaseConnection?.ConnectionString,
+            SelectedDatabaseConnection?.FilePath,
+            CodeGenerationMode,
+            FilterSchemas,
+            schemaNames);
+    }
+
     public RelayCommand Page2LoadedCommand { get; set; }
 
     private bool? tableSelectionThreeState;
