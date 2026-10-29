@@ -89,6 +89,10 @@ public class CodeGeneration
     [JsonPropertyName("use-many-to-many-entity")]
     public bool UseManyToManyEntity { get; set; }
 
+    [JsonPropertyOrder(195)]
+    [JsonPropertyName("use-max-size-for-string-input-parameters")]
+    public bool UseMaxSizeForStringInputParameters { get; set; }
+
     [JsonPropertyOrder(200)]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     [JsonPropertyName("use-no-navigations-preview")]

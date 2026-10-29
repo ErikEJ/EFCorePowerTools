@@ -34,6 +34,8 @@ public abstract class ProcedureScaffolder : IRoutineScaffolder
 
     internal IndentedStringBuilder Sb { get; set; }
 
+    protected bool UseMaxSizeForStringInputParameters { get; private set; }
+
     public SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue, bool useAsyncCalls, bool useInternalAccessModifier, bool useNullableReferences, GeneratedFileFormat fileFormat)
         => ScaffoldHelper.Save(scaffoldedModel, outputDir, nameSpaceValue, useAsyncCalls, fileFormat);
 
@@ -43,6 +45,8 @@ public abstract class ProcedureScaffolder : IRoutineScaffolder
 
         ArgumentNullException.ThrowIfNull(errors);
         ArgumentNullException.ThrowIfNull(scaffolderOptions);
+
+        UseMaxSizeForStringInputParameters = scaffolderOptions.UseMaxSizeForStringInputParameters;
 
         var result = new ScaffoldedModel();
         var path = string.Empty;

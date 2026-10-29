@@ -124,4 +124,6 @@ public class ReverseEngineerOptions
     public string MinimumProductVersion { get; set; }
 
     public bool UseTypedTvpParameters { get; set; } = true;
+
+    public bool UseMaxSizeForStringInputParameters { get; set; }
 }

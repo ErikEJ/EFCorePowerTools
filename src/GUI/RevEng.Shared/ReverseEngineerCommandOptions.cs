@@ -117,6 +117,8 @@ public class ReverseEngineerCommandOptions
 
     public bool UseTypedTvpParameters { get; set; }
 
+    public bool UseMaxSizeForStringInputParameters { get; set; }
+
     public string FileLineEndingStyle { get; set; } = "native";
 
     public string FileCharset { get; set; } = "utf-8-bom";

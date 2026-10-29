@@ -27,4 +27,6 @@ public class ModuleScaffolderOptions
     public virtual bool UseInternalAccessModifier { get; set; }
 
     public virtual bool UseTypedTvpParameters { get; set; }
+
+    public virtual bool UseMaxSizeForStringInputParameters { get; set; }
 }

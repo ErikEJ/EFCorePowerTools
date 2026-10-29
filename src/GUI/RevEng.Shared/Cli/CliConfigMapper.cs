@@ -102,6 +102,7 @@ public static class CliConfigMapper
             UseDatabaseNamesForRoutines = config.CodeGeneration.UseDatabaseNamesForRoutines,
             UseInternalAccessModifiersForSprocsAndFunctions = config.CodeGeneration.UseInternalAccessModifiersForSprocsAndFunctions,
             UseTypedTvpParameters = config.CodeGeneration.UseTypedTvpParameters,
+            UseMaxSizeForStringInputParameters = config.CodeGeneration.UseMaxSizeForStringInputParameters,
             FileLineEndingStyle = config.CodeGeneration.FileLineEndings,
             FileCharset = config.CodeGeneration.FileCharset,
 

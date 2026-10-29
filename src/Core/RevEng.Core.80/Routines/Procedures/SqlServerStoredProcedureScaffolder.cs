@@ -375,7 +375,18 @@ public class SqlServerStoredProcedureScaffolder : ProcedureScaffolder, IProcedur
 
             if (sqlDbType.IsLengthRequiredType())
             {
-                Sb.AppendLine($"Size = {parameter.Length},");
+                var size = parameter.Length;
+                if (UseMaxSizeForStringInputParameters && !parameter.Output && !parameter.IsReturnValue && size > 0)
+                {
+                    size = sqlDbType switch
+                    {
+                        SqlDbType.VarChar => 8000,
+                        SqlDbType.NVarChar => 4000,
+                        _ => size,
+                    };
+                }
+
+                Sb.AppendLine($"Size = {size},");
             }
 
             if (!parameter.IsReturnValue)

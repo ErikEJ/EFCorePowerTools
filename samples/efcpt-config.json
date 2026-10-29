@@ -50,6 +50,7 @@
      "use-inflector": false,
      "use-legacy-inflector": false,
      "use-many-to-many-entity": false,
+     "use-max-size-for-string-input-parameters": false,
      "use-t4": false,
      "remove-defaultsql-from-bool-properties": false,
      "soft-delete-obsolete-files": false,
