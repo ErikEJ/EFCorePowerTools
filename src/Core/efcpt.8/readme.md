@@ -55,6 +55,7 @@ The following options control the CLI input and output:
 | `-i`, `--input` | Path to the CLI configuration file to read or create. | `efcpt-config.json` in the current directory |
 | `-r`, `--renamer` | Path to a [custom renaming file](https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering#custom-renaming-with-efptrenamingjson). | `efpt.renaming.json` in the current directory |
 | `-v`, `--verbose` | Show more detailed output, including generated file names. | Disabled |
+| `--no-readme` | Skip generating `efcpt-readme.md`. | Disabled |
 
 `--output` does not change the default configuration or renaming file locations. For example, to keep the configuration and generated code in a project subfolder, specify both paths:
 
