@@ -121,6 +121,7 @@ public class EfRevEngLauncher
             UsePrefixNavigationNaming = options.UsePrefixNavigationNaming,
             UseDatabaseNamesForRoutines = options.UseDatabaseNamesForRoutines,
             UseTypedTvpParameters = options.UseTypedTvpParameters,
+            UseMaxSizeForStringInputParameters = options.UseMaxSizeForStringInputParameters,
         };
 
         var launcher = new EfRevEngLauncher(commandOptions, codeGenerationMode);

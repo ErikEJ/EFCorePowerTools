@@ -224,6 +224,7 @@ public class ReverseEngineerScaffolder : IReverseEngineerScaffolder
                 UsePascalIdentifiers = !options.UseDatabaseNamesForRoutines,
                 UseInternalAccessModifier = options.UseInternalAccessModifiersForSprocsAndFunctions,
                 UseTypedTvpParameters = options.UseTypedTvpParameters,
+                UseMaxSizeForStringInputParameters = options.UseMaxSizeForStringInputParameters,
             };
 
             var procedureScaffoldedModel = procedureScaffolder.ScaffoldModel(procedureModel, procedureOptions, schemas, ref errors);

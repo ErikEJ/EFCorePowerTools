@@ -231,6 +231,11 @@
           "type": "boolean",
           "title": "Preserve a many to many entity instead of skipping it "
         },
+        "use-max-size-for-string-input-parameters": {
+          "type": "boolean",
+          "default": false,
+          "title": "Use Size 8000 for VARCHAR and 4000 for NVARCHAR input-only stored procedure parameters, preserving MAX and output parameter sizes"
+        },
         "use-t4": {
           "type": "boolean",
           "title": "Customize code using T4 templates"

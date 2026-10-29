@@ -69,6 +69,58 @@ namespace UnitTests
             Assert.DoesNotContain("UdtTypeName = \"[].[hierarchyid]\"", result.ContextFile.Code);
         }
 
+        [Theory]
+        [InlineData("varchar", 25, false, false, 25)]
+        [InlineData("nvarchar", 25, false, false, 25)]
+        [InlineData("varchar", 25, false, true, 8000)]
+        [InlineData("nvarchar", 25, false, true, 4000)]
+        [InlineData("varchar", 8000, false, true, 8000)]
+        [InlineData("nvarchar", 4000, false, true, 4000)]
+        [InlineData("varchar", -1, false, true, -1)]
+        [InlineData("nvarchar", -1, false, true, -1)]
+        [InlineData("varchar", 25, true, true, 25)]
+        [InlineData("nvarchar", 25, true, true, 25)]
+        [InlineData("varchar", -1, true, true, -1)]
+        [InlineData("nvarchar", -1, true, true, -1)]
+        [InlineData("char", 25, false, true, 25)]
+        [InlineData("nchar", 25, false, true, 25)]
+        [InlineData("varbinary", 25, false, true, 25)]
+        [InlineData("binary", 25, false, true, 25)]
+        public void ScaffoldModel_UsesExpectedParameterSize(string storeType, int length, bool output, bool useMaxSize, int expectedSize)
+        {
+            var scaffolder = CreateScaffolder();
+            var procedure = CreateProcedureWithInvalidResultSet(generateEmptyResultType: false);
+            procedure.HasValidResultSet = true;
+            procedure.Parameters.Insert(0, new ModuleParameter
+            {
+                Name = "Description",
+                StoreType = storeType,
+                Length = length,
+                Output = output,
+                Nullable = true,
+            });
+            var model = new RoutineModel
+            {
+                Routines = new List<Routine> { procedure },
+                Errors = new List<string>(),
+            };
+            var options = CreateScaffolderOptions();
+            options.UseMaxSizeForStringInputParameters = useMaxSize;
+            var errors = new List<string>();
+            var schemas = new List<string>();
+
+            var result = scaffolder.ScaffoldModel(model, options, schemas, ref errors);
+
+            Assert.Empty(errors);
+            Assert.Contains($"Size = {expectedSize},", result.ContextFile.Code);
+            Assert.Contains($"SqlDbType = System.Data.SqlDbType.{procedure.Parameters[0].GetSqlDbType()},", result.ContextFile.Code);
+            Assert.Contains(output ? "Direction = System.Data.ParameterDirection.InputOutput," : "Value = description ?? Convert.DBNull,", result.ContextFile.Code);
+
+            options.UseMaxSizeForStringInputParameters = false;
+            var defaultResult = scaffolder.ScaffoldModel(model, options, schemas, ref errors);
+            Assert.Contains($"Size = {length},", defaultResult.ContextFile.Code);
+        }
+
         private static SqlServerStoredProcedureScaffolder CreateScaffolder()
         {
             var services = new ServiceCollection();

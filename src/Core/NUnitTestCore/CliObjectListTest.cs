@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Text.Json;
 using RevEng.Common;
@@ -63,6 +64,36 @@ namespace UnitTests
 
             var testProcedure = commandOptions.Tables.Single(x => x.ObjectType == ObjectType.Procedure && x.Name == "TestProcedure");
             Assert.True(testProcedure.GenerateEmptyResultType);
+        }
+
+        [Theory]
+        [InlineData("{}",
+            "{}", false)]
+        [InlineData("{\"code-generation\":{\"use-max-size-for-string-input-parameters\":false}}",
+            "{\"UseMaxSizeForStringInputParameters\":false}", false)]
+        [InlineData("{\"code-generation\":{\"use-max-size-for-string-input-parameters\":true}}",
+            "{\"UseMaxSizeForStringInputParameters\":true}", true)]
+        public void StringInputParameterSizeOptionIsMapped(string cliJson, string vsJson, bool expected)
+        {
+            var config = JsonSerializer.Deserialize<CliConfig>(cliJson);
+            var commandOptions = config.ToCommandOptions(
+                "Server=.;Database=TestDb;Trusted_Connection=True;",
+                DatabaseType.SQLServer,
+                cliTestDirectory,
+                isDacpac: false,
+                TestPath("size.efcpt-config.json"),
+                "efpt.renaming.json");
+            var vsSerializer = new DataContractJsonSerializer(typeof(ReverseEngineerOptions));
+            using var vsInput = new MemoryStream(Encoding.UTF8.GetBytes(vsJson));
+            var vsOptions = (ReverseEngineerOptions)vsSerializer.ReadObject(vsInput);
+
+            Assert.Equal(expected, commandOptions.UseMaxSizeForStringInputParameters);
+            Assert.Equal(expected, vsOptions.UseMaxSizeForStringInputParameters);
+            Assert.Equal(expected, JsonSerializer.Deserialize<CliConfig>(JsonSerializer.Serialize(config)).CodeGeneration.UseMaxSizeForStringInputParameters);
+            using var vsOutput = new MemoryStream();
+            vsSerializer.WriteObject(vsOutput, vsOptions);
+            vsOutput.Position = 0;
+            Assert.Equal(expected, ((ReverseEngineerOptions)vsSerializer.ReadObject(vsOutput)).UseMaxSizeForStringInputParameters);
         }
 
         [Fact]

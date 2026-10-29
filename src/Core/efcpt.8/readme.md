@@ -78,6 +78,14 @@ A configuration file `efcpt-config.json` is created in the current directory, or
 
 The [Reverse Engineering guide](https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering) describes the options. Its `CLI: section/key` tags identify the corresponding setting in `efcpt-config.json`. For example, `CLI: code-generation/use-t4` means the `use-t4` property inside the `code-generation` object. Examples using `efpt.config.json` refer to the Visual Studio configuration format; use the tagged CLI keys in `efcpt-config.json`.
 
+### String input parameter sizes
+
+Set `code-generation/use-max-size-for-string-input-parameters` to `true` to generate fixed `SqlParameter.Size` values of 8000 for `VARCHAR` and 4000 for `NVARCHAR` input-only SQL Server stored procedure parameters. This allows database parameter lengths to increase within these limits without regenerating the application code. The default is `false`, which preserves the database-declared sizes.
+
+Parameters declared as `(MAX)`, input/output parameters, fixed-length strings, and other types keep their declared sizes. Sizes remain explicit rather than inferred from each value, avoiding plan cache pollution from varying parameter sizes. Values exceeding the selected size can still be truncated; use `(MAX)` parameters when larger values are needed.
+
+For the Visual Studio extension, manually add `"UseMaxSizeForStringInputParameters": true` to `efpt.config.json` (or your named `efpt.*.config.json`). There is no dialog option.
+
 ### Updating to new configuration
 
 After updating the `efcpt-config.json`, you will need to run the `efcpt` CLI command from above once again in order to update the generated code.
