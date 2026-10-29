@@ -58,6 +58,15 @@ namespace NUnitTestCore
             Assert.True(File.Exists(readmePath));
         }
 
+        [Fact]
+        public async Task MainAsyncSkipsReadmeWithNoReadmeFlag()
+        {
+            var exitCode = await RunEfcptAsync("--no-readme");
+
+            Assert.Equal(0, exitCode);
+            Assert.False(File.Exists(readmePath));
+        }
+
         private async Task<int> RunEfcptAsync(params string[] extraArgs)
         {
             Environment.ExitCode = 0;

@@ -41,6 +41,11 @@ internal sealed class ScaffoldOptions
        HelpText = $"Provide more detailed output")]
     public bool Verbose { get; set; }
 
+    [Option(
+       "no-readme",
+       HelpText = "Do not generate the efcpt-readme.md file")]
+    public bool NoReadme { get; set; }
+
     public bool IsDacpac => ConnectionString.EndsWith(".dacpac", StringComparison.OrdinalIgnoreCase);
 }
 #pragma warning restore CA1812 // Avoid uninstantiated internal classes
