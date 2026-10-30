@@ -34,9 +34,11 @@ public class SqlServerDacpacFunctionModelFactory : IFunctionModelFactory
 
         ArgumentNullException.ThrowIfNull(options);
 
-        var scalars = GetScalarFunctions(connectionString, options, dacpacOptions.MergeDacpacs);
+        using var dacpac = DacpacConsolidator.Open(connectionString, dacpacOptions.MergeDacpacs, dacpacOptions.ReportWarning);
 
-        var tableValued = GetTableValuedFunctions(connectionString, options, dacpacOptions.MergeDacpacs);
+        var scalars = GetScalarFunctions(dacpac.Path, options);
+
+        var tableValued = GetTableValuedFunctions(dacpac.Path, options);
 
         return new RoutineModel
         {
@@ -45,15 +47,10 @@ public class SqlServerDacpacFunctionModelFactory : IFunctionModelFactory
         };
     }
 
-    private static RoutineModel GetScalarFunctions(string dacpacPath, ModuleModelFactoryOptions options, bool mergeDacpacs)
+    private static RoutineModel GetScalarFunctions(string dacpacPath, ModuleModelFactoryOptions options)
     {
         var result = new List<Function>();
         var errors = new List<string>();
-
-        if (mergeDacpacs && dacpacPath != null)
-        {
-            dacpacPath = DacpacConsolidator.Consolidate(dacpacPath);
-        }
 
         using var model = new TSqlTypedModel(dacpacPath);
 
@@ -97,15 +94,10 @@ public class SqlServerDacpacFunctionModelFactory : IFunctionModelFactory
         };
     }
 
-    private static RoutineModel GetTableValuedFunctions(string dacpacPath, ModuleModelFactoryOptions options, bool mergeDacpacs)
+    private static RoutineModel GetTableValuedFunctions(string dacpacPath, ModuleModelFactoryOptions options)
     {
         var result = new List<Function>();
         var errors = new List<string>();
-
-        if (mergeDacpacs && dacpacPath != null)
-        {
-            dacpacPath = DacpacConsolidator.Consolidate(dacpacPath);
-        }
 
         using var model = new TSqlTypedModel(dacpacPath);
 

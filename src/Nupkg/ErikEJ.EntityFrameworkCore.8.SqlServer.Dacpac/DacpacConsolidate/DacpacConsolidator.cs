@@ -7,73 +7,84 @@ namespace GOEddie.Dacpac.References;
 
 public static class DacpacConsolidator
 {
-    public static string Consolidate(string dacpacPath)
+    public static string Consolidate(string dacpacPath, Action<string> reportWarning = null)
     {
-        var fileNames = GetAllReferences(dacpacPath, true);
+        var fileNames = new List<string>();
+        var visited = new HashSet<string>(OperatingSystem.IsWindows() ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal);
+        GetAllReferences(Path.GetFullPath(dacpacPath), fileNames, visited, reportWarning);
 
-        if (fileNames.Count == 0)
+        if (fileNames.Count == 1)
         {
             return dacpacPath;
         }
 
-        fileNames.Insert(0, dacpacPath);
-
         var target = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(dacpacPath), $"efpt-{Guid.NewGuid()}.dacpac"));
-        using var merger = new DacpacMerger(target, fileNames.ToArray());
-        merger.Merge();
-
-        return target;
+        try
+        {
+            using var merger = new DacpacMerger(target, fileNames.ToArray());
+            merger.Merge();
+            return target;
+        }
+        catch
+        {
+            File.Delete(target);
+            throw;
+        }
     }
 
-    private static List<string> GetAllReferences(string dacpacPath, bool isRootDacpac)
+    internal static ConsolidatedDacpac Open(string dacpacPath, bool mergeDacpacs, Action<string> reportWarning)
+        => new ConsolidatedDacpac(dacpacPath, mergeDacpacs ? Consolidate(dacpacPath, reportWarning) : dacpacPath);
+
+    private static void GetAllReferences(string dacpacPath, List<string> fileNames, HashSet<string> visited, Action<string> reportWarning)
     {
-        if (!isRootDacpac && !File.Exists(dacpacPath))
+        if (!visited.Add(dacpacPath))
         {
-            // When the root DACPAC has a reference with SuppressMissingDependenciesErrors = true,
-            // second-level references of that first-level reference don't have to be referenced from the root project.
-            // For that case, DACPACs not referenced directly by the root DACPAC are optional.
-            return Enumerable.Empty<string>().ToList();
+            return;
         }
 
+        fileNames.Add(dacpacPath);
         var parser = new HeaderParser(dacpacPath);
-
         var references = parser.GetCustomData()
             .Where(p => p.Category == "Reference" && p.Type == "SqlSchema")
-            .ToList();
-
-        if (references.Count == 0)
-        {
-            return Enumerable.Empty<string>().ToList();
-        }
-
-        var fileNames = references
             .SelectMany(r => r.Items)
             .Where(i => i.Name == "LogicalName")
-            .Where(i => !i.Value.Equals("master.dacpac", StringComparison.OrdinalIgnoreCase))
-            .Select(i => Path.GetFullPath(Path.Combine(Path.GetDirectoryName(dacpacPath), i.Value)))
-            .ToList();
+            .Where(i => !i.Value.Equals("master.dacpac", StringComparison.OrdinalIgnoreCase));
 
-        if (!isRootDacpac)
+        foreach (var reference in references)
         {
-            // If we're looking for references of a non-root DACPAC,
-            // any reference is optional (see SuppressMissingDependenciesErrors = true).
-            // Therefore this DACPACs won't be included, if they don't exist in the build output directory.
-            fileNames = fileNames.Where(File.Exists).ToList();
+            var path = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(dacpacPath), reference.Value));
+            if (!File.Exists(path))
+            {
+                if (visited.Add(path))
+                {
+                    reportWarning?.Invoke($"Referenced DACPAC '{path}' (referenced by '{dacpacPath}') was not found. Its objects will not be included in reverse engineering.");
+                }
+
+                continue;
+            }
+
+            GetAllReferences(path, fileNames, visited, reportWarning);
+        }
+    }
+
+    internal sealed class ConsolidatedDacpac : IDisposable
+    {
+        private readonly bool ownsFile;
+
+        internal ConsolidatedDacpac(string originalPath, string path)
+        {
+            Path = path;
+            ownsFile = originalPath != path;
         }
 
-        if (fileNames.Count == 0)
+        internal string Path { get; }
+
+        public void Dispose()
         {
-            return Enumerable.Empty<string>().ToList();
+            if (ownsFile)
+            {
+                File.Delete(Path);
+            }
         }
-
-        var additionalFiles = new List<string>();
-        foreach (var fileName in fileNames)
-        {
-            additionalFiles.AddRange(GetAllReferences(fileName, false));
-        }
-
-        fileNames.AddRange(additionalFiles);
-
-        return fileNames.Distinct().ToList();
     }
 }

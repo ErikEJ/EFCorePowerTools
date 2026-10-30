@@ -73,6 +73,8 @@ efcpt "Database/bin/Debug/net10.0/Database.dacpac"
 
 You can build the .dacpac with `dotnet build` from an SDK-style database project, for example [MSBuild.Sdk.SqlProj](https://github.com/rr-wfm/MSBuild.Sdk.SqlProj) or [Microsoft.Build.Sql](https://github.com/microsoft/DacFx). Then no SQL Server is required, neither to build the .dacpac nor to generate the code.
 
+For including referenced .dacpac files, see [the guide on the wiki](https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering#including-referenced-dacpac-files).
+
 ### Configuring options
 
 A configuration file `efcpt-config.json` is created in the current directory, or at the path specified by `--input`. Open this file in your editor to modify the default options. If your editor supports it (for example VS Code), it will provide syntax guidance using the file's `$schema` reference. See the [sample configuration](https://github.com/ErikEJ/EFCorePowerTools/blob/master/samples/efcpt-config.json) and [configuration schema](https://github.com/ErikEJ/EFCorePowerTools/blob/master/samples/efcpt-config.schema.json) for the available keys and value types.
