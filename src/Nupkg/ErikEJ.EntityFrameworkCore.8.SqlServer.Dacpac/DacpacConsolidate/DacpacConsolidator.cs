@@ -7,10 +7,7 @@ namespace GOEddie.Dacpac.References;
 
 public static class DacpacConsolidator
 {
-    public static string Consolidate(string dacpacPath)
-        => Consolidate(dacpacPath, null);
-
-    public static string Consolidate(string dacpacPath, Action<string> reportWarning)
+    public static string Consolidate(string dacpacPath, Action<string> reportWarning = null)
     {
         var fileNames = new List<string>();
         var visited = new HashSet<string>(OperatingSystem.IsWindows() ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal);
