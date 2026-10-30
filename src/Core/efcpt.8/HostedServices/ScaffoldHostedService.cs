@@ -123,21 +123,30 @@ internal sealed class ScaffoldHostedService : HostedService
             ShowErrors(result);
             ShowWarnings(result);
 
-            var redactedConnectionString = "The_Connection_String_You_Supplied_With_The_Reverse_Engineering_Command";
+            if (scaffoldOptions.NoReadme)
+            {
+                DisplayService.MarkupLine();
+                DisplayService.MarkupLine("Thank you for using EF Core Power Tools!", Color.Cyan1);
+                DisplayService.MarkupLine();
+            }
+            else
+            {
+                var redactedConnectionString = "The_Connection_String_You_Supplied_With_The_Reverse_Engineering_Command";
 
-            var readmeContent = Providers.GetReadmeContent(
-                commandOptions,
-                Constants.CodeGeneration,
-                redactedConnectionString);
-            var readmePath = Path.Combine(commandOptions.ProjectPath, "efcpt-readme.md");
-            ReverseEngineerRunner.RetryFileWrite(readmePath, readmeContent, GeneratedFileFormat.From(commandOptions));
-            var fileUri = new Uri(new Uri("file://"), readmePath);
+                var readmeContent = Providers.GetReadmeContent(
+                    commandOptions,
+                    Constants.CodeGeneration,
+                    redactedConnectionString);
+                var readmePath = Path.Combine(commandOptions.ProjectPath, "efcpt-readme.md");
+                ReverseEngineerRunner.RetryFileWrite(readmePath, readmeContent, GeneratedFileFormat.From(commandOptions));
+                var fileUri = new Uri(new Uri("file://"), readmePath);
 
-            DisplayService.MarkupLine();
-            DisplayService.MarkupLine(
-                "Thank you for using EF Core Power Tools, please open the readme file for next steps:", Color.Cyan1);
-            DisplayService.MarkupLine($"{fileUri}", Color.Blue, DisplayService.Link);
-            DisplayService.MarkupLine();
+                DisplayService.MarkupLine();
+                DisplayService.MarkupLine(
+                    "Thank you for using EF Core Power Tools, please open the readme file for next steps:", Color.Cyan1);
+                DisplayService.MarkupLine($"{fileUri}", Color.Blue, DisplayService.Link);
+                DisplayService.MarkupLine();
+            }
 
             Environment.ExitCode = result.EntityErrors.Count > 0 ? 1 : 0;
         }
