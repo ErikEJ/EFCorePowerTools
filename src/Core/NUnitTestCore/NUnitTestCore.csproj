@@ -124,6 +124,7 @@
     <ProjectReference Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.DgmlBuilder\ErikEJ.EntityFrameworkCore.DgmlBuilder.csproj" />
     <ProjectReference Include="..\RevEng.Core.80\RevEng.Core.80.csproj" />
     <ProjectReference Include="..\efcpt.8\efcpt.8.csproj" />
+    <ProjectReference Include="..\..\..\test\ScaffoldingTester\MasterReference\MasterReference.csproj" ReferenceOutputAssembly="false" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Dacpac\ViewColumnTypesSqlProj.dacpac">

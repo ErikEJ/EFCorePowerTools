@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.11.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="4.0.1" />
+    <PackageReference Include="xunit.v3" Version="3.2.2" />
+    <PackageReference Include="Testcontainers.MsSql" Version="4.16.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../Nupkg/ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac/ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac.csproj" />
+    <ProjectReference Include="../../../test/ScaffoldingTester/MasterReference/MasterReference.csproj" ReferenceOutputAssembly="false" />
+    <Compile Include="../NUnitTestCore/Dacpac/SystemViewObjectFallback.cs" Link="SystemViewObjectFallback.cs" />
+  </ItemGroup>
+</Project>
