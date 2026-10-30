@@ -443,6 +443,7 @@
                     "type": "boolean",
                     "default": false,
                     "title": "Merge .dacpac files (when using .dacpac references)",
+                    "description": "Include objects from referenced .dacpac files recursively. References are resolved relative to the declaring package; missing files produce warnings. Use the SQL project build output containing all referenced packages. Cross-database objects are merged into a single model.",
                     "examples": [
                         false
                     ]

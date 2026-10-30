@@ -34,18 +34,15 @@ public class SqlServerDacpacStoredProcedureModelFactory : IProcedureModelFactory
 
         ArgumentNullException.ThrowIfNull(options);
 
-        return GetStoredProcedures(connectionString, options, dacpacOptions.MergeDacpacs);
+        using var dacpac = DacpacConsolidator.Open(connectionString, dacpacOptions.MergeDacpacs, dacpacOptions.ReportWarning);
+
+        return GetStoredProcedures(dacpac.Path, options);
     }
 
-    private static RoutineModel GetStoredProcedures(string dacpacPath, ModuleModelFactoryOptions options, bool mergeDacpacs)
+    private static RoutineModel GetStoredProcedures(string dacpacPath, ModuleModelFactoryOptions options)
     {
         var result = new List<RevEng.Core.Abstractions.Metadata.Procedure>();
         var errors = new List<string>();
-
-        if (mergeDacpacs && dacpacPath != null)
-        {
-            dacpacPath = DacpacConsolidator.Consolidate(dacpacPath);
-        }
 
         using var model = new TSqlTypedModel(dacpacPath);
 

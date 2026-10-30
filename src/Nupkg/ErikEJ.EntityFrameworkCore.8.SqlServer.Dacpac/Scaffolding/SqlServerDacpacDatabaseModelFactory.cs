@@ -81,10 +81,8 @@ public class SqlServerDacpacDatabaseModelFactory : IDatabaseModelFactory
 
         dbModel["Scaffolding:ConnectionString"] = $"Data Source=(local);Initial Catalog={dbModel.DatabaseName};Integrated Security=true";
 
-        if (dacpacOptions?.MergeDacpacs ?? false)
-        {
-            connectionString = DacpacConsolidator.Consolidate(connectionString);
-        }
+        using var dacpac = DacpacConsolidator.Open(connectionString, dacpacOptions?.MergeDacpacs ?? false, dacpacOptions?.ReportWarning);
+        connectionString = dacpac.Path;
 
         using var sqlModel = new TSqlModel(connectionString);
 

@@ -125,7 +125,7 @@ public static class ServiceProviderBuilder
         {
             case DatabaseType.SQLServer:
             case DatabaseType.SQLServerDacpac:
-                AddSqlServerProviderServices(serviceCollection, options);
+                AddSqlServerProviderServices(serviceCollection, options, warnings);
                 break;
 
             case DatabaseType.Npgsql:
@@ -209,7 +209,7 @@ public static class ServiceProviderBuilder
         }
     }
 
-    private static void AddSqlServerProviderServices(IServiceCollection serviceCollection, ReverseEngineerCommandOptions options)
+    private static void AddSqlServerProviderServices(IServiceCollection serviceCollection, ReverseEngineerCommandOptions options, List<string> warnings)
     {
         var provider = new SqlServerDesignTimeServices();
         provider.ConfigureDesignTimeServices(serviceCollection);
@@ -228,6 +228,13 @@ public static class ServiceProviderBuilder
 
         if (options.DatabaseType == DatabaseType.SQLServerDacpac)
         {
+            Action<string> reportWarning = warning =>
+            {
+                if (!warnings.Contains(warning))
+                {
+                    warnings.Add(warning);
+                }
+            };
             var excludedIndexes = options.Tables?.Select(t => new { t.Name, t.ExcludedIndexes });
 
             serviceCollection.AddSingleton<IDatabaseModelFactory, SqlServerDacpacDatabaseModelFactory>(
@@ -235,6 +242,7 @@ public static class ServiceProviderBuilder
                    new SqlServerDacpacDatabaseModelFactoryOptions
                    {
                        MergeDacpacs = options.MergeDacpacs,
+                       ReportWarning = reportWarning,
                        ExcludedIndexes = excludedIndexes?.ToDictionary(t => t.Name, t => t.ExcludedIndexes),
                    },
                    serviceProvider.GetService<IRelationalTypeMappingSource>()));
@@ -242,11 +250,13 @@ public static class ServiceProviderBuilder
             serviceCollection.AddSqlServerDacpacStoredProcedureDesignTimeServices(new SqlServerDacpacDatabaseModelFactoryOptions
             {
                 MergeDacpacs = options.MergeDacpacs,
+                ReportWarning = reportWarning,
             });
 
             serviceCollection.AddSqlServerDacpacFunctionDesignTimeServices(new SqlServerDacpacDatabaseModelFactoryOptions
             {
                 MergeDacpacs = options.MergeDacpacs,
+                ReportWarning = reportWarning,
             });
         }
 

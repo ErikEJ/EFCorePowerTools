@@ -72,6 +72,30 @@ efcpt "Database/bin/Debug/net10.0/Database.dacpac"
 
 You can build the .dacpac with `dotnet build` from an SDK-style database project, for example [MSBuild.Sdk.SqlProj](https://github.com/rr-wfm/MSBuild.Sdk.SqlProj) or [Microsoft.Build.Sql](https://github.com/microsoft/DacFx). Then no SQL Server is required, neither to build the .dacpac nor to generate the code.
 
+#### Including referenced .dacpac files
+
+If your database project references another SQL project or .dacpac, enable `code-generation/merge-dacpacs` in `efcpt-config.json` to include objects from those references. The default is `false`, which reverse engineers only the root package's own objects.
+
+```json
+{
+   "code-generation": {
+      "merge-dacpacs": true
+   }
+}
+```
+
+Merge this setting into your existing configuration, then rerun the command above. Use the build output containing the root and referenced .dacpac files (usually `bin/...`), rather than an intermediate package from `obj/`.
+
+For example, if `App.dacpac` defines `Orders` and references `Shared.dacpac`, which defines `Customers`, enabling merging makes both tables available for reverse engineering. References are followed transitively: if `Shared.dacpac` references `Common.dacpac`, its objects are included too. Tables, views, stored procedures and functions are available to the usual object selection and generation options. If `refresh-object-lists` is `false`, add the desired referenced objects to your configuration manually or re-enable refreshing.
+
+Reference resolution and limitations:
+
+- References are read from the `Reference` / `SqlSchema` metadata in `model.xml`. Each `LogicalName` is resolved relative to the folder of the .dacpac that declares it. For the usual filename-only references, copy all packages into the same build output folder. Shared dependencies are included once, and cyclic references do not cause repeated traversal.
+- `master.dacpac` references are skipped. Other missing references produce a warning with the expected path; their objects are omitted. DacFx can still reject a package whose required dependencies cannot be loaded. Where dependencies are intentionally optional, configure `SuppressMissingDependenciesErrors` consistently in the SQL projects.
+- Cross-database reference metadata (`ExternalParts`, including SQLCMD database variables and literal database names) does not keep objects in separate databases. Referenced objects are merged into one model using their schema and object names. Name collisions can cause errors; this option is intended for references that form a single database model.
+- Merging creates an `efpt-<guid>.dacpac` beside the root package, so that folder must be writable. Reverse engineering deletes this temporary package after reading it, including when model reading fails. The source packages are unchanged.
+- Objects are re-added from their SQL syntax trees. Per-object `ANSI_NULLS` and `QUOTED_IDENTIFIER` settings are not preserved. Merging is for reverse engineering, not for producing a deployment artifact.
+
 ### Configuring options
 
 A configuration file `efcpt-config.json` is created in the current directory, or at the path specified by `--input`. Open this file in your editor to modify the default options. If your editor supports it (for example VS Code), it will provide syntax guidance using the file's `$schema` reference. See the [sample configuration](https://github.com/ErikEJ/EFCorePowerTools/blob/master/samples/efcpt-config.json) and [configuration schema](https://github.com/ErikEJ/EFCorePowerTools/blob/master/samples/efcpt-config.schema.json) for the available keys and value types.
