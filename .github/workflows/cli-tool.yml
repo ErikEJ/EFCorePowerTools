@@ -7,6 +7,7 @@ on:
       - '**/*'
       - '!.github/workflows/cli-tool.yml'
       - '!src/Core/**/*'
+      - '!test/ScaffoldingTester/MasterReference/**/*'
     branches:
       - 'master'
   pull_request:
@@ -41,8 +42,24 @@ jobs:
     - name: Core test project
       run: dotnet test src/Core/NUnitTestCore/NUnitTestCore.csproj
 
+  sql-server-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+    - uses: actions/checkout@v7
+
+    - uses: actions/setup-dotnet@v6
+      with:
+        dotnet-version: |
+          8.0.x
+          10.0.x
+
+    - name: SQL Server integration tests
+      run: dotnet test src/Core/SqlServerIntegrationTests/SqlServerIntegrationTests.csproj
+
   build:
-    needs: core-tests
+    needs: [core-tests, sql-server-tests]
 
     permissions:
       id-token: write  # enable GitHub OIDC token issuance for this job

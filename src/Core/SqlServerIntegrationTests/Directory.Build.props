@@ -1,0 +1,3 @@
+<Project>
+  <!-- Match the core test project: do not inherit production analyzer settings. -->
+</Project>
