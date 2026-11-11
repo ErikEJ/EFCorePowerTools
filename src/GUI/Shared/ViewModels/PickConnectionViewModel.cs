@@ -33,7 +33,11 @@ public class PickConnectionViewModel : ViewModelBase, IPickConnectionViewModel
 
     public string ConnectionString
     {
-        get => connectionString;
+        get
+        {
+            return connectionString;
+        }
+
         set
         {
             if (Equals(value, connectionString))
@@ -48,7 +52,11 @@ public class PickConnectionViewModel : ViewModelBase, IPickConnectionViewModel
 
     public string Name
     {
-        get => name;
+        get
+        {
+            return name;
+        }
+
         set
         {
             if (Equals(value, name))

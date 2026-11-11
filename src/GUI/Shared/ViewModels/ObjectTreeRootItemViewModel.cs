@@ -31,7 +31,11 @@ public class ObjectTreeRootItemViewModel : ViewModelBase, IObjectTreeRootItemVie
 
     public bool? IsSelected
     {
-        get => IsSelected1;
+        get
+        {
+            return IsSelected1;
+        }
+
         private set
         {
             if (Equals(value, IsSelected1))
@@ -54,7 +58,11 @@ public class ObjectTreeRootItemViewModel : ViewModelBase, IObjectTreeRootItemVie
 
     public string Text
     {
-        get => Text1;
+        get
+        {
+            return Text1;
+        }
+
         set
         {
             if (Equals(value, Text1))
@@ -69,7 +77,11 @@ public class ObjectTreeRootItemViewModel : ViewModelBase, IObjectTreeRootItemVie
 
     public ObjectType ObjectType
     {
-        get => ObjectType1;
+        get
+        {
+            return ObjectType1;
+        }
+
         set
         {
             if (Equals(value, ObjectType1))

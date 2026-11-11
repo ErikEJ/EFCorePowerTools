@@ -45,7 +45,11 @@ public class ModelingOptionsModel : INotifyPropertyChanged
 
     public bool UseDataAnnotations
     {
-        get => useDataAnnotations;
+        get
+        {
+            return useDataAnnotations;
+        }
+
         set
         {
             if (value == useDataAnnotations)
@@ -60,7 +64,11 @@ public class ModelingOptionsModel : INotifyPropertyChanged
 
     public string ModelName
     {
-        get => modelName;
+        get
+        {
+            return modelName;
+        }
+
         set
         {
             if (value == modelName)
@@ -75,7 +83,11 @@ public class ModelingOptionsModel : INotifyPropertyChanged
 
     public string OutputPath
     {
-        get => outputPath;
+        get
+        {
+            return outputPath;
+        }
+
         set
         {
             if (value == outputPath)
@@ -90,7 +102,11 @@ public class ModelingOptionsModel : INotifyPropertyChanged
 
     public string OutputContextPath
     {
-        get => outputContextPath;
+        get
+        {
+            return outputContextPath;
+        }
+
         set
         {
             if (value == outputContextPath)
@@ -105,7 +121,11 @@ public class ModelingOptionsModel : INotifyPropertyChanged
 
     public bool UseSchemaFolders
     {
-        get => useSchemaFolders;
+        get
+        {
+            return useSchemaFolders;
+        }
+
         set
         {
             if (value == useSchemaFolders)
@@ -120,7 +140,11 @@ public class ModelingOptionsModel : INotifyPropertyChanged
 
     public bool UseSchemaNamespaces
     {
-        get => useSchemaNamespaces;
+        get
+        {
+            return useSchemaNamespaces;
+        }
+
         set
         {
             if (value == useSchemaNamespaces)
@@ -135,7 +159,11 @@ public class ModelingOptionsModel : INotifyPropertyChanged
 
     public string ModelNamespace
     {
-        get => modelNamespace;
+        get
+        {
+            return modelNamespace;
+        }
+
         set
         {
             if (value == modelNamespace)
@@ -150,7 +178,11 @@ public class ModelingOptionsModel : INotifyPropertyChanged
 
     public string ContextNamespace
     {
-        get => contextNamespace;
+        get
+        {
+            return contextNamespace;
+        }
+
         set
         {
             if (value == contextNamespace)
@@ -165,7 +197,11 @@ public class ModelingOptionsModel : INotifyPropertyChanged
 
     public string Namespace
     {
-        get => ns;
+        get
+        {
+            return ns;
+        }
+
         set
         {
             if (value == ns)
@@ -180,7 +216,11 @@ public class ModelingOptionsModel : INotifyPropertyChanged
 
     public bool UseDatabaseNames
     {
-        get => useDatabaseNames;
+        get
+        {
+            return useDatabaseNames;
+        }
+
         set
         {
             if (value == useDatabaseNames)
@@ -195,7 +235,11 @@ public class ModelingOptionsModel : INotifyPropertyChanged
 
     public bool UsePluralizer
     {
-        get => usePluralizer;
+        get
+        {
+            return usePluralizer;
+        }
+
         set
         {
             if (value == usePluralizer)
@@ -210,7 +254,11 @@ public class ModelingOptionsModel : INotifyPropertyChanged
 
     public bool UseDbContextSplitting
     {
-        get => useDbContextSplitting;
+        get
+        {
+            return useDbContextSplitting;
+        }
+
         set
         {
             if (value == useDbContextSplitting)
@@ -225,7 +273,11 @@ public class ModelingOptionsModel : INotifyPropertyChanged
 
     public bool UseHandlebars
     {
-        get => useHandlebars;
+        get
+        {
+            return useHandlebars;
+        }
+
         set
         {
             if (value == useHandlebars)
@@ -240,7 +292,11 @@ public class ModelingOptionsModel : INotifyPropertyChanged
 
     public int SelectedHandlebarsLanguage
     {
-        get => selectedHandlebarsLanguage;
+        get
+        {
+            return selectedHandlebarsLanguage;
+        }
+
         set
         {
             if (value == selectedHandlebarsLanguage)
@@ -255,7 +311,11 @@ public class ModelingOptionsModel : INotifyPropertyChanged
 
     public bool IncludeConnectionString
     {
-        get => includeConnectionString;
+        get
+        {
+            return includeConnectionString;
+        }
+
         set
         {
             if (value == includeConnectionString)
@@ -270,7 +330,11 @@ public class ModelingOptionsModel : INotifyPropertyChanged
 
     public int SelectedToBeGenerated
     {
-        get => selectedToBeGenerated;
+        get
+        {
+            return selectedToBeGenerated;
+        }
+
         set
         {
             if (value == selectedToBeGenerated)
@@ -285,7 +349,11 @@ public class ModelingOptionsModel : INotifyPropertyChanged
 
     public bool InstallNuGetPackage
     {
-        get => installNuGetPackage;
+        get
+        {
+            return installNuGetPackage;
+        }
+
         set
         {
             if (value == installNuGetPackage)
@@ -300,7 +368,11 @@ public class ModelingOptionsModel : INotifyPropertyChanged
 
     public string ProjectName
     {
-        get => projectName;
+        get
+        {
+            return projectName;
+        }
+
         set
         {
             if (value == projectName)
@@ -315,7 +387,11 @@ public class ModelingOptionsModel : INotifyPropertyChanged
 
     public string DacpacPath
     {
-        get => dacpacPath;
+        get
+        {
+            return dacpacPath;
+        }
+
         set
         {
             if (value == dacpacPath)
@@ -330,7 +406,11 @@ public class ModelingOptionsModel : INotifyPropertyChanged
 
     public bool MapSpatialTypes
     {
-        get => mapSpatialTypes;
+        get
+        {
+            return mapSpatialTypes;
+        }
+
         set
         {
             if (value == mapSpatialTypes)
@@ -345,7 +425,11 @@ public class ModelingOptionsModel : INotifyPropertyChanged
 
     public bool MapHierarchyId
     {
-        get => mapHierarchyId;
+        get
+        {
+            return mapHierarchyId;
+        }
+
         set
         {
             if (value == mapHierarchyId)
@@ -360,7 +444,11 @@ public class ModelingOptionsModel : INotifyPropertyChanged
 
     public bool MapNodaTimeTypes
     {
-        get => mapNodaTimeTypes;
+        get
+        {
+            return mapNodaTimeTypes;
+        }
+
         set
         {
             if (value == mapNodaTimeTypes)
@@ -375,7 +463,11 @@ public class ModelingOptionsModel : INotifyPropertyChanged
 
     public bool UseEf6Pluralizer
     {
-        get => useEf6Pluralizer;
+        get
+        {
+            return useEf6Pluralizer;
+        }
+
         set
         {
             if (value == useEf6Pluralizer)
@@ -390,7 +482,11 @@ public class ModelingOptionsModel : INotifyPropertyChanged
 
     public bool UseBoolPropertiesWithoutDefaultSql
     {
-        get => useBoolPropertiesWithoutDefaultSql;
+        get
+        {
+            return useBoolPropertiesWithoutDefaultSql;
+        }
+
         set
         {
             if (value == useBoolPropertiesWithoutDefaultSql)
@@ -405,7 +501,11 @@ public class ModelingOptionsModel : INotifyPropertyChanged
 
     public bool UseNullableReferences
     {
-        get => useNullableReferences;
+        get
+        {
+            return useNullableReferences;
+        }
+
         set
         {
             if (value == useNullableReferences)
@@ -420,7 +520,11 @@ public class ModelingOptionsModel : INotifyPropertyChanged
 
     public bool UseNoObjectFilter
     {
-        get => useNoObjectFilter;
+        get
+        {
+            return useNoObjectFilter;
+        }
+
         set
         {
             if (value == useNoObjectFilter)
@@ -435,7 +539,11 @@ public class ModelingOptionsModel : INotifyPropertyChanged
 
     public bool UseNoDefaultConstructor
     {
-        get => useNoDefaultConstructor;
+        get
+        {
+            return useNoDefaultConstructor;
+        }
+
         set
         {
             if (value == useNoDefaultConstructor)
@@ -450,7 +558,11 @@ public class ModelingOptionsModel : INotifyPropertyChanged
 
     public bool UseNoNavigations
     {
-        get => useNoNavigations;
+        get
+        {
+            return useNoNavigations;
+        }
+
         set
         {
             if (value == useNoNavigations)
@@ -465,7 +577,11 @@ public class ModelingOptionsModel : INotifyPropertyChanged
 
     public bool UseManyToManyEntity
     {
-        get => useManyToManyEntity;
+        get
+        {
+            return useManyToManyEntity;
+        }
+
         set
         {
             if (value == useManyToManyEntity)
@@ -480,7 +596,11 @@ public class ModelingOptionsModel : INotifyPropertyChanged
 
     public bool UseDateOnlyTimeOnly
     {
-        get => useDateOnlyTimeOnly;
+        get
+        {
+            return useDateOnlyTimeOnly;
+        }
+
         set
         {
             if (value == useDateOnlyTimeOnly)
@@ -495,7 +615,11 @@ public class ModelingOptionsModel : INotifyPropertyChanged
 
     public string T4TemplatePath
     {
-        get => t4Templatepath;
+        get
+        {
+            return t4Templatepath;
+        }
+
         set
         {
             if (value == t4Templatepath)

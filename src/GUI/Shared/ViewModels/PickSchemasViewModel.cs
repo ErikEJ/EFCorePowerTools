@@ -39,7 +39,11 @@ public class PickSchemasViewModel : ViewModelBase, IPickSchemasViewModel
 
     public SchemaInfo SelectedSchema
     {
-        get => selectedSchema;
+        get
+        {
+            return selectedSchema;
+        }
+
         set
         {
             if (value == selectedSchema)

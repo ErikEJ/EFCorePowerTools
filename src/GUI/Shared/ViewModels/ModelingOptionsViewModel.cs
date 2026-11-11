@@ -67,7 +67,11 @@ public class ModelingOptionsViewModel : ViewModelBase, IModelingOptionsViewModel
 
     public int SelectedTemplateType
     {
-        get => selectedTemplateType;
+        get
+        {
+            return selectedTemplateType;
+        }
+
         set
         {
             if (value == selectedTemplateType)
@@ -83,7 +87,11 @@ public class ModelingOptionsViewModel : ViewModelBase, IModelingOptionsViewModel
 
     public string Title
     {
-        get => title;
+        get
+        {
+            return title;
+        }
+
         private set
         {
             if (value == title)
@@ -98,7 +106,11 @@ public class ModelingOptionsViewModel : ViewModelBase, IModelingOptionsViewModel
 
     public bool MayIncludeConnectionString
     {
-        get => mayIncludeConnectionString;
+        get
+        {
+            return mayIncludeConnectionString;
+        }
+
         private set
         {
             if (value == mayIncludeConnectionString)

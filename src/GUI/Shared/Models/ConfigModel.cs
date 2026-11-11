@@ -17,7 +17,11 @@ public class ConfigModel : INotifyPropertyChanged
     /// </summary>
     public string ConfigPath
     {
-        get => configPath;
+        get
+        {
+            return configPath;
+        }
+
         set
         {
             if (value == configPath)
@@ -35,7 +39,11 @@ public class ConfigModel : INotifyPropertyChanged
     /// </summary>
     public string ProjectPath
     {
-        get => projectPath;
+        get
+        {
+            return projectPath;
+        }
+
         set
         {
             if (value == projectPath)

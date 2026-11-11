@@ -94,8 +94,7 @@ public static class PathHelper
 
     private static string AppendDirectorySeparatorChar(string path) =>
         // Append a slash only if the path is a directory and does not have a slash.
-        Directory.Exists(path) &&
-            !path.EndsWith(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal)
+        Directory.Exists(path) && !path.EndsWith(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal)
             ? path + Path.DirectorySeparatorChar
             : path;
 }

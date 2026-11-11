@@ -16,7 +16,11 @@ public class AboutExtensionModel : INotifyPropertyChanged
 
     public string ExtensionVersion
     {
-        get => extensionVersion;
+        get
+        {
+            return extensionVersion;
+        }
+
         set
         {
             if (Equals(value, extensionVersion))

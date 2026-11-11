@@ -23,12 +23,10 @@ public static class DbContextNamer
             ConnectionString = connectionString,
         };
 
-        return builder.TryGetValue("Initial Catalog", out var catalog)
-            ? catalog.ToString()
-            : builder.TryGetValue("Database", out var database)
-            ? database.ToString()
-            : builder.TryGetValue("Data Source", out var dataSource)
-            ? dataSource.ToString()
-            : builder.TryGetValue("DataSource", out var dataSource2) ? dataSource2.ToString() : dbType.ToString();
+        return builder.TryGetValue("Initial Catalog", out var catalog) ? catalog.ToString() :
+               builder.TryGetValue("Database", out var database) ? database.ToString() :
+               builder.TryGetValue("Data Source", out var dataSource) ? dataSource.ToString() :
+               builder.TryGetValue("DataSource", out var dataSource2) ? dataSource2.ToString() :
+               dbType.ToString();
     }
 }

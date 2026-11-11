@@ -36,7 +36,11 @@ public class ColumnInformationViewModel : ViewModelBase, IColumnInformationViewM
 
     public string Name
     {
-        get => name;
+        get
+        {
+            return name;
+        }
+
         set
         {
             if (Equals(value, name))
@@ -51,7 +55,11 @@ public class ColumnInformationViewModel : ViewModelBase, IColumnInformationViewM
 
     public string NewName
     {
-        get => newName;
+        get
+        {
+            return newName;
+        }
+
         set
         {
             if (Equals(value, newName))
@@ -75,7 +83,11 @@ public class ColumnInformationViewModel : ViewModelBase, IColumnInformationViewM
 
     public bool IsPrimaryKey
     {
-        get => isPrimaryKey;
+        get
+        {
+            return isPrimaryKey;
+        }
+
         set
         {
             if (Equals(value, isPrimaryKey))
@@ -91,7 +103,11 @@ public class ColumnInformationViewModel : ViewModelBase, IColumnInformationViewM
 
     public bool IsForeignKey
     {
-        get => isForeignKey;
+        get
+        {
+            return isForeignKey;
+        }
+
         set
         {
             if (Equals(value, isForeignKey))
@@ -112,7 +128,11 @@ public class ColumnInformationViewModel : ViewModelBase, IColumnInformationViewM
 
     public bool? IsSelected
     {
-        get => isSelected;
+        get
+        {
+            return isSelected;
+        }
+
         private set
         {
             if (Equals(value, isSelected))
@@ -127,7 +147,11 @@ public class ColumnInformationViewModel : ViewModelBase, IColumnInformationViewM
 
     public bool IsEditing
     {
-        get => isEditing;
+        get
+        {
+            return isEditing;
+        }
+
         set
         {
             if (Equals(value, isEditing))
@@ -142,7 +166,11 @@ public class ColumnInformationViewModel : ViewModelBase, IColumnInformationViewM
 
     public bool IsTableSelected
     {
-        get => isTableSelected;
+        get
+        {
+            return isTableSelected;
+        }
+
         set
         {
             if (Equals(value, isTableSelected))

@@ -38,7 +38,11 @@ public class PickTablesViewModel : ViewModelBase, IPickTablesViewModel
 
     public bool? TableSelectionThreeState
     {
-        get => tableSelectionThreeState;
+        get
+        {
+            return tableSelectionThreeState;
+        }
+
         set
         {
             if (Equals(value, tableSelectionThreeState))
@@ -54,7 +58,11 @@ public class PickTablesViewModel : ViewModelBase, IPickTablesViewModel
 
     public string SearchText
     {
-        get => searchText;
+        get
+        {
+            return searchText;
+        }
+
         set
         {
             if (Equals(value, searchText))
@@ -70,7 +78,11 @@ public class PickTablesViewModel : ViewModelBase, IPickTablesViewModel
 
     public SearchMode SearchMode
     {
-        get => searchMode;
+        get
+        {
+            return searchMode;
+        }
+
         set
         {
             if (Equals(value, searchMode))

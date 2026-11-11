@@ -16,7 +16,11 @@ public class ProjectModel : INotifyPropertyChanged
     /// </summary>
     public Project Project
     {
-        get => project;
+        get
+        {
+            return project;
+        }
+
         set
         {
             if (Equals(value, project))

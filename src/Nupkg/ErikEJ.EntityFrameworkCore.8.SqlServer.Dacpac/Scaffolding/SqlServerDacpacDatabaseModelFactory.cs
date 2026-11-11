@@ -91,9 +91,7 @@ public class SqlServerDacpacDatabaseModelFactory : IDatabaseModelFactory
         using var model = new TSqlTypedModel(sqlModel);
 
         var typeAliases = GetTypeAliases(model);
-        var vectorColumnDimensions = (sqlModel.Version >= SqlServerVersion.Sql170
-                || sqlModel.Version == SqlServerVersion.SqlAzure
-                || sqlModel.Version == SqlServerVersion.SqlDbFabric)
+        var vectorColumnDimensions = (sqlModel.Version >= SqlServerVersion.Sql170 || sqlModel.Version == SqlServerVersion.SqlAzure || sqlModel.Version == SqlServerVersion.SqlDbFabric)
             ? GetVectorColumnDimensions(connectionString)
             : new Dictionary<string, int>(StringComparer.Ordinal);
 
@@ -403,18 +401,12 @@ public class SqlServerDacpacDatabaseModelFactory : IDatabaseModelFactory
     }
 
     private static string GetStoreType(string dataTypeName, int maxLength, int precision, int scale)
-        => dataTypeName == "timestamp"
-            ? "rowversion"
-            : dataTypeName == "sysname"
-            ? "nvarchar(128)"
-            : dataTypeName is "decimal" or "numeric"
-            ? $"{dataTypeName}({precision}, {scale})"
-            : DateTimePrecisionTypes.Contains(dataTypeName)
-            && scale != 7
-            ? $"{dataTypeName}({scale})"
-            : MaxLengthRequiredTypes.Contains(dataTypeName)
-            ? maxLength == -1 ? $"{dataTypeName}(max)" : $"{dataTypeName}({maxLength})"
-            : dataTypeName;
+        => dataTypeName == "timestamp" ? "rowversion" :
+           dataTypeName == "sysname" ? "nvarchar(128)" :
+           dataTypeName is "decimal" or "numeric" ? $"{dataTypeName}({precision}, {scale})" :
+           DateTimePrecisionTypes.Contains(dataTypeName) && scale != 7 ? $"{dataTypeName}({scale})" :
+           MaxLengthRequiredTypes.Contains(dataTypeName) ? maxLength == -1 ? $"{dataTypeName}(max)" : $"{dataTypeName}({maxLength})" :
+           dataTypeName;
 
     private static string StripParentheses(string defaultValue)
     {
@@ -860,31 +852,13 @@ public class SqlServerDacpacDatabaseModelFactory : IDatabaseModelFactory
 
         return errors?.Count > 0 || fragment is not ScriptDom.TSqlScript script
             ? null
-            : script.Batches
-            .SelectMany(b => b.Statements.OfType<ScriptDom.SelectStatement>())
-            .Select(s => s.QueryExpression as ScriptDom.QuerySpecification)
-            .FirstOrDefault(q => q != null)?
-            .SelectElements
-            .OfType<ScriptDom.SelectScalarExpression>()
-            .FirstOrDefault()?
-            .Expression;
+            : script.Batches.SelectMany(b => b.Statements.OfType<ScriptDom.SelectStatement>()).Select(s => s.QueryExpression as ScriptDom.QuerySpecification).FirstOrDefault(q => q != null)?.SelectElements.OfType<ScriptDom.SelectScalarExpression>().FirstOrDefault()?.Expression;
     }
 
     private static bool ReturnsKnownNonNullValue(ScriptDom.ScalarExpression expression)
         => expression is ScriptDom.ParenthesisExpression parenthesisExpression
             ? ReturnsKnownNonNullValue(parenthesisExpression.Expression)
-            : expression is not ScriptDom.NullLiteral && (expression is ScriptDom.Literal || (expression is ScriptDom.CastCall castCall
-            ? ReturnsKnownNonNullValue(castCall.Parameter)
-            : expression is ScriptDom.ConvertCall convertCall
-            ? convertCall.Parameter is not null && ReturnsKnownNonNullValue(convertCall.Parameter)
-            : expression is ScriptDom.CoalesceExpression coalesceExpression
-            ? coalesceExpression.Expressions.Count > 0
-                && ReturnsKnownNonNullValue(coalesceExpression.Expressions[^1])
-            : expression is ScriptDom.FunctionCall functionCall
-            && functionCall.CallTarget is null
-            && (functionCall.FunctionName.Value.Equals("ISNULL", StringComparison.OrdinalIgnoreCase)
-                || functionCall.FunctionName.Value.Equals("COALESCE", StringComparison.OrdinalIgnoreCase)) && functionCall.Parameters.Count > 0
-                && ReturnsKnownNonNullValue(functionCall.Parameters[^1])));
+            : expression is not ScriptDom.NullLiteral && (expression is ScriptDom.Literal || (expression is ScriptDom.CastCall castCall ? ReturnsKnownNonNullValue(castCall.Parameter) : expression is ScriptDom.ConvertCall convertCall ? convertCall.Parameter is not null && ReturnsKnownNonNullValue(convertCall.Parameter) : expression is ScriptDom.CoalesceExpression coalesceExpression ? coalesceExpression.Expressions.Count > 0 && ReturnsKnownNonNullValue(coalesceExpression.Expressions[^1]) : expression is ScriptDom.FunctionCall functionCall && functionCall.CallTarget is null && (functionCall.FunctionName.Value.Equals("ISNULL", StringComparison.OrdinalIgnoreCase) || functionCall.FunctionName.Value.Equals("COALESCE", StringComparison.OrdinalIgnoreCase)) && functionCall.Parameters.Count > 0 && ReturnsKnownNonNullValue(functionCall.Parameters[^1])));
 
     private void GetUniqueConstraints(TSqlTable table, DatabaseTable dbTable)
     {

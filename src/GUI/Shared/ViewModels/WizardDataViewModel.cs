@@ -125,7 +125,11 @@ public class WizardDataViewModel : ViewModelBase, IWizardViewModel
 
     public ConfigModel SelectedConfiguration
     {
-        get => selectedConfiguration;
+        get
+        {
+            return selectedConfiguration;
+        }
+
         set
         {
             if (Equals(value, selectedConfiguration))
@@ -160,7 +164,11 @@ public class WizardDataViewModel : ViewModelBase, IWizardViewModel
 
     public int CodeGenerationMode
     {
-        get => codeGenerationMode;
+        get
+        {
+            return codeGenerationMode;
+        }
+
         set
         {
             if (value == codeGenerationMode)
@@ -175,7 +183,11 @@ public class WizardDataViewModel : ViewModelBase, IWizardViewModel
 
     public bool FilterSchemas
     {
-        get => filterSchemas;
+        get
+        {
+            return filterSchemas;
+        }
+
         set
         {
             if (value == filterSchemas)
@@ -191,7 +203,11 @@ public class WizardDataViewModel : ViewModelBase, IWizardViewModel
 
     public DatabaseConnectionModel SelectedDatabaseConnection
     {
-        get => selectedDatabaseConnection;
+        get
+        {
+            return selectedDatabaseConnection;
+        }
+
         set
         {
             if (Equals(value, selectedDatabaseConnection))
@@ -459,7 +475,11 @@ public class WizardDataViewModel : ViewModelBase, IWizardViewModel
 
     public bool? TableSelectionThreeState
     {
-        get => tableSelectionThreeState;
+        get
+        {
+            return tableSelectionThreeState;
+        }
+
         set
         {
             if (Equals(value, tableSelectionThreeState))
@@ -475,7 +495,11 @@ public class WizardDataViewModel : ViewModelBase, IWizardViewModel
 
     public string SearchText
     {
-        get => searchText;
+        get
+        {
+            return searchText;
+        }
+
         set
         {
             if (Equals(value, searchText))
@@ -491,7 +515,11 @@ public class WizardDataViewModel : ViewModelBase, IWizardViewModel
 
     public SearchMode SearchMode
     {
-        get => searchMode;
+        get
+        {
+            return searchMode;
+        }
+
         set
         {
             if (Equals(value, searchMode))
@@ -590,7 +618,11 @@ public class WizardDataViewModel : ViewModelBase, IWizardViewModel
 
     public int SelectedTemplateType
     {
-        get => selectedTemplateType;
+        get
+        {
+            return selectedTemplateType;
+        }
+
         set
         {
             if (value == selectedTemplateType)
@@ -606,7 +638,11 @@ public class WizardDataViewModel : ViewModelBase, IWizardViewModel
 
     public string Title
     {
-        get => title;
+        get
+        {
+            return title;
+        }
+
         set
         {
             if (value == title)
@@ -621,7 +657,11 @@ public class WizardDataViewModel : ViewModelBase, IWizardViewModel
 
     public bool MayIncludeConnectionString
     {
-        get => mayIncludeConnectionString;
+        get
+        {
+            return mayIncludeConnectionString;
+        }
+
         private set
         {
             if (value == mayIncludeConnectionString)
