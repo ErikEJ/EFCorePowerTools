@@ -39,15 +39,11 @@ public static class ReverseEngineerRunner
         }
 
         var outputDir = !string.IsNullOrEmpty(options.OutputPath)
-           ? Path.IsPathFullyQualified(options.OutputPath)
-                ? options.OutputPath
-                : Path.GetFullPath(Path.Combine(options.ProjectPath, options.OutputPath))
+            ? Path.IsPathFullyQualified(options.OutputPath) ? options.OutputPath : Path.GetFullPath(Path.Combine(options.ProjectPath, options.OutputPath))
             : options.ProjectPath;
 
         var outputContextDir = !string.IsNullOrEmpty(options.OutputContextPath)
-           ? Path.IsPathFullyQualified(options.OutputContextPath)
-                ? options.OutputContextPath
-                : Path.GetFullPath(Path.Combine(options.ProjectPath, options.OutputContextPath))
+            ? Path.IsPathFullyQualified(options.OutputContextPath) ? options.OutputContextPath : Path.GetFullPath(Path.Combine(options.ProjectPath, options.OutputContextPath))
             : outputDir;
 
         var modelNamespace = string.Empty;
@@ -284,14 +280,13 @@ public static class ReverseEngineerRunner
             || lineEndingStyle.Equals("crlf", StringComparison.OrdinalIgnoreCase);
 
     public static string GetConfiguredLineEnding(string lineEndingStyle)
-        => string.IsNullOrWhiteSpace(lineEndingStyle)
-            || lineEndingStyle.Equals("native", StringComparison.OrdinalIgnoreCase)
+        => string.IsNullOrWhiteSpace(lineEndingStyle) || lineEndingStyle.Equals("native", StringComparison.OrdinalIgnoreCase)
             ? Environment.NewLine
             : lineEndingStyle.Equals("lf", StringComparison.OrdinalIgnoreCase)
-            ? "\n"
-            : lineEndingStyle.Equals("crlf", StringComparison.OrdinalIgnoreCase)
-            ? "\r\n"
-            : throw new ArgumentOutOfRangeException(nameof(lineEndingStyle), lineEndingStyle, "Unsupported line ending style.");
+                ? "\n"
+                : lineEndingStyle.Equals("crlf", StringComparison.OrdinalIgnoreCase)
+                    ? "\r\n"
+                    : throw new ArgumentOutOfRangeException(nameof(lineEndingStyle), lineEndingStyle, "Unsupported line ending style.");
 
     public static bool IsSupportedCharset(string charset) => string.IsNullOrWhiteSpace(charset)
             || charset.Equals("utf-8-bom", StringComparison.OrdinalIgnoreCase)

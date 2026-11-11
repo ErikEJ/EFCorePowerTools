@@ -42,7 +42,11 @@ public class TableInformationViewModel : ViewModelBase, ITableInformationViewMod
 
     public string Schema
     {
-        get => schema;
+        get
+        {
+            return schema;
+        }
+
         set
         {
             if (Equals(value, schema))
@@ -57,7 +61,11 @@ public class TableInformationViewModel : ViewModelBase, ITableInformationViewMod
 
     public string Name
     {
-        get => name;
+        get
+        {
+            return name;
+        }
+
         set
         {
             if (Equals(value, name))
@@ -73,7 +81,11 @@ public class TableInformationViewModel : ViewModelBase, ITableInformationViewMod
 
     public string NewName
     {
-        get => newName;
+        get
+        {
+            return newName;
+        }
+
         set
         {
             if (Equals(value, newName))
@@ -104,7 +116,11 @@ public class TableInformationViewModel : ViewModelBase, ITableInformationViewMod
 
     public ObjectType ObjectType
     {
-        get => objectType;
+        get
+        {
+            return objectType;
+        }
+
         set
         {
             if (Equals(value, objectType))
@@ -137,7 +153,11 @@ public class TableInformationViewModel : ViewModelBase, ITableInformationViewMod
 
     public bool? IsSelected
     {
-        get => isSelected;
+        get
+        {
+            return isSelected;
+        }
+
         private set
         {
             if (Equals(value, isSelected))
@@ -157,7 +177,11 @@ public class TableInformationViewModel : ViewModelBase, ITableInformationViewMod
 
     public bool IsVisible
     {
-        get => isVisible;
+        get
+        {
+            return isVisible;
+        }
+
         set
         {
             if (Equals(value, isVisible))
@@ -172,7 +196,11 @@ public class TableInformationViewModel : ViewModelBase, ITableInformationViewMod
 
     public bool IsEditing
     {
-        get => isEditing;
+        get
+        {
+            return isEditing;
+        }
+
         set
         {
             if (Equals(value, isEditing))

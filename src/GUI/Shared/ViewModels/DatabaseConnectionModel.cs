@@ -26,7 +26,11 @@ public class DatabaseConnectionModel : INotifyPropertyChanged
     /// </summary>
     public string FilePath
     {
-        get => filePath;
+        get
+        {
+            return filePath;
+        }
+
         set
         {
             if (value == filePath)
@@ -41,7 +45,11 @@ public class DatabaseConnectionModel : INotifyPropertyChanged
 
     public string ConnectionName
     {
-        get => connectionName;
+        get
+        {
+            return connectionName;
+        }
+
         set
         {
             if (value == connectionName)
@@ -113,7 +121,11 @@ public class DatabaseConnectionModel : INotifyPropertyChanged
 
     public string ConnectionString
     {
-        get => connectionString;
+        get
+        {
+            return connectionString;
+        }
+
         set
         {
             if (value == connectionString)
@@ -128,7 +140,11 @@ public class DatabaseConnectionModel : INotifyPropertyChanged
 
     public DatabaseType DatabaseType
     {
-        get => databaseType;
+        get
+        {
+            return databaseType;
+        }
+
         set
         {
             if (value == databaseType)
@@ -143,7 +159,11 @@ public class DatabaseConnectionModel : INotifyPropertyChanged
 
     public IVsDataConnection DataConnection
     {
-        get => dataConnection;
+        get
+        {
+            return dataConnection;
+        }
+
         set
         {
             if (value == dataConnection)

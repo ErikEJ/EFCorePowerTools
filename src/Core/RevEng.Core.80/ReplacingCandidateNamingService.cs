@@ -49,13 +49,9 @@ public class ReplacingCandidateNamingService : CandidateNamingService
 
         var newTableName = string.Empty;
 
-        newTableName = schema.Tables != null && schema.Tables.Exists(t => t.Name == originalTable.Name)
-            ? schema.Tables.SingleOrDefault(t => t.Name == originalTable.Name)?.NewName
-            : !string.IsNullOrEmpty(schema.TableRegexPattern) && schema.TablePatternReplaceWith != null
-                ? preserveCasingUsingRegex
-                ? RegexNameReplace(schema.TableRegexPattern, originalTable.Name, schema.TablePatternReplaceWith)
-                : GenerateIdentifier(RegexNameReplace(schema.TableRegexPattern, originalTable.Name, schema.TablePatternReplaceWith))
-                : base.GenerateCandidateIdentifier(originalTable);
+        newTableName = schema.Tables != null && schema.Tables.Exists(t => t.Name == originalTable.Name) ? schema.Tables.SingleOrDefault(t => t.Name == originalTable.Name)?.NewName :
+                       !string.IsNullOrEmpty(schema.TableRegexPattern) && schema.TablePatternReplaceWith != null ? preserveCasingUsingRegex ? RegexNameReplace(schema.TableRegexPattern, originalTable.Name, schema.TablePatternReplaceWith) : GenerateIdentifier(RegexNameReplace(schema.TableRegexPattern, originalTable.Name, schema.TablePatternReplaceWith)) :
+                       base.GenerateCandidateIdentifier(originalTable);
 
         if (string.IsNullOrWhiteSpace(newTableName))
         {

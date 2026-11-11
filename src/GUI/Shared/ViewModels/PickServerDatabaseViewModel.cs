@@ -82,7 +82,11 @@ public class PickServerDatabaseViewModel : ViewModelBase, IPickServerDatabaseVie
 
     public int CodeGenerationMode
     {
-        get => codeGenerationMode;
+        get
+        {
+            return codeGenerationMode;
+        }
+
         set
         {
             if (value == codeGenerationMode)
@@ -97,7 +101,11 @@ public class PickServerDatabaseViewModel : ViewModelBase, IPickServerDatabaseVie
 
     public bool FilterSchemas
     {
-        get => filterSchemas;
+        get
+        {
+            return filterSchemas;
+        }
+
         set
         {
             if (value == filterSchemas)
@@ -112,7 +120,11 @@ public class PickServerDatabaseViewModel : ViewModelBase, IPickServerDatabaseVie
 
     public DatabaseConnectionModel SelectedDatabaseConnection
     {
-        get => selectedDatabaseConnection;
+        get
+        {
+            return selectedDatabaseConnection;
+        }
+
         set
         {
             if (Equals(value, selectedDatabaseConnection))

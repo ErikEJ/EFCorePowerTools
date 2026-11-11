@@ -39,7 +39,11 @@ public class PickConfigViewModel : ViewModelBase, IPickConfigViewModel
 
     public ConfigModel SelectedConfiguration
     {
-        get => selectedConfiguration;
+        get
+        {
+            return selectedConfiguration;
+        }
+
         set
         {
             if (Equals(value, selectedConfiguration))

@@ -48,7 +48,11 @@ public class AboutViewModel : ViewModelBase, IAboutViewModel
 
     public string Version
     {
-        get => version;
+        get
+        {
+            return version;
+        }
+
         private set
         {
             if (Equals(value, version))

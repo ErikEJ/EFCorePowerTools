@@ -35,7 +35,11 @@ public class CompareResultViewModel : ViewModelBase, ICompareResultViewModel
 
     public bool ShowDifferencesOnly
     {
-        get => showDifferencesOnly;
+        get
+        {
+            return showDifferencesOnly;
+        }
+
         set
         {
             Set(ref showDifferencesOnly, value);

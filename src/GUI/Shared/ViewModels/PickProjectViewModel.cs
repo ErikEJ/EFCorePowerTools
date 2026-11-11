@@ -37,7 +37,11 @@ public class PickProjectViewModel : ViewModelBase, IPickProjectViewModel
 
     public ProjectModel SelectedProject
     {
-        get => selectedProject;
+        get
+        {
+            return selectedProject;
+        }
+
         set
         {
             if (Equals(value, selectedProject))

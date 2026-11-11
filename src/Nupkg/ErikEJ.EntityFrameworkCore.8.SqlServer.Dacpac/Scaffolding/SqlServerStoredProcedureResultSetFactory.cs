@@ -168,17 +168,15 @@ public static class SqlServerStoredProcedureResultSetFactory
         /// Extracts max length from parameterized SQL type declarations, preserving <c>MAX</c> as <c>-1</c>.
         /// </summary>
         private static int GetMaxLength(DataTypeReference dataType)
-            => dataType is UserDataTypeReference userDataTypeReference
-                && string.Equals(userDataTypeReference.Name?.BaseIdentifier?.Value, "sysname", StringComparison.OrdinalIgnoreCase)
+            => dataType is UserDataTypeReference userDataTypeReference && string.Equals(userDataTypeReference.Name?.BaseIdentifier?.Value, "sysname", StringComparison.OrdinalIgnoreCase)
                 ? 128
                 : dataType is not ParameterizedDataTypeReference parameterizedDataType || parameterizedDataType.Parameters.Count == 0
-                ? 0
-                : parameterizedDataType.Parameters[0].LiteralType == LiteralType.Max
-                ? -1
-                : parameterizedDataType.Parameters[0] is IntegerLiteral integerLiteral
-                && int.TryParse(integerLiteral.Value, out var value)
-                ? value
-                : 0;
+                    ? 0
+                    : parameterizedDataType.Parameters[0].LiteralType == LiteralType.Max
+                        ? -1
+                        : parameterizedDataType.Parameters[0] is IntegerLiteral integerLiteral && int.TryParse(integerLiteral.Value, out var value)
+                            ? value
+                            : 0;
 
         /// <summary>
         /// Extracts precision from parameterized SQL type declarations when present.
@@ -186,10 +184,9 @@ public static class SqlServerStoredProcedureResultSetFactory
         private static short? GetPrecision(DataTypeReference dataType)
             => dataType is not ParameterizedDataTypeReference parameterizedDataType || parameterizedDataType.Parameters.Count == 0
                 ? null
-                : parameterizedDataType.Parameters[0] is IntegerLiteral integerLiteral
-                && short.TryParse(integerLiteral.Value, out var value)
-                ? value
-                : null;
+                : parameterizedDataType.Parameters[0] is IntegerLiteral integerLiteral && short.TryParse(integerLiteral.Value, out var value)
+                    ? value
+                    : null;
 
         /// <summary>
         /// Extracts scale from parameterized SQL type declarations when present.
@@ -197,10 +194,9 @@ public static class SqlServerStoredProcedureResultSetFactory
         private static short? GetScale(DataTypeReference dataType)
             => dataType is not ParameterizedDataTypeReference parameterizedDataType || parameterizedDataType.Parameters.Count < 2
                 ? null
-                : parameterizedDataType.Parameters[1] is IntegerLiteral integerLiteral
-                && short.TryParse(integerLiteral.Value, out var value)
-                ? value
-                : null;
+                : parameterizedDataType.Parameters[1] is IntegerLiteral integerLiteral && short.TryParse(integerLiteral.Value, out var value)
+                    ? value
+                    : null;
 
         public override void Visit(CreateTableStatement node)
         {

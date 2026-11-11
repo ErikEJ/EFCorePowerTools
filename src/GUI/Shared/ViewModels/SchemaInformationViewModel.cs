@@ -28,7 +28,11 @@ public class SchemaInformationViewModel : ViewModelBase, ISchemaInformationViewM
 
     public string Name
     {
-        get => name;
+        get
+        {
+            return name;
+        }
+
         set
         {
             if (Equals(value, name))
@@ -45,7 +49,11 @@ public class SchemaInformationViewModel : ViewModelBase, ISchemaInformationViewM
 
     public bool? IsSelected
     {
-        get => isSelected;
+        get
+        {
+            return isSelected;
+        }
+
         private set
         {
             if (Equals(value, isSelected))
