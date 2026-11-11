@@ -72,7 +72,7 @@ public static class Providers
             DatabaseType.SQLServerDacpac,
             DatabaseType.Npgsql,
             DatabaseType.Mysql,
-        ];
+    ];
 
     public static string GetReadmeContent(ReverseEngineerCommandOptions commandOptions, CodeGenerationMode codeGenerationMode, string redactedConnectionString)
     {
@@ -112,9 +112,9 @@ public static class Providers
         {
             var pkgVersion = codeGenerationMode switch
             {
-                CodeGenerationMode.EFCore8 => "8.0.30",
-                CodeGenerationMode.EFCore9 => "9.0.19",
-                CodeGenerationMode.EFCore10 => "10.0.11",
+                CodeGenerationMode.EFCore8 => "8.0.34",
+                CodeGenerationMode.EFCore9 => "9.0.23",
+                CodeGenerationMode.EFCore10 => "10.0.15",
                 _ => throw new NotImplementedException(),
             };
             packages.Add(new NuGetPackage
@@ -186,9 +186,9 @@ public static class Providers
         {
             var pkgVersion = codeGenerationMode switch
             {
-                CodeGenerationMode.EFCore8 => "8.0.30",
-                CodeGenerationMode.EFCore9 => "9.0.19",
-                CodeGenerationMode.EFCore10 => "10.0.11",
+                CodeGenerationMode.EFCore8 => "8.0.34",
+                CodeGenerationMode.EFCore9 => "9.0.23",
+                CodeGenerationMode.EFCore10 => "10.0.15",
                 _ => throw new NotImplementedException(),
             };
             packages.Add(new NuGetPackage
@@ -279,7 +279,7 @@ public static class Providers
                     break;
 
                 case CodeGenerationMode.EFCore10:
-                    pkgVersion = "10.0.10";
+                    pkgVersion = "10.0.14";
                     prefix = "Microting";
                     break;
 
@@ -313,8 +313,8 @@ public static class Providers
         {
             var pkgVersion = codeGenerationMode switch
             {
-                CodeGenerationMode.EFCore8 => "8.23.26300",
-                CodeGenerationMode.EFCore9 => "9.23.26300",
+                CodeGenerationMode.EFCore8 => "8.23.26400",
+                CodeGenerationMode.EFCore9 => "9.23.26400",
                 CodeGenerationMode.EFCore10 => "10.23.26200",
                 _ => throw new NotImplementedException(),
             };
