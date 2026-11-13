@@ -280,7 +280,7 @@ internal class ReverseEngineerHandler
                 missingProviderPackage = null;
             }
 
-            await GenerateFilesAsync(project, options, missingProviderPackage, onlyGenerate, neededPackages);
+            await GenerateFilesAsync(options, missingProviderPackage, onlyGenerate, neededPackages);
 
             var postRunFile = Path.Combine(Path.GetDirectoryName(optionsPath), "efpt.postrun.cmd");
             if (File.Exists(postRunFile))
@@ -329,7 +329,7 @@ internal class ReverseEngineerHandler
         }
     }
 
-    private static async System.Threading.Tasks.Task GenerateFilesAsync(Project project, ReverseEngineerOptions options, string missingProviderPackage, bool onlyGenerate, List<NuGetPackage> packages)
+    private static async System.Threading.Tasks.Task GenerateFilesAsync(ReverseEngineerOptions options, string missingProviderPackage, bool onlyGenerate, List<NuGetPackage> packages)
     {
         await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
