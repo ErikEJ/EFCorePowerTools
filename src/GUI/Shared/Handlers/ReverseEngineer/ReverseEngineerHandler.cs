@@ -350,8 +350,6 @@ internal class ReverseEngineerHandler
             }
         }
 
-        options.UseNullableReferences = !await project.IsNetStandardAsync() && options.UseNullableReferences;
-
         await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 2, 4);
 
         var revEngResult = await EfRevEngLauncher.LaunchExternalRunnerAsync(options, options.CodeGenerationMode);

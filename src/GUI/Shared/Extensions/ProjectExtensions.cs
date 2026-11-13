@@ -192,11 +192,6 @@ internal static class ProjectExtensions
     {
         var version = new Version(10, 0);
 
-        if (await project.IsNetStandardAsync())
-        {
-            version = new Version(2, 0);
-        }
-
         if (await project.IsNet10OrHigherAsync())
         {
             version = new Version(10, 0);
@@ -208,7 +203,7 @@ internal static class ProjectExtensions
     public static async Task<bool> CanUseReverseEngineerAsync(this Project project)
     {
         return project.IsCSharpProject()
-            && (await project.IsNet10OrHigherAsync() || await project.IsNetStandardAsync());
+            && (await project.IsNet10OrHigherAsync());
     }
 
     public static bool IsCSharpProject(this Project project)
@@ -264,18 +259,6 @@ internal static class ProjectExtensions
         var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
 
         return IsNet100(targetFrameworkMonikers);
-    }
-
-    public static async Task<bool> IsNetStandardAsync(this Project project)
-    {
-        var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
-
-        if (targetFrameworkMonikers == null)
-        {
-            return false;
-        }
-
-        return targetFrameworkMonikers.IndexOf(".NETStandard,Version=v2.", StringComparison.OrdinalIgnoreCase) >= 0;
     }
 
     public static async Task<bool> IsInstalledAsync(this Project project, NuGetPackage package)

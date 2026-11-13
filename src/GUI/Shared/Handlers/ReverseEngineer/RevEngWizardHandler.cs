@@ -436,7 +436,7 @@ public class RevEngWizardHandler : IReverseEngineerBll
 
         if (options.InstallNuGetPackage
             && (!onlyGenerate || forceEdit)
-            && (await project.IsNet10OrHigherAsync() || await project.IsNetStandardAsync()))
+            && (await project.IsNet10OrHigherAsync()))
         {
             var packages = await project.GetNeededPackagesAsync(options);
 
@@ -483,8 +483,6 @@ public class RevEngWizardHandler : IReverseEngineerBll
                     buttons: Microsoft.VisualStudio.Shell.Interop.OLEMSGBUTTON.OLEMSGBUTTON_OK);
             }
         }
-
-        options.UseNullableReferences = !await project.IsNetStandardAsync() && options.UseNullableReferences;
 
         if (!isCalledByWizard)
         {
