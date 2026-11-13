@@ -7,25 +7,26 @@ Always reference these instructions first and fallback to search or bash command
 ## Working Effectively
 
 ### Prerequisites and Setup
-- **CRITICAL**: This repository requires .NET 10.0 SDK preview for full functionality, but core components work with .NET 8.0 SDK
+- **CRITICAL**: The CLI and EF Core 10 projects require the .NET 10 SDK; EF Core 8 core components can still be built with .NET 8.
 - For development with .NET 8.0 SDK only: `{"sdk": {"version": "8.0.119", "allowPrerelease": false, "rollForward": "latestFeature"}}`
 - Projects requiring .NET 10: `RevEng.Core.100`, `efreveng100`, `efcpt.10`, `efpt100.core` (will fail with .NET 8 SDK)
-- All EF Core 8 and CLI tools work perfectly with .NET 8.0 SDK
+- The CLI and reverse-engineering tool now target EF Core 10.
 
 ### Build and Test the Repository
 - Navigate to repository root: `cd /home/runner/work/EFCorePowerTools/EFCorePowerTools`
-- **Building core CLI tools (EF Core 8)**: 
-  - `cd src/Core/efcpt.8 && dotnet build` -- takes 15-20 seconds from clean. NEVER CANCEL. Set timeout to 60+ seconds.
-  - `cd src/Core/efreveng80 && dotnet build` -- takes 10-15 seconds from clean. NEVER CANCEL. Set timeout to 60+ seconds.
+- **Building CLI and reverse-engineering tools (EF Core 10)**:
+  - `dotnet build src/Core/efcpt.10/efcpt.10.csproj` -- takes 15-20 seconds from clean. NEVER CANCEL. Set timeout to 60+ seconds.
+  - `dotnet build src/Core/efreveng100/efreveng100.csproj` -- takes 10-15 seconds from clean. NEVER CANCEL. Set timeout to 60+ seconds.
 - **Running tests**:
-  - `cd src/Core/NUnitTestCore && dotnet test` -- takes 20-25 seconds. NEVER CANCEL. Set timeout to 120+ seconds.
-  - Tests: 74 passed, 3 skipped (normal behavior)
+  - `dotnet test src/Core/NUnitTestCore/NUnitTestCore.csproj` -- EF Core 8 core tests.
+  - `dotnet test src/Core/NUnitTestCore100/NUnitTestCore100.csproj` -- EF Core 10 CLI tests.
+  - NEVER CANCEL; set timeout to 120+ seconds.
 - **Building dacpac projects**:
   - `cd test/ScaffoldingTester/Chinook && dotnet build` -- takes 7-10 seconds. NEVER CANCEL. Set timeout to 60+ seconds.
 
 ### CLI Tool Installation and Usage
-- **Install globally**: `dotnet tool install ErikEJ.EFCorePowerTools.Cli -g --version 8.*`
-- **Update globally**: `dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version 8.*`
+- **Install globally**: `dotnet tool install ErikEJ.EFCorePowerTools.Cli -g --version 10.*`
+- **Update globally**: `dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version 10.*`
 - **Basic usage**: `efcpt --help` (takes 1-2 seconds to run)
 - **Test with dacpac**: `efcpt path/to/file.dacpac mssql` (takes 3-5 seconds for typical database)
 
@@ -39,7 +40,7 @@ Always reference these instructions first and fallback to search or bash command
 
 ### Essential Validation Scenarios
 - **ALWAYS test CLI functionality** after making changes:
-  1. Install/update CLI tool globally: `dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version 8.*`
+  1. Install/update CLI tool globally: `dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version 10.*`
   2. Create test directory: `mkdir /tmp/efcpt_test && cd /tmp/efcpt_test`
   3. Test with sample dacpac: Copy from `test/ScaffoldingTester/Chinook/obj/Debug/netstandard2.1/ErikEJ.Dacpac.Chinook.dacpac`
   4. Run: `efcpt ErikEJ.Dacpac.Chinook.dacpac mssql`
@@ -47,8 +48,9 @@ Always reference these instructions first and fallback to search or bash command
   6. Test config modification: Edit `efcpt-config.json`, change `"use-data-annotations": true`, re-run
   7. Verify: Data annotations added to generated classes
 
-- **ALWAYS run core tests** to ensure no regressions:
-  - `cd src/Core/NUnitTestCore && dotnet test` -- NEVER CANCEL, wait 2+ minutes
+- **ALWAYS run tests** to ensure no regressions:
+  - `dotnet test src/Core/NUnitTestCore/NUnitTestCore.csproj`
+  - `dotnet test src/Core/NUnitTestCore100/NUnitTestCore100.csproj` -- NEVER CANCEL, wait 2+ minutes
 
 - **Build validation timing expectations**:
   - Clean CLI build: 15-20 seconds
@@ -79,8 +81,8 @@ Always reference these instructions first and fallback to search or bash command
 # Core development workflow
 cd /home/runner/work/EFCorePowerTools/EFCorePowerTools
 
-# Build CLI 8 tool
-cd src/Core/efcpt.8 && dotnet build
+# Build CLI 10 tool
+dotnet build src/Core/efcpt.10/efcpt.10.csproj
 
 # Run tests  
 cd src/Core/NUnitTestCore && dotnet test
@@ -89,7 +91,7 @@ cd src/Core/NUnitTestCore && dotnet test
 cd test/ScaffoldingTester/Chinook && dotnet build
 
 # Install/update CLI globally
-dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version 8.*
+dotnet tool update ErikEJ.EFCorePowerTools.Cli -g --version 10.*
 
 # Test CLI with dacpac
 cd /tmp && mkdir test_efcpt && cd test_efcpt
@@ -101,10 +103,9 @@ efcpt ErikEJ.Dacpac.Chinook.dacpac mssql
 ```
 src/
 ├── Core/                    # Core reverse engineering libraries and CLI tools
-│   ├── efcpt.8/            # CLI tool for EF Core 8 (builds with .NET 8 SDK)
-│   ├── efreveng80/         # Reverse engineering tool for EF Core 8  
-│   ├── RevEng.Core.80/     # Core reverse engineering library for EF Core 8
 │   ├── efcpt.10/           # CLI tool for EF Core 10 (requires .NET 10 SDK)
+│   ├── efreveng100/        # Reverse-engineering tool for EF Core 10
+│   ├── RevEng.Core.80/     # Shared core reverse engineering source
 │   └── NUnitTestCore/      # Core test suite (74 tests)
 ├── GUI/                     # Visual Studio extension components
 │   ├── EFCorePowerTools/   # Main VSIX project (Windows/VS only)

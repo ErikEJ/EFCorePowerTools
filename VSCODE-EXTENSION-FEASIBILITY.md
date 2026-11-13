@@ -12,8 +12,8 @@ With those foundations in place, the first extension release can provide a guide
 
 The extension can build on these existing components:
 
-- **Cross-platform generation:** the `ErikEJ.EFCorePowerTools.Cli` .NET tool exposes the `efcpt` command, with documented EF Core 8, 9 and 10 installation paths. See the [CLI guide](src/Core/efcpt.8/readme.md) and [tool project](src/Core/efcpt.8/efcpt.8.csproj).
-- **Inputs and output control:** the CLI accepts database connection strings or SQL Server `.dacpac` paths, a provider, a root output directory, a config path and a renaming file. See [ScaffoldOptions.cs](src/Core/efcpt.8/Options/ScaffoldOptions.cs).
+- **Cross-platform generation:** the `ErikEJ.EFCorePowerTools.Cli` .NET tool exposes the `efcpt` command for EF Core 10. See the [CLI guide](src/Core/efcpt.10/readme.md) and [tool project](src/Core/efcpt.10/efcpt.10.csproj).
+- **Inputs and output control:** the CLI accepts database connection strings or SQL Server `.dacpac` paths, a provider, a root output directory, a config path and a renaming file. See [ScaffoldOptions.cs](src/Core/efcpt.10/Options/ScaffoldOptions.cs).
 - **A canonical configuration format:** [efcpt-config.json](samples/efcpt-config.json) and its [JSON schema](samples/efcpt-config.schema.json) cover object lists, exclusions, generation settings, names, layout, replacements and type mappings. The extension should edit this format rather than introduce a competing configuration model.
 - **Shared semantics:** [CliConfigMapper.cs](src/GUI/RevEng.Shared/Cli/CliConfigMapper.cs) maps configuration to generation options and handles object-list refresh. Reuse its behavior as the reference for selection semantics, without porting .NET scaffolding code into TypeScript.
 
@@ -82,7 +82,7 @@ Explain `refresh-object-lists` separately from UI refresh. The generation comman
 
 Use a TypeScript/Node.js workspace extension that launches the selected CLI as a child process with an argument array, no shell interpolation, explicit working directory and explicit config/output paths. Keep database drivers and provider logic in the CLI. No language server or persistent .NET service is needed for the initial workflow.
 
-- **Tool compatibility:** identify the installed package version and supported discovery contract before running. Reject incompatible versions with actionable setup instructions. Support a documented local-tool or global-tool invocation strategy; do not silently install/update a global tool or change a project manifest. EF Core 8/9/10 share the package ID and command name, so the executable name alone is insufficient to select a version.
+- **Tool compatibility:** identify the installed package version and supported discovery contract before running. Reject incompatible versions with actionable setup instructions. Support a documented local-tool or global-tool invocation strategy; do not silently install/update a global tool or change a project manifest. Require an EF Core 10-compatible CLI release.
 - **Execution environment:** run the CLI where the workspace extension host runs. For WSL, containers or SSH, .NET, the tool, input files, database connectivity and environment variables must be available there, not merely on the desktop. Browser-only VS Code without a process-capable remote host is outside the MVP.
 - **Environment inheritance:** a variable set in an integrated terminal does not automatically update the already-running extension host's environment. Document launching/restarting VS Code or its remote host with the variable available. Use exact variable names for portability; do not display variable values or enumerate all environment variables as connection profiles.
 - **Workspace trust:** gate CLI execution and workspace-specified executable/template paths on Workspace Trust. Do not automatically execute tools when opening a folder or config.
@@ -115,6 +115,6 @@ The key sequencing decision is to finish and stabilize the two CLI contracts fir
 
 Repository sources establish the reusable baseline; the Phase 1 CLI contracts above are proposed prerequisites.
 
-- [CLI guide](src/Core/efcpt.8/readme.md), [arguments](src/Core/efcpt.8/Options/ScaffoldOptions.cs) and [generation orchestration](src/Core/efcpt.8/HostedServices/ScaffoldHostedService.cs)
+- [CLI guide](src/Core/efcpt.10/readme.md), [arguments](src/Core/efcpt.10/Options/ScaffoldOptions.cs) and [generation orchestration](src/Core/efcpt.10/HostedServices/ScaffoldHostedService.cs)
 - [Configuration schema](samples/efcpt-config.schema.json), [sample config](samples/efcpt-config.json) and [shared config mapper](src/GUI/RevEng.Shared/Cli/CliConfigMapper.cs)
 - VS Code: [Tree View API](https://code.visualstudio.com/api/extension-guides/tree-view), [Webview API](https://code.visualstudio.com/api/extension-guides/webview), [Remote extensions](https://code.visualstudio.com/api/advanced-topics/remote-extensions), [Workspace Trust](https://code.visualstudio.com/api/extension-guides/workspace-trust), [Publishing](https://code.visualstudio.com/api/working-with-extensions/publishing-extension)

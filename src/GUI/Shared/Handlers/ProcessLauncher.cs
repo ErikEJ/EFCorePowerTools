@@ -230,27 +230,20 @@ namespace EFCorePowerTools.Handlers
             Debug.Assert(fromDir != null, nameof(fromDir) + " != null");
             Debug.Assert(toDir != null, nameof(toDir) + " != null");
 
+            var versionInfo = await project.ContainsEfCoreDesignReferenceAsync();
+            if (string.IsNullOrEmpty(versionInfo.Item2)
+                || !versionInfo.Item2.StartsWith("10.", StringComparison.OrdinalIgnoreCase))
+            {
+                throw new NotSupportedException($"EF Core {versionInfo.Item2} is no longer supported. Use EF Core 10.");
+            }
+
             if (Directory.Exists(toDir))
             {
                 Directory.Delete(toDir, true);
             }
 
             Directory.CreateDirectory(toDir);
-
-            var versionInfo = await project.ContainsEfCoreDesignReferenceAsync();
-
-            if (versionInfo.Item2.StartsWith("8.", StringComparison.OrdinalIgnoreCase))
-            {
-                ExtractTool(toDir, fromDir, "efpt80.exe.zip", RevEng.Common.CodeGenerationMode.EFCore8);
-            }
-            else if (versionInfo.Item2.StartsWith("9.", StringComparison.OrdinalIgnoreCase))
-            {
-                ExtractTool(toDir, fromDir, "efpt90.exe.zip", RevEng.Common.CodeGenerationMode.EFCore9);
-            }
-            else if (versionInfo.Item2.StartsWith("10.", StringComparison.OrdinalIgnoreCase))
-            {
-                ExtractTool(toDir, fromDir, "efpt100.exe.zip", RevEng.Common.CodeGenerationMode.EFCore10);
-            }
+            ExtractTool(toDir, fromDir, "efpt100.exe.zip", RevEng.Common.CodeGenerationMode.EFCore10);
 
             return toDir;
         }

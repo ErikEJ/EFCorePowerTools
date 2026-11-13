@@ -13,12 +13,6 @@
     <Project Path="Core/efpt100.core/efpt100.core.csproj">
       <Build Solution="Release|*" Project="false" />
     </Project>
-    <Project Path="Core/efpt80.core/efpt80.core.csproj">
-      <Build Solution="Release|*" Project="false" />
-    </Project>
-    <Project Path="Core/efpt90.core/efpt90.core.csproj">
-      <Build Solution="Release|*" Project="false" />
-    </Project>
   </Folder>
   <Folder Name="/Packages/">
     <Project Path="Nupkg/ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac/ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac.csproj">
@@ -38,19 +32,7 @@
     <Project Path="Core/efcpt.10/efcpt.10.csproj">
       <Build Solution="Release|*" Project="false" />
     </Project>
-    <Project Path="Core/efcpt.8/efcpt.8.csproj">
-      <Build Solution="Release|*" Project="false" />
-    </Project>
-    <Project Path="Core/efcpt.9/efcpt.9.csproj">
-      <Build Solution="Release|*" Project="false" />
-    </Project>
     <Project Path="Core/efreveng100/efreveng100.csproj">
-      <Build Solution="Release|*" Project="false" />
-    </Project>
-    <Project Path="Core/efreveng80/efreveng80.csproj">
-      <Build Solution="Release|*" Project="false" />
-    </Project>
-    <Project Path="Core/efreveng90/efreveng90.csproj">
       <Build Solution="Release|*" Project="false" />
     </Project>
     <Project Path="Core/RevEng.Core.100/RevEng.Core.100.csproj">
@@ -74,7 +56,6 @@
     <Project Path="Core/NUnitTestCore/NUnitTestCore.csproj">
       <Build Solution="Release|*" Project="false" />
     </Project>
-    <Project Path="Core/NUnitTestCore100/NUnitTestCore100.csproj" />
     <Project Path="GUI/UnitTests/UnitTests.csproj" Id="562b5f7b-6229-4019-bfa9-cd7fd4773081" />
   </Folder>
   <Project Path="GUI/EFCorePowerTools/EFCorePowerTools.csproj" Id="c670be03-6397-4ac0-9914-ad1bb679778f" />

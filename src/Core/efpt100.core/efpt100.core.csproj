@@ -10,19 +10,10 @@
     <DefineConstants>TRACE;DEBUG;CORE90;CORE100</DefineConstants>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Include="..\efpt80.core\*.cs">
-      <Link>%(Filename)%(Extension)</Link>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="..\efpt80.core\EFCoreCompareBuilder.cs" />
-  </ItemGroup>
-
    <ItemGroup>
     <!-- Need to stay on 10.0.0, as this .dll is loaded with the users own project, and we do not want to enforce higher versions. -->
      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0" />
+     <PackageReference Include="EfCore.SchemaCompare" Version="10.0.0" />
    </ItemGroup>
 
 </Project>

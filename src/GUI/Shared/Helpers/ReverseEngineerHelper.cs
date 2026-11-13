@@ -32,52 +32,13 @@ public class ReverseEngineerHelper
 
     public static string DropTemplates(string optionsPath, string projectPath, CodeGenerationMode codeGenerationMode, bool useHandlebars, int selectedOption = 0)
     {
-        string zipName;
-        string t4Version = "900";
-
-        if (useHandlebars)
+        if (codeGenerationMode != CodeGenerationMode.EFCore10)
         {
-            switch (codeGenerationMode)
-            {
-                case CodeGenerationMode.EFCore8:
-                    zipName = "CodeTemplates800.zip";
-                    break;
-                case CodeGenerationMode.EFCore9:
-                    zipName = "CodeTemplates900.zip";
-                    break;
-                case CodeGenerationMode.EFCore10:
-                    zipName = "CodeTemplates1000.zip";
-                    break;
-                default:
-                    throw new ArgumentException($"Unsupported code generation mode for templates: {codeGenerationMode}");
-            }
+            throw new ArgumentException($"Unsupported code generation mode for templates: {codeGenerationMode}");
         }
-        else
-        {
-            switch (codeGenerationMode)
-            {
-                case CodeGenerationMode.EFCore8:
-                    t4Version = "800";
-                    break;
-                case CodeGenerationMode.EFCore9:
-                    t4Version = "900";
-                    break;
 
-                case CodeGenerationMode.EFCore10:
-                    t4Version = "1000";
-                    break;
-
-                default:
-                    throw new ArgumentException($"Unsupported code generation mode for T4 templates: {codeGenerationMode}");
-            }
-
-            if (selectedOption == 4)
-            {
-                t4Version += "_Split";
-            }
-
-            zipName = $"T4_{t4Version}.zip";
-        }
+        var t4Version = selectedOption == 4 ? "1000_Split" : "1000";
+        var zipName = useHandlebars ? "CodeTemplates1000.zip" : $"T4_{t4Version}.zip";
 
         var defaultZip = "CodeTemplates.zip";
         var userTemplateZip = Path.Combine(optionsPath, defaultZip);
@@ -230,12 +191,6 @@ public class ReverseEngineerHelper
             list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore10, Value = "EF Core 10" });
         }
 
-        if (minimumVersion.Major >= 8 || minimumVersion.Major == 2)
-        {
-            list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore8, Value = "EF Core 8" });
-            list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore9, Value = "EF Core 9" });
-        }
-
         if (!list.Any())
         {
             return (codeGenerationMode, list);
@@ -254,16 +209,6 @@ public class ReverseEngineerHelper
     public IList<TemplateTypeItem> CalculateAllowedTemplates(CodeGenerationMode codeGenerationMode)
     {
         var list = new List<TemplateTypeItem>();
-
-        if (codeGenerationMode == CodeGenerationMode.EFCore8
-           || codeGenerationMode == CodeGenerationMode.EFCore9)
-        {
-            list.Add(new TemplateTypeItem { Key = 2, Value = "C# - T4" });
-            list.Add(new TemplateTypeItem { Key = 4, Value = "C# - T4 (Split DbContext)" });
-            list.Add(new TemplateTypeItem { Key = 0, Value = "C# - Handlebars" });
-            list.Add(new TemplateTypeItem { Key = 1, Value = "TypeScript - Handlebars" });
-            list.Add(new TemplateTypeItem { Key = 3, Value = "C# - T4 (POCO)" });
-        }
 
         if (codeGenerationMode == CodeGenerationMode.EFCore10)
         {

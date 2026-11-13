@@ -3,7 +3,7 @@
 Cross platform command line tool for advanced EF Core reverse engineering. See the full guide explaining all the features [here](https://github.com/ErikEJ/EFCorePowerTools/wiki/Reverse-Engineering).
 
 [![CLI build](https://github.com/ErikEJ/EFCorePowerTools/actions/workflows/cli-tool.yml/badge.svg?branch=master)](https://github.com/ErikEJ/EFCorePowerTools/actions/workflows/cli-tool.yml?query=branch%3Amaster)
-[![CLI version including nightly builds](https://img.shields.io/nuget/vpre/ErikEJ.EFCorePowerTools.Cli?label=CLI%20%28incl.%20nightly%29)](https://github.com/ErikEJ/EFCorePowerTools/blob/master/src/Core/efcpt.8/readme.md#getting-the-latest-daily-build)
+[![CLI version including nightly builds](https://img.shields.io/nuget/vpre/ErikEJ.EFCorePowerTools.Cli?label=CLI%20%28incl.%20nightly%29)](https://github.com/ErikEJ/EFCorePowerTools/blob/master/src/Core/efcpt.10/readme.md#getting-the-latest-daily-build)
 
 ## Getting started
 
@@ -15,24 +15,10 @@ And there is a longer [30 minute demo here](https://www.youtube.com/watch?v=fwR5
 
 ### Installing the tool
 
-The CLI is published on NuGet as [ErikEJ.EFCorePowerTools.Cli](https://www.nuget.org/packages/ErikEJ.EFCorePowerTools.Cli). Install it as a .NET tool using the command for your EF Core version:
-
-EF Core 10:
+The EF Core 10 CLI is published on NuGet as [ErikEJ.EFCorePowerTools.Cli](https://www.nuget.org/packages/ErikEJ.EFCorePowerTools.Cli). Install it as a .NET tool:
 
 ```bash
 dotnet tool install ErikEJ.EFCorePowerTools.Cli -g --version 10.*
-```
-
-EF Core 8:
-
-```bash
-dotnet tool install ErikEJ.EFCorePowerTools.Cli -g --version 8.*
-```
-
-EF Core 9:
-
-```bash
-dotnet tool install ErikEJ.EFCorePowerTools.Cli -g --version 9.*
 ```
 
 ### Running the tool

@@ -190,24 +190,14 @@ internal static class ProjectExtensions
 
     public static async Task<Version> GetEFCoreVersionHintAsync(this Project project)
     {
-        var version = new Version(3, 0);
+        var version = new Version(10, 0);
 
         if (await project.IsNetStandardAsync())
         {
             version = new Version(2, 0);
         }
 
-        if (await project.IsNet80Async())
-        {
-            version = new Version(8, 0);
-        }
-
-        if (await project.IsNet90Async())
-        {
-            version = new Version(9, 0);
-        }
-
-        if (await project.IsNet100Async())
+        if (await project.IsNet10OrHigherAsync())
         {
             version = new Version(10, 0);
         }
@@ -218,7 +208,7 @@ internal static class ProjectExtensions
     public static async Task<bool> CanUseReverseEngineerAsync(this Project project)
     {
         return project.IsCSharpProject()
-            && (await project.IsNet80OrHigherAsync() || await project.IsNetStandardAsync());
+            && (await project.IsNet10OrHigherAsync() || await project.IsNetStandardAsync());
     }
 
     public static bool IsCSharpProject(this Project project)
@@ -269,13 +259,11 @@ internal static class ProjectExtensions
             || (project.IsCSharpProjectPlain() && !string.IsNullOrEmpty(await project.GetAttributeAsync("SqlServerVersion")));
     }
 
-    public static async Task<bool> IsNet80OrHigherAsync(this Project project)
+    public static async Task<bool> IsNet10OrHigherAsync(this Project project)
     {
         var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
 
-        return IsNet80(targetFrameworkMonikers)
-            || IsNet90(targetFrameworkMonikers)
-            || IsNet100(targetFrameworkMonikers);
+        return IsNet100(targetFrameworkMonikers);
     }
 
     public static async Task<bool> IsNetStandardAsync(this Project project)
@@ -455,35 +443,11 @@ internal static class ProjectExtensions
         return new Tuple<bool, string>(hasDesign, coreVersion);
     }
 
-    private static async Task<bool> IsNet80Async(this Project project)
-    {
-        var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
-
-        return IsNet80(targetFrameworkMonikers);
-    }
-
-    private static async Task<bool> IsNet90Async(this Project project)
-    {
-        var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
-
-        return IsNet90(targetFrameworkMonikers);
-    }
-
     private static async Task<bool> IsNet100Async(this Project project)
     {
         var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
 
         return IsNet100(targetFrameworkMonikers);
-    }
-
-    private static bool IsNet80(string targetFrameworkMonikers)
-    {
-        return FrameworkCheck(targetFrameworkMonikers, "8");
-    }
-
-    private static bool IsNet90(string targetFrameworkMonikers)
-    {
-        return FrameworkCheck(targetFrameworkMonikers, "9");
     }
 
     private static bool IsNet100(string targetFrameworkMonikers)

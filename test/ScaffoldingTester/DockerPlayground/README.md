@@ -96,12 +96,6 @@ After you fix bugs within the EFCorePowerTools repo directly, you can run the fo
 ```sh
 cd <repo-root>/test/ScaffoldingTester/DockerPlayground
 
-# NET 8
-dotnet run --project ../../../src/Core/efcpt.8/efcpt.8.csproj -- \
-  'bin/Debug/net10.0/DockerPlayground.dacpac' \
-  mssql
-
-# or NET 10
 dotnet run --project ../../../src/Core/efcpt.10/efcpt.10.csproj -- \
   'bin/Debug/net10.0/DockerPlayground.dacpac' \
   mssql
@@ -112,12 +106,6 @@ dotnet run --project ../../../src/Core/efcpt.10/efcpt.10.csproj -- \
 ```sh
 cd <repo-root>/test/ScaffoldingTester/DockerPlayground
 
-# NET 8
-dotnet run --project ../../../src/Core/efcpt.8/efcpt.8.csproj -- \
-  'Server=localhost,1433;Initial Catalog=DockerPlayground;User ID=sa;Password=Password!;Encrypt=False;TrustServerCertificate=True' \
-  mssql
-
-# or NET 10
 dotnet run --project ../../../src/Core/efcpt.10/efcpt.10.csproj -- \
   'Server=localhost,1433;Initial Catalog=DockerPlayground;User ID=sa;Password=Password!;Encrypt=False;TrustServerCertificate=True' \
   mssql

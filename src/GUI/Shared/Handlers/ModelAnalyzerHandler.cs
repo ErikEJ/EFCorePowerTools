@@ -32,7 +32,7 @@ internal static class ModelAnalyzerHandler
                 return;
             }
 
-            if (!await project.IsNet80OrHigherAsync())
+            if (!await project.IsNet10OrHigherAsync())
             {
                 VSHelper.ShowError($"{SharedLocale.SupportedFramework}: {await project.GetAttributeAsync("TargetFrameworkMoniker")}");
                 return;

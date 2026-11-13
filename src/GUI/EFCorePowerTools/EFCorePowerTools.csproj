@@ -217,45 +217,7 @@
       <Link>DacFX161.zip</Link>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="..\lib\efreveng80.exe.zip">
-      <Link>efreveng80.exe.zip</Link>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="..\lib\T4_800.zip">
-      <Link>T4_800.zip</Link>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="..\lib\efpt80.exe.zip">
-      <Link>efpt80.exe.zip</Link>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="..\lib\efpt90.exe.zip">
-      <Link>efpt90.exe.zip</Link>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="..\lib\efreveng90.exe.zip">
-      <Link>efreveng90.exe.zip</Link>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="..\lib\T4_900.zip">
-      <Link>T4_900.zip</Link>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="..\lib\T4_800_Split.zip">
-      <Link>T4_800_Split.zip</Link>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="..\lib\T4_900_Split.zip">
-      <Link>T4_900_Split.zip</Link>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <None Include="app.config" />
-    <Content Include="CodeTemplates800.zip">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
-    <Content Include="CodeTemplates900.zip">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <Content Include="CodeTemplates1000.zip">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
