@@ -147,7 +147,7 @@ internal class ErDiagramHandler
 
         await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 2, 3);
 
-        var revEngRunner = new EfRevEngLauncher(new ReverseEngineerCommandOptions(), CodeGenerationMode.EFCore8);
+        var revEngRunner = new EfRevEngLauncher(new ReverseEngineerCommandOptions(), CodeGenerationMode.EFCore10);
         var cmdPath = await revEngRunner.GetErDiagramAsync(optionsPath, connectionString);
 
         await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 3, 3);
@@ -256,8 +256,8 @@ internal class ErDiagramHandler
             await VS.StatusBar.StartAnimationAsync(StatusAnimation.Build);
 
             predefinedTables = !string.IsNullOrEmpty(options.Dacpac)
-                                       ? await GetDacpacTablesAsync(options.Dacpac, CodeGenerationMode.EFCore8)
-                                       : await GetTablesAsync(dbInfo, CodeGenerationMode.EFCore8);
+                                       ? await GetDacpacTablesAsync(options.Dacpac, CodeGenerationMode.EFCore10)
+                                       : await GetTablesAsync(dbInfo, CodeGenerationMode.EFCore10);
 
             predefinedTables = predefinedTables
                 .Where(t => t.ObjectType == ObjectType.Table

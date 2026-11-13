@@ -145,7 +145,7 @@
     <value>The selected project type has no TargetFrameworkMoniker</value>
   </data>
   <data name="SupportedFramework" xml:space="preserve">
-    <value>Only .NET Core 10 or later projects are supported - TargetFrameworkMoniker</value>
+    <value>Only .NET 10 or later projects are supported - TargetFrameworkMoniker</value>
   </data>
   <data name="UnableToLocateProjectAssembly" xml:space="preserve">
     <value>Unable to locate project assembly</value>
