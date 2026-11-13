@@ -295,7 +295,7 @@ ORDER BY ROUTINE_NAME;";
     /// </summary>
     private static bool ShouldTryDefinitionFallback(SqlException ex) => ShouldTryDefinitionFallback(ex.Number, ex.Message);
 
-    internal static bool ShouldTryDefinitionFallback(int errorNumber, string message)
+    public static bool ShouldTryDefinitionFallback(int errorNumber, string message)
     {
         ArgumentNullException.ThrowIfNull(message);
 

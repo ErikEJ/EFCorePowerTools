@@ -34,8 +34,14 @@ public abstract class SqlServerRoutineModelFactory
         return options.ModulesUsingLegacyDiscovery?.Contains($"[{module.Schema}].[{module.Name}]") ?? false;
     }
 
-    internal static void AddUnnamedColumnErrors(List<string> errors, string routineType, Routine module)
+    public static void AddUnnamedColumnErrors(List<string> errors, string routineType, Routine module)
     {
+        ArgumentException.ThrowIfNullOrEmpty(routineType);
+
+        ArgumentNullException.ThrowIfNull(errors);
+
+        ArgumentNullException.ThrowIfNull(module);
+
         if (module.UnnamedColumnCount > 0)
         {
             var resultElementCount = module.Results.Sum(r => r.Count) + module.UnnamedColumnCount;

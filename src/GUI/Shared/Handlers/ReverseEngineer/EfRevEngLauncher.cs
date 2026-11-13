@@ -15,6 +15,7 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer;
 public class EfRevEngLauncher
 {
     private readonly ReverseEngineerCommandOptions options;
+    private readonly string revengFolder;
     private readonly string revengRoot;
     private readonly string exeName;
     private readonly string zipName;
