@@ -78,7 +78,7 @@ public class RevEngWizardHandler : IReverseEngineerBll
         var options = new ReverseEngineerOptions
         {
             Tables = new List<SerializationTableModel>(),
-            CodeGenerationMode = CodeGenerationMode.EFCore8,
+            CodeGenerationMode = CodeGenerationMode.EFCore10,
             DatabaseType = DatabaseType.SQLServerDacpac,
             UiHint = sqlProjectPath,
             ProjectRootNamespace = await project.GetAttributeAsync("RootNamespace"),
@@ -336,7 +336,7 @@ public class RevEngWizardHandler : IReverseEngineerBll
 
                     if (newOptions)
                     {
-                        options.UseDateOnlyTimeOnly = options.CodeGenerationMode == CodeGenerationMode.EFCore8;
+                        options.UseDateOnlyTimeOnly = options.CodeGenerationMode == CodeGenerationMode.EFCore10;
                     }
 
                     if (!wizardArgs.IsInvokedByWizard)
@@ -731,7 +731,7 @@ public class RevEngWizardHandler : IReverseEngineerBll
             psd.PublishSchemas(options.Schemas);
         }
 
-        var (usedMode, allowedVersions) = reverseEngineerHelper.CalculateAllowedVersions(options.CodeGenerationMode, await project.GetEFCoreVersionHintAsync());
+        var (usedMode, allowedVersions) = reverseEngineerHelper.CalculateAllowedVersions(options.CodeGenerationMode);
 
         if (!allowedVersions.Any())
         {

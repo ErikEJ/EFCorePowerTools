@@ -188,18 +188,6 @@ internal static class ProjectExtensions
         return await ContainsReferenceAsync(project, "Microsoft.EntityFrameworkCore.Design");
     }
 
-    public static async Task<Version> GetEFCoreVersionHintAsync(this Project project)
-    {
-        var version = new Version(10, 0);
-
-        if (await project.IsNet10OrHigherAsync())
-        {
-            version = new Version(10, 0);
-        }
-
-        return version;
-    }
-
     public static async Task<bool> CanUseReverseEngineerAsync(this Project project)
     {
         return project.IsCSharpProject()

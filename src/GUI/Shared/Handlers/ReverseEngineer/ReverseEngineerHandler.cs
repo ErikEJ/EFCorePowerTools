@@ -70,7 +70,7 @@ internal class ReverseEngineerHandler
         var options = new ReverseEngineerOptions
         {
             Tables = new List<SerializationTableModel>(),
-            CodeGenerationMode = CodeGenerationMode.EFCore8,
+            CodeGenerationMode = CodeGenerationMode.EFCore10,
             DatabaseType = DatabaseType.SQLServerDacpac,
             UiHint = sqlProjectPath,
             ProjectRootNamespace = await project.GetAttributeAsync("RootNamespace"),
@@ -563,7 +563,7 @@ internal class ReverseEngineerHandler
             psd.PublishSchemas(options.Schemas);
         }
 
-        var (usedMode, allowedVersions) = reverseEngineerHelper.CalculateAllowedVersions(options.CodeGenerationMode, await project.GetEFCoreVersionHintAsync());
+        var (usedMode, allowedVersions) = reverseEngineerHelper.CalculateAllowedVersions(options.CodeGenerationMode);
 
         if (!allowedVersions.Any())
         {

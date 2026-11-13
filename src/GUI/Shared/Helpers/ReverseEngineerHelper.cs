@@ -182,19 +182,11 @@ public class ReverseEngineerHelper
         return !Directory.EnumerateFileSystemEntries(path).Any();
     }
 
-    public (CodeGenerationMode UsedMode, IList<CodeGenerationItem> AllowedVersions) CalculateAllowedVersions(CodeGenerationMode codeGenerationMode, Version minimumVersion)
+    public (CodeGenerationMode UsedMode, IList<CodeGenerationItem> AllowedVersions) CalculateAllowedVersions(CodeGenerationMode codeGenerationMode)
     {
         var list = new List<CodeGenerationItem>();
 
-        if (minimumVersion.Major >= 10)
-        {
-            list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore10, Value = "EF Core 10" });
-        }
-
-        if (!list.Any())
-        {
-            return (codeGenerationMode, list);
-        }
+        list.Add(new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore10, Value = "EF Core 10" });
 
         var firstMode = list.Select(i => i.Key).First();
 
