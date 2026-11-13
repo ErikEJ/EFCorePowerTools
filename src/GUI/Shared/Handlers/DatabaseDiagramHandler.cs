@@ -209,7 +209,7 @@ internal class DatabaseDiagramHandler
             }));
         }
 
-        psd.PublishCodeGenerationMode(CodeGenerationMode.EFCore8, new List<CodeGenerationItem>());
+        psd.PublishCodeGenerationMode(CodeGenerationMode.EFCore10, new List<CodeGenerationItem>());
 
         if (!string.IsNullOrEmpty(connectionName))
         {

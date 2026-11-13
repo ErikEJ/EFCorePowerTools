@@ -309,7 +309,7 @@ internal class ReverseEngineerHandler
 
         if (options.InstallNuGetPackage
             && (!onlyGenerate || forceEdit)
-            && (await project.IsNet80OrHigherAsync()))
+            && (await project.IsNet10OrHigherAsync()))
         {
             var packages = await project.GetNeededPackagesAsync(options);
 

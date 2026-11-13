@@ -443,13 +443,6 @@ internal static class ProjectExtensions
         return new Tuple<bool, string>(hasDesign, coreVersion);
     }
 
-    private static async Task<bool> IsNet100Async(this Project project)
-    {
-        var targetFrameworkMonikers = await GetTargetFrameworkMonikersAsync(project);
-
-        return IsNet100(targetFrameworkMonikers);
-    }
-
     private static bool IsNet100(string targetFrameworkMonikers)
     {
         return FrameworkCheck(targetFrameworkMonikers, "10") || FrameworkCheck(targetFrameworkMonikers, "11");

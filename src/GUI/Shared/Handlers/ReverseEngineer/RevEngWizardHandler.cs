@@ -436,7 +436,7 @@ public class RevEngWizardHandler : IReverseEngineerBll
 
         if (options.InstallNuGetPackage
             && (!onlyGenerate || forceEdit)
-            && (await project.IsNet80OrHigherAsync() || await project.IsNetStandardAsync()))
+            && (await project.IsNet10OrHigherAsync() || await project.IsNetStandardAsync()))
         {
             var packages = await project.GetNeededPackagesAsync(options);
 
