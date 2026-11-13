@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -145,7 +145,7 @@
     <value>The selected project type has no TargetFrameworkMoniker</value>
   </data>
   <data name="SupportedFramework" xml:space="preserve">
-    <value>Only .NET Core 3.0+ projects are supported - TargetFrameworkMoniker</value>
+    <value>Only .NET 10 or later projects are supported - TargetFrameworkMoniker</value>
   </data>
   <data name="UnableToLocateProjectAssembly" xml:space="preserve">
     <value>Unable to locate project assembly</value>

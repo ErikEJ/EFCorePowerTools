@@ -3,11 +3,11 @@
     Verifies that the efcpt "schemas" option scaffolds exactly the objects in the selected schemas.
 
 .DESCRIPTION
-    Builds the AdventureWorks dacpac and the efcpt (EF Core 8) CLI from source, then scaffolds the
-    dacpac once per scenario. Each scenario selects two or three schemas, and the tables, views,
-    stored procedures and functions found in the generated code must match the expected objects
-    for those schemas exactly, plus any objects from other schemas that a scenario lists with
-    "exclude": false. efcpt must not add any objects to the efcpt-config.json object lists.
+    Builds the AdventureWorks dacpac and the EF Core 10 efcpt CLI from source, then scaffolds
+    the dacpac once per scenario. Each scenario selects two or three schemas, and the tables,
+    views, stored procedures and functions found in the generated code must match the expected
+    objects for those schemas exactly, plus any objects from other schemas that a scenario lists
+    with "exclude": false. efcpt must not add any objects to the efcpt-config.json object lists.
 
 .EXAMPLE
     pwsh ./Test-SchemaScaffolding.ps1
@@ -29,8 +29,8 @@ $ErrorActionPreference = 'Stop'
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '../../..')).Path
 $sqlProject = Join-Path $PSScriptRoot 'ErikEJ.Dacpac.AdventureWorks.csproj'
 $dacpac = Join-Path $PSScriptRoot 'bin/Debug/netstandard2.1/ErikEJ.Dacpac.AdventureWorks.dacpac'
-$efcptProject = Join-Path $repoRoot 'src/Core/efcpt.8/efcpt.8.csproj'
-$efcpt = Join-Path $repoRoot 'src/Core/efcpt.8/bin/Debug/net8.0/efcpt.8.dll'
+$efcptProject = Join-Path $repoRoot 'src/Core/efcpt.10/efcpt.10.csproj'
+$efcpt = Join-Path $repoRoot 'src/Core/efcpt.10/bin/Debug/net10.0/efcpt.10.dll'
 
 # Every object in the AdventureWorks dacpac, by schema.
 $database = @{

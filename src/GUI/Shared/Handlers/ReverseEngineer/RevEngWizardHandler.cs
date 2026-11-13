@@ -78,7 +78,7 @@ public class RevEngWizardHandler : IReverseEngineerBll
         var options = new ReverseEngineerOptions
         {
             Tables = new List<SerializationTableModel>(),
-            CodeGenerationMode = CodeGenerationMode.EFCore8,
+            CodeGenerationMode = CodeGenerationMode.EFCore10,
             DatabaseType = DatabaseType.SQLServerDacpac,
             UiHint = sqlProjectPath,
             ProjectRootNamespace = await project.GetAttributeAsync("RootNamespace"),
@@ -324,7 +324,7 @@ public class RevEngWizardHandler : IReverseEngineerBll
                 if (!fromSqlProj)
                 {
                     // #1 load database connections (IPickServerDatabaseDialog)
-                    if (!await ChooseDataBaseConnectionAsync(options, project, wizardArgs))
+                    if (!await ChooseDataBaseConnectionAsync(options, wizardArgs))
                     {
                         if (!wizardArgs.IsInvokedByWizard)
                         {
@@ -336,7 +336,7 @@ public class RevEngWizardHandler : IReverseEngineerBll
 
                     if (newOptions)
                     {
-                        options.UseDateOnlyTimeOnly = options.CodeGenerationMode == CodeGenerationMode.EFCore8;
+                        options.UseDateOnlyTimeOnly = options.CodeGenerationMode == CodeGenerationMode.EFCore10;
                     }
 
                     if (!wizardArgs.IsInvokedByWizard)
@@ -436,7 +436,7 @@ public class RevEngWizardHandler : IReverseEngineerBll
 
         if (options.InstallNuGetPackage
             && (!onlyGenerate || forceEdit)
-            && (await project.IsNet80OrHigherAsync() || await project.IsNetStandardAsync()))
+            && (await project.IsNet10OrHigherAsync()))
         {
             var packages = await project.GetNeededPackagesAsync(options);
 
@@ -483,8 +483,6 @@ public class RevEngWizardHandler : IReverseEngineerBll
                     buttons: Microsoft.VisualStudio.Shell.Interop.OLEMSGBUTTON.OLEMSGBUTTON_OK);
             }
         }
-
-        options.UseNullableReferences = !await project.IsNetStandardAsync() && options.UseNullableReferences;
 
         if (!isCalledByWizard)
         {
@@ -700,7 +698,7 @@ public class RevEngWizardHandler : IReverseEngineerBll
         return false;
     }
 
-    private async Task<bool> ChooseDataBaseConnectionAsync(ReverseEngineerOptions options, Project project, WizardEventArgs wizardArgs = null)
+    private async Task<bool> ChooseDataBaseConnectionAsync(ReverseEngineerOptions options, WizardEventArgs wizardArgs = null)
     {
         var databaseList = await vsDataHelper.GetDataConnectionsAsync(package);
         var dacpacList = await SqlProjHelper.GetDacpacProjectsInActiveSolutionAsync();
@@ -733,7 +731,7 @@ public class RevEngWizardHandler : IReverseEngineerBll
             psd.PublishSchemas(options.Schemas);
         }
 
-        var (usedMode, allowedVersions) = reverseEngineerHelper.CalculateAllowedVersions(options.CodeGenerationMode, await project.GetEFCoreVersionHintAsync());
+        var (usedMode, allowedVersions) = reverseEngineerHelper.CalculateAllowedVersions(options.CodeGenerationMode);
 
         if (!allowedVersions.Any())
         {

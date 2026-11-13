@@ -16,12 +16,7 @@
   </ItemGroup>  
 
   <ItemGroup>
-    <Compile Include="..\efreveng80\GlobalSuppressions.cs" Link="GlobalSuppressions.cs" />
-    <Compile Include="..\efreveng80\Program.cs" Link="Program.cs" />
-  </ItemGroup>  
-
-  <ItemGroup>
     <ProjectReference Include="..\RevEng.Core.100\RevEng.Core.100.csproj" />
-  </ItemGroup>  
+  </ItemGroup>
 
 </Project>

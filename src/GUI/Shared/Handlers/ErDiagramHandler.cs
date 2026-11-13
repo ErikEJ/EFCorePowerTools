@@ -147,7 +147,7 @@ internal class ErDiagramHandler
 
         await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 2, 3);
 
-        var revEngRunner = new EfRevEngLauncher(new ReverseEngineerCommandOptions(), CodeGenerationMode.EFCore8);
+        var revEngRunner = new EfRevEngLauncher(new ReverseEngineerCommandOptions(), CodeGenerationMode.EFCore10);
         var cmdPath = await revEngRunner.GetErDiagramAsync(optionsPath, connectionString);
 
         await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 3, 3);
@@ -161,7 +161,7 @@ internal class ErDiagramHandler
 
         await VS.StatusBar.ShowMessageAsync(string.Format(ReverseEngineerLocale.ReverseEngineerCompleted, stopWatch.Elapsed.ToString(@"mm\:ss")));
 
-        Telemetry.TrackFrameworkUse(nameof(ErDiagramHandler), CodeGenerationMode.EFCore8);
+        Telemetry.TrackFrameworkUse(nameof(ErDiagramHandler), CodeGenerationMode.EFCore10);
     }
 
     private static void SaveOptions(string optionsPath, DataApiBuilderOptions options)
@@ -219,9 +219,9 @@ internal class ErDiagramHandler
             }));
         }
 
-        psd.PublishCodeGenerationMode(CodeGenerationMode.EFCore8, new List<CodeGenerationItem>
+        psd.PublishCodeGenerationMode(CodeGenerationMode.EFCore10, new List<CodeGenerationItem>
         {
-            new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore8, Value = "DAB" },
+            new CodeGenerationItem { Key = (int)CodeGenerationMode.EFCore10, Value = "DAB" },
         });
 
         psd.PublishUiHint(uiHint);
@@ -256,8 +256,8 @@ internal class ErDiagramHandler
             await VS.StatusBar.StartAnimationAsync(StatusAnimation.Build);
 
             predefinedTables = !string.IsNullOrEmpty(options.Dacpac)
-                                       ? await GetDacpacTablesAsync(options.Dacpac, CodeGenerationMode.EFCore8)
-                                       : await GetTablesAsync(dbInfo, CodeGenerationMode.EFCore8);
+                                       ? await GetDacpacTablesAsync(options.Dacpac, CodeGenerationMode.EFCore10)
+                                       : await GetTablesAsync(dbInfo, CodeGenerationMode.EFCore10);
 
             predefinedTables = predefinedTables
                 .Where(t => t.ObjectType == ObjectType.Table

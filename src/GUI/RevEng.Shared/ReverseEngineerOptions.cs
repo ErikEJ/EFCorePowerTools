@@ -95,7 +95,7 @@ public class ReverseEngineerOptions
 
     public bool UseManyToManyEntity { get; set; }
 
-    public CodeGenerationMode CodeGenerationMode { get; set; } = CodeGenerationMode.EFCore8;
+    public CodeGenerationMode CodeGenerationMode { get; set; } = CodeGenerationMode.EFCore10;
 
     public string UiHint { get; set; }
 

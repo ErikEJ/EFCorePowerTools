@@ -15,7 +15,6 @@ namespace EFCorePowerTools.Handlers.ReverseEngineer;
 public class EfRevEngLauncher
 {
     private readonly ReverseEngineerCommandOptions options;
-    private readonly CodeGenerationMode codeGenerationMode;
     private readonly string revengFolder;
     private readonly string revengRoot;
     private readonly string exeName;
@@ -24,28 +23,13 @@ public class EfRevEngLauncher
     public EfRevEngLauncher(ReverseEngineerCommandOptions options, CodeGenerationMode codeGenerationMode)
     {
         this.options = options;
-        this.codeGenerationMode = codeGenerationMode;
         var versionSuffix = FileVersionInfo.GetVersionInfo(typeof(EFCorePowerToolsPackage).Assembly.Location).FileVersion;
 
-        string revengVersion;
+        string revengVersion = "10";
 
-        switch (codeGenerationMode)
+        if (codeGenerationMode != CodeGenerationMode.EFCore10)
         {
-            case CodeGenerationMode.EFCore8:
-                revengVersion = "8";
-                break;
-
-            // TODO: Use EF Core 10 only when providers are available.
-            case CodeGenerationMode.EFCore9:
-                revengVersion = "9";
-                break;
-
-            case CodeGenerationMode.EFCore10:
-                revengVersion = "10";
-                break;
-
-            default:
-                throw new NotSupportedException("Unsupported code generation mode");
+            throw new NotSupportedException("Only EF Core 10 is supported.");
         }
 
         revengFolder = $"efreveng{revengVersion}.";
@@ -219,12 +203,7 @@ public class EfRevEngLauncher
 
     private async Task<ProcessStartInfo> CreateStartInfoAsync(string arguments)
     {
-        string version = "8.0";
-
-        if (codeGenerationMode == CodeGenerationMode.EFCore10)
-        {
-            version = "10.0";
-        }
+        const string version = "10.0";
 
         if (!await IsDotnetInstalledAsync(version))
         {

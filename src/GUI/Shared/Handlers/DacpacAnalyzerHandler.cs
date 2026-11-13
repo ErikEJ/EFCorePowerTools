@@ -56,7 +56,7 @@ namespace EFCorePowerTools.Handlers
 
         private static async Task<string> GetDacpacReportAsync(string path, bool isConnectionString)
         {
-            var launcher = new EfRevEngLauncher(null, CodeGenerationMode.EFCore8);
+            var launcher = new EfRevEngLauncher(null, CodeGenerationMode.EFCore10);
             return await launcher.GetReportPathAsync(path, isConnectionString);
         }
 

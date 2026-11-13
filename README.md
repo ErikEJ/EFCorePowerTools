@@ -3,7 +3,7 @@
 EF Core Power Tools helps you generate EF Core entity classes and a DbContext from an existing database or SQL Server .dacpac file. It also provides tools to visualize and inspect your DbContext model in Visual Studio.
 
 [![CLI build](https://github.com/ErikEJ/EFCorePowerTools/actions/workflows/cli-tool.yml/badge.svg?branch=master)](https://github.com/ErikEJ/EFCorePowerTools/actions/workflows/cli-tool.yml?query=branch%3Amaster)
-[![CLI version including nightly builds](https://img.shields.io/nuget/vpre/ErikEJ.EFCorePowerTools.Cli?label=CLI%20%28incl.%20nightly%29)](src/Core/efcpt.8/readme.md#getting-the-latest-daily-build)
+[![CLI version including nightly builds](https://img.shields.io/nuget/vpre/ErikEJ.EFCorePowerTools.Cli?label=CLI%20%28incl.%20nightly%29)](src/Core/efcpt.10/readme.md#getting-the-latest-daily-build)
 [![Visual Studio Marketplace Rating](https://badgen.net/vs-marketplace/rating/ErikEJ.EFCorePowerTools)](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools&ssr=false#review-details)
 [![Visual Studio Marketplace Installs](https://badgen.net/vs-marketplace/i/ErikEJ.EFCorePowerTools)](https://marketplace.visualstudio.com/items?itemName=ErikEJ.EFCorePowerTools)
 [![Follow ErikEJ on X](https://img.shields.io/badge/Follow-%40ErikEJ-black?logo=x&logoColor=white)](https://x.com/ErikEJ)

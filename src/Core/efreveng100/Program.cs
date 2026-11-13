@@ -135,7 +135,7 @@ namespace EfReveng
                         return 0;
                     }
 #endif
-#if NET8_0
+#if NET10_0
                     // erdiagram <options file> <connection string>
                     if (args.Length == 3
                         && args[0] == "erdiagram"

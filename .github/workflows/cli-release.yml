@@ -21,12 +21,6 @@ jobs:
       with:
         dotnet-version: '10.0.x'
   
-    - name: Package CLI 8
-      run: dotnet pack src\Core\efcpt.8\efcpt.8.csproj -p:PackageVersion=8.1.${{ github.event.inputs.version }} -p:InformationalVersion=8.1.${{ github.event.inputs.version }}
-
-    - name: Package CLI 9
-      run: dotnet pack src\Core\efcpt.9\efcpt.9.csproj -p:PackageVersion=9.1.${{ github.event.inputs.version }} -p:InformationalVersion=9.1.${{ github.event.inputs.version }}
-
     - name: Package CLI 10
       run: dotnet pack src\Core\efcpt.10\efcpt.10.csproj -p:PackageVersion=10.1.${{ github.event.inputs.version }} -p:InformationalVersion=10.1.${{ github.event.inputs.version }}
 

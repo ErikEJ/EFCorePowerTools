@@ -599,7 +599,7 @@ public sealed class EFCorePowerToolsPackage : AsyncPackage
             menuCommand.CommandID.ID == PkgCmdIDList.CmdIdSqlBuild ||
             menuCommand.CommandID.ID == PkgCmdIDList.CmdIdDbCompare)
         {
-            menuCommand.Visible = await project.IsNet80OrHigherAsync()
+            menuCommand.Visible = await project.IsNet10OrHigherAsync()
                 && await project.IsInstalledAsync(new NuGetPackage { PackageId = "Microsoft.EntityFrameworkCore" });
         }
     }

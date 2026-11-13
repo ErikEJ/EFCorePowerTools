@@ -70,7 +70,7 @@ internal class ReverseEngineerHandler
         var options = new ReverseEngineerOptions
         {
             Tables = new List<SerializationTableModel>(),
-            CodeGenerationMode = CodeGenerationMode.EFCore8,
+            CodeGenerationMode = CodeGenerationMode.EFCore10,
             DatabaseType = DatabaseType.SQLServerDacpac,
             UiHint = sqlProjectPath,
             ProjectRootNamespace = await project.GetAttributeAsync("RootNamespace"),
@@ -227,7 +227,7 @@ internal class ReverseEngineerHandler
             {
                 if (!fromSqlProj)
                 {
-                    if (!await ChooseDataBaseConnectionAsync(options, project))
+                    if (!await ChooseDataBaseConnectionAsync(options))
                     {
                         await VS.StatusBar.ClearAsync();
                         return;
@@ -280,7 +280,7 @@ internal class ReverseEngineerHandler
                 missingProviderPackage = null;
             }
 
-            await GenerateFilesAsync(project, options, missingProviderPackage, onlyGenerate, neededPackages);
+            await GenerateFilesAsync(options, missingProviderPackage, onlyGenerate, neededPackages);
 
             var postRunFile = Path.Combine(Path.GetDirectoryName(optionsPath), "efpt.postrun.cmd");
             if (File.Exists(postRunFile))
@@ -309,7 +309,7 @@ internal class ReverseEngineerHandler
 
         if (options.InstallNuGetPackage
             && (!onlyGenerate || forceEdit)
-            && (await project.IsNet80OrHigherAsync()))
+            && (await project.IsNet10OrHigherAsync()))
         {
             var packages = await project.GetNeededPackagesAsync(options);
 
@@ -329,7 +329,7 @@ internal class ReverseEngineerHandler
         }
     }
 
-    private static async System.Threading.Tasks.Task GenerateFilesAsync(Project project, ReverseEngineerOptions options, string missingProviderPackage, bool onlyGenerate, List<NuGetPackage> packages)
+    private static async System.Threading.Tasks.Task GenerateFilesAsync(ReverseEngineerOptions options, string missingProviderPackage, bool onlyGenerate, List<NuGetPackage> packages)
     {
         await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
 
@@ -349,8 +349,6 @@ internal class ReverseEngineerHandler
                     buttons: Microsoft.VisualStudio.Shell.Interop.OLEMSGBUTTON.OLEMSGBUTTON_OK);
             }
         }
-
-        options.UseNullableReferences = !await project.IsNetStandardAsync() && options.UseNullableReferences;
 
         await VS.StatusBar.ShowProgressAsync(ReverseEngineerLocale.GeneratingCode, 2, 4);
 
@@ -533,7 +531,7 @@ internal class ReverseEngineerHandler
         return false;
     }
 
-    private async Task<bool> ChooseDataBaseConnectionAsync(ReverseEngineerOptions options, Project project)
+    private async Task<bool> ChooseDataBaseConnectionAsync(ReverseEngineerOptions options)
     {
         var databaseList = await vsDataHelper.GetDataConnectionsAsync(package);
         var dacpacList = await SqlProjHelper.GetDacpacProjectsInActiveSolutionAsync();
@@ -565,7 +563,7 @@ internal class ReverseEngineerHandler
             psd.PublishSchemas(options.Schemas);
         }
 
-        var (usedMode, allowedVersions) = reverseEngineerHelper.CalculateAllowedVersions(options.CodeGenerationMode, await project.GetEFCoreVersionHintAsync());
+        var (usedMode, allowedVersions) = reverseEngineerHelper.CalculateAllowedVersions(options.CodeGenerationMode);
 
         if (!allowedVersions.Any())
         {

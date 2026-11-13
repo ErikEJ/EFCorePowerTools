@@ -96,7 +96,7 @@ internal class DatabaseDiagramHandler
 
     private static async Task<string> GetDiagramAsync(string optionsPath, string connectionString, SchemaInfo[] schemas)
     {
-        var launcher = new EfRevEngLauncher(null, CodeGenerationMode.EFCore8);
+        var launcher = new EfRevEngLauncher(null, CodeGenerationMode.EFCore10);
         return await launcher.GetDiagramAsync(connectionString, optionsPath, GetSchemas(schemas));
     }
 
@@ -209,7 +209,7 @@ internal class DatabaseDiagramHandler
             }));
         }
 
-        psd.PublishCodeGenerationMode(CodeGenerationMode.EFCore8, new List<CodeGenerationItem>());
+        psd.PublishCodeGenerationMode(CodeGenerationMode.EFCore10, new List<CodeGenerationItem>());
 
         if (!string.IsNullOrEmpty(connectionName))
         {
