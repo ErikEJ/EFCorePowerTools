@@ -18,8 +18,7 @@ Always reference these instructions first and fallback to search or bash command
   - `dotnet build src/Core/efcpt.10/efcpt.10.csproj` -- takes 15-20 seconds from clean. NEVER CANCEL. Set timeout to 60+ seconds.
   - `dotnet build src/Core/efreveng100/efreveng100.csproj` -- takes 10-15 seconds from clean. NEVER CANCEL. Set timeout to 60+ seconds.
 - **Running tests**:
-  - `dotnet test src/Core/NUnitTestCore/NUnitTestCore.csproj` -- EF Core 8 core tests.
-  - `dotnet test src/Core/NUnitTestCore100/NUnitTestCore100.csproj` -- EF Core 10 CLI tests.
+  - `dotnet test src/Core/NUnitTestCore/NUnitTestCore.csproj` -- EF Core 10 core and CLI tests.
   - NEVER CANCEL; set timeout to 120+ seconds.
 - **Building dacpac projects**:
   - `cd test/ScaffoldingTester/Chinook && dotnet build` -- takes 7-10 seconds. NEVER CANCEL. Set timeout to 60+ seconds.
@@ -49,8 +48,7 @@ Always reference these instructions first and fallback to search or bash command
   7. Verify: Data annotations added to generated classes
 
 - **ALWAYS run tests** to ensure no regressions:
-  - `dotnet test src/Core/NUnitTestCore/NUnitTestCore.csproj`
-  - `dotnet test src/Core/NUnitTestCore100/NUnitTestCore100.csproj` -- NEVER CANCEL, wait 2+ minutes
+  - `dotnet test src/Core/NUnitTestCore/NUnitTestCore.csproj` -- NEVER CANCEL, wait 2+ minutes
 
 - **Build validation timing expectations**:
   - Clean CLI build: 15-20 seconds
