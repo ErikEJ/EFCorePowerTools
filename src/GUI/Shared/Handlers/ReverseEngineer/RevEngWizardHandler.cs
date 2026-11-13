@@ -324,7 +324,7 @@ public class RevEngWizardHandler : IReverseEngineerBll
                 if (!fromSqlProj)
                 {
                     // #1 load database connections (IPickServerDatabaseDialog)
-                    if (!await ChooseDataBaseConnectionAsync(options, project, wizardArgs))
+                    if (!await ChooseDataBaseConnectionAsync(options, wizardArgs))
                     {
                         if (!wizardArgs.IsInvokedByWizard)
                         {
@@ -698,7 +698,7 @@ public class RevEngWizardHandler : IReverseEngineerBll
         return false;
     }
 
-    private async Task<bool> ChooseDataBaseConnectionAsync(ReverseEngineerOptions options, Project project, WizardEventArgs wizardArgs = null)
+    private async Task<bool> ChooseDataBaseConnectionAsync(ReverseEngineerOptions options, WizardEventArgs wizardArgs = null)
     {
         var databaseList = await vsDataHelper.GetDataConnectionsAsync(package);
         var dacpacList = await SqlProjHelper.GetDacpacProjectsInActiveSolutionAsync();

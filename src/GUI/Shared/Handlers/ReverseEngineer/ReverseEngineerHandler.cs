@@ -227,7 +227,7 @@ internal class ReverseEngineerHandler
             {
                 if (!fromSqlProj)
                 {
-                    if (!await ChooseDataBaseConnectionAsync(options, project))
+                    if (!await ChooseDataBaseConnectionAsync(options))
                     {
                         await VS.StatusBar.ClearAsync();
                         return;
@@ -531,7 +531,7 @@ internal class ReverseEngineerHandler
         return false;
     }
 
-    private async Task<bool> ChooseDataBaseConnectionAsync(ReverseEngineerOptions options, Project project)
+    private async Task<bool> ChooseDataBaseConnectionAsync(ReverseEngineerOptions options)
     {
         var databaseList = await vsDataHelper.GetDataConnectionsAsync(package);
         var dacpacList = await SqlProjHelper.GetDacpacProjectsInActiveSolutionAsync();
