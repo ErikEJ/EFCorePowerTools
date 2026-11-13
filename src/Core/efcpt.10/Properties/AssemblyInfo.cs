@@ -1,3 +1,3 @@
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("NUnitTestCore100")]
+[assembly: InternalsVisibleTo("NUnitTestCore")]
