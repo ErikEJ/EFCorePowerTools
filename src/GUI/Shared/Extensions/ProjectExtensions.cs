@@ -167,7 +167,6 @@ internal static class ProjectExtensions
             options.DatabaseType,
             options.UseSpatial,
             options.UseNodaTime,
-            options.UseDateOnlyTimeOnly,
             options.UseHierarchyId,
             AdvancedOptions.Instance.DiscoverMultipleResultSets,
             options.Tables?.Exists(t => t.ObjectType == ObjectType.Procedure) ?? false,

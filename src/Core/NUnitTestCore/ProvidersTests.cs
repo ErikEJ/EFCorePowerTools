@@ -13,7 +13,6 @@ namespace UnitTests
                 DatabaseType.SQLite,
                 useSpatial: false,
                 useNodaTime: true,
-                useDateOnlyTimeOnly: false,
                 useHierarchyId: false,
                 discoverMultipleResultSets: false,
                 hasProcedures: false,
