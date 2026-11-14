@@ -33,7 +33,7 @@ public static class DacpacConsolidator
     }
 
     internal static ConsolidatedDacpac Open(string dacpacPath, bool mergeDacpacs, Action<string> reportWarning)
-        => new ConsolidatedDacpac(dacpacPath, mergeDacpacs ? Consolidate(dacpacPath, reportWarning) : dacpacPath);
+        => new(dacpacPath, mergeDacpacs ? Consolidate(dacpacPath, reportWarning) : dacpacPath);
 
     private static void GetAllReferences(string dacpacPath, List<string> fileNames, HashSet<string> visited, Action<string> reportWarning)
     {

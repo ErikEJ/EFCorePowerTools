@@ -26,7 +26,7 @@ public class SqlServerDacpacDatabaseModelFactory : IDatabaseModelFactory
     private static readonly HashSet<string> DateTimePrecisionTypes = ["datetimeoffset", "datetime2", "time"];
 
     private static readonly HashSet<string> MaxLengthRequiredTypes
-        = new HashSet<string> { "binary", "varbinary", "char", "varchar", "nchar", "nvarchar", "vector" };
+        = ["binary", "varbinary", "char", "varchar", "nchar", "nvarchar", "vector"];
 
     private readonly SqlServerDacpacDatabaseModelFactoryOptions dacpacOptions;
 
@@ -89,7 +89,7 @@ public class SqlServerDacpacDatabaseModelFactory : IDatabaseModelFactory
         using var model = new TSqlTypedModel(sqlModel);
 
         var typeAliases = GetTypeAliases(model);
-        var vectorColumnDimensions = (sqlModel.Version >= SqlServerVersion.Sql170 || sqlModel.Version == SqlServerVersion.SqlAzure || sqlModel.Version == SqlServerVersion.SqlDbFabric)
+        var vectorColumnDimensions = (sqlModel.Version is >= SqlServerVersion.Sql170 or SqlServerVersion.SqlAzure or SqlServerVersion.SqlDbFabric)
             ? GetVectorColumnDimensions(connectionString)
             : new Dictionary<string, int>(StringComparer.Ordinal);
 
@@ -257,6 +257,7 @@ public class SqlServerDacpacDatabaseModelFactory : IDatabaseModelFactory
             && t.Schema == table.Name.Parts[0]);
 
         var fks = table.ForeignKeyConstraints.ToList();
+        loop_fk:
         foreach (var fk in fks)
         {
             var foreignTable = dbModel.Tables
@@ -275,8 +276,6 @@ public class SqlServerDacpacDatabaseModelFactory : IDatabaseModelFactory
                 PrincipalTable = foreignTable,
                 OnDelete = ConvertToReferentialAction(fk.DeleteAction),
             };
-
-            var missingDependentColumn = false;
             foreach (var fkCol in fk.Columns)
             {
                 var dbCol = dbTable.Columns
@@ -284,16 +283,10 @@ public class SqlServerDacpacDatabaseModelFactory : IDatabaseModelFactory
 
                 if (dbCol == null)
                 {
-                    missingDependentColumn = true;
-                    break;
+                    continue loop_fk;
                 }
 
                 foreignKey.Columns.Add(dbCol);
-            }
-
-            if (missingDependentColumn)
-            {
-                continue;
             }
 
             foreach (var fkCol in fk.ForeignColumns)
@@ -410,7 +403,7 @@ public class SqlServerDacpacDatabaseModelFactory : IDatabaseModelFactory
     {
         if (defaultValue.StartsWith('(') && defaultValue.EndsWith(')'))
         {
-            defaultValue = defaultValue.Substring(1, defaultValue.Length - 2);
+            defaultValue = defaultValue[1..^1];
             return StripParentheses(defaultValue);
         }
 
@@ -436,18 +429,18 @@ public class SqlServerDacpacDatabaseModelFactory : IDatabaseModelFactory
 
         if (value.StartsWith("N'", StringComparison.Ordinal))
         {
-            value = value.Substring(2);
+            value = value[2..];
         }
 
         // support for CDATA without N prefix: <Value><![CDATA['Enum: 0-Val1, 1-Val2, 2-Val3, 3-Val4']]></Value>
         if (value.StartsWith('\''))
         {
-            value = value.Substring(1);
+            value = value[1..];
         }
 
         if (value.EndsWith('\''))
         {
-            value = value.Remove(value.Length - 1, 1);
+            value = value[0..^1];
         }
 
         value = value.Replace("''", "'", StringComparison.Ordinal);
@@ -504,8 +497,8 @@ public class SqlServerDacpacDatabaseModelFactory : IDatabaseModelFactory
         Unwrap();
         if (defaultValueSql.StartsWith("CONVERT", StringComparison.OrdinalIgnoreCase))
         {
-            defaultValueSql = defaultValueSql.Substring(defaultValueSql.IndexOf(',', StringComparison.CurrentCulture) + 1);
-            defaultValueSql = defaultValueSql.Substring(0, defaultValueSql.LastIndexOf(')'));
+            defaultValueSql = defaultValueSql[(defaultValueSql.IndexOf(',', StringComparison.CurrentCulture) + 1)..];
+            defaultValueSql = defaultValueSql[0..defaultValueSql.LastIndexOf(')')];
             Unwrap();
         }
 
@@ -588,7 +581,7 @@ public class SqlServerDacpacDatabaseModelFactory : IDatabaseModelFactory
         {
             while (defaultValueSql.StartsWith('(') && defaultValueSql.EndsWith(')'))
             {
-                defaultValueSql = defaultValueSql.Substring(1, defaultValueSql.Length - 2).Trim();
+                defaultValueSql = defaultValueSql[1..^1].Trim();
             }
         }
     }
@@ -690,7 +683,7 @@ public class SqlServerDacpacDatabaseModelFactory : IDatabaseModelFactory
 
             var generatedAlwaysType = col.GetProperty<ColumnGeneratedAlwaysType>(Column.GeneratedAlwaysType);
 
-            if (generatedAlwaysType != ColumnGeneratedAlwaysType.GeneratedAlwaysAsRowStart && generatedAlwaysType != ColumnGeneratedAlwaysType.GeneratedAlwaysAsRowEnd)
+            if (generatedAlwaysType is not ColumnGeneratedAlwaysType.GeneratedAlwaysAsRowStart and not ColumnGeneratedAlwaysType.GeneratedAlwaysAsRowEnd)
             {
                 dbTable.Columns.Add(dbColumn);
             }

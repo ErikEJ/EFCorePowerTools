@@ -58,7 +58,6 @@ internal sealed class ScaffoldHostedService : HostedService
                     scaffoldOptions.ConnectionString,
                     reverseEngineerCommandOptions.DatabaseType,
                     tableModels,
-                    Constants.CodeGeneration,
                     out var config,
                     out var configWarnings))
             {
