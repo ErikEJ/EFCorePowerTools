@@ -135,7 +135,7 @@ public static class CliConfigMapper
         return options;
     }
 
-    public static bool TryGetCliConfig(string fullPath, string connectionString, DatabaseType databaseType, List<TableModel> objects, CodeGenerationMode codeGenerationMode, out CliConfig config, out List<string> warnings)
+    public static bool TryGetCliConfig(string fullPath, string connectionString, DatabaseType databaseType, List<TableModel> objects, out CliConfig config, out List<string> warnings)
     {
         var cliConfigExists = fullPath != null && File.Exists(fullPath);
         config = cliConfigExists

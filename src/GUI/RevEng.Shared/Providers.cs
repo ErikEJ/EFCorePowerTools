@@ -413,8 +413,8 @@ public static class Providers
         return result;
     }
 
-    private static Dictionary<string, List<string>> GetProvidersWithAliases() => new Dictionary<string, List<string>>
-        {
+    private static Dictionary<string, List<string>> GetProvidersWithAliases() => new()
+    {
             {
                 "Microsoft.EntityFrameworkCore.SqlServer",
                 new List<string> { "mssql", "sqlserver" }
