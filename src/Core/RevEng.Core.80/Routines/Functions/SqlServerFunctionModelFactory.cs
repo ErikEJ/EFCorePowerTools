@@ -82,7 +82,7 @@ where o.name = @moduleName and s.name = @moduleSchema;";
                     && storeType.StartsWith("nvarchar", StringComparison.OrdinalIgnoreCase)
                     && maxLength > 0)
                 {
-                    maxLength = maxLength / 2;
+                    maxLength /= 2;
                 }
 
                 var parameter = new ModuleResultElement()

@@ -113,9 +113,9 @@ public class Scaffolder
             }
 
             if (useDecimalDataAnnotation
-                && ((property.StoreType.StartsWith("varchar", StringComparison.OrdinalIgnoreCase)
+                && (property.StoreType.StartsWith("varchar", StringComparison.OrdinalIgnoreCase)
                     || property.StoreType.StartsWith("nvarchar", StringComparison.OrdinalIgnoreCase))
-                && property.MaxLength > 0))
+                && property.MaxLength > 0)
             {
                 Sb.AppendLine($"[StringLength({property.MaxLength})]");
             }

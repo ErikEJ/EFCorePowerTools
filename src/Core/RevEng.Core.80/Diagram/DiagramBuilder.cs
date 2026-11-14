@@ -15,6 +15,7 @@ public class DiagramBuilder
     private readonly DataApiBuilderOptions dataApiBuilderOptions;
     private readonly List<string> schemas = Enumerable.Empty<string>().ToList();
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Retained for source and binary compatibility.")]
     public DiagramBuilder(DataApiBuilderOptions dataApiBuilderCommandOptions, List<string> schemas)
     {
         dataApiBuilderOptions = dataApiBuilderCommandOptions;

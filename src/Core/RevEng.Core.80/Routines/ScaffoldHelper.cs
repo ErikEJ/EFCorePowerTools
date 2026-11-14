@@ -15,7 +15,7 @@ namespace RevEng.Core.Routines;
 
 internal static class ScaffoldHelper
 {
-    private static readonly HashSet<string> KeyWords = new HashSet<string>
+    private static readonly HashSet<string> KeyWords = new()
     {
         "abstract",
         "as",
@@ -96,7 +96,7 @@ internal static class ScaffoldHelper
         "while",
     };
 
-    public static SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue, bool useAsyncCalls, GeneratedFileFormat fileFormat)
+    public static SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, GeneratedFileFormat fileFormat)
     {
         ArgumentNullException.ThrowIfNull(scaffoldedModel);
 
@@ -241,12 +241,9 @@ internal static class ScaffoldHelper
 
         var numberOfNames = model.Routines.Count(p => p.Name == routine.Name);
 
-        if (numberOfNames > 1)
-        {
-            return routine.Name + CultureInfo.InvariantCulture.TextInfo.ToTitleCase(routine.Schema);
-        }
-
-        return routine.Name;
+        return numberOfNames > 1
+            ? routine.Name + CultureInfo.InvariantCulture.TextInfo.ToTitleCase(routine.Schema)
+            : routine.Name;
     }
 
     private static string GenerateIdentifier(string value)

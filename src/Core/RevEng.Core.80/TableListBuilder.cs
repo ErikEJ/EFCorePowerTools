@@ -129,7 +129,7 @@ public class TableListBuilder
     {
         var dbModelOptions = new DatabaseModelFactoryOptions(schemas: schemas?.Select(s => s.Name));
 
-        databaseModel = this.databaseModelFactory!.Create(connectionString, dbModelOptions);
+        databaseModel = this.databaseModelFactory.Create(connectionString, dbModelOptions);
         return databaseModel;
     }
 }

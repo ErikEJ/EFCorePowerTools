@@ -13,6 +13,7 @@ namespace RevEng.Core;
 public static class DbContextSplitter
 {
     // Adapted from https://github.com/lauxjpn/DbContextOnModelCreatingSplitter
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Retained for source and binary compatibility.")]
     public static List<string> Split(string dbContextPath, string configNamespace, bool supportNullable, string dbContextName, GeneratedFileFormat fileFormat)
     {
         ArgumentNullException.ThrowIfNull(dbContextPath);
@@ -36,7 +37,7 @@ public static class DbContextSplitter
 
         var configurationNamespace = configNamespace ?? contextNamespace;
 
-        configurationNamespace = configurationNamespace + ".Configurations";
+        configurationNamespace += ".Configurations";
 
         var contextUsingStatements = Regex.Matches(source, @"^using\s+.*?;", RegexOptions.Multiline | RegexOptions.Singleline, TimeSpan.FromSeconds(5))
             .Cast<Match>()

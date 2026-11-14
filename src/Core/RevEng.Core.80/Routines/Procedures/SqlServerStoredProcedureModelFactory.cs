@@ -60,15 +60,12 @@ ORDER BY ROUTINE_NAME;";
             }
         }
 
-        if (!useStoredProcedureResultSetFallback)
-        {
-            return GetAllResultSets(connection, module, !multipleResults);
-        }
-
-        return GetResultSetsWithMetadataOrDefinitionFallback(
-            () => GetAllResultSets(connection, module, !multipleResults),
-            () => GetResultSetsFromDefinition(connection, module, !multipleResults),
-            ex => ex is SqlException sqlException && ShouldTryDefinitionFallback(sqlException));
+        return !useStoredProcedureResultSetFallback
+            ? GetAllResultSets(connection, module, !multipleResults)
+            : GetResultSetsWithMetadataOrDefinitionFallback(
+                () => GetAllResultSets(connection, module, !multipleResults),
+                () => GetResultSetsFromDefinition(connection, module, !multipleResults),
+                ex => ex is SqlException sqlException && ShouldTryDefinitionFallback(sqlException));
     }
 
     private static List<List<ModuleResultElement>> GetAllResultSets(SqlConnection connection, Routine module, bool singleResult)
@@ -98,12 +95,9 @@ ORDER BY ROUTINE_NAME;";
         catch (Exception ex) when (shouldTryDefinitionFallback(ex))
         {
             var resultFromDefinition = getDefinitionResultSets();
-            if (resultFromDefinition.Count > 0)
-            {
-                return resultFromDefinition;
-            }
-
-            throw originalException ?? ex;
+            return resultFromDefinition.Count > 0
+                ? resultFromDefinition
+                : throw originalException ?? ex;
         }
     }
 
@@ -146,7 +140,7 @@ ORDER BY ROUTINE_NAME;";
                     && storeType.StartsWith("nvarchar", StringComparison.OrdinalIgnoreCase)
                     && maxLength > 0)
                 {
-                    maxLength = maxLength / 2;
+                    maxLength /= 2;
                 }
 
                 var parameter = new ModuleResultElement()
@@ -301,12 +295,8 @@ ORDER BY ROUTINE_NAME;";
 
         // Observed live-db failures from DockerPlayground are SqlException 208
         // with temp-table object names such as '#OrderTable'.
-        if (errorNumber == 208 && message.Contains('#', StringComparison.Ordinal))
-        {
-            return true;
-        }
-
-        return message.Contains("temp table", StringComparison.OrdinalIgnoreCase)
+        return (errorNumber == 208 && message.Contains('#', StringComparison.Ordinal))
+            || message.Contains("temp table", StringComparison.OrdinalIgnoreCase)
             || message.Contains("sp_describe_first_result_set", StringComparison.OrdinalIgnoreCase);
     }
 
@@ -316,12 +306,9 @@ ORDER BY ROUTINE_NAME;";
     private static List<List<ModuleResultElement>> GetResultSetsFromDefinition(SqlConnection connection, Routine module, bool singleResult)
     {
         var definition = GetRoutineDefinition(connection, module);
-        if (string.IsNullOrWhiteSpace(definition))
-        {
-            return new List<List<ModuleResultElement>>();
-        }
-
-        return SqlServerStoredProcedureResultSetFactory.CreateFromDefinition(definition, singleResult);
+        return string.IsNullOrWhiteSpace(definition)
+            ? new List<List<ModuleResultElement>>()
+            : SqlServerStoredProcedureResultSetFactory.CreateFromDefinition(definition, singleResult);
     }
 
     /// <summary>

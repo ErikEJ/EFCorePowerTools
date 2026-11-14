@@ -20,7 +20,7 @@ namespace RevEng.Core;
 
 public class ReverseEngineerScaffolder : IReverseEngineerScaffolder
 {
-    private static readonly string[] Separator = new string[] { "\r\n", "\r", "\n" };
+    private static readonly string[] Separator = ["\r\n", "\r", "\n"];
 
     private readonly IDatabaseModelFactory databaseModelFactory;
     private readonly IScaffoldingModelFactory factory;
@@ -438,7 +438,7 @@ public class ReverseEngineerScaffolder : IReverseEngineerScaffolder
             newUsings.AppendLine(";");
         }
 
-        newNameSpaceLine = newNameSpaceLine + $".{entityTypeSchemaWithSuffix}";
+        newNameSpaceLine += $".{entityTypeSchemaWithSuffix}";
         if (cSharp10NameSpaceStyle)
         {
             newNameSpaceLine += ";";

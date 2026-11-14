@@ -37,7 +37,7 @@ public abstract class ProcedureScaffolder : IRoutineScaffolder
     protected bool UseMaxSizeForStringInputParameters { get; private set; }
 
     public SavedModelFiles Save(ScaffoldedModel scaffoldedModel, string outputDir, string nameSpaceValue, bool useAsyncCalls, bool useInternalAccessModifier, bool useNullableReferences, GeneratedFileFormat fileFormat)
-        => ScaffoldHelper.Save(scaffoldedModel, outputDir, nameSpaceValue, useAsyncCalls, fileFormat);
+        => ScaffoldHelper.Save(scaffoldedModel, outputDir, fileFormat);
 
     public ScaffoldedModel ScaffoldModel(RoutineModel model, ModuleScaffolderOptions scaffolderOptions, List<string> schemas, ref List<string> errors)
     {
@@ -53,7 +53,7 @@ public abstract class ProcedureScaffolder : IRoutineScaffolder
 
         errors.AddRange(model.Errors);
 
-        schemas = schemas ?? new List<string>();
+        schemas ??= new List<string>();
 
         var invalidRoutines = new HashSet<Routine>();
         foreach (var routine in model.Routines)
@@ -99,7 +99,7 @@ public abstract class ProcedureScaffolder : IRoutineScaffolder
             }
         }
 
-        model.Routines.RemoveAll(r => invalidRoutines.Contains(r));
+        model.Routines.RemoveAll(invalidRoutines.Contains);
 
         foreach (var routine in model.Routines.Where(r => string.IsNullOrEmpty(r.MappedType) && (!(r is Function f) || !f.IsScalar)))
         {

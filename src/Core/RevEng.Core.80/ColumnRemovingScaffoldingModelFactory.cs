@@ -20,6 +20,7 @@ public class ColumnRemovingScaffoldingModelFactory : RelationalScaffoldingModelF
     private readonly DatabaseType databaseType;
     private readonly bool ignoreManyToMany;
 
+    [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "Retained for source and binary compatibility.")]
     public ColumnRemovingScaffoldingModelFactory([NotNull] IOperationReporter reporter, [NotNull] ICandidateNamingService candidateNamingService, [NotNull] IPluralizer pluralizer, [NotNull] ICSharpUtilities cSharpUtilities, [NotNull] IScaffoldingTypeMapper scaffoldingTypeMapper, [NotNull] LoggingDefinitions loggingDefinitions, [NotNull] IModelRuntimeInitializer modelRuntimeInitializer, List<SerializationTableModel> tables, DatabaseType databaseType, bool ignoreManyToMany)
         : base(reporter, candidateNamingService, pluralizer, cSharpUtilities, scaffoldingTypeMapper, modelRuntimeInitializer)
     {

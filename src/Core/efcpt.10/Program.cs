@@ -48,8 +48,8 @@ internal static class Program
 
                     var fileSystem = new FileSystem();
 
-                    options.ConfigFile = options.ConfigFile ?? new FileInfo(fileSystem.Path.GetFullPath(Constants.ConfigFileName));
-                    options.RenamingFile = options.RenamingFile ?? new FileInfo(fileSystem.Path.GetFullPath(Constants.RenamingFileName));
+                    options.ConfigFile ??= new FileInfo(fileSystem.Path.GetFullPath(Constants.ConfigFileName));
+                    options.RenamingFile ??= new FileInfo(fileSystem.Path.GetFullPath(Constants.RenamingFileName));
 
                     DisplayHeader(options);
                     using var host = new HostBuilder()
