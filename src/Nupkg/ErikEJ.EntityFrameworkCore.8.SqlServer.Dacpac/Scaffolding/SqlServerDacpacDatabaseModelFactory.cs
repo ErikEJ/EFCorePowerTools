@@ -257,7 +257,7 @@ public class SqlServerDacpacDatabaseModelFactory : IDatabaseModelFactory
             && t.Schema == table.Name.Parts[0]);
 
         var fks = table.ForeignKeyConstraints.ToList();
-        loop_fk:
+
         foreach (var fk in fks)
         {
             var foreignTable = dbModel.Tables
@@ -283,7 +283,7 @@ public class SqlServerDacpacDatabaseModelFactory : IDatabaseModelFactory
 
                 if (dbCol == null)
                 {
-                    continue loop_fk;
+                    break;
                 }
 
                 foreignKey.Columns.Add(dbCol);

@@ -175,7 +175,7 @@ public class ReportFactory
                TypeId = p.Rule(),
            };
 
-    private static string GetName(ObjectIdentifier identifier) => "[" + string.Join("].[", identifier.Parts.Select((string x) => x)) + "]";
+    private static string GetName(ObjectIdentifier identifier) => "[" + string.Join("].[", identifier.Parts.Select(x => x)) + "]";
 
     private static void SerializeReport(Report report, string outputPath)
     {

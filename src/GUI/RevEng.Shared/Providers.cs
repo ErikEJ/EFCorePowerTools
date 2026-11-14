@@ -102,6 +102,7 @@ public static class Providers
         return GetReadMeText(commandOptions, template, packages, redactedConnectionString);
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0072:Add missing cases", Justification = "Waiting for EF Core 11")]
     public static List<NuGetPackage> GetNeededPackages(DatabaseType databaseType, bool useSpatial, bool useNodaTime, bool useHierarchyId, bool discoverMultipleResultSets, bool hasProcedures, CodeGenerationMode codeGenerationMode)
     {
         // Update versions here when adding provider and other updates
@@ -111,9 +112,8 @@ public static class Providers
         {
             var pkgVersion = codeGenerationMode switch
             {
-                CodeGenerationMode.EFCore8 => "8.0.34",
-                CodeGenerationMode.EFCore9 => "9.0.23",
                 CodeGenerationMode.EFCore10 => "10.0.15",
+                CodeGenerationMode.EFCore11 => "11.0.0",
                 _ => throw new NotImplementedException(),
             };
             packages.Add(new NuGetPackage
@@ -153,9 +153,8 @@ public static class Providers
             {
                 pkgVersion = codeGenerationMode switch
                 {
-                    CodeGenerationMode.EFCore8 => "8.0.1",
-                    CodeGenerationMode.EFCore9 => "9.1.1",
                     CodeGenerationMode.EFCore10 => "10.0.1",
+                    CodeGenerationMode.EFCore11 => "11.0.1",
                     _ => throw new NotImplementedException(),
                 };
                 packages.Add(new NuGetPackage
@@ -185,9 +184,8 @@ public static class Providers
         {
             var pkgVersion = codeGenerationMode switch
             {
-                CodeGenerationMode.EFCore8 => "8.0.34",
-                CodeGenerationMode.EFCore9 => "9.0.23",
                 CodeGenerationMode.EFCore10 => "10.0.15",
+                CodeGenerationMode.EFCore11 => "11.0.0",
                 _ => throw new NotImplementedException(),
             };
             packages.Add(new NuGetPackage
@@ -203,8 +201,6 @@ public static class Providers
             {
                 pkgVersion = codeGenerationMode switch
                 {
-                    CodeGenerationMode.EFCore8 => "8.0.0",
-                    CodeGenerationMode.EFCore9 => "9.1.0",
                     CodeGenerationMode.EFCore10 => "10.0.0",
                     _ => throw new NotImplementedException(),
                 };
@@ -223,8 +219,6 @@ public static class Providers
         {
             var pkgVersion = codeGenerationMode switch
             {
-                CodeGenerationMode.EFCore8 => "8.0.11",
-                CodeGenerationMode.EFCore9 => "9.0.4",
                 CodeGenerationMode.EFCore10 => "10.0.3",
                 _ => throw new NotImplementedException(),
             };
@@ -266,17 +260,9 @@ public static class Providers
         if (databaseType == DatabaseType.Mysql)
         {
             string pkgVersion;
-            var prefix = "Pomelo";
+            string prefix;
             switch (codeGenerationMode)
             {
-                case CodeGenerationMode.EFCore8:
-                    pkgVersion = "8.0.3";
-                    break;
-
-                case CodeGenerationMode.EFCore9:
-                    pkgVersion = "9.0.8";
-                    break;
-
                 case CodeGenerationMode.EFCore10:
                     pkgVersion = "10.0.14";
                     prefix = "Microting";
@@ -312,8 +298,6 @@ public static class Providers
         {
             var pkgVersion = codeGenerationMode switch
             {
-                CodeGenerationMode.EFCore8 => "8.23.26400",
-                CodeGenerationMode.EFCore9 => "9.23.26400",
                 CodeGenerationMode.EFCore10 => "10.23.26200",
                 _ => throw new NotImplementedException(),
             };
@@ -331,8 +315,6 @@ public static class Providers
         {
             var pkgVersion = codeGenerationMode switch
             {
-                CodeGenerationMode.EFCore8 => "11.0.0",
-                CodeGenerationMode.EFCore9 => "12.0.0",
                 CodeGenerationMode.EFCore10 => "13.0.0",
                 _ => throw new NotImplementedException(),
             };
@@ -346,24 +328,22 @@ public static class Providers
             });
         }
 
-        if (databaseType == DatabaseType.Snowflake)
-        {
-            var pkgVersion = codeGenerationMode switch
-            {
-                CodeGenerationMode.EFCore8 => "8.0.8",
-                CodeGenerationMode.EFCore9 => "9.0.4",
-                CodeGenerationMode.EFCore10 => throw new NotImplementedException(),
-                _ => throw new NotImplementedException(),
-            };
-            packages.Add(new NuGetPackage
-            {
-                PackageId = "EFCore.Snowflake",
-                Version = pkgVersion,
-                DatabaseTypes = new List<DatabaseType> { databaseType },
-                IsMainProviderPackage = true,
-                UseMethodName = "Snowflake",
-            });
-        }
+        ////if (databaseType == DatabaseType.Snowflake)
+        ////{
+        ////    var pkgVersion = codeGenerationMode switch
+        ////    {
+        ////        CodeGenerationMode.EFCore10 => throw new NotImplementedException(),
+        ////        _ => throw new NotImplementedException(),
+        ////    };
+        ////    packages.Add(new NuGetPackage
+        ////    {
+        ////        PackageId = "EFCore.Snowflake",
+        ////        Version = pkgVersion,
+        ////        DatabaseTypes = new List<DatabaseType> { databaseType },
+        ////        IsMainProviderPackage = true,
+        ////        UseMethodName = "Snowflake",
+        ////    });
+        ////}
 
         return packages;
     }
@@ -415,33 +395,33 @@ public static class Providers
 
     private static Dictionary<string, List<string>> GetProvidersWithAliases() => new()
     {
-            {
-                "Microsoft.EntityFrameworkCore.SqlServer",
-                new List<string> { "mssql", "sqlserver" }
-            },
-            {
-                "Microsoft.EntityFrameworkCore.Sqlite",
-                new List<string> { "sqlite" }
-            },
-            {
-                "Npgsql.EntityFrameworkCore.PostgreSQL",
-                new List<string> { "postgres", "postgresql" }
-            },
-            {
-                "Pomelo.EntityFrameworkCore.MySql",
-                new List<string> { "mysql" }
-            },
-            {
-                "Oracle.EntityFrameworkCore",
-                new List<string> { "oracle" }
-            },
-            {
-                "FirebirdSql.EntityFrameworkCore.Firebird",
-                new List<string> { "firebird" }
-            },
-            {
-                "EFCore.Snowflake",
-                new List<string> { "snowflake" }
-            },
-        };
+        {
+            "Microsoft.EntityFrameworkCore.SqlServer",
+            new List<string> { "mssql", "sqlserver" }
+        },
+        {
+            "Microsoft.EntityFrameworkCore.Sqlite",
+            new List<string> { "sqlite" }
+        },
+        {
+            "Npgsql.EntityFrameworkCore.PostgreSQL",
+            new List<string> { "postgres", "postgresql" }
+        },
+        {
+            "Pomelo.EntityFrameworkCore.MySql",
+            new List<string> { "mysql" }
+        },
+        {
+            "Oracle.EntityFrameworkCore",
+            new List<string> { "oracle" }
+        },
+        {
+            "FirebirdSql.EntityFrameworkCore.Firebird",
+            new List<string> { "firebird" }
+        },
+        {
+            "EFCore.Snowflake",
+            new List<string> { "snowflake" }
+        },
+    };
 }
