@@ -17,7 +17,7 @@ public class Report
         ToolsVersion = typeof(Report).Assembly.GetName().Version.ToString();
         Information = new Information() { Solution = $"{solutionName}.sln" };
         IssueTypes = issueTypes;
-        Issues = new List<RulesProject> { new Rules.Report.RulesProject() { Name = projectName, Issues = problems } };
+        Issues = new List<RulesProject> { new() { Name = projectName, Issues = problems } };
     }
 
     [XmlAttribute]

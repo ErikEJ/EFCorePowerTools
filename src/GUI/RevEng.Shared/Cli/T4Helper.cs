@@ -8,19 +8,9 @@ namespace RevEng.Common.Cli;
 
 public static class T4Helper
 {
-    public static string DropT4Templates(string projectPath, CodeGenerationMode codeGenerationMode, bool useEntityTypeSplitting = false)
+    public static string DropT4Templates(string projectPath, bool useEntityTypeSplitting = false)
     {
-        var t4Version = "900";
-
-        if (codeGenerationMode == CodeGenerationMode.EFCore8)
-        {
-            t4Version = "800";
-        }
-
-        if (codeGenerationMode == CodeGenerationMode.EFCore10)
-        {
-            t4Version = "1000";
-        }
+        var t4Version = "1000";
 
         if (useEntityTypeSplitting)
         {
