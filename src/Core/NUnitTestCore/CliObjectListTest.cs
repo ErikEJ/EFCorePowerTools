@@ -295,7 +295,7 @@ namespace UnitTests
 
                 var fetchedConfigSuccess = CliConfigMapper.TryGetCliConfig(testPath, "fakeConnectionString",
                     DatabaseType.SQLServer,
-                    GetDefaultTables(DatabaseType.SQLServer), CodeGenerationMode.EFCore8,
+                    GetDefaultTables(DatabaseType.SQLServer),
                     out CliConfig resultConfig,
                     out List<string> warnings);
 
@@ -374,7 +374,7 @@ namespace UnitTests
 
                 CliConfigMapper.TryGetCliConfig(testPath, "fakeConnectionString",
                     DatabaseType.SQLServer,
-                    GetDefaultTables(DatabaseType.SQLServer), CodeGenerationMode.EFCore8,
+                    GetDefaultTables(DatabaseType.SQLServer),
                     out CliConfig resultConfig,
                     out List<string> _);
 
@@ -408,7 +408,7 @@ namespace UnitTests
 
                 CliConfigMapper.TryGetCliConfig(testPath, "fakeConnectionString",
                     DatabaseType.SQLServer,
-                    GetDefaultTables(DatabaseType.SQLServer), CodeGenerationMode.EFCore8,
+                    GetDefaultTables(DatabaseType.SQLServer),
                     out CliConfig resultConfig,
                     out List<string> _);
 
@@ -439,7 +439,7 @@ namespace UnitTests
 
                 CliConfigMapper.TryGetCliConfig(testPath, "fakeConnectionString",
                     DatabaseType.SQLServer,
-                    GetDefaultTables(DatabaseType.SQLServer), CodeGenerationMode.EFCore8,
+                    GetDefaultTables(DatabaseType.SQLServer),
                     out CliConfig resultConfig,
                     out List<string> _);
 
@@ -469,7 +469,7 @@ namespace UnitTests
 
                 CliConfigMapper.TryGetCliConfig(testPath, "fakeConnectionString",
                     DatabaseType.SQLServer,
-                    GetDefaultTables(DatabaseType.SQLServer), CodeGenerationMode.EFCore8,
+                    GetDefaultTables(DatabaseType.SQLServer),
                     out CliConfig resultConfig,
                     out List<string> _);
 
@@ -520,7 +520,7 @@ namespace UnitTests
 
                 var fetchedConfigSuccess = CliConfigMapper.TryGetCliConfig(testPath, "fakeConnectionString",
                     DatabaseType.SQLServer,
-                    GetDefaultTables(DatabaseType.SQLServer), CodeGenerationMode.EFCore8,
+                    GetDefaultTables(DatabaseType.SQLServer),
                     out CliConfig resultConfig,
                     out List<string> warnings);
 
