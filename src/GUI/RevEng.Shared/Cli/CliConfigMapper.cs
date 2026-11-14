@@ -450,9 +450,9 @@ public static class CliConfigMapper
         var instance = new T();
         var objectType = instance switch
         {
-            View _ => ObjectType.View,
-            Function _ => ObjectType.ScalarFunction,
-            StoredProcedure _ => ObjectType.Procedure,
+            View => ObjectType.View,
+            Function => ObjectType.ScalarFunction,
+            StoredProcedure => ObjectType.Procedure,
             _ => ObjectType.Table,
         };
         return objectType;

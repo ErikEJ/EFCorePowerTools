@@ -90,7 +90,6 @@ public static class Providers
             commandOptions.DatabaseType,
             commandOptions.UseSpatial,
             commandOptions.UseNodaTime,
-            commandOptions.UseDateOnlyTimeOnly,
             commandOptions.UseHierarchyId,
             commandOptions.UseMultipleSprocResultSets,
             commandOptions.Tables?.Exists(t => t.ObjectType == ObjectType.Procedure) ?? false,
@@ -103,7 +102,7 @@ public static class Providers
         return GetReadMeText(commandOptions, template, packages, redactedConnectionString);
     }
 
-    public static List<NuGetPackage> GetNeededPackages(DatabaseType databaseType, bool useSpatial, bool useNodaTime, bool useDateOnlyTimeOnly, bool useHierarchyId, bool discoverMultipleResultSets, bool hasProcedures, CodeGenerationMode codeGenerationMode)
+    public static List<NuGetPackage> GetNeededPackages(DatabaseType databaseType, bool useSpatial, bool useNodaTime, bool useHierarchyId, bool discoverMultipleResultSets, bool hasProcedures, CodeGenerationMode codeGenerationMode)
     {
         // Update versions here when adding provider and other updates
         var packages = new List<NuGetPackage>();
@@ -266,7 +265,7 @@ public static class Providers
 
         if (databaseType == DatabaseType.Mysql)
         {
-            var pkgVersion = string.Empty;
+            string pkgVersion;
             var prefix = "Pomelo";
             switch (codeGenerationMode)
             {
