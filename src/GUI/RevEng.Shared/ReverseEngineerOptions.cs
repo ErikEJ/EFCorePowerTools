@@ -95,7 +95,17 @@ public class ReverseEngineerOptions
 
     public bool UseManyToManyEntity { get; set; }
 
-    public CodeGenerationMode CodeGenerationMode { get; set; } = CodeGenerationMode.EFCore10;
+#pragma warning disable IDE0032 // Use auto property
+    private CodeGenerationMode codeGenerationMode = CodeGenerationMode.EFCore10;
+#pragma warning restore IDE0032 // Use auto property
+
+    public CodeGenerationMode CodeGenerationMode
+    {
+        get => codeGenerationMode;
+
+        // Migrate persisted EF Core 8/9 modes before package selection or generation.
+        set => codeGenerationMode = (int)value is 4 or 5 ? CodeGenerationMode.EFCore10 : value;
+    }
 
     public string UiHint { get; set; }
 

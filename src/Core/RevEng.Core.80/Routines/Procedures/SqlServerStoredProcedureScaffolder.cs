@@ -378,12 +378,11 @@ public class SqlServerStoredProcedureScaffolder : ProcedureScaffolder, IProcedur
                 var size = parameter.Length;
                 if (UseMaxSizeForStringInputParameters && !parameter.Output && !parameter.IsReturnValue && size > 0)
                 {
-                    size = sqlDbType switch
-                    {
-                        SqlDbType.VarChar => 8000,
-                        SqlDbType.NVarChar => 4000,
-                        _ => size,
-                    };
+                    size = sqlDbType == SqlDbType.VarChar
+                        ? 8000
+                        : sqlDbType == SqlDbType.NVarChar
+                            ? 4000
+                            : size;
                 }
 
                 Sb.AppendLine($"Size = {size},");

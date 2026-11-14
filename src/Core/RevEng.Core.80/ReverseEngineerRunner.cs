@@ -293,20 +293,12 @@ public static class ReverseEngineerRunner
             || charset.Equals("utf-8", StringComparison.OrdinalIgnoreCase);
 
     public static Encoding GetConfiguredEncoding(string charset)
-    {
-        if (string.IsNullOrWhiteSpace(charset)
-            || charset.Equals("utf-8-bom", StringComparison.OrdinalIgnoreCase))
-        {
-            return Encoding.UTF8;
-        }
-
-        if (charset.Equals("utf-8", StringComparison.OrdinalIgnoreCase))
-        {
-            return Encoding.Default;
-        }
-
-        throw new ArgumentOutOfRangeException(nameof(charset), charset, "Unsupported charset.");
-    }
+        => string.IsNullOrWhiteSpace(charset)
+            || charset.Equals("utf-8-bom", StringComparison.OrdinalIgnoreCase)
+                ? Encoding.UTF8
+                : charset.Equals("utf-8", StringComparison.OrdinalIgnoreCase)
+                    ? Encoding.Default
+                    : throw new ArgumentOutOfRangeException(nameof(charset), charset, "Unsupported charset.");
 
     private static void WriteLines(string path, IEnumerable<string> lines, GeneratedFileFormat fileFormat)
     {
@@ -419,14 +411,9 @@ public static class ReverseEngineerRunner
     }
 
     private static List<string> SplitDbContext(string contextFile, bool useDbContextSplitting, string contextNamespace, bool supportNullable, string dbContextName, GeneratedFileFormat fileFormat)
-    {
-        if (!useDbContextSplitting)
-        {
-            return new List<string>();
-        }
-
-        return DbContextSplitter.Split(contextFile, contextNamespace, supportNullable, dbContextName, fileFormat);
-    }
+        => useDbContextSplitting
+            ? DbContextSplitter.Split(contextFile, contextNamespace, supportNullable, dbContextName, fileFormat)
+            : new List<string>();
 
     // If we didn't split, we might have used EntityTypeConfiguration.t4.  In that case, <ModelName>Configuration.cs files were generated.
     private static List<string> MoveConfigurationFiles(IList<string> files)
@@ -456,11 +443,7 @@ public static class ReverseEngineerRunner
                 continue;
             }
 
-            var newDirectoryName = Path.Combine(Path.GetDirectoryName(configurationFile) ?? string.Empty, "Configurations");
-            if (newDirectoryName is null)
-            {
-                throw new InvalidOperationException("Could not determine directory name for configuration file.");
-            }
+            var newDirectoryName = Path.Combine(Path.GetDirectoryName(configurationFile) ?? string.Empty, "Configurations") ?? throw new InvalidOperationException("Could not determine directory name for configuration file.");
 
             if (!Directory.Exists(newDirectoryName))
             {
@@ -558,13 +541,13 @@ public static class ReverseEngineerRunner
 
     private static void CleanUp(SavedModelFiles filePaths, List<string> entityTypeConfigurationPaths, string outputDir)
     {
-        var allGeneratedFiles = filePaths.AdditionalFiles.Select(s => Path.GetFullPath(s)).Concat(entityTypeConfigurationPaths).ToHashSet();
+        var allGeneratedFiles = filePaths.AdditionalFiles.Select(Path.GetFullPath).Concat(entityTypeConfigurationPaths).ToHashSet();
 
         if (!string.IsNullOrEmpty(filePaths.ContextFile))
         {
             var contextFolderFiles = Directory.GetFiles(Path.GetDirectoryName(filePaths.ContextFile) ?? string.Empty, "*.cs");
 
-            allGeneratedFiles = filePaths.AdditionalFiles.Select(s => Path.GetFullPath(s)).Concat(new List<string> { Path.GetFullPath(filePaths.ContextFile) }).Concat(entityTypeConfigurationPaths).ToHashSet();
+            allGeneratedFiles = filePaths.AdditionalFiles.Select(Path.GetFullPath).Concat(new List<string> { Path.GetFullPath(filePaths.ContextFile) }).Concat(entityTypeConfigurationPaths).ToHashSet();
 
             foreach (var contextFolderFile in contextFolderFiles)
             {

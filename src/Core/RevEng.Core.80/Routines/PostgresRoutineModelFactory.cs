@@ -96,7 +96,7 @@ public abstract class PostgresRoutineModelFactory
                             module.HasValidResultSet = false;
                             module.Results = new List<List<ModuleResultElement>>
                             {
-                                new List<ModuleResultElement>(),
+                                new(),
                             };
 #pragma warning disable CA1308 // Normalize strings to uppercase
                             errors.Add($"Unable to get result set shape for {RoutineType.ToLower(CultureInfo.InvariantCulture)} '{module.Schema}.{module.Name}'. {ex.Message}.");

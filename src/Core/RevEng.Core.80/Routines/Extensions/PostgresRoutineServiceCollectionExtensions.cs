@@ -12,10 +12,7 @@ public static class PostgresRoutineServiceCollectionExtensions
         this IServiceCollection services,
         IOperationReporter reporter = null)
     {
-        if (reporter == null)
-        {
-            reporter = new OperationReporter(handler: null);
-        }
+        reporter ??= new OperationReporter(handler: null);
 
         return services
             .AddSingleton<IClrTypeMapper, PostgresClrTypeMapper>()

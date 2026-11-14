@@ -27,17 +27,9 @@ public class SqlServerTypeMappingSource : Microsoft.EntityFrameworkCore.SqlServe
 
 #endif
     protected override RelationalTypeMapping FindMapping(in RelationalTypeMappingInfo mappingInfo)
-    {
-        if (!useDateOnlyTimeOnly && (mappingInfo.StoreTypeNameBase == "date"))
-        {
-            return new SqlServerDateTimeTypeMapping("date", DbType.Date);
-        }
-
-        if (!useDateOnlyTimeOnly && (mappingInfo.StoreTypeNameBase == "time"))
-        {
-            return new SqlServerTimeSpanTypeMapping("time");
-        }
-
-        return base.FindMapping(mappingInfo);
-    }
+        => !useDateOnlyTimeOnly && (mappingInfo.StoreTypeNameBase == "date")
+            ? new SqlServerDateTimeTypeMapping("date", DbType.Date)
+            : !useDateOnlyTimeOnly && (mappingInfo.StoreTypeNameBase == "time")
+                ? new SqlServerTimeSpanTypeMapping("time")
+                : base.FindMapping(mappingInfo);
 }

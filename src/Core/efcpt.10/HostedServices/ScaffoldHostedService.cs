@@ -38,9 +38,7 @@ internal sealed class ScaffoldHostedService : HostedService
         this.reverseEngineerCommandOptions = reverseEngineerCommandOptions;
     }
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+    protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
         try
         {
@@ -62,7 +60,7 @@ internal sealed class ScaffoldHostedService : HostedService
                     out var configWarnings))
             {
                 Environment.ExitCode = 1;
-                return;
+                return Task.CompletedTask;
             }
 
             GenerateMermaidContent(
@@ -160,6 +158,8 @@ internal sealed class ScaffoldHostedService : HostedService
         {
             hostApplicationLifetime.StopApplication();
         }
+
+        return Task.CompletedTask;
     }
 
     private static void ShowPaths(List<string> paths)
