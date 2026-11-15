@@ -7,7 +7,7 @@
     <RootNamespace>Modelling</RootNamespace>
     <NoWarn>$(NoWarn);EF1001</NoWarn>
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DefineConstants>TRACE;DEBUG;CORE90;CORE100</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;CORE100</DefineConstants>
   </PropertyGroup>
 
    <ItemGroup>
