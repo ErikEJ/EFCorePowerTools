@@ -21,9 +21,7 @@
     </Project>
   </Folder>
   <Folder Name="/RevEng/">
-    <Project Path="Core/DacFxStrongTypedCore.161/DacFxStrongTypedCore.161.csproj">
-      <Build Solution="Release|*" Project="false" />
-    </Project>
+    <Project Path="Core/DacFxStrongTypedCore.161/DacFxStrongTypedCore.161.csproj" />
     <Project Path="Core/efcpt.10/efcpt.10.csproj">
       <Build Solution="Release|*" Project="false" />
     </Project>
