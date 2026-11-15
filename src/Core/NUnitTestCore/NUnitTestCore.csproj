@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -120,7 +120,6 @@
     <PackageReference Include="xunit.v3" Version="3.2.2" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.9.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.9.SqlServer.Dacpac.csproj" />
     <ProjectReference Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.DgmlBuilder\ErikEJ.EntityFrameworkCore.DgmlBuilder.csproj" />
     <ProjectReference Include="..\efcpt.10\efcpt.10.csproj" />
     <ProjectReference Include="..\RevEng.Core.100\RevEng.Core.100.csproj" />

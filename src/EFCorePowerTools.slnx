@@ -15,12 +15,7 @@
     </Project>
   </Folder>
   <Folder Name="/Packages/">
-    <Project Path="Nupkg/ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac/ErikEJ.EntityFrameworkCore.8.SqlServer.Dacpac.csproj">
-      <Build Solution="Release|*" Project="false" />
-    </Project>
-    <Project Path="Nupkg/ErikEJ.EntityFrameworkCore.9.SqlServer.Dacpac/ErikEJ.EntityFrameworkCore.9.SqlServer.Dacpac.csproj">
-      <Build Solution="Release|*" Project="false" />
-    </Project>
+    <Project Path="Nupkg/ErikEJ.EntityFrameworkCore.10.SqlServer.Dacpac/ErikEJ.EntityFrameworkCore.10.SqlServer.Dacpac.csproj" />
     <Project Path="Nupkg/ErikEJ.EntityFrameworkCore.DgmlBuilder/ErikEJ.EntityFrameworkCore.DgmlBuilder.csproj">
       <Build Solution="Release|*" Project="false" />
     </Project>
@@ -36,12 +31,6 @@
       <Build Solution="Release|*" Project="false" />
     </Project>
     <Project Path="Core/RevEng.Core.100/RevEng.Core.100.csproj">
-      <Build Solution="Release|*" Project="false" />
-    </Project>
-    <Project Path="Core/RevEng.Core.80/RevEng.Core.80.csproj">
-      <Build Solution="Release|*" Project="false" />
-    </Project>
-    <Project Path="Core/RevEng.Core.90/RevEng.Core.90.csproj">
       <Build Solution="Release|*" Project="false" />
     </Project>
     <Project Path="Core/RevEng.Core.Abstractions/RevEng.Core.Abstractions.csproj">

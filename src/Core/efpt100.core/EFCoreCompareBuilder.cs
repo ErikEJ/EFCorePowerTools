@@ -87,11 +87,7 @@ internal static class EfCoreCompareBuilder
 
     private static DbContextOperations GetOperations(string outputPath, string startupOutputPath)
     {
-        var assembly = Load(outputPath);
-        if (assembly == null)
-        {
-            throw new ArgumentException("Unable to load project assembly");
-        }
+        var assembly = Load(outputPath) ?? throw new ArgumentException("Unable to load project assembly");
 
         Assembly startupAssembly = null;
 
