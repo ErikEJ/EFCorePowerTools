@@ -87,11 +87,7 @@ internal static class EfCoreCompareBuilder
 
     private static DbContextOperations GetOperations(string outputPath, string startupOutputPath)
     {
-        var assembly = Load(outputPath);
-        if (assembly == null)
-        {
-            throw new ArgumentException("Unable to load project assembly");
-        }
+        var assembly = Load(outputPath) ?? throw new ArgumentException("Unable to load project assembly");
 
         Assembly startupAssembly = null;
 
@@ -102,11 +98,7 @@ internal static class EfCoreCompareBuilder
 
         var reporter = new OperationReporter(new OperationReportHandler());
 
-#if CORE90
         return new DbContextOperations(reporter, assembly, startupAssembly ?? assembly, outputPath, null, null, null, false, Array.Empty<string>());
-#else
-        return new DbContextOperations(reporter, assembly, startupAssembly ?? assembly, outputPath, null, null, false, Array.Empty<string>());
-#endif
     }
 
     private static Assembly Load(string assemblyPath) => File.Exists(assemblyPath) ? Assembly.LoadFile(assemblyPath) : null;

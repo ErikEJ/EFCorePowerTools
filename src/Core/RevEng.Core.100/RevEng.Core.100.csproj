@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -10,15 +10,6 @@
   <PropertyGroup>
     <DefineConstants>TRACE;CORE100</DefineConstants>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="..\RevEng.Core.80\*.cs" Link="%(Filename)%(Extension)" />
-    <Compile Include="..\RevEng.Core.80\Routines\*.cs" Link="Routines\%(Filename)%(Extension)" />
-    <Compile Include="..\RevEng.Core.80\Routines\Extensions\*.cs" Link="Routines\Extensions\%(Filename)%(Extension)" />
-    <Compile Include="..\RevEng.Core.80\Routines\Functions\*.cs" Link="Routines\Functions\%(Filename)%(Extension)" />
-    <Compile Include="..\RevEng.Core.80\Routines\Procedures\*.cs" Link="Routines\Procedures\%(Filename)%(Extension)" />
-    <Compile Include="..\RevEng.Core.80\Diagram\*.cs" Link="Diagram\%(Filename)%(Extension)" />
-  </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="DbContextExtensionsSqlQuery" />
@@ -48,9 +39,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.9.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.9.SqlServer.Dacpac.csproj" />
     <ProjectReference Include="..\RevEng.Core.Abstractions\RevEng.Core.Abstractions.csproj" />
     <ProjectReference Include="..\..\GUI\RevEng.Shared\RevEng.Common.csproj" />
+    <ProjectReference Include="..\..\Nupkg\ErikEJ.EntityFrameworkCore.10.SqlServer.Dacpac\ErikEJ.EntityFrameworkCore.10.SqlServer.Dacpac.csproj" />
+    <ProjectReference Include="..\SqlServer.Rules.Report\SqlServer.Rules.Report.csproj" />
   </ItemGroup>
 
 </Project>
