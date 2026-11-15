@@ -81,7 +81,7 @@ jobs:
       run: |
           7z x src/GUI/lib/efreveng100.exe.zip -oefreveng100 -y
           dir /a:-d /s /b "efreveng100" | find /c ":\" > filecount.txt
-          findstr "149" filecount.txt
+          findstr "153" filecount.txt
 
     - name: Build
       run: msbuild EFCorePowerTools.slnx /property:Configuration=Release /p:DeployExtension=false /p:ZipPackageCompressionLevel=normal /v:m
