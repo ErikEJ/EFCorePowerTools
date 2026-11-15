@@ -31,12 +31,8 @@
     <Project Path="Core/RevEng.Core.100/RevEng.Core.100.csproj">
       <Build Solution="Release|*" Project="false" />
     </Project>
-    <Project Path="Core/RevEng.Core.Abstractions/RevEng.Core.Abstractions.csproj">
-      <Build Solution="Release|*" Project="false" />
-    </Project>
-    <Project Path="Core/SqlServer.Rules.Report/SqlServer.Rules.Report.csproj">
-      <Build Solution="Release|*" Project="false" />
-    </Project>
+    <Project Path="Core/RevEng.Core.Abstractions/RevEng.Core.Abstractions.csproj" />
+    <Project Path="Core/SqlServer.Rules.Report/SqlServer.Rules.Report.csproj" />
     <Project Path="GUI/RevEng.Shared/RevEng.Common.csproj" />
   </Folder>
   <Folder Name="/Test/">
