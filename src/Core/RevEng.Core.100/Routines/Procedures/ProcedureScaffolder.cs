@@ -405,7 +405,7 @@ public abstract class ProcedureScaffolder : IRoutineScaffolder
 
             if (model.Routines.Exists(r => r.SupportsMultipleResultSet))
             {
-                GenerateDapperSupport(scaffolderOptions.UseAsyncCalls);
+                GenerateDapperSupport(scaffolderOptions.UseAsyncCalls, scaffolderOptions.NullableReferences);
             }
 
             if (scaffolderOptions.UseTypedTvpParameters && model.Routines.Any(r => r.Parameters.Any(p => p.TvpColumns?.Count > 0)))
@@ -421,7 +421,7 @@ public abstract class ProcedureScaffolder : IRoutineScaffolder
         return Sb.ToString();
     }
 
-    private void GenerateDapperSupport(bool useAsyncCalls)
+    private void GenerateDapperSupport(bool useAsyncCalls, bool nullableReferences)
     {
         Sb.AppendLine();
         using (Sb.Indent())
@@ -462,7 +462,7 @@ public abstract class ProcedureScaffolder : IRoutineScaffolder
             Sb.AppendLine("{");
             using (Sb.Indent())
             {
-                Sb.AppendLine("IDbTransaction tran = null;");
+                Sb.AppendLine($"IDbTransaction{(nullableReferences ? "?" : string.Empty)} tran = null;");
                 Sb.AppendLine("if (db.Database.CurrentTransaction is IDbContextTransaction ctxTran)");
                 Sb.AppendLine("{");
                 using (Sb.Indent())
