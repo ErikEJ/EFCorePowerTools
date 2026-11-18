@@ -462,7 +462,7 @@ public abstract class ProcedureScaffolder : IRoutineScaffolder
             Sb.AppendLine("{");
             using (Sb.Indent())
             {
-                Sb.AppendLine("IDbTransaction tran = null;");
+                Sb.AppendLine("IDbTransaction? tran = null;");
                 Sb.AppendLine("if (db.Database.CurrentTransaction is IDbContextTransaction ctxTran)");
                 Sb.AppendLine("{");
                 using (Sb.Indent())
