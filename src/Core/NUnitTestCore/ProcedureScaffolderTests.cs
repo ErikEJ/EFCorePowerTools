@@ -70,9 +70,11 @@ namespace UnitTests
         }
 
         [Theory]
-        [InlineData(false)]
-        [InlineData(true)]
-        public void ScaffoldModel_WhenMultipleResultSetsAndNullableReferences_UsesNullableTransaction(bool useAsyncCalls)
+        [InlineData(false, false)]
+        [InlineData(false, true)]
+        [InlineData(true, false)]
+        [InlineData(true, true)]
+        public void ScaffoldModel_WhenMultipleResultSets_UsesTransactionNullabilityMatchingOptions(bool nullableReferences, bool useAsyncCalls)
         {
             var scaffolder = CreateScaffolder();
             var procedure = CreateProcedureWithUdtParameter();
@@ -91,16 +93,16 @@ namespace UnitTests
                 Errors = new List<string>(),
             };
             var options = CreateScaffolderOptions();
-            options.NullableReferences = true;
+            options.NullableReferences = nullableReferences;
             options.UseAsyncCalls = useAsyncCalls;
             var errors = new List<string>();
             var schemas = new List<string>();
 
             var result = scaffolder.ScaffoldModel(model, options, schemas, ref errors);
 
-            Assert.Contains("#nullable enable", result.ContextFile.Code);
-            Assert.Contains("IDbTransaction? tran = null;", result.ContextFile.Code);
-            Assert.DoesNotContain("IDbTransaction tran = null;", result.ContextFile.Code);
+            Assert.Contains(nullableReferences ? "#nullable enable" : "#nullable disable", result.ContextFile.Code);
+            Assert.Contains(nullableReferences ? "IDbTransaction? tran = null;" : "IDbTransaction tran = null;", result.ContextFile.Code);
+            Assert.DoesNotContain(nullableReferences ? "IDbTransaction tran = null;" : "IDbTransaction? tran = null;", result.ContextFile.Code);
         }
 
         [Theory]
