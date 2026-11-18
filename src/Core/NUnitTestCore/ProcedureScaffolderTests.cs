@@ -70,6 +70,42 @@ namespace UnitTests
         }
 
         [Theory]
+        [InlineData(false, false)]
+        [InlineData(false, true)]
+        [InlineData(true, false)]
+        [InlineData(true, true)]
+        public void ScaffoldModel_WhenMultipleResultSets_UsesTransactionNullabilityMatchingOptions(bool nullableReferences, bool useAsyncCalls)
+        {
+            var scaffolder = CreateScaffolder();
+            var procedure = CreateProcedureWithUdtParameter();
+            procedure.Results.Add(new List<ModuleResultElement>
+            {
+                new()
+                {
+                    Name = "SecondResultValue",
+                    StoreType = "int",
+                    Nullable = false,
+                },
+            });
+            var model = new RoutineModel
+            {
+                Routines = new List<Routine> { procedure },
+                Errors = new List<string>(),
+            };
+            var options = CreateScaffolderOptions();
+            options.NullableReferences = nullableReferences;
+            options.UseAsyncCalls = useAsyncCalls;
+            var errors = new List<string>();
+            var schemas = new List<string>();
+
+            var result = scaffolder.ScaffoldModel(model, options, schemas, ref errors);
+
+            Assert.Contains(nullableReferences ? "#nullable enable" : "#nullable disable", result.ContextFile.Code);
+            Assert.Contains(nullableReferences ? "IDbTransaction? tran = null;" : "IDbTransaction tran = null;", result.ContextFile.Code);
+            Assert.DoesNotContain(nullableReferences ? "IDbTransaction tran = null;" : "IDbTransaction? tran = null;", result.ContextFile.Code);
+        }
+
+        [Theory]
         [InlineData("varchar", 25, false, false, 25)]
         [InlineData("nvarchar", 25, false, false, 25)]
         [InlineData("varchar", 25, false, true, 8000)]
