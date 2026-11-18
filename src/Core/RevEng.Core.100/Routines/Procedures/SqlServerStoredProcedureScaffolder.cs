@@ -188,7 +188,7 @@ public class SqlServerStoredProcedureScaffolder : ProcedureScaffolder, IProcedur
                         Sb.AppendLine("var dynamic = CreateDynamic(sqlParameters);");
                         Sb.AppendLine($"{multiResultId}  _;");
                         Sb.AppendLine();
-                        Sb.AppendLine($"using (var reader = {(useAsyncCalls ? "await GetMultiReaderAsync" : "GetMultiReader")}(_context, dynamic, \"[{procedure.Schema}].[{procedure.Name}]\"))");
+                        Sb.AppendLine($"using (var reader = {(useAsyncCalls ? "await GetMultiReaderAsync" : "GetMultiReader")}(_context, dynamic, \"[{procedure.Schema}].[{procedure.Name}]\"{(useAsyncCalls ? ", cancellationToken" : string.Empty)}))");
                         Sb.AppendLine("{");
 
                         using (Sb.Indent())

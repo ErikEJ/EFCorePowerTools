@@ -452,7 +452,7 @@ public abstract class ProcedureScaffolder : IRoutineScaffolder
         {
             if (useAsyncCalls)
             {
-                Sb.AppendLine("private async Task<SqlMapper.GridReader> GetMultiReaderAsync(DbContext db, DynamicParameters dynamic, string sql)");
+                Sb.AppendLine("private async Task<SqlMapper.GridReader> GetMultiReaderAsync(DbContext db, DynamicParameters dynamic, string sql, CancellationToken cancellationToken)");
             }
             else
             {
@@ -475,7 +475,9 @@ public abstract class ProcedureScaffolder : IRoutineScaffolder
                 Sb.AppendLine($"return {(useAsyncCalls ? "await " : string.Empty)}((IDbConnection)db.Database.GetDbConnection())");
                 using (Sb.Indent())
                 {
-                    Sb.AppendLine($".QueryMultiple{(useAsyncCalls ? "Async" : string.Empty)}(sql, dynamic, tran, db.Database.GetCommandTimeout(), CommandType.StoredProcedure);");
+                    Sb.AppendLine(useAsyncCalls
+                        ? ".QueryMultipleAsync(new CommandDefinition(sql, dynamic, tran, db.Database.GetCommandTimeout(), CommandType.StoredProcedure, cancellationToken: cancellationToken));"
+                        : ".QueryMultiple(sql, dynamic, tran, db.Database.GetCommandTimeout(), CommandType.StoredProcedure);");
                 }
             }
 
