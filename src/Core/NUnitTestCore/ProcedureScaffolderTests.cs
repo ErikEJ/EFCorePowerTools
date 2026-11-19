@@ -106,6 +106,47 @@ namespace UnitTests
         }
 
         [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void ScaffoldModel_WhenMultipleResultSets_PropagatesCancellationOnlyForAsyncCalls(bool useAsyncCalls)
+        {
+            var scaffolder = CreateScaffolder();
+            var procedure = CreateProcedureWithUdtParameter();
+            procedure.Results.Add(new List<ModuleResultElement>
+            {
+                new() { Name = "SecondResultValue", StoreType = "int", Nullable = false },
+            });
+            var model = new RoutineModel
+            {
+                Routines = new List<Routine> { procedure },
+                Errors = new List<string>(),
+            };
+            var options = CreateScaffolderOptions();
+            options.UseAsyncCalls = useAsyncCalls;
+            var errors = new List<string>();
+            var schemas = new List<string>();
+
+            var result = scaffolder.ScaffoldModel(model, options, schemas, ref errors);
+            var code = result.ContextFile.Code;
+
+            Assert.Empty(errors);
+            if (useAsyncCalls)
+            {
+                Assert.Contains("GetMultiReaderAsync(_context, dynamic, \"[dbo].[TestProcedure]\", cancellationToken)", code);
+                Assert.Contains("GetMultiReaderAsync(DbContext db, DynamicParameters dynamic, string sql, CancellationToken cancellationToken)", code);
+                Assert.Contains("QueryMultipleAsync(new CommandDefinition(sql, dynamic, tran, db.Database.GetCommandTimeout(), CommandType.StoredProcedure, cancellationToken: cancellationToken))", code);
+                Assert.Contains("await reader.ReadAsync<TestProcedureResult1>()", code);
+                Assert.Contains("await reader.ReadAsync<TestProcedureResult2>()", code);
+            }
+            else
+            {
+                Assert.Contains("GetMultiReader(_context, dynamic, \"[dbo].[TestProcedure]\")", code);
+                Assert.Contains("QueryMultiple(sql, dynamic, tran, db.Database.GetCommandTimeout(), CommandType.StoredProcedure)", code);
+                Assert.DoesNotContain("cancellationToken", code);
+            }
+        }
+
+        [Theory]
         [InlineData("varchar", 25, false, false, 25)]
         [InlineData("nvarchar", 25, false, false, 25)]
         [InlineData("varchar", 25, false, true, 8000)]
