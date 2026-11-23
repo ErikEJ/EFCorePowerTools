@@ -28,6 +28,15 @@ namespace Microsoft.EntityFrameworkCore.SqlServer.Scaffolding.Internal;
 [SuppressMessage("Security", "CA2100:Review SQL queries for security vulnerabilities", Justification = "We know!")]
 public class PatchedSqlServerDatabaseModelFactory : IDatabaseModelFactory
 {
+    private const string VectorIndexMetricAnnotation = "SqlServer:VectorIndexMetric";
+    private const string VectorIndexTypeAnnotation = "SqlServer:VectorIndexType";
+    private const string FullTextCatalogsAnnotation = "SqlServer:FullTextCatalogs";
+    private const string FullTextIndexAnnotation = "SqlServer:FullTextIndex";
+    private const string FullTextCatalogAnnotation = "SqlServer:FullTextCatalog";
+    private const string FullTextChangeTrackingAnnotation = "SqlServer:FullTextChangeTracking";
+    private const string FullTextLanguagesAnnotation = "SqlServer:FullTextLanguages";
+    private const string JsonIndexPathsAnnotation = "Relational:JsonIndexPaths";
+
     private readonly IDiagnosticsLogger<DbLoggerCategory.Scaffolding> _logger;
     private readonly IRelationalTypeMappingSource _typeMappingSource;
     private readonly ReverseEngineerCommandOptions _commandOptions;
@@ -1296,12 +1305,12 @@ OPTION (MERGE JOIN);
 
                 if (indexGroup.First().GetValueOrDefault<string>("distance_metric") is { } distanceMetric)
                 {
-                    index[SqlServerAnnotationNames.VectorIndexMetric] = distanceMetric;
+                    index[VectorIndexMetricAnnotation] = distanceMetric;
                 }
 
                 if (indexGroup.First().GetValueOrDefault<string>("vector_index_type") is { } vectorIndexType)
                 {
-                    index[SqlServerAnnotationNames.VectorIndexType] = vectorIndexType;
+                    index[VectorIndexTypeAnnotation] = vectorIndexType;
                 }
 
                 foreach (var dataRecord in indexGroup)
@@ -1332,7 +1341,7 @@ OPTION (MERGE JOIN);
         }
     }
 
-    private void GetFullTextCatalogs(DbConnection connection, DatabaseModel databaseModel)
+    private static void GetFullTextCatalogs(DbConnection connection, DatabaseModel databaseModel)
     {
         using var command = connection.CreateCommand();
         command.CommandText = """
@@ -1341,7 +1350,7 @@ FROM [sys].[fulltext_catalogs];
 """;
 
         using var reader = command.ExecuteReader();
-        var catalogs = new Dictionary<string, SqlServerFullTextCatalog>();
+        var catalogs = new Dictionary<string, (bool IsDefault, bool IsAccentSensitive)>();
 
         while (reader.Read())
         {
@@ -1349,29 +1358,19 @@ FROM [sys].[fulltext_catalogs];
             var isDefault = reader.GetFieldValue<bool>("is_default");
             var isAccentSensitive = reader.GetFieldValue<bool>("is_accent_sensitivity_on");
 
-            var catalog = new SqlServerFullTextCatalog(name, model: null!, ConfigurationSource.DataAnnotation);
-            if (isDefault)
-            {
-                catalog.IsDefault = true;
-            }
-
-            if (!isAccentSensitive)
-            {
-                catalog.IsAccentSensitive = false;
-            }
-
-            catalogs.Add(name, catalog);
+            catalogs.Add(name, (isDefault, isAccentSensitive));
         }
 
         if (catalogs.Count > 0)
         {
-            databaseModel[SqlServerAnnotationNames.FullTextCatalogs] = catalogs;
+            databaseModel[FullTextCatalogsAnnotation] = catalogs;
         }
     }
 
     private void GetJsonIndexPaths(DbConnection connection, IReadOnlyList<DatabaseTable> tables, string tableFilter)
     {
         using var command = connection.CreateCommand();
+#pragma warning disable S2077 // SQL queries should not be dynamically formatted
         command.CommandText = $"""
 SELECT
     SCHEMA_NAME([t].[schema_id]) AS [table_schema],
@@ -1390,6 +1389,7 @@ JOIN [sys].[index_columns] AS [ic] ON [i].[object_id] = [ic].[object_id] AND [i]
 WHERE {tableFilter}
 ORDER BY [table_schema], [table_name], [index_name], [jip].[path];
 """;
+#pragma warning restore S2077 // SQL queries should not be dynamically formatted
 
         using var reader = command.ExecuteReader();
         var indexGroups = reader.Cast<DbDataRecord>()
@@ -1447,13 +1447,14 @@ ORDER BY [table_schema], [table_name], [index_name], [jip].[path];
                 index[SqlServerAnnotationNames.FillFactor] = fillFactor.Value;
             }
 
-            index[RelationalAnnotationNames.JsonIndexPaths] = (jsonColumn, paths);
+            index[JsonIndexPathsAnnotation] = (jsonColumn, paths);
         }
     }
 
     private void GetFullTextIndexes(DbConnection connection, IReadOnlyList<DatabaseTable> tables, string tableFilter)
     {
         using var command = connection.CreateCommand();
+#pragma warning disable S2077 // SQL queries should not be dynamically formatted
         command.CommandText = $"""
 SELECT
     SCHEMA_NAME([t].[schema_id]) AS [table_schema],
@@ -1472,6 +1473,7 @@ LEFT JOIN [sys].[fulltext_languages] AS [l] ON [fic].[language_id] = [l].[lcid]
 WHERE {tableFilter}
 ORDER BY [table_schema], [table_name], [fic].[column_id];
 """;
+#pragma warning restore S2077 // SQL queries should not be dynamically formatted
 
         using var reader = command.ExecuteReader();
         var tableGroups = reader.Cast<DbDataRecord>()
@@ -1500,23 +1502,23 @@ ORDER BY [table_schema], [table_name], [fic].[column_id];
                 IsUnique = false
             };
 
-            index[SqlServerAnnotationNames.FullTextIndex] = keyIndexName;
+            index[FullTextIndexAnnotation] = keyIndexName;
 
             if (catalogName is not null)
             {
-                index[SqlServerAnnotationNames.FullTextCatalog] = catalogName;
+                index[FullTextCatalogAnnotation] = catalogName;
             }
 
             var changeTracking = changeTrackingDesc switch
             {
-                "MANUAL" => FullTextChangeTracking.Manual,
-                "OFF" => FullTextChangeTracking.Off,
-                _ => (FullTextChangeTracking?)null
+                "MANUAL" => "Manual",
+                "OFF" => "Off",
+                _ => null
             };
 
             if (changeTracking is not null)
             {
-                index[SqlServerAnnotationNames.FullTextChangeTracking] = changeTracking.Value;
+                index[FullTextChangeTrackingAnnotation] = changeTracking;
             }
 
             var languages = new Dictionary<string, string>();
@@ -1525,7 +1527,7 @@ ORDER BY [table_schema], [table_name], [fic].[column_id];
             {
                 var columnName = record.GetValueOrDefault<string>("column_name");
                 var column = table.Columns.FirstOrDefault(c => c.Name == columnName)
-                    ?? table.Columns.FirstOrDefault(c => c.Name!.Equals(columnName, StringComparison.OrdinalIgnoreCase));
+                    ?? table.Columns.FirstOrDefault(c => c.Name.Equals(columnName, StringComparison.OrdinalIgnoreCase));
 
                 if (column is null)
                 {
@@ -1537,13 +1539,13 @@ ORDER BY [table_schema], [table_name], [fic].[column_id];
                 var languageName = record.GetValueOrDefault<string>("language_name");
                 if (languageName is not null)
                 {
-                    languages[column.Name!] = languageName;
+                    languages[column.Name] = languageName;
                 }
             }
 
             if (languages.Count > 0)
             {
-                index[SqlServerAnnotationNames.FullTextLanguages] = languages;
+                index[FullTextLanguagesAnnotation] = languages;
             }
 
             if (index.Columns.Count > 0)
