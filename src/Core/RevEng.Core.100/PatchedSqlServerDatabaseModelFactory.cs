@@ -1343,6 +1343,13 @@ OPTION (MERGE JOIN);
 
     private static void GetFullTextCatalogs(DbConnection connection, DatabaseModel databaseModel)
     {
+        var catalogType = typeof(SqlServerAnnotationNames).Assembly.GetType(
+            "Microsoft.EntityFrameworkCore.SqlServer.Metadata.Internal.SqlServerFullTextCatalog");
+        if (catalogType is null)
+        {
+            return;
+        }
+
         using var command = connection.CreateCommand();
         command.CommandText = """
 SELECT [name], [is_default], [is_accent_sensitivity_on]
@@ -1350,7 +1357,9 @@ FROM [sys].[fulltext_catalogs];
 """;
 
         using var reader = command.ExecuteReader();
-        var catalogs = new Dictionary<string, (bool IsDefault, bool IsAccentSensitive)>();
+        var catalogsType = typeof(Dictionary<,>).MakeGenericType(typeof(string), catalogType);
+        var catalogs = Activator.CreateInstance(catalogsType)!;
+        var addCatalog = catalogsType.GetMethod("Add", new[] { typeof(string), catalogType })!;
 
         while (reader.Read())
         {
@@ -1358,10 +1367,21 @@ FROM [sys].[fulltext_catalogs];
             var isDefault = reader.GetFieldValue<bool>("is_default");
             var isAccentSensitive = reader.GetFieldValue<bool>("is_accent_sensitivity_on");
 
-            catalogs.Add(name, (isDefault, isAccentSensitive));
+            var catalog = Activator.CreateInstance(catalogType, name, null, ConfigurationSource.DataAnnotation)!;
+            if (isDefault)
+            {
+                catalogType.GetProperty("IsDefault")!.SetValue(catalog, true);
+            }
+
+            if (!isAccentSensitive)
+            {
+                catalogType.GetProperty("IsAccentSensitive")!.SetValue(catalog, false);
+            }
+
+            addCatalog.Invoke(catalogs, new[] { name, catalog });
         }
 
-        if (catalogs.Count > 0)
+        if ((int)catalogsType.GetProperty("Count")!.GetValue(catalogs)! > 0)
         {
             databaseModel[FullTextCatalogsAnnotation] = catalogs;
         }
@@ -1518,7 +1538,12 @@ ORDER BY [table_schema], [table_name], [fic].[column_id];
 
             if (changeTracking is not null)
             {
-                index[FullTextChangeTrackingAnnotation] = changeTracking;
+                var changeTrackingType = typeof(SqlServerAnnotationNames).Assembly.GetType(
+                    "Microsoft.EntityFrameworkCore.FullTextChangeTracking");
+                if (changeTrackingType is not null)
+                {
+                    index[FullTextChangeTrackingAnnotation] = Enum.Parse(changeTrackingType, changeTracking);
+                }
             }
 
             var languages = new Dictionary<string, string>();
