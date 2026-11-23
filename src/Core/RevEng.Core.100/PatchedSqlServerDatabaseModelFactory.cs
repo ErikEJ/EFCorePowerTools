@@ -131,6 +131,11 @@ public class PatchedSqlServerDatabaseModelFactory : IDatabaseModelFactory
 
             GetTables(connection, databaseModel, tableFilter, typeAliases, databaseCollation);
 
+            if (SupportsFullTextSearch)
+            {
+                GetFullTextCatalogs(connection, databaseModel);
+            }
+
             foreach (var schema in schemaList
                          .Except(
                              databaseModel.Sequences.Select(s => s.Schema)
@@ -696,6 +701,16 @@ AND [v].[is_date_correlation_view] = 0
                 GetIndexes(connection, tables, tableFilterSql);
             }
 
+            if (SupportsFullTextSearch)
+            {
+                GetFullTextIndexes(connection, tables, tableFilterSql);
+            }
+
+            if (SupportsJsonIndexes)
+            {
+                GetJsonIndexPaths(connection, tables, tableFilterSql);
+            }
+
             GetForeignKeys(connection, tables, tableFilterSql);
 
             if (SupportsTriggers)
@@ -1046,7 +1061,14 @@ LEFT JOIN [sys].[default_constraints] AS [dc] ON [c].[object_id] = [dc].[parent_
     private void GetIndexes(DbConnection connection, IReadOnlyList<DatabaseTable> tables, string tableFilter)
     {
         using var command = connection.CreateCommand();
-        var commandText = @"
+        var commandText = $"""
+WITH [TablesAndViews] AS (
+    SELECT [object_id], [schema_id], [name], [type], [is_ms_shipped], [temporal_type]
+    FROM [sys].[tables]
+    UNION ALL
+    SELECT [object_id], [schema_id], [name], [type], [is_ms_shipped], 0 AS [temporal_type]
+    FROM [sys].[views]
+)
 SELECT
     SCHEMA_NAME([t].[schema_id]) AS [table_schema],
     [t].[name] AS [table_name],
@@ -1058,39 +1080,41 @@ SELECT
     [i].[has_filter],
     [i].[filter_definition],
     [i].[fill_factor],
-    COL_NAME([ic].[object_id], [ic].[column_id]) AS [column_name],
+    [c].[name] AS [column_name],
     [ic].[is_descending_key],
-    [ic].[is_included_column]
+    [ic].[is_included_column],
+    {(SupportsVectorIndexes ? "[vi].[distance_metric]" : "NULL as [distance_metric]")},
+    {(SupportsVectorIndexes ? "[vi].[vector_index_type]" : "NULL as [vector_index_type]")}
 FROM [sys].[indexes] AS [i]
-JOIN [sys].[tables] AS [t] ON [i].[object_id] = [t].[object_id]
+{(SupportsVectorIndexes ? "LEFT JOIN [sys].[vector_indexes] AS [vi] ON [i].[object_id] = [vi].[object_id] AND [i].[index_id] = [vi].[index_id]" : "")}
+JOIN [TablesAndViews] AS [t] ON [i].[object_id] = [t].[object_id]
 JOIN [sys].[index_columns] AS [ic] ON [i].[object_id] = [ic].[object_id] AND [i].[index_id] = [ic].[index_id]
 JOIN [sys].[columns] AS [c] ON [ic].[object_id] = [c].[object_id] AND [ic].[column_id] = [c].[column_id]
 WHERE [i].[is_hypothetical] = 0
-AND "
-            + tableFilter;
+    AND {tableFilter}
+""";
 
         if (SupportsTemporalTable)
         {
-            commandText += @"
-AND CAST([i].[object_id] AS nvarchar(12)) + '#' + CAST([i].[index_id] AS nvarchar(12)) NOT IN
-(
-   SELECT CAST([i].[object_id] AS nvarchar(12)) + '#' + CAST([i].[index_id] AS nvarchar(12))
-   FROM [sys].[indexes] i
-   JOIN [sys].[tables] AS [t] ON [i].[object_id] = [t].[object_id]
-   JOIN [sys].[index_columns] AS [ic] ON [i].[object_id] = [ic].[object_id] AND [i].[index_id] = [ic].[index_id]
-   JOIN [sys].[columns] AS [c] ON [ic].[object_id] = [c].[object_id] AND [ic].[column_id] = [c].[column_id]
-   WHERE "
-                + tableFilter;
-
-            commandText += @"
-   AND [c].[is_hidden] = 1
-   AND [i].[is_hypothetical] = 0
-)";
+            commandText += $"""
+    AND CAST([i].[object_id] AS nvarchar(12)) + '#' + CAST([i].[index_id] AS nvarchar(12)) NOT IN
+    (
+       SELECT CAST([i].[object_id] AS nvarchar(12)) + '#' + CAST([i].[index_id] AS nvarchar(12))
+       FROM [sys].[indexes] i
+       JOIN [sys].[tables] AS [t] ON [i].[object_id] = [t].[object_id]
+       JOIN [sys].[index_columns] AS [ic] ON [i].[object_id] = [ic].[object_id] AND [i].[index_id] = [ic].[index_id]
+       JOIN [sys].[columns] AS [c] ON [ic].[object_id] = [c].[object_id] AND [ic].[column_id] = [c].[column_id]
+       WHERE {tableFilter}
+           AND [c].[is_hidden] = 1
+           AND [i].[is_hypothetical] = 0
+    )
+""";
         }
 
-        commandText += @"
-ORDER BY [table_schema], [table_name], [index_name], [ic].[key_ordinal] 
-OPTION (MERGE JOIN);";
+        commandText += """
+ORDER BY [table_schema], [table_name], [index_name], [ic].[key_ordinal]
+OPTION (MERGE JOIN);
+""";
 
         command.CommandText = commandText;
 
@@ -1270,6 +1294,16 @@ OPTION (MERGE JOIN);";
                     index[SqlServerAnnotationNames.FillFactor] = (int)indexGroup.Key.FillFactor;
                 }
 
+                if (indexGroup.First().GetValueOrDefault<string>("distance_metric") is { } distanceMetric)
+                {
+                    index[SqlServerAnnotationNames.VectorIndexMetric] = distanceMetric;
+                }
+
+                if (indexGroup.First().GetValueOrDefault<string>("vector_index_type") is { } vectorIndexType)
+                {
+                    index[SqlServerAnnotationNames.VectorIndexType] = vectorIndexType;
+                }
+
                 foreach (var dataRecord in indexGroup)
                 {
                     var columnName = dataRecord.GetValueOrDefault<string>("column_name");
@@ -1294,6 +1328,227 @@ OPTION (MERGE JOIN);";
                 }
 
                 return index.Columns.Count > 0;
+            }
+        }
+    }
+
+    private void GetFullTextCatalogs(DbConnection connection, DatabaseModel databaseModel)
+    {
+        using var command = connection.CreateCommand();
+        command.CommandText = """
+SELECT [name], [is_default], [is_accent_sensitivity_on]
+FROM [sys].[fulltext_catalogs];
+""";
+
+        using var reader = command.ExecuteReader();
+        var catalogs = new Dictionary<string, SqlServerFullTextCatalog>();
+
+        while (reader.Read())
+        {
+            var name = reader.GetFieldValue<string>("name");
+            var isDefault = reader.GetFieldValue<bool>("is_default");
+            var isAccentSensitive = reader.GetFieldValue<bool>("is_accent_sensitivity_on");
+
+            var catalog = new SqlServerFullTextCatalog(name, model: null!, ConfigurationSource.DataAnnotation);
+            if (isDefault)
+            {
+                catalog.IsDefault = true;
+            }
+
+            if (!isAccentSensitive)
+            {
+                catalog.IsAccentSensitive = false;
+            }
+
+            catalogs.Add(name, catalog);
+        }
+
+        if (catalogs.Count > 0)
+        {
+            databaseModel[SqlServerAnnotationNames.FullTextCatalogs] = catalogs;
+        }
+    }
+
+    private void GetJsonIndexPaths(DbConnection connection, IReadOnlyList<DatabaseTable> tables, string tableFilter)
+    {
+        using var command = connection.CreateCommand();
+        command.CommandText = $"""
+SELECT
+    SCHEMA_NAME([t].[schema_id]) AS [table_schema],
+    [t].[name] AS [table_name],
+    [i].[name] AS [index_name],
+    [i].[is_unique],
+    [i].[has_filter],
+    [i].[filter_definition],
+    [i].[fill_factor],
+    COL_NAME([ic].[object_id], [ic].[column_id]) AS [column_name],
+    [jip].[path]
+FROM [sys].[json_index_paths] AS [jip]
+JOIN [sys].[indexes] AS [i] ON [jip].[object_id] = [i].[object_id] AND [jip].[index_id] = [i].[index_id]
+JOIN [sys].[tables] AS [t] ON [i].[object_id] = [t].[object_id]
+JOIN [sys].[index_columns] AS [ic] ON [i].[object_id] = [ic].[object_id] AND [i].[index_id] = [ic].[index_id]
+WHERE {tableFilter}
+ORDER BY [table_schema], [table_name], [index_name], [jip].[path];
+""";
+
+        using var reader = command.ExecuteReader();
+        var indexGroups = reader.Cast<DbDataRecord>()
+            .GroupBy(r => (
+                tableSchema: r.GetValueOrDefault<string>("table_schema"),
+                tableName: r.GetFieldValue<string>("table_name"),
+                indexName: r.GetFieldValue<string>("index_name")))
+            .ToDictionary(g => g.Key, g => g.ToList());
+
+        foreach (var ((tableSchema, tableName, indexName), records) in indexGroups)
+        {
+            var table = tables.SingleOrDefault(t => t.Schema == tableSchema && t.Name == tableName);
+            if (table is null)
+            {
+                continue;
+            }
+
+            var index = table.Indexes.SingleOrDefault(i => i.Name == indexName);
+            var firstRecord = records[0];
+            var jsonColumn = firstRecord.GetValueOrDefault<string>("column_name");
+            var paths = records.Select(r => r.GetFieldValue<string>("path")).ToArray();
+            if (jsonColumn is null || table.Columns.FirstOrDefault(c => c.Name == jsonColumn) is not { } column)
+            {
+                continue;
+            }
+
+            var isUnique = firstRecord.GetFieldValue<bool>("is_unique");
+            var filter = firstRecord.GetFieldValue<bool>("has_filter")
+                ? firstRecord.GetValueOrDefault<string>("filter_definition")
+                : null;
+            var fillFactor = firstRecord.GetValueOrDefault<byte>("fill_factor") is var fillFactorRaw && fillFactorRaw is > 0 and <= 100
+                ? (int?)fillFactorRaw
+                : null;
+
+            if (index is null)
+            {
+                index = new DatabaseIndex
+                {
+                    Table = table,
+                    Name = indexName,
+                    IsUnique = isUnique,
+                    Filter = filter
+                };
+                index.Columns.Add(column);
+                table.Indexes.Add(index);
+            }
+            else
+            {
+                index.IsUnique = isUnique;
+                index.Filter = filter;
+            }
+
+            if (fillFactor is not null)
+            {
+                index[SqlServerAnnotationNames.FillFactor] = fillFactor.Value;
+            }
+
+            index[RelationalAnnotationNames.JsonIndexPaths] = (jsonColumn, paths);
+        }
+    }
+
+    private void GetFullTextIndexes(DbConnection connection, IReadOnlyList<DatabaseTable> tables, string tableFilter)
+    {
+        using var command = connection.CreateCommand();
+        command.CommandText = $"""
+SELECT
+    SCHEMA_NAME([t].[schema_id]) AS [table_schema],
+    [t].[name] AS [table_name],
+    [i].[name] AS [key_index_name],
+    [fc].[name] AS [catalog_name],
+    [fi].[change_tracking_state_desc] AS [change_tracking],
+    COL_NAME([fic].[object_id], [fic].[column_id]) AS [column_name],
+    [l].[name] AS [language_name]
+FROM [sys].[fulltext_indexes] AS [fi]
+JOIN [sys].[tables] AS [t] ON [fi].[object_id] = [t].[object_id]
+JOIN [sys].[indexes] AS [i] ON [fi].[object_id] = [i].[object_id] AND [fi].[unique_index_id] = [i].[index_id]
+JOIN [sys].[fulltext_index_columns] AS [fic] ON [fi].[object_id] = [fic].[object_id]
+LEFT JOIN [sys].[fulltext_catalogs] AS [fc] ON [fi].[fulltext_catalog_id] = [fc].[fulltext_catalog_id]
+LEFT JOIN [sys].[fulltext_languages] AS [l] ON [fic].[language_id] = [l].[lcid]
+WHERE {tableFilter}
+ORDER BY [table_schema], [table_name], [fic].[column_id];
+""";
+
+        using var reader = command.ExecuteReader();
+        var tableGroups = reader.Cast<DbDataRecord>()
+            .GroupBy(r => (
+                tableSchema: r.GetValueOrDefault<string>("table_schema"),
+                tableName: r.GetFieldValue<string>("table_name")))
+            .ToDictionary(g => g.Key, g => g.ToList());
+
+        foreach (var ((tableSchema, tableName), records) in tableGroups)
+        {
+            var table = tables.SingleOrDefault(t => t.Schema == tableSchema && t.Name == tableName);
+            if (table is null)
+            {
+                continue;
+            }
+
+            var firstRecord = records[0];
+            var keyIndexName = firstRecord.GetFieldValue<string>("key_index_name");
+            var catalogName = firstRecord.GetValueOrDefault<string>("catalog_name");
+            var changeTrackingDesc = firstRecord.GetValueOrDefault<string>("change_tracking");
+
+            var index = new DatabaseIndex
+            {
+                Table = table,
+                Name = null,
+                IsUnique = false
+            };
+
+            index[SqlServerAnnotationNames.FullTextIndex] = keyIndexName;
+
+            if (catalogName is not null)
+            {
+                index[SqlServerAnnotationNames.FullTextCatalog] = catalogName;
+            }
+
+            var changeTracking = changeTrackingDesc switch
+            {
+                "MANUAL" => FullTextChangeTracking.Manual,
+                "OFF" => FullTextChangeTracking.Off,
+                _ => (FullTextChangeTracking?)null
+            };
+
+            if (changeTracking is not null)
+            {
+                index[SqlServerAnnotationNames.FullTextChangeTracking] = changeTracking.Value;
+            }
+
+            var languages = new Dictionary<string, string>();
+
+            foreach (var record in records)
+            {
+                var columnName = record.GetValueOrDefault<string>("column_name");
+                var column = table.Columns.FirstOrDefault(c => c.Name == columnName)
+                    ?? table.Columns.FirstOrDefault(c => c.Name!.Equals(columnName, StringComparison.OrdinalIgnoreCase));
+
+                if (column is null)
+                {
+                    continue;
+                }
+
+                index.Columns.Add(column);
+
+                var languageName = record.GetValueOrDefault<string>("language_name");
+                if (languageName is not null)
+                {
+                    languages[column.Name!] = languageName;
+                }
+            }
+
+            if (languages.Count > 0)
+            {
+                index[SqlServerAnnotationNames.FullTextLanguages] = languages;
+            }
+
+            if (index.Columns.Count > 0)
+            {
+                table.Indexes.Add(index);
             }
         }
     }
@@ -1511,6 +1766,15 @@ ORDER BY [table_schema], [table_name], [tr].[name];
 
     private bool SupportsSequences
         => _compatibilityLevel >= 110 && IsFullFeaturedEngineEdition;
+
+    private bool SupportsFullTextSearch
+        => IsFullFeaturedEngineEdition;
+
+    private bool SupportsVectorIndexes
+        => _compatibilityLevel >= 170 && IsFullFeaturedEngineEdition;
+
+    private bool SupportsJsonIndexes
+        => _compatibilityLevel >= 170 && IsFullFeaturedEngineEdition;
 
     private bool SupportsIndexes
         => _engineEdition != EngineEdition.DynamicsCrm;
