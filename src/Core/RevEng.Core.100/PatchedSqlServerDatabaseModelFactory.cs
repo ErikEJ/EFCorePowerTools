@@ -1427,6 +1427,11 @@ ORDER BY [table_schema], [table_name], [index_name], [jip].[path];
                 continue;
             }
 
+            if (IsIndexExcluded(table, indexName))
+            {
+                continue;
+            }
+
             var index = table.Indexes.SingleOrDefault(i => i.Name == indexName);
             var firstRecord = records[0];
             var jsonColumn = firstRecord.GetValueOrDefault<string>("column_name");
@@ -1515,6 +1520,11 @@ ORDER BY [table_schema], [table_name], [fic].[column_id];
             var catalogName = firstRecord.GetValueOrDefault<string>("catalog_name");
             var changeTrackingDesc = firstRecord.GetValueOrDefault<string>("change_tracking");
 
+            if (IsIndexExcluded(table, keyIndexName))
+            {
+                continue;
+            }
+
             var index = new DatabaseIndex
             {
                 Table = table,
@@ -1578,6 +1588,13 @@ ORDER BY [table_schema], [table_name], [fic].[column_id];
                 table.Indexes.Add(index);
             }
         }
+    }
+
+    private bool IsIndexExcluded(DatabaseTable table, string indexName)
+    {
+        var tableConfig = _commandOptions?.Tables?.SingleOrDefault(
+            x => x.Name == $"[{table.Schema}].[{table.Name}]");
+        return tableConfig?.ExcludedIndexes?.Contains(indexName) == true;
     }
 
     private void GetForeignKeys(DbConnection connection, IReadOnlyList<DatabaseTable> tables, string tableFilter)
@@ -1795,7 +1812,9 @@ ORDER BY [table_schema], [table_name], [tr].[name];
         => _compatibilityLevel >= 110 && IsFullFeaturedEngineEdition;
 
     private bool SupportsFullTextSearch
-        => IsFullFeaturedEngineEdition;
+        => IsFullFeaturedEngineEdition
+            && typeof(SqlServerAnnotationNames).Assembly.GetType(
+                "Microsoft.EntityFrameworkCore.SqlServer.Metadata.Internal.SqlServerFullTextCatalog") is not null;
 
     private bool SupportsVectorIndexes
         => _compatibilityLevel >= 170 && IsFullFeaturedEngineEdition;
