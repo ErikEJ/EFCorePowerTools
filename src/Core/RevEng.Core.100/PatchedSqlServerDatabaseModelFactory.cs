@@ -1121,8 +1121,7 @@ WHERE [i].[is_hypothetical] = 0
         }
 
         commandText += """
-ORDER BY [table_schema], [table_name], [index_name], [ic].[key_ordinal]
-OPTION (MERGE JOIN);
+ORDER BY [table_schema], [table_name], [index_name], [ic].[key_ordinal];
 """;
 
         command.CommandText = commandText;
